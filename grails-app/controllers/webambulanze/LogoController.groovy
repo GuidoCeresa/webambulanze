@@ -42,8 +42,8 @@ class LogoController {
             params.sort = 'time'
         }// fine del blocco if-else
         if (params.order) {
-            if (params.order=='asc') {
-                params.order ='desc'
+            if (params.order == 'asc') {
+                params.order = 'desc'
             } else {
                 params.order = 'asc'
             }// fine del blocco if-else

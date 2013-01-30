@@ -16,6 +16,8 @@ import org.springframework.dao.DataIntegrityViolationException
 @Secured([Cost.ROLE_MILITE])
 class MiliteController {
 
+    private static boolean EDIT_VERSO_LISTA = true
+
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
     // utilizzo di un service con la businessLogic per l'elaborazione dei dati
@@ -51,8 +53,8 @@ class MiliteController {
             params.sort = 'cognome'
         }// fine del blocco if-else
         if (params.order) {
-            if (params.order=='asc') {
-                params.order ='desc'
+            if (params.order == 'asc') {
+                params.order = 'desc'
             } else {
                 params.order = 'asc'
             }// fine del blocco if-else
@@ -94,15 +96,18 @@ class MiliteController {
             return
         }
 
-//        logoService.setWarn(Evento.militeCreato, milite)
+        flash.message = logoService.setWarn(Evento.militeCreato, militeInstance)
 
         //--sicronizza le funzioni del milite nella tavola d'incrocio Militefunzione
         params.croce = militeInstance.croce
         militeService.registraFunzioni(params)
         militeService.regolaFunzioniAutomatiche(militeInstance)
 
-        flash.message = message(code: 'default.created.message', args: [message(code: 'milite.label', default: 'Milite'), militeInstance.id])
-        redirect(action: "show", id: militeInstance.id)
+        if (EDIT_VERSO_LISTA) {
+            redirect(action: 'list')
+        } else {
+            redirect(action: 'show', id: militeInstance.id)
+        }// fine del blocco if-else
     } // fine del metodo
 
     def show(Long id) {
@@ -111,7 +116,7 @@ class MiliteController {
 
         if (!militeInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'milite.label', default: 'Milite'), id])
-            redirect(action: "list")
+            redirect(action: 'list')
             return
         }
 
@@ -150,6 +155,7 @@ class MiliteController {
                 return
             }
         }
+        flash.listaMessaggi = militeService.avvisoModifiche(params, militeInstance)
         militeInstance.properties = params
 
         if (!militeInstance.save(flush: true)) {
@@ -162,8 +168,12 @@ class MiliteController {
         militeService.registraFunzioni(params)
         militeService.regolaFunzioniAutomatiche(militeInstance)
 
-        flash.message = message(code: 'default.updated.message', args: [message(code: 'milite.label', default: 'Milite'), militeInstance.id])
-        redirect(action: "show", id: militeInstance.id)
+        //  flash.message = message(code: 'default.updated.message', args: [message(code: 'milite.label', default: 'Milite'), militeInstance.id])
+        if (EDIT_VERSO_LISTA) {
+            redirect(action: 'list')
+        } else {
+            redirect(action: 'show', id: militeInstance.id)
+        }// fine del blocco if-else
     } // fine del metodo
 
     @Secured([Cost.ROLE_PROG])

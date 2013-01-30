@@ -17,51 +17,76 @@ class LogoService {
     def postaService
 
     //--registra un evento
-    public void setWarn(Evento evento, Turno turno) {
-        setBase(Livello.warn, evento, turno)
+    private String setEventoMilite(Livello livello, Evento evento, Milite milite) {
+        String testoFlash
+
+        testoFlash = setBase(livello, evento, milite, null, null, null)
+        if (milite) {
+            testoFlash += ' milite ' + milite.nome + ' ' + milite.cognome
+        }// fine del blocco if
+
+        return testoFlash
     }// fine del metodo
 
     //--registra un evento
-    public void setWarn(Evento evento, TipoTurno tipoTurno, Date giorno) {
-        setBase(Livello.warn, evento, null, null, tipoTurno, giorno)
+    public String setInfo(Evento evento, Milite milite) {
+        return setEventoMilite(Livello.info, evento, milite)
     }// fine del metodo
 
     //--registra un evento
-    public void setInfo(Evento evento, Turno turno) {
-        setBase(Livello.info, evento, turno)
+    public String setWarn(Evento evento, Milite milite) {
+        return setEventoMilite(Livello.warn, evento, milite)
+    }// fine del metodo
+
+    //--registra un evento
+    public String setWarn(Evento evento, Turno turno) {
+        return setBase(Livello.warn, evento, turno)
+    }// fine del metodo
+
+    //--registra un evento
+    public String setWarn(Evento evento, TipoTurno tipoTurno, Date giorno) {
+        return setBase(Livello.warn, evento, null, null, tipoTurno, giorno)
+    }// fine del metodo
+
+    //--registra un evento
+    public String setInfo(Evento evento, Turno turno) {
+        return setBase(Livello.info, evento, turno)
     }// fine del metodo
 
     //--registra un evento generico (molto generico)
-    public void setInfo() {
-        setInfo(Evento.generico)
+    public String setInfo() {
+        return setInfo(Evento.generico)
     }// fine del metodo
 
     //--registra un evento generico (molto generico)
-    public void setInfo(Evento evento) {
-        setBase(Livello.info, evento)
+    public String setInfo(Evento evento) {
+        return setBase(Livello.info, evento)
     }// fine del metodo
 
     //--registra un evento generico (molto generico)
-    public void setBase(Livello livello, Evento evento) {
-        setBase(Livello.info, evento, (Turno) null)
+    public String setBase(Livello livello, Evento evento) {
+        return setBase(Livello.info, evento, (Turno) null)
     }// fine del metodo
 
     //--registra un evento generico (molto generico)
-    public void setBase(Livello livello, Evento evento, Turno turno) {
-        TipoTurno tipoTurno = null
-        Date giorno = null
+    public String setBase(Livello livello, Evento evento, Turno turno) {
+        String testoFlash = ''
+        TipoTurno tipoTurno
+        Date giorno
 
         //--turno e tipoTurno e giorno
         if (turno) {
             tipoTurno = turno.tipoTurno
             giorno = turno.giorno
-            setBase(livello, evento, null, turno, tipoTurno, giorno)
+            testoFlash = setBase(livello, evento, null, turno, tipoTurno, giorno)
         }// fine del blocco if
 
+        return testoFlash
     }// fine del metodo
 
     //--registra un evento generico (molto generico)
-    public void setBase(Livello livello, Evento evento, Milite milite, Turno turno, TipoTurno tipoTurno, Date giorno) {
+    public String setBase(Livello livello, Evento evento, Milite milite, Turno turno, TipoTurno tipoTurno, Date giorno) {
+        String testoFlash = evento.avviso
         Logo logo = new Logo()
         Croce croce = null
         def logged
@@ -115,6 +140,8 @@ class LogoService {
         logo.save(flush: true)
 
         postaService.sendLogoMail(logo)
+
+        return testoFlash
     }// fine del metodo
 
 } // end of Service Class

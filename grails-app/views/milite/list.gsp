@@ -43,6 +43,9 @@
     <g:if test="${flash.message}">
         <div class="message" role="status">${flash.message}</div>
     </g:if>
+    <g:if test="${flash.listaMessaggi}">
+        <ul><g:each in="${flash.listaMessaggi}" var="messaggio"><li><div class="message">${messaggio}</div></li></g:each></ul>
+    </g:if>
     <table>
         <thead>
         <amb:titoliLista campiLista="${campiLista}"></amb:titoliLista>

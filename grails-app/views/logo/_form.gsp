@@ -120,6 +120,24 @@
 <g:select name="livello" from="${webambulanze.Livello?.values()}" keys="${webambulanze.Livello.values()*.name()}" required="" value="${logoInstance?.livello?.name()}"/>
 </div>
 
+<div class="fieldcontain ${hasErrors(bean: logoInstance, field: 'milite', 'error')} ">
+	<label for="milite">
+		<g:message code="logo.milite.labelform" default="Milite" />
+		
+	</label>
+	
+
+
+
+
+
+
+
+
+
+<g:select id="milite" name="milite.id" from="${webambulanze.Milite.list()}" optionKey="id" value="${logoInstance?.milite?.id}" class="many-to-one" noSelection="['null': '']"/>
+</div>
+
 <div class="fieldcontain ${hasErrors(bean: logoInstance, field: 'tipoTurno', 'error')} ">
 	<label for="tipoTurno">
 		<g:message code="logo.tipoTurno.labelform" default="Tipo Turno" />

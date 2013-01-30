@@ -10,6 +10,10 @@ class MiliteService {
     // il service viene iniettato automaticamente
     def springSecurityService
 
+    // utilizzo di un service con la businessLogic per l'elaborazione dei dati
+    // il service viene iniettato automaticamente
+    def logoService
+
     // la variabile/proprietà viene iniettata automaticamente
     def grailsApplication
 
@@ -99,6 +103,79 @@ class MiliteService {
         }// fine del blocco if
 
         return funzioniDipendenti
+    }// fine del metodo
+
+    //--avviso conseguente alle modifiche effettuate
+    def avvisoModifiche = { mappa, Milite milite ->
+        ArrayList listaMessaggi = new ArrayList()
+        String value
+        Date data
+
+        if (mappa.nome) {
+            value = (String) mappa.nome
+            if (!value.equals(milite.nome)) {
+                listaMessaggi.add(logoService.setInfo(Evento.militeModificatoNome, milite))
+            }// fine del blocco if
+        }// fine del blocco if
+
+        if (mappa.cognome) {
+            value = (String) mappa.cognome
+            if (!value.equals(milite.cognome)) {
+                listaMessaggi.add(logoService.setInfo(Evento.militeModificatoCognome, milite))
+            }// fine del blocco if
+        }// fine del blocco if
+
+        if (mappa.telefonoCellulare) {
+            value = (String) mappa.telefonoCellulare
+            if (!value.equals(milite.telefonoCellulare)) {
+                listaMessaggi.add(logoService.setInfo(Evento.militeModificatoTelefono, milite))
+            }// fine del blocco if
+        }// fine del blocco if
+
+
+        if (mappa.telefonoFisso) {
+            value = (String) mappa.telefonoFisso
+            if (!value.equals(milite.telefonoFisso)) {
+                listaMessaggi.add(logoService.setInfo(Evento.militeModificatoTelefono, milite))
+            }// fine del blocco if
+        }// fine del blocco if
+
+        if (mappa.email) {
+            value = (String) mappa.email
+            if (!value.equals(milite.email)) {
+                listaMessaggi.add(logoService.setInfo(Evento.militeModificataEmail, milite))
+            }// fine del blocco if
+        }// fine del blocco if
+
+        if (mappa.dataNascita) {
+            data = mappa.dataNascita
+            if (data && data != milite.dataNascita) {
+                listaMessaggi.add(logoService.setInfo(Evento.militeModificataNascita, milite))
+            }// fine del blocco if
+        }// fine del blocco if
+
+        if (mappa.scadenzaBLSD) {
+            data = mappa.scadenzaBLSD
+            if (data && data != milite.scadenzaBLSD) {
+                listaMessaggi.add(logoService.setInfo(Evento.militeModificataScadenzaBLS, milite))
+            }// fine del blocco if
+        }// fine del blocco if
+
+        if (mappa.scadenzaTrauma) {
+            data = mappa.scadenzaTrauma
+            if (data && data != milite.scadenzaTrauma) {
+                listaMessaggi.add(logoService.setInfo(Evento.militeModificataScadenzaTrauma, milite))
+            }// fine del blocco if
+        }// fine del blocco if
+
+        if (mappa.scadenzaNonTrauma) {
+            data = mappa.scadenzaNonTrauma
+            if (data && data != milite.scadenzaNonTrauma) {
+                listaMessaggi.add(logoService.setInfo(Evento.militeModificataScadenzaNonTrauma, milite))
+            }// fine del blocco if
+        }// fine del blocco if
+
+        return listaMessaggi
     }// fine del metodo
 
     //--registra lo stato delle funzioni abilitate (true, false) per il milite selezionato

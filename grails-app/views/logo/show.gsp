@@ -26,9 +26,15 @@
                     <g:message code="logo.list.label"
                                default="Elenco logo"/>
                 </g:link></li>
+
                 <li><g:link class="create" action="create">
                     <g:message code="logo.new.label"
                                default="Nuovo logo"/>
+                </g:link></li>
+
+                <li><g:link class="edit" action="edit" id="${logoInstance?.id}">
+                    <g:message code="logo.edit.label"
+                               default="Modifica logo"/>
                 </g:link></li>
 			</ul>
 		</div>
@@ -78,6 +84,13 @@
 					<span id="livello-label" class="property-label"><g:message code="logo.livello.labelform" default="Livello" /></span>
 					
 						<span class="property-value" aria-labelledby="livello-label"><g:fieldValue bean="${logoInstance}" field="livello"/></span>
+					
+				</li>
+			
+				<li class="fieldcontain">
+					<span id="milite-label" class="property-label"><g:message code="logo.milite.labelform" default="Milite" /></span>
+					
+						<span class="property-value" aria-labelledby="milite-label"><g:link controller="milite" action="show" id="${logoInstance?.milite?.id}">${logoInstance?.milite?.encodeAsHTML()}</g:link></span>
 					
 				</li>
 			
