@@ -1,0 +1,120 @@
+package webambulanze
+
+import grails.plugins.springsecurity.Secured
+
+class GenController {
+
+    //--sigla della croce corrente
+    public static String SIGLA_CROCE = 'pippoz'
+
+    // la property viene iniettata automaticamente
+    def grailsApplication
+
+    //--tabellone turni
+    @Secured([Cost.ROLE_MILITE])
+    def index() {
+        redirect(controller: 'turno', action: 'tabellone')
+    } // fine del metodo
+
+    //--selezione della croce su cui ritornare
+    def logoutselection() {
+        String croce = SIGLA_CROCE
+
+        if (croce && croce.equals(Cost.CROCE_ALGOS)) {
+            redirect(action: 'selezionaCroce')
+        }// fine del blocco if
+
+        if (croce && croce.equals(Cost.CROCE_PUBBLICA)) {
+            redirect(action: 'selezionaCrocePAVT')
+        }// fine del blocco if
+
+        if (croce && croce.equals(Cost.CROCE_ROSSA)) {
+            redirect(action: 'selezionaCroceCRF')
+        }// fine del blocco if
+    }
+
+    //--riparte come algos
+    def logoutalgos() {
+        selezionaCroceBase(Cost.CROCE_ALGOS)
+
+        //--va al menu base
+        render(controller: 'gen', view: 'home')
+    }
+
+    //--chiamata dai menu delle liste e form
+    def home() {
+        //--va al menu base
+        render(controller: 'gen', view: 'home')
+    } // fine del metodo
+
+    //--selezione iniziale della croce su cui operare
+    //--seleziona la necessità del login
+    //--regola la schermata iniziale
+    def selezionaCroceBase(String croce) {
+        SIGLA_CROCE = croce
+
+        //--selezione iniziale della croce su cui operare
+        grailsApplication.mainContext.servletContext.croce = Croce.findBySigla(croce)
+
+        //--seleziona la necessità del login
+        grailsApplication.mainContext.servletContext.startLogin = Settings.startLogin(croce)
+
+        //--seleziona la videata iniziale
+        grailsApplication.mainContext.servletContext.startController = Settings.startController(croce)
+
+        //--seleziona (flag booleano) se mostrare tutti i controllers nella videata Home
+        grailsApplication.mainContext.servletContext.allControllers = Settings.allControllers(croce)
+
+        //--seleziona (lista di stringhe) i controllers da mostrare nella videata Home
+        grailsApplication.mainContext.servletContext.controlli = Settings.controlli(croce)
+    } // fine del metodo
+
+    //--chiamata senza specificazione, parte la croce interna
+    //--selezione iniziale della croce su cui operare
+    //--seleziona la necessità del login
+    //--regola la schermata iniziale
+    @Secured([Cost.ROLE_PROG])
+    def selezionaCroce() {
+        //--regolazioni generali
+        selezionaCroceBase(Cost.CROCE_ALGOS)
+
+        //--va al menu base
+        render(controller: 'gen', view: 'home')
+    } // fine del metodo
+
+    //--chiamata da URL = pubblica
+    //--selezione iniziale della croce su cui operare
+    //--seleziona la necessità del login
+    //--regola la schermata iniziale
+    def selezionaCrocePAVT() {
+        //--regolazioni generali
+        selezionaCroceBase(Cost.CROCE_PUBBLICA)
+
+        if (grailsApplication.mainContext.servletContext.startController) {
+            //--va alla schermata specifica
+            redirect(controller: grailsApplication.mainContext.servletContext.startController)
+        } else {
+            //--va al menu base
+            render(controller: 'gen', view: 'home')
+        }// fine del blocco if-else
+    } // fine del metodo
+
+    //--chiamata da URL = croce rossa
+    //--selezione iniziale della croce su cui operare
+    //--seleziona la necessità del login
+    //--regola la schermata iniziale
+//    @Secured([Cost.ROLE_MILITE])
+    def selezionaCroceCRF() {
+        //--regolazioni generali
+        selezionaCroceBase(Cost.CROCE_ROSSA)
+
+        if (grailsApplication.mainContext.servletContext.startController) {
+            //--va alla schermata specifica
+            redirect(controller: grailsApplication.mainContext.servletContext.startController)
+        } else {
+            //--va al menu base
+            render(controller: 'gen', view: 'home')
+        }// fine del blocco if-else
+    } // fine del metodo
+
+}
