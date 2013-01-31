@@ -26,17 +26,32 @@
                     <g:message code="registrationCode.list.label"
                                default="Elenco registrationCode"/>
                 </g:link></li>
+
                 <li><g:link class="create" action="create">
                     <g:message code="registrationCode.new.label"
                                default="Nuovo registrationCode"/>
+                </g:link></li>
+
+                <li><g:link class="edit" action="edit" id="${registrationCodeInstance?.id}">
+                    <g:message code="registrationCode.edit.label"
+                               default="Modifica registrationCode"/>
                 </g:link></li>
 			</ul>
 		</div>
 		<div id="show-registrationCode" class="content scaffold-show" role="main">
             <h1><g:message code="registrationCode.show.label" default="Mostra registrationCode"/></h1>
-			<g:if test="${flash.message}">
-			<div class="message" role="status">${flash.message}</div>
-			</g:if>
+            <g:if test="${flash.message}">
+                <div class="message" role="status">${flash.message}</div>
+            </g:if>
+            <g:if test="${flash.errors}">
+                <div class="errors" role="status">${flash.errors}</div>
+            </g:if>
+            <g:if test="${flash.listaMessaggi}">
+                <ul><g:each in="${flash.listaMessaggi}" var="messaggio"><li><div class="message">${messaggio}</div></li></g:each></ul>
+            </g:if>
+            <g:if test="${flash.listaErrori}">
+                <ul><g:each in="${flash.listaErrori}" var="errore"><li class="errors"><div>${errore}</div></li></g:each></ul>
+            </g:if>
 			<ol class="property-list registrationCode">
 			
 				<li class="fieldcontain">

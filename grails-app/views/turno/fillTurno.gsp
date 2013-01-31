@@ -43,6 +43,7 @@
     <g:form method="post">
         <g:hiddenField name="id" value="${turnoInstance?.id}"/>
         <g:hiddenField name="version" value="${turnoInstance?.version}"/>
+        <g:hiddenField name="nuovoTurno" value="${nuovoTurno}"/>
         <fieldset class="form">
             <amb:fillForm turnoInstance="${turnoInstance?.id}"></amb:fillForm>
         </fieldset>

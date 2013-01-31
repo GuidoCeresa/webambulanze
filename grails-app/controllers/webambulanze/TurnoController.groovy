@@ -90,8 +90,9 @@ class TurnoController {
     @Secured([Cost.ROLE_MILITE])
     def newTurno = {
         String tipoTurnoTxt
+        boolean nuovoTurno = false
         String giornoNum
-        Turno newTurno
+        Turno nuovoOppureEsistente = null
         TipoTurno tipoTurno = null
         Croce croce = grailsApplication.mainContext.servletContext.croce
         Date giorno = Lib.creaData1Gennaio()
@@ -110,26 +111,30 @@ class TurnoController {
         }// fine del blocco if
 
         if (croce && giorno && tipoTurno) {
-            newTurno = Turno.findByCroceAndTipoTurnoAndGiorno(croce, tipoTurno, giorno)
-            if (newTurno) {
-                if (newTurno.tipoTurno.sigla.equals(Cost.EXTRA)) {
-                    logoService.setWarn(Evento.creatoNuovoTurno, newTurno)
-                    flash.message = message(code: 'turno.new.extra.message', args: [giornoTxt])
-                    Lib.creaTurno(croce, tipoTurno, giorno)
+            nuovoOppureEsistente = Turno.findByCroceAndTipoTurnoAndGiorno(croce, tipoTurno, giorno)
+            if (nuovoOppureEsistente) {
+                if (nuovoOppureEsistente.tipoTurno.sigla.equals(Cost.EXTRA)) {
+                    nuovoOppureEsistente = Lib.creaTurno(croce, tipoTurno, giorno)
+                    flash.message = logoService.setWarn(Evento.turnoCreandoExtra, nuovoOppureEsistente)
+                    nuovoTurno = true
                 } else {
-                    logoService.setWarn(Evento.creatoNuovoTurno, newTurno)
                     flash.message = message(code: 'turno.new.esiste.message', args: [tipoTurno.descrizione, giornoTxt])
                 }// fine del blocco if-else
             } else {
-                Lib.creaTurno(croce, tipoTurno, giorno)
-                flash.message = message(code: 'turno.new.message', args: [tipoTurno.descrizione, giornoTxt])
+                nuovoOppureEsistente = Lib.creaTurno(croce, tipoTurno, giorno)
+                if (nuovoOppureEsistente.tipoTurno.sigla.equals(Cost.EXTRA)) {
+                    flash.message = logoService.setInfo(Evento.turnoCreandoExtra, (Turno) nuovoOppureEsistente)
+                } else {
+                    flash.message = logoService.setInfo(Evento.turnoCreando, (Turno) nuovoOppureEsistente)
+                }// fine del blocco if-else
+                nuovoTurno = true
             }// fine del blocco if-else
         } else {
             flash.message = message(code: 'turno.new.fallito.message', args: [tipoTurno.descrizione, giornoTxt])
         }// fine del blocco if-else
 
-        redirect(action: 'tabCorrente')
-    }
+        newFillTurno(nuovoOppureEsistente, nuovoTurno)
+    } // fine della closure
 
     @Secured([Cost.ROLE_MILITE])
     def fillTurno = {
@@ -143,15 +148,55 @@ class TurnoController {
             turnoInstance = Turno.findById(turnoId)
         }// fine del blocco if
 
-        render(view: 'fillTurno', model: [turnoInstance: turnoInstance])
+        params.nuovoTurno = false
+        params.turno = turnoInstance
+        //      redirect(action: 'newFillTurno', params: params)
+        newFillTurno(turnoInstance, false)
+    } // fine della closure
+
+    @Secured([Cost.ROLE_MILITE])
+    def newFillTurno(Turno turnoInstance, boolean nuovoTurno) {
+//        boolean nuovoTurno = false
+//        Turno turnoInstance = null
+
+//        if (params.nuovoTurno) {
+//            nuovoTurno = params.nuovoTurno
+//        }// fine del blocco if
+//        if (params.turno) {
+//            turnoInstance = params.turno
+//        }// fine del blocco if
+
+        render(view: 'fillTurno', model: [turnoInstance: turnoInstance, nuovoTurno: nuovoTurno])
     }
 
     def uscitaSenzaModifiche = {
         Turno turnoInstance = null
+        boolean nuovoTurno = false
+        String value
+        String testo
+
+        if (params.nuovoTurno) {
+            value = params.nuovoTurno
+            if (value.equals('true')) {
+                nuovoTurno = true
+            }// fine del blocco if
+        }// fine del blocco if
+
         if (params.id) {
             turnoInstance = Turno.get(params.id)
         }// fine del blocco if
-        flash.message = message(code: 'turno.not.modified.message', args: descGiorno(turnoInstance))
+
+        if (nuovoTurno) {
+            if (turnoInstance) {
+                flash.message = logoService.setWarn(Evento.turnoAnnullatoNuovo, turnoInstance)
+                cancella(turnoInstance)
+            }// fine del blocco if
+        } else {
+            testo = logoService.setWarn(Evento.turnoNonModificato, turnoInstance)
+            testo += ' di ' + turnoInstance.tipoTurno.descrizione
+            testo += ' per il giorno ' + Lib.presentaDataCompleta(turnoInstance.giorno)
+            flash.message = testo
+        }// fine del blocco if-else
 
         redirect(action: 'tabCorrente')
     }
@@ -254,6 +299,16 @@ class TurnoController {
 
     @Secured([Cost.ROLE_MILITE])
     def update(Long id, Long version) {
+        boolean nuovoTurno = false
+        String value
+
+        if (params.nuovoTurno) {
+            value = params.nuovoTurno
+            if (value.equals('true')) {
+                nuovoTurno = true
+            }// fine del blocco if
+        }// fine del blocco if
+
         def turnoInstance = Turno.get(id)
         if (!turnoInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'turno.label', default: 'Turno'), id])
@@ -293,7 +348,7 @@ class TurnoController {
                 return
             }
         }
-        this.controllaAnomalie(turnoInstance)
+        this.controllaAnomalie(turnoInstance, nuovoTurno)
 
         redirect(action: 'tabCorrente')
     } // fine del metodo
@@ -434,16 +489,23 @@ class TurnoController {
         return isEsistonoErrori
     } // fine del metodo
 
-    private void controllaAnomalie(Turno turno) {
+    private void controllaAnomalie(Turno turno, boolean nuovoTurno) {
         def listaErrori = esistonoAnomalie(turno)
+        String testo
 
         if (listaErrori && listaErrori.size() > 0) {
             logoService.setWarn(Evento.turnoModificato, turno)
             flash.listaErrori = listaErrori
             flash.message = ''
         } else {
-            logoService.setInfo(Evento.turnoModificato, turno)
-            flash.message = message(code: 'turno.modified.message', args: descGiorno(turno))
+            if (nuovoTurno) {
+                testo = logoService.setWarn(Evento.turnoCreato, turno)
+            } else {
+                testo = logoService.setWarn(Evento.turnoModificato, turno)
+            }// fine del blocco if-else
+            testo += ' di ' + turno.tipoTurno.descrizione
+            testo += ' per il giorno ' + Lib.presentaDataCompleta(turno.giorno)
+            flash.message = testo
         }// fine del blocco if-else
     } // fine del metodo
 
@@ -599,26 +661,30 @@ class TurnoController {
             redirect(action: "list")
             return
         }
+        cancella(turnoInstance)
+        flash.message = message(code: 'turno.deleted.message', args: descGiorno(turnoInstance))
+        logoService.setWarn(Evento.turnoEliminato, tipoTurno, giorno)
+        redirect(action: 'tabCorrente')
+    } // fine del metodo
+
+    def cancella(Turno turno) {
+        def listaLog
+        Logo logo
 
         try {
-            listaLog = Logo.findAllByTurno(turnoInstance)
+            listaLog = Logo.findAllByTurno(turno)
             listaLog?.each {
                 logo = (Logo) it
                 logo.turno = null
                 logo.save(flush: true)
             } // fine del ciclo each
 
-            turnoInstance.delete(flush: true)
-            flash.message = message(code: 'turno.deleted.message', args: descGiorno(turnoInstance))
-            logoService.setWarn(Evento.turnoEliminato, tipoTurno, giorno)
-            redirect(action: 'tabCorrente')
+            turno.delete(flush: true)
         }
         catch (DataIntegrityViolationException e) {
-            flash.message = message(code: 'turno.not.deleted.message', args: [tipo, giornoTxt])
-            redirect(action: "show", id: id)
+            flash.message = message(code: 'turno.not.deleted.message')
         }
     } // fine del metodo
-
 
     private static descGiorno(Turno turno) {
         TipoTurno tipoTurno

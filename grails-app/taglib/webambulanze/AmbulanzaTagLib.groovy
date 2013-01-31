@@ -1228,8 +1228,8 @@ class AmbulanzaTagLib {
         String testoOut = ''
         int numOra = Lib.getNumOra(data)
         int numMinuti = Lib.getNumMinuti(data)
-        int numGiorno = Lib.getNumGiorno(data)
-        int quantiGiorniNelMese = Lib.getNumGiorniMese(data)
+        int numGiorno = Lib.getNumGiornoMese(data)
+        int quantiGiorniNelMese = Lib.getNumGiorniNelMese(data)
         int numMese = Lib.getNumMese(data)
 
         testoOut += formInput(data, iniziofine)

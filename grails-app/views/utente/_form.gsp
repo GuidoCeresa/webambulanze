@@ -12,10 +12,10 @@
 
 
 
-<div class="fieldcontain ${hasErrors(bean: utenteInstance, field: 'milite', 'error')} required">
+<div class="fieldcontain ${hasErrors(bean: utenteInstance, field: 'milite', 'error')} ">
 	<label for="milite">
 		<g:message code="utente.milite.labelform" default="Milite" />
-		<span class="required-indicator">*</span>
+		
 	</label>
 	
 
@@ -27,7 +27,7 @@
 
 
 
-<g:select id="milite" name="milite.id" from="${webambulanze.Milite.list()}" optionKey="id" required="" value="${utenteInstance?.milite?.id}" class="many-to-one"/>
+<g:select id="milite" name="milite.id" from="${webambulanze.Milite.list()}" optionKey="id" value="${utenteInstance?.milite?.id}" class="many-to-one" noSelection="['null': '']"/>
 </div>
 
 <div class="fieldcontain ${hasErrors(bean: utenteInstance, field: 'username', 'error')} required">

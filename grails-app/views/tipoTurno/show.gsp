@@ -26,17 +26,32 @@
                     <g:message code="tipoTurno.list.label"
                                default="Elenco tipoTurno"/>
                 </g:link></li>
+
                 <li><g:link class="create" action="create">
                     <g:message code="tipoTurno.new.label"
                                default="Nuovo tipoTurno"/>
+                </g:link></li>
+
+                <li><g:link class="edit" action="edit" id="${tipoTurnoInstance?.id}">
+                    <g:message code="tipoTurno.edit.label"
+                               default="Modifica tipoTurno"/>
                 </g:link></li>
 			</ul>
 		</div>
 		<div id="show-tipoTurno" class="content scaffold-show" role="main">
             <h1><g:message code="tipoTurno.show.label" default="Mostra tipoTurno"/></h1>
-			<g:if test="${flash.message}">
-			<div class="message" role="status">${flash.message}</div>
-			</g:if>
+            <g:if test="${flash.message}">
+                <div class="message" role="status">${flash.message}</div>
+            </g:if>
+            <g:if test="${flash.errors}">
+                <div class="errors" role="status">${flash.errors}</div>
+            </g:if>
+            <g:if test="${flash.listaMessaggi}">
+                <ul><g:each in="${flash.listaMessaggi}" var="messaggio"><li><div class="message">${messaggio}</div></li></g:each></ul>
+            </g:if>
+            <g:if test="${flash.listaErrori}">
+                <ul><g:each in="${flash.listaErrori}" var="errore"><li class="errors"><div>${errore}</div></li></g:each></ul>
+            </g:if>
 			<ol class="property-list tipoTurno">
 			
 				<li class="fieldcontain">

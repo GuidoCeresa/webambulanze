@@ -40,9 +40,18 @@
 		</div>
 		<div id="show-milite" class="content scaffold-show" role="main">
             <h1><g:message code="milite.show.label" default="Mostra milite"/></h1>
-			<g:if test="${flash.message}">
-			<div class="message" role="status">${flash.message}</div>
-			</g:if>
+            <g:if test="${flash.message}">
+                <div class="message" role="status">${flash.message}</div>
+            </g:if>
+            <g:if test="${flash.errors}">
+                <div class="errors" role="status">${flash.errors}</div>
+            </g:if>
+            <g:if test="${flash.listaMessaggi}">
+                <ul><g:each in="${flash.listaMessaggi}" var="messaggio"><li><div class="message">${messaggio}</div></li></g:each></ul>
+            </g:if>
+            <g:if test="${flash.listaErrori}">
+                <ul><g:each in="${flash.listaErrori}" var="errore"><li class="errors"><div>${errore}</div></li></g:each></ul>
+            </g:if>
 			<ol class="property-list milite">
 			
 				<li class="fieldcontain">

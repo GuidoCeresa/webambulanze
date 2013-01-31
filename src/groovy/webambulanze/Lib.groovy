@@ -585,11 +585,11 @@ class Lib {
         return testoOut
     } // fine del metodo statico
 
-    public static creaTurno(Croce croce, TipoTurno tipoTurno, Date giorno) {
+    public static Turno creaTurno(Croce croce, TipoTurno tipoTurno, Date giorno) {
+        Turno turno = null
         Date primoGennaio2013 = Lib.creaData1Gennaio()
         Date inizio
         Date fine
-        Turno turno
         int offSet = Lib.getNumGiorno(giorno) - 1
         inizio = primoGennaio2013 + offSet
         fine = primoGennaio2013 + offSet
@@ -617,6 +617,7 @@ class Lib {
         turno.localitàExtra = ''
         turno.save(failOnError: true)
 
+        return turno
     }// fine del metodo
 
     /**
@@ -860,7 +861,17 @@ class Lib {
         return giorno
     }// fine del metodo
 
-    public static int getNumGiorniMese(Date giornoIn) {
+    public static int getNumGiornoMese(Date giornoIn) {
+        int giorno
+        Calendar cal = Calendar.getInstance()
+
+        cal.setTime(giornoIn)
+        giorno = cal.get(Calendar.DAY_OF_MONTH)
+
+        return giorno
+    }// fine del metodo
+
+    public static int getNumGiorniNelMese(Date giornoIn) {
         int giorni
         int mese
         Calendar cal = Calendar.getInstance()

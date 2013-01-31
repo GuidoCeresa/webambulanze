@@ -8,8 +8,8 @@ package webambulanze
  */
 public enum Evento {
 
-    generico('evento generico', 'evento generico'),
-    tabellone('modifiche al tabellone', 'modifiche al tabellone'),
+    generico('evento generico', ''),
+    tabellone('modifiche al tabellone', ''),
 
     militeCreato('Creato un nuovo', ''),
     militeModificato('Modificato il', ''),
@@ -24,15 +24,16 @@ public enum Evento {
     militeModificataScadenzaNonTrauma('Modificata la scadenza del brevetto NonTrauma del', ''),
     militeModificateFunzioni('Modificate le funzioni del milite', ''),
 
-    creatoNuovoTurno('nuovo turno', 'nuovo turno'),
-    nuovoTurnoAnnullato('il nuovo turno non è stato creato', 'il nuovo turno non è stato creato'),
-    turnoModificato('modifica turno', 'modifica turno'),
-    turnoNonModificato('il turno non è stato modificato', 'il turno non è stato modificato'),
-    turnoEliminato('il turno è stato eliminato', 'il turno è stato eliminato')
+    turnoCreando('Creazione di un nuovo turno', ''),
+    turnoCreandoExtra('Creazione di un nuovo turno extra oltre a quelli già esistenti', ''),
+    turnoCreato('È stato creato un nuovo turno', ''),
+    turnoAnnullatoNuovo('Il nuovo turno non è stato creato', ''),
+    turnoModificato('È stato modificato il turno', ''),
+    turnoNonModificato('Non è stato modificato il turno', ''),
+    turnoEliminato('È stato eliminato il turno', '')
 
     String avviso
     String posta
-
 
     Evento(String avviso, String posta) {
         this.avviso = avviso
