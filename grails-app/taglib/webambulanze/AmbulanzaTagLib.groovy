@@ -700,15 +700,44 @@ class AmbulanzaTagLib {
                 testoOut += Lib.tagController(it)
             } // fine del ciclo each
         } else {
-            testoOut += Lib.tagController('Ruolo', 'Ruoli (accesso limitato ad una sola persona)')
-            testoOut += Lib.tagController('Utente', 'Password militi (accesso limitato ad una sola persona)')
-            testoOut += Lib.tagController('Croce', 'Croci (accesso in sola visione limitato agli admin)')
-            testoOut += Lib.tagController('Settings', 'Preferenze (accesso in sola visione limitato agli admin)')
-            testoOut += Lib.tagController('Logo', 'Logs (accesso in sola visione limitato agli admin)')
-            testoOut += Lib.tagController('Funzione', 'Funzioni (accesso in sola visione)')
-            testoOut += Lib.tagController('TipoTurno', 'Tipologia turni (accesso in sola visione)')
-            testoOut += Lib.tagController('Milite', 'Militi')
-            testoOut += Lib.tagController('Gen', 'Tabellone turni')
+            if (militeService.isLoggatoProgrammatore()) {
+                testoOut += Lib.tagController('Ruolo', 'Ruoli')
+                testoOut += Lib.tagController('Utente', 'Password militi')
+                testoOut += Lib.tagController('Croce', 'Croci')
+                testoOut += Lib.tagController('Settings', 'Preferenze')
+                testoOut += Lib.tagController('Logo', 'Logs')
+                testoOut += Lib.tagController('Funzione', 'Funzioni')
+                testoOut += Lib.tagController('TipoTurno', 'Tipologia turni')
+                testoOut += Lib.tagController('Milite', 'Militi')
+                testoOut += Lib.tagController('Gen', 'Tabellone turni')
+            } else {
+                if (militeService.isLoggatoCustode()) {
+                    testoOut += Lib.tagController('Ruolo', 'Ruoli (accesso limitato ad una sola persona)')
+                    testoOut += Lib.tagController('Utente', 'Password militi (accesso limitato ad una sola persona)')
+                    testoOut += Lib.tagController('Croce', 'Croci (accesso in sola visione limitato agli admin)')
+                    testoOut += Lib.tagController('Settings', 'Preferenze (accesso in sola visione limitato agli admin)')
+                    testoOut += Lib.tagController('Logo', 'Logs (accesso in sola visione limitato agli admin)')
+                    testoOut += Lib.tagController('Funzione', 'Funzioni (accesso in sola visione)')
+                    testoOut += Lib.tagController('TipoTurno', 'Tipologia turni (accesso in sola visione)')
+                    testoOut += Lib.tagController('Milite', 'Militi')
+                    testoOut += Lib.tagController('Gen', 'Tabellone turni')
+                } else {
+                    if (militeService.isLoggatoAdmin()) {
+                        testoOut += Lib.tagController('Croce', 'Croci (accesso in sola visione limitato agli admin)')
+                        testoOut += Lib.tagController('Settings', 'Preferenze (accesso in sola visione limitato agli admin)')
+                        testoOut += Lib.tagController('Logo', 'Logs (accesso in sola visione limitato agli admin)')
+                        testoOut += Lib.tagController('Funzione', 'Funzioni (accesso in sola visione)')
+                        testoOut += Lib.tagController('TipoTurno', 'Tipologia turni (accesso in sola visione)')
+                        testoOut += Lib.tagController('Milite', 'Militi')
+                        testoOut += Lib.tagController('Gen', 'Tabellone turni')
+                    } else {
+                        testoOut += Lib.tagController('Funzione', 'Funzioni (accesso in sola visione)')
+                        testoOut += Lib.tagController('TipoTurno', 'Tipologia turni (accesso in sola visione)')
+                        testoOut += Lib.tagController('Milite', 'Militi')
+                        testoOut += Lib.tagController('Gen', 'Tabellone turni')
+                    }// fine del blocco if
+                }// fine del blocco if
+            }// fine del blocco if
         }// fine del blocco if-else
 
         out << testoOut

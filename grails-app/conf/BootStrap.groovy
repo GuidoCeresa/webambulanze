@@ -257,14 +257,14 @@ class BootStrap implements Cost {
         Ruolo ospiteRole = Ruolo.findOrCreateByAuthority(ROLE_OSPITE).save(failOnError: true)
 
         // programmatore generale
-        utente = newUtente(CROCE_DEMO, ROLE_PROG, 'gac', 'fulvia')
-        if (custodeRole && adminRole && militeRole && ospiteRole && utente) {
-            UtenteRuolo.findOrCreateByRuoloAndUtente(custodeRole, utente).save(failOnError: true)
-            UtenteRuolo.findOrCreateByRuoloAndUtente(adminRole, utente).save(failOnError: true)
-        }// fine del blocco if
+//        utente = newUtente(CROCE_DEMO, ROLE_PROG, 'gac', 'fulvia')
+//        if (custodeRole && adminRole && militeRole && ospiteRole && utente) {
+//            UtenteRuolo.findOrCreateByRuoloAndUtente(custodeRole, utente).save(failOnError: true)
+//            UtenteRuolo.findOrCreateByRuoloAndUtente(adminRole, utente).save(failOnError: true)
+//        }// fine del blocco if
 
         // milite (anonimo)
-        newUtente(CROCE_DEMO, ROLE_MILITE, Cost.DEMO_OSPITE, Cost.DEMO_PASSWORD)
+        newUtente(CROCE_DEMO, ROLE_MILITE, DEMO_OSPITE, DEMO_PASSWORD)
     }// fine del metodo
 
     //--creazione accessi per la croce
@@ -555,7 +555,7 @@ class BootStrap implements Cost {
 
         //--aggiunta solo per la croce Demo
         newTipoTurno(CROCE_DEMO, 'mat', 'mattino', 1, 8, 14, false, true, true, false, 1, funzDemo)
-        newTipoTurno(CROCE_DEMO, 'pom', 'pomeriggio', 2, 12, 20, false, true, true, false, 1, funzDemo)
+        newTipoTurno(CROCE_DEMO, 'pom', 'pomeriggio', 2, 14, 20, false, true, true, false, 1, funzDemo)
         newTipoTurno(CROCE_DEMO, 'notte', 'notte', 3, 20, 8, true, true, true, false, 1, funzDemo)
 
         //--aggiunta solo per la croce Pubblica
@@ -1081,7 +1081,6 @@ class BootStrap implements Cost {
     private static creaTurnoVuotoRossa(Croce croce, tipoTurno, delta) {
         Date primoGennaio2013 = Lib.creaData1Gennaio()
         Date giorno
-        Turno turno
         int settimana
         String sigla = tipoTurno.sigla
 
@@ -1097,18 +1096,30 @@ class BootStrap implements Cost {
             if (settimana == 7 || settimana == 1) {
                 Lib.creaTurno(croce, tipoTurno, giorno)
             }// fine del blocco if
-        } else {
-//            creaTurnoEffettivo(croce, tipoTurno, giorno)
-        }// fine del blocco if-else
+        }// fine del blocco if
 
     }// fine del metodo
 
     private static creaTurnoVuotoDemo(Croce croce, tipoTurno, delta) {
         Date primoGennaio2013 = Lib.creaData1Gennaio()
         Date giorno
+        int settimana
+        String sigla = tipoTurno.sigla
 
         giorno = primoGennaio2013 + delta
-        Lib.creaTurno(croce, tipoTurno, giorno)
+        settimana = Lib.getNumSettimana(giorno)
+
+        //-- tutti i giorni
+        if (sigla.equals('mat') || sigla.equals('pom')) {
+            Lib.creaTurno(croce, tipoTurno, giorno)
+        }// fine del blocco if
+
+        //-- venerdi(6) notte e sabato(7) notte
+        if (sigla.equals('notte')) {
+            if (settimana == 6 || settimana == 7) {
+                Lib.creaTurno(croce, tipoTurno, giorno)
+            }// fine del blocco if
+        }// fine del blocco if
     }// fine del metodo
 
     private static void turniSporchiRossaSoloDebug() {

@@ -59,8 +59,8 @@ class LoginController {
                 username = utente.username
                 listaUtenti.add(username)
             } // fine del ciclo each
-            listaUtenti.add('---')
-            listaUtenti.add('Ospite')
+//            listaUtenti.add('---')
+//            listaUtenti.add('Ospite')
         }// fine del blocco if
 
 //        listaUtenti = Utente.executeQuery('select username from Utente order by username')

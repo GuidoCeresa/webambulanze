@@ -112,43 +112,21 @@
 
     <div id="controller-list" role="navigation">
         <h2>Moduli disponibili:</h2>
-        <g:if test="${application.allControllers}">
-            <ul>
-                <g:each var="c" in="${grailsApplication.controllerClasses.findAll { it.fullName != 'Dbdoc' }}">
-                    <li class="controller"><g:link
-                            controller="${c.logicalPropertyName}">${c.getName()}</g:link></li>
-                </g:each>
-            </ul>
-        </g:if>
-        <g:else>
-            <ul>
-                <amb:listaControllers></amb:listaControllers>
-            </ul>
+        <amb:listaControllers></amb:listaControllers>
 
-        %{--<g:if test="${controlliLista}">--}%
-        %{--<li class="controller"><g:link controller="TipoTurno">Paperino</g:link></li>--}%
+        %{--<g:if test="${application.allControllers}">--}%
+            %{--<ul>--}%
+                %{--<g:each var="c" in="${grailsApplication.controllerClasses.findAll { it.fullName != 'Dbdoc' }}">--}%
+                    %{--<li class="controller"><g:link--}%
+                            %{--controller="${c.logicalPropertyName}">${c.getName()}</g:link></li>--}%
+                %{--</g:each>--}%
+            %{--</ul>--}%
         %{--</g:if>--}%
         %{--<g:else>--}%
-        %{--<li class="controller"><g:link controller="Funzione">Funzione</g:link></li>--}%
-        %{--<li class="controller"><g:link controller="Milite">Milite</g:link></li>--}%
-        %{--<li class="controller"><g:link controller="TipoTurno">TipoTurno</g:link></li>--}%
-        %{--<li class="controller"><g:link controller="Turno">Turni</g:link></li>--}%
+            %{--<ul>--}%
+                %{--<amb:listaControllers></amb:listaControllers>--}%
+            %{--</ul>--}%
         %{--</g:else>--}%
-
-        %{--<li class="controller"><g:link controller="Croce">Croce</g:link></li>--}%
-        %{--<li class="controller"><g:link controller="Settings">Preferenze</g:link></li>--}%
-        %{--<li class="controller"><g:link controller="Funzione">Funzione</g:link></li>--}%
-        %{--<li class="controller"><g:link controller="Milite">Milite</g:link></li>--}%
-        %{--<li class="controller"><g:link controller="Ruolo">Ruolo</g:link></li>--}%
-        %{--<li class="controller"><g:link controller="TipoTurno">TipoTurno</g:link></li>--}%
-        %{--<li class="controller"><g:link controller="Militefunzione">Tabella incrocio</g:link></li>--}%
-        %{--<li class="controller"><g:link controller="Turno">Turni</g:link></li>--}%
-        %{--<br>--}%
-        %{--<li class="controller"><g:link controller="User">User</g:link></li>--}%
-        %{--<li class="controller"><g:link controller="Role">Role</g:link></li>--}%
-        %{--<li class="controller"><g:link controller="Login">Login</g:link></li>--}%
-        %{--<li class="controller"><g:link controller="Logout">Logout</g:link></li>--}%
-        </g:else>
     </div>
 </div>
 

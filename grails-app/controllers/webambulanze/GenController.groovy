@@ -1,12 +1,18 @@
 package webambulanze
 
 import grails.plugins.springsecurity.Secured
+import org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils
+import org.springframework.security.core.context.SecurityContextHolder
 
 class GenController {
 
     // utilizzo di un service con la businessLogic per l'elaborazione dei dati
     // il service viene iniettato automaticamente
     def springSecurityService
+
+    // utilizzo di un service con la businessLogic per l'elaborazione dei dati
+    // il service viene iniettato automaticamente
+    def rememberMeServices
 
     //--sigla della croce corrente
     public static String SIGLA_CROCE = 'pippoz'
@@ -26,6 +32,10 @@ class GenController {
 
         if (croce && croce.equals(Cost.CROCE_ALGOS)) {
             redirect(action: 'selezionaCroce')
+        }// fine del blocco if
+
+        if (croce && croce.equals(Cost.CROCE_DEMO)) {
+            redirect(action: 'selezionaCroceDemo')
         }// fine del blocco if
 
         if (croce && croce.equals(Cost.CROCE_PUBBLICA)) {
@@ -57,6 +67,11 @@ class GenController {
     def selezionaCroceBase(String croce) {
         SIGLA_CROCE = croce
 
+        //--pulizia
+        session.invalidate()
+        SecurityContextHolder.clearContext()
+        rememberMeServices.logout request, response, null
+
         //--selezione iniziale della croce su cui operare
         grailsApplication.mainContext.servletContext.croce = Croce.findBySigla(croce)
 
@@ -79,27 +94,25 @@ class GenController {
     //--regola la schermata iniziale
     def selezionaCroce() {
         //--regolazioni generali
-        selezionaCroceBase(Cost.CROCE_DEMO)
+        selezionaCroceDemo()
+    } // fine del metodo
 
-        springSecurityService.reauthenticate(Cost.DEMO_OSPITE, Cost.DEMO_PASSWORD)
+    //--chiamata da URL = algos
+    //--selezione iniziale della croce interna su cui operare
+    //--regola la schermata iniziale
+    def selezionaCroceAlgos() {
+        //--regolazioni generali
+        selezionaCroceBase(Cost.CROCE_ALGOS)
 
-        if (grailsApplication.mainContext.servletContext.startController) {
-            //--va alla schermata specifica
-            redirect(controller: grailsApplication.mainContext.servletContext.startController)
-        } else {
-            //--va al menu base
-            render(controller: 'gen', view: 'home')
-        }// fine del blocco if-else
+        selezionaCroceAlgosSicura()
     } // fine del metodo
 
     //--chiamata da URL = algos
     //--selezione iniziale della croce interna su cui operare
     //--seleziona la necessità del login
     //--regola la schermata iniziale
-    def selezionaCroceAlgos() {
-        //--regolazioni generali
-        selezionaCroceBase(Cost.CROCE_ALGOS)
-
+    @Secured([Cost.ROLE_ADMIN])
+    def selezionaCroceAlgosSicura() {
         if (grailsApplication.mainContext.servletContext.startController) {
             //--va alla schermata specifica
             redirect(controller: grailsApplication.mainContext.servletContext.startController)
@@ -116,6 +129,9 @@ class GenController {
     def selezionaCroceDemo() {
         //--regolazioni generali
         selezionaCroceBase(Cost.CROCE_DEMO)
+
+      //  springSecurityService.reauthenticate(Cost.DEMO_OSPITE, Cost.DEMO_PASSWORD)
+        SpringSecurityUtils.reauthenticate Cost.DEMO_OSPITE, Cost.DEMO_PASSWORD
 
         if (grailsApplication.mainContext.servletContext.startController) {
             //--va alla schermata specifica

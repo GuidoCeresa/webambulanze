@@ -14,7 +14,8 @@
     <div class="errors" role="status">${flash.errors}</div>
 </g:if>
 <g:if test="${flash.listaMessaggi}">
-    <ul><g:each in="${flash.listaMessaggi}" var="messaggio"><li><div class="message">${messaggio}</div></li></g:each></ul>
+    <ul><g:each in="${flash.listaMessaggi}" var="messaggio"><li><div class="message">${messaggio}</div></li></g:each>
+    </ul>
 </g:if>
 <g:if test="${flash.listaErrori}">
     <ul><g:each in="${flash.listaErrori}" var="errore"><li class="errors"><div>${errore}</div></li></g:each></ul>
@@ -22,7 +23,7 @@
 
 <div class="nav" role="navigation">
     <ul>
-        <sec:ifAnyGranted roles="ROLE_programmatore,ROLE_custode,ROLE_admin">
+        <sec:ifAnyGranted roles="ROLE_programmatore,ROLE_custode,ROLE_admin,ROLE_milite">
             <li>
                 <g:link class="home" controller="Gen" action="home">
                     <g:message code="ambulanze.home.label"/>
