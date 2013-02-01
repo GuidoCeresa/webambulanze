@@ -18,8 +18,10 @@ class UrlMappings {
             }
         }
         "/"(controller: 'Gen', action: 'selezionaCroce')
-        "/algos"(controller: 'Gen', action: 'selezionaCroce')
-        "/ALGOS"(controller: 'Gen', action: 'selezionaCroce')
+        "/algos"(controller: 'Gen', action: 'selezionaCroceAlgos')
+        "/ALGOS"(controller: 'Gen', action: 'selezionaCroceAlgos')
+        "/demo"(controller: 'Gen', action: 'selezionaCroceDemo')
+        "/DEMO"(controller: 'Gen', action: 'selezionaCroceDemo')
         "/pavt"(controller: 'Gen', action: 'selezionaCrocePAVT')
         "/PAVT"(controller: 'Gen', action: 'selezionaCrocePAVT')
         "/crf"(controller: 'Gen', action: 'selezionaCroceCRF')

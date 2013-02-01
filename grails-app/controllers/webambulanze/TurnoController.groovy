@@ -213,7 +213,7 @@ class TurnoController {
     }
 
     def index() {
-        redirect(action: "tabellone", params: params)
+        redirect(action: 'tabellone', params: params)
     } // fine del metodo
 
     def list(Integer max) {

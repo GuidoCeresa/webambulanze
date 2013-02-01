@@ -19,6 +19,7 @@ class BootStrap implements Cost {
     private static int numUtentiRossa = 0
 
     //--variabili temporaneee per passare i riferimenti da una tavola all'altra
+    private static ArrayList<Funzione> funzDemo = []
     private static ArrayList<Funzione> funzOrdinarioPAVT = []
     private static ArrayList<Funzione> funz118PAVT = []
     private static ArrayList<Funzione> funzAutomedicaCRF = []
@@ -31,14 +32,18 @@ class BootStrap implements Cost {
     def init = { servletContext ->
         iniezioneVariabili(servletContext)
         creazioneCroceInterna()
+        creazioneCroceDemo()
         creazioneCroci()
         securitySetup()
+        securitySetupDemo()
         securitySetupRossa()
 
         configurazioneCroceInterna()
+        configurazioneCroceDemo()
         configurazioneCroci()
         linkInternoAziende()
         funzioniCroci()
+        militiDemo()
         militiPubblica()
         militiRossa()
         //    militiNascita()
@@ -46,6 +51,7 @@ class BootStrap implements Cost {
         utentiRossa() //password
 //        militiFunzioni()
         tipiDiTurno()
+        turni2013Demo()
         turni2013Rossa()
         //      turniSporchiRossaSoloDebug()
     }// fine della closure
@@ -99,6 +105,34 @@ class BootStrap implements Cost {
         }// fine del blocco if
         if (!croce.note) {
             croce.note = 'Croce virtuale per mostrare le croci tutte insieme'
+        }// fine del blocco if
+        croce.save(failOnError: true)
+    }// fine del metodo
+
+    //--creazione inziale di una croce dimostrativa
+    //--crea solo il record vuoto per farla apparire in lista e nei filtri
+    private static void creazioneCroceDemo() {
+        Croce croce
+
+        //--Interna
+        croce = Croce.findOrCreateBySigla(CROCE_DEMO)
+        if (!croce.descrizione) {
+            croce.descrizione = 'Croce dimostrativa'
+        }// fine del blocco if
+        if (!croce.riferimento) {
+            croce.riferimento = ''
+        }// fine del blocco if
+        if (!croce.indirizzo) {
+            croce.indirizzo = ''
+        }// fine del blocco if
+        if (!croce.telefono) {
+            croce.telefono = ''
+        }// fine del blocco if
+        if (!croce.email) {
+            croce.email = ''
+        }// fine del blocco if
+        if (!croce.note) {
+            croce.note = 'Croce dimostrativa per mostrare le varie funzionalità possibili'
         }// fine del blocco if
         croce.save(failOnError: true)
     }// fine del metodo
@@ -213,6 +247,30 @@ class BootStrap implements Cost {
     //--occorre SEMPRE un accesso come admin
     //--occorre SEMPRE un accesso come utente
     //--li crea SOLO se non esistono già
+    private static void securitySetupDemo() {
+        Utente utente
+        String nick
+        String pass
+        Ruolo custodeRole = Ruolo.findOrCreateByAuthority(ROLE_CUSTODE).save(failOnError: true)
+        Ruolo adminRole = Ruolo.findOrCreateByAuthority(ROLE_ADMIN).save(failOnError: true)
+        Ruolo militeRole = Ruolo.findOrCreateByAuthority(ROLE_MILITE).save(failOnError: true)
+        Ruolo ospiteRole = Ruolo.findOrCreateByAuthority(ROLE_OSPITE).save(failOnError: true)
+
+        // programmatore generale
+        utente = newUtente(CROCE_DEMO, ROLE_PROG, 'gac', 'fulvia')
+        if (custodeRole && adminRole && militeRole && ospiteRole && utente) {
+            UtenteRuolo.findOrCreateByRuoloAndUtente(custodeRole, utente).save(failOnError: true)
+            UtenteRuolo.findOrCreateByRuoloAndUtente(adminRole, utente).save(failOnError: true)
+        }// fine del blocco if
+
+        // milite (anonimo)
+        newUtente(CROCE_DEMO, ROLE_MILITE, Cost.DEMO_OSPITE, Cost.DEMO_PASSWORD)
+    }// fine del metodo
+
+    //--creazione accessi per la croce
+    //--occorre SEMPRE un accesso come admin
+    //--occorre SEMPRE un accesso come utente
+    //--li crea SOLO se non esistono già
     private static void securitySetupRossa() {
         Utente utente
         String nick
@@ -259,6 +317,38 @@ class BootStrap implements Cost {
                 setting.startLogin = false
                 setting.startController = ''
                 setting.allControllers = true
+                setting.controlli = ''
+                setting.mostraSoloMilitiFunzione = true
+                setting.mostraMilitiFunzioneAndAltri = true
+                setting.militePuoInserireAltri = true
+                setting.militePuoModificareAltri = true
+                setting.militePuoCancellareAltri = true
+                setting.tipoControlloModifica = ControlloTemporale.nessuno
+                setting.maxMinutiTrascorsiModifica = 0
+                setting.minGiorniMancantiModifica = 0
+                setting.tipoControlloCancellazione = ControlloTemporale.nessuno
+                setting.maxMinutiTrascorsiCancellazione = 0
+                setting.minGiorniMancantiCancellazione = 0
+                setting.save(failOnError: true)
+            }// fine del blocco if
+        }// fine del blocco if
+    }// fine del metodo
+
+    //--creazione record di configurazione (settings)
+    //--lo crea SOLO se non esiste già
+    private static void configurazioneCroceDemo() {
+        Croce croce
+        Settings setting
+
+        //--Interna
+        croce = Croce.findBySigla(CROCE_DEMO)
+        if (croce) {
+            setting = Settings.findByCroce(croce)
+            if (setting == null) {
+                setting = new Settings(croce: croce)
+                setting.startLogin = false
+                setting.startController = 'turno'
+                setting.allControllers = false
                 setting.controlli = ''
                 setting.mostraSoloMilitiFunzione = true
                 setting.mostraMilitiFunzioneAndAltri = true
@@ -361,6 +451,11 @@ class BootStrap implements Cost {
     //--li crea SOLO se non esistono già
     private static void funzioniCroci() {
 
+        //--aggiunta solo per la croce Demo
+        funzDemo.add(newFunzione(CROCE_DEMO, 'aut', 'Aut', 'Autista', 1, ''))
+        funzDemo.add(newFunzione(CROCE_DEMO, 'sec', 'Sec', 'Soccorritore', 2, ''))
+        funzDemo.add(newFunzione(CROCE_DEMO, 'ter', 'Ter', 'Aiuto', 3, ''))
+
         //--aggiunta solo per la croce Pubblica
         //--turni ordinari
         newFunzTidoneOrd('autistaord', 'Aut Ord', 'Autista', 1, 'secondoord, terzoord')
@@ -457,6 +552,11 @@ class BootStrap implements Cost {
     //--ogni croce può avere tipologie differenti
     //--li crea SOLO se non esistono già
     private static void tipiDiTurno() {
+
+        //--aggiunta solo per la croce Demo
+        newTipoTurno(CROCE_DEMO, 'mat', 'mattino', 1, 8, 14, false, true, true, false, 1, funzDemo)
+        newTipoTurno(CROCE_DEMO, 'pom', 'pomeriggio', 2, 12, 20, false, true, true, false, 1, funzDemo)
+        newTipoTurno(CROCE_DEMO, 'notte', 'notte', 3, 20, 8, true, true, true, false, 1, funzDemo)
 
         //--aggiunta solo per la croce Pubblica
         //--ordinari escluso domenica
@@ -594,6 +694,55 @@ class BootStrap implements Cost {
 
             tipo.save(failOnError: true)
         }// fine del blocco if
+    }// fine del metodo
+
+    //--creazione dell'elenco militi per la croce demo
+    //--elenco disponibile in csv
+    //--li crea SOLO se non esistono già
+    private static void militiDemo() {
+        Croce croce = Croce.findBySigla(CROCE_DEMO)
+        String nomeFile = 'demo'
+        def righe
+        String nome
+        String cognome
+        Map mappa
+        righe = LibFile.leggeCsv(DIR_PATH + nomeFile)
+        def listaMiliti
+        Milite milite
+
+        righe?.each {
+            mappa = (Map) it
+            nome = mappa.nome
+            cognome = mappa.cognome
+            milite = Milite.findOrCreateByCroceAndNomeAndCognome(croce, nome, cognome).save(failOnError: true)
+        } // fine del ciclo each
+
+        //--funzioni
+        listaMiliti = Milite.findAllByCroce(croce)
+        if (listaMiliti) {
+            int numAutisti = 2
+            if (listaMiliti.size() >= numAutisti) {
+                for (int k = 0; k < numAutisti; k++) {
+                    Militefunzione.findOrCreateByCroceAndMiliteAndFunzione(croce, listaMiliti[k], funzDemo[0]).save(flush: true)
+                    Militefunzione.findOrCreateByCroceAndMiliteAndFunzione(croce, listaMiliti[k], funzDemo[1]).save(flush: true)
+                    Militefunzione.findOrCreateByCroceAndMiliteAndFunzione(croce, listaMiliti[k], funzDemo[2]).save(flush: true)
+                } // fine del ciclo for
+            }// fine del blocco if
+            int numSecondi = 4
+            if (listaMiliti.size() >= numSecondi) {
+                for (int k = numAutisti; k < numSecondi; k++) {
+                    Militefunzione.findOrCreateByCroceAndMiliteAndFunzione(croce, listaMiliti[k], funzDemo[1]).save(flush: true)
+                    Militefunzione.findOrCreateByCroceAndMiliteAndFunzione(croce, listaMiliti[k], funzDemo[2]).save(flush: true)
+                } // fine del ciclo for
+            }// fine del blocco if
+            int numTerzi = 6
+            if (listaMiliti.size() >= numTerzi) {
+                for (int k = numSecondi; k < numTerzi; k++) {
+                    Militefunzione.findOrCreateByCroceAndMiliteAndFunzione(croce, listaMiliti[k], funzDemo[2]).save(flush: true)
+                } // fine del ciclo for
+            }// fine del blocco if
+        }// fine del blocco if
+
     }// fine del metodo
 
     //--creazione dell'elenco militi per la Pubblica Assistenza Val Tidone
@@ -883,6 +1032,30 @@ class BootStrap implements Cost {
 
     //--creazione dei turni vuoti per il 2013
     //--li crea SOLO se non esistono già
+    private static void turni2013Demo() {
+        Croce croce
+        Date primoGennaio2013 = Lib.creaData1Gennaio()
+        def listaTipoTurno
+        def listaTurni
+
+        croce = Croce.findBySigla(CROCE_DEMO)
+        if (croce) {
+            listaTurni = Turno.findAllByCroceAndGiornoGreaterThan(croce, primoGennaio2013)
+            listaTipoTurno = TipoTurno.findAllByCroce(croce, [sort: "ordine", order: "asc"])
+            if (listaTurni.size() < 100) {
+                if (listaTipoTurno) {
+                    for (int k = 0; k < 365; k++) {
+                        listaTipoTurno.each {
+                            creaTurnoVuotoDemo(croce, it, k)
+                        } // fine del ciclo each
+                    } // fine del ciclo for
+                }// fine del blocco if
+            }// fine del blocco if
+        }// fine del blocco if
+    }// fine del metodo
+
+    //--creazione dei turni vuoti per il 2013
+    //--li crea SOLO se non esistono già
     private static void turni2013Rossa() {
         Croce croce
         Date primoGennaio2013 = Lib.creaData1Gennaio()
@@ -897,16 +1070,15 @@ class BootStrap implements Cost {
                 if (listaTipoTurno) {
                     for (int k = 0; k < 365; k++) {
                         listaTipoTurno.each {
-                            creaTurnoVuoto(croce, it, k)
+                            creaTurnoVuotoRossa(croce, it, k)
                         } // fine del ciclo each
                     } // fine del ciclo for
                 }// fine del blocco if
             }// fine del blocco if
         }// fine del blocco if
-
     }// fine del metodo
 
-    private static creaTurnoVuoto(Croce croce, tipoTurno, delta) {
+    private static creaTurnoVuotoRossa(Croce croce, tipoTurno, delta) {
         Date primoGennaio2013 = Lib.creaData1Gennaio()
         Date giorno
         Turno turno
@@ -929,6 +1101,14 @@ class BootStrap implements Cost {
 //            creaTurnoEffettivo(croce, tipoTurno, giorno)
         }// fine del blocco if-else
 
+    }// fine del metodo
+
+    private static creaTurnoVuotoDemo(Croce croce, tipoTurno, delta) {
+        Date primoGennaio2013 = Lib.creaData1Gennaio()
+        Date giorno
+
+        giorno = primoGennaio2013 + delta
+        Lib.creaTurno(croce, tipoTurno, giorno)
     }// fine del metodo
 
     private static void turniSporchiRossaSoloDebug() {

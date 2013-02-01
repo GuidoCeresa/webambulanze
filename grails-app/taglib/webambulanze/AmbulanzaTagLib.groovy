@@ -1406,25 +1406,28 @@ class AmbulanzaTagLib {
             listaMiliti.add(0, '')
         }// fine del blocco if
 
-        for (int k = 0; k < listaMiliti.size(); k++) {
-            obj = listaMiliti.get(k)
-            if (obj instanceof Milite) {
-                milite = (Milite) obj
-                militeId = milite.id
-                nomeMiliteRigaCorrente = milite.toString()
-            } else {
-                if (obj instanceof String) {
-                    militeId = ''
-                    nomeMiliteRigaCorrente = obj
-                }// fine del blocco if
-            }// fine del blocco if-else
+        if (listaMiliti) {
+            for (int k = 0; k < listaMiliti.size(); k++) {
+                obj = listaMiliti.get(k)
+                if (obj instanceof Milite) {
+                    milite = (Milite) obj
+                    militeId = milite.id
+                    nomeMiliteRigaCorrente = milite.toString()
+                } else {
+                    if (obj instanceof String) {
+                        militeId = ''
+                        nomeMiliteRigaCorrente = obj
+                    }// fine del blocco if
+                }// fine del blocco if-else
 
-            if (nomeMiliteRigaCorrente.equals(nomeMiliteDelTurnoPerLaFunzione)) {
-                testo += "<option value=\"${militeId}\" selected=\"selected\">${nomeMiliteRigaCorrente}</option>\n"
-            } else {
-                testo += "<option value=\"${militeId}\">${nomeMiliteRigaCorrente}</option>\n"
-            }// fine del blocco if-else
-        } // fine del ciclo for
+                if (nomeMiliteRigaCorrente.equals(nomeMiliteDelTurnoPerLaFunzione)) {
+                    testo += "<option value=\"${militeId}\" selected=\"selected\">${nomeMiliteRigaCorrente}</option>\n"
+                } else {
+                    testo += "<option value=\"${militeId}\">${nomeMiliteRigaCorrente}</option>\n"
+                }// fine del blocco if-else
+            } // fine del ciclo for
+        }// fine del blocco if
+
 
         return testo
     }// fine del metodo

@@ -17,6 +17,7 @@ public interface Cost {
 
     //--alcune sigle di croci per operazioni selettive
     public static String CROCE_ALGOS = 'ALGOS'
+    public static String CROCE_DEMO = 'DEMO'
     public static String CROCE_PUBBLICA = 'PAVT'
     public static String CROCE_ROSSA = 'CRF'
 
@@ -34,4 +35,8 @@ public interface Cost {
 
     //--identificatore di turni
     public static String EXTRA = 'extra'
+
+    //--sigla e password per accesso libero alla croce demo
+    public static String DEMO_OSPITE = 'ospite'
+    public static String DEMO_PASSWORD = 'xyz123abc'
 } // fine della interfaccia

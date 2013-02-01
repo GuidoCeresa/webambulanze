@@ -4,6 +4,10 @@ import grails.plugins.springsecurity.Secured
 
 class GenController {
 
+    // utilizzo di un service con la businessLogic per l'elaborazione dei dati
+    // il service viene iniettato automaticamente
+    def springSecurityService
+
     //--sigla della croce corrente
     public static String SIGLA_CROCE = 'pippoz'
 
@@ -69,17 +73,57 @@ class GenController {
         grailsApplication.mainContext.servletContext.controlli = Settings.controlli(croce)
     } // fine del metodo
 
-    //--chiamata senza specificazione, parte la croce interna
+    //--chiamata senza specificazione, parte la croce demo
     //--selezione iniziale della croce su cui operare
     //--seleziona la necessità del login
     //--regola la schermata iniziale
-    @Secured([Cost.ROLE_PROG])
     def selezionaCroce() {
+        //--regolazioni generali
+        selezionaCroceBase(Cost.CROCE_DEMO)
+
+        springSecurityService.reauthenticate(Cost.DEMO_OSPITE, Cost.DEMO_PASSWORD)
+
+        if (grailsApplication.mainContext.servletContext.startController) {
+            //--va alla schermata specifica
+            redirect(controller: grailsApplication.mainContext.servletContext.startController)
+        } else {
+            //--va al menu base
+            render(controller: 'gen', view: 'home')
+        }// fine del blocco if-else
+    } // fine del metodo
+
+    //--chiamata da URL = algos
+    //--selezione iniziale della croce interna su cui operare
+    //--seleziona la necessità del login
+    //--regola la schermata iniziale
+    def selezionaCroceAlgos() {
         //--regolazioni generali
         selezionaCroceBase(Cost.CROCE_ALGOS)
 
-        //--va al menu base
-        render(controller: 'gen', view: 'home')
+        if (grailsApplication.mainContext.servletContext.startController) {
+            //--va alla schermata specifica
+            redirect(controller: grailsApplication.mainContext.servletContext.startController)
+        } else {
+            //--va al menu base
+            render(controller: 'gen', view: 'home')
+        }// fine del blocco if-else
+    } // fine del metodo
+
+    //--chiamata da URL = demo
+    //--selezione iniziale della croce dimostrativa su cui operare
+    //--seleziona la necessità del login
+    //--regola la schermata iniziale
+    def selezionaCroceDemo() {
+        //--regolazioni generali
+        selezionaCroceBase(Cost.CROCE_DEMO)
+
+        if (grailsApplication.mainContext.servletContext.startController) {
+            //--va alla schermata specifica
+            redirect(controller: grailsApplication.mainContext.servletContext.startController)
+        } else {
+            //--va al menu base
+            render(controller: 'gen', view: 'home')
+        }// fine del blocco if-else
     } // fine del metodo
 
     //--chiamata da URL = pubblica
