@@ -33,7 +33,46 @@ class MiliteController {
     def logoService
 
     def index() {
-        redirect(action: "list", params: params)
+        redirect(action: 'list', params: params)
+    } // fine del metodo
+
+    def statistiche() {
+        def lista
+        Croce croce
+        String sigla
+        def campiLista = [
+                'cognome',
+                'nome']
+        def campiExtra = null
+
+        if (!params.sort) {
+            params.sort = 'cognome'
+        }// fine del blocco if-else
+        if (params.order) {
+            if (params.order == 'asc') {
+                params.order = 'desc'
+            } else {
+                params.order = 'asc'
+            }// fine del blocco if-else
+        } else {
+            params.order = 'asc'
+        }// fine del blocco if-else
+
+        if (grailsApplication.mainContext.servletContext.croce) {
+            croce = grailsApplication.mainContext.servletContext.croce
+            sigla = croce.sigla
+            if (sigla.equals(Cost.CROCE_ALGOS)) {
+                lista = Milite.findAll(params)
+                campiLista = ['id', 'croce'] + campiLista
+            } else {
+                lista = Milite.findAllByCroce(croce, params)
+                campiExtra = funzioneService.campiExtraStatistichePerCroce(croce)
+            }// fine del blocco if-else
+        } else {
+            lista = Milite.findAll(params)
+        }// fine del blocco if-else
+
+        render(view: 'militeturno', model: [militeInstanceList: lista, militeInstanceTotal: 0, campiLista: campiLista, campiExtra: campiExtra])
     } // fine del metodo
 
     def list(Integer max) {

@@ -1,7 +1,5 @@
 package webambulanze
-
 import grails.plugins.springsecurity.Secured
-import org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils
 import org.springframework.security.core.context.SecurityContextHolder
 
 class GenController {
@@ -15,7 +13,7 @@ class GenController {
     def rememberMeServices
 
     //--sigla della croce corrente
-    public static String SIGLA_CROCE = 'pippoz'
+    public static String SIGLA_CROCE = 'nessuna'
 
     // la property viene iniettata automaticamente
     def grailsApplication
@@ -130,8 +128,7 @@ class GenController {
         //--regolazioni generali
         selezionaCroceBase(Cost.CROCE_DEMO)
 
-      //  springSecurityService.reauthenticate(Cost.DEMO_OSPITE, Cost.DEMO_PASSWORD)
-        SpringSecurityUtils.reauthenticate Cost.DEMO_OSPITE, Cost.DEMO_PASSWORD
+        springSecurityService.reauthenticate(Cost.DEMO_OSPITE, Cost.DEMO_PASSWORD)
 
         if (grailsApplication.mainContext.servletContext.startController) {
             //--va alla schermata specifica

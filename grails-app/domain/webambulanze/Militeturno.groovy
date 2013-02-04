@@ -1,20 +1,11 @@
 package webambulanze
 
-import java.sql.Timestamp
+class Militeturno {
 
-class Logo {
-
-    Croce croceLogo = null
-    Timestamp time
-    Utente utente
-    Ruolo ruolo
-    Evento evento
-    Livello livello
+    //--tabella di incrocio
+    Croce croce //--ridondante, ma semplifica i filtri
     Milite milite
-    TipoTurno tipoTurno
     Turno turno
-    Date giorno
-    String dettaglio
 
     /**
      * regolazione delle proprietà di ogni campo
@@ -22,17 +13,7 @@ class Logo {
      * la possibilità di avere valori nulli, di default è false
      */
     static constraints = {
-        croceLogo(nullable: false, blank: false, display: false)
-        time(nullable: true)
-        utente(nullable: true)
-        ruolo(nullable: true)
-        evento(nullable: false)
-        livello(nullable: false)
-        milite(nullable: true)
-        tipoTurno(nullable: true)
-        turno(nullable: true)
-        giorno(nullable: true)
-        dettaglio(nullable: true, blank: true)
+        croce(nullable: false, blank: false)
     } // end of static constraints
 
     static mapping = {
@@ -51,9 +32,6 @@ class Logo {
      * prima di creare un nuovo record
      */
     def beforeInsert = {
-        if (!time) {
-            time = new Date().toTimestamp()
-        }// fine del blocco if
     } // end of def beforeInsert
 
     /**
@@ -61,9 +39,6 @@ class Logo {
      * prima di registrare un record esistente
      */
     def beforeUpdate = {
-        if (!time) {
-            time = new Date().toTimestamp()
-        }// fine del blocco if
     } // end of def beforeUpdate
 
     /**

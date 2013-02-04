@@ -61,7 +61,7 @@ class TipoTurno {
     // l'ordine con cui vengono elencati qui, viene rispettato nella lista e nella scheda standard
     // la possibilità di avere valori nulli, di default è false
     static constraints = {
-        croce(nullable: false)
+        croce(nullable: false, blank: false, display: false)
         sigla(nullable: false, blank: false)
         descrizione(nullable: true, blank: true)
         ordine()

@@ -45,7 +45,7 @@ class TurnoController {
         flash.message = ''
         dataInizio = AmbulanzaTagLib.creaDataOggi()
         dataFine = (dataInizio + delta).toTimestamp()
-        render(view: "tabellone", model: [dataInizio: dataInizio, dataFine: dataFine])
+        render(view: 'tabellone', model: [dataInizio: dataInizio, dataFine: dataFine])
     }
 
     @Secured([Cost.ROLE_MILITE])

@@ -279,6 +279,9 @@ class BootStrap implements Cost {
         Ruolo adminRole = Ruolo.findOrCreateByAuthority(ROLE_ADMIN).save(failOnError: true)
         Ruolo militeRole = Ruolo.findOrCreateByAuthority(ROLE_MILITE).save(failOnError: true)
 
+        // programmatore generale
+        newUtente(CROCE_ROSSA, ROLE_PROG, PROG_NICK, PROG_PASS)
+
         // custode
         utente = newUtente(CROCE_ROSSA, ROLE_CUSTODE, 'Biazzi Paolo', 'biazzi123')
         numUtentiRossa++

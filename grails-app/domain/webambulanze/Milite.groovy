@@ -33,13 +33,16 @@ class Milite {
     //--se non valorizzata, il milite non ha acquisito il certificato
     Date scadenzaNonTrauma = null
 
+    int oreAnno
+    int turniAnno
+
     /**
      * regolazione delle proprietà di ogni campo
      * l'ordine con cui vengono elencati qui, viene rispettato nella lista e nella scheda standard
      * la possibilità di avere valori nulli, di default è false
      */
     static constraints = {
-        croce(nullable: false, blank: false)
+        croce(nullable: false, blank: false, display: false)
         cognome(nullable: false, blank: false)
         nome(nullable: false, blank: false)
         dataNascita(nullable: true)
@@ -52,6 +55,8 @@ class Milite {
         note(widget: 'textarea', nullable: false, blank: true)
         dipendente(nullable: true)
         attivo(nullable: true)
+        oreAnno(display: false)
+        turniAnno(display: false)
     } // end of static constraints
 
     static mapping = {

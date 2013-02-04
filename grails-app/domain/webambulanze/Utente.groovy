@@ -19,7 +19,7 @@ class Utente {
     boolean passwordExpired
 
     static constraints = {
-        croce()
+        croce(nullable: false, blank: false, display: false)
         milite(nullable: true, blank: true)
         username blank: false, unique: true
         password blank: false

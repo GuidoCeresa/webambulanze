@@ -32,13 +32,13 @@ class Croce {
      * la possibilità di avere valori nulli, di default è false
      */
     static constraints = {
-        sigla(nullable: false,blank: false, unique: true)
+        sigla(nullable: false, blank: false, unique: true)
         descrizione(nullable: false, blank: false)
         riferimento(nullable: false, blank: true)
         indirizzo(nullable: false, blank: true)
         telefono(nullable: false, blank: true)
         email(email: true)
-        settings(nullable: true)
+        settings(nullable: true, display: false)
         note(widget: 'textarea', nullable: false, blank: true)
     } // end of static constraints
 

@@ -27,7 +27,7 @@ class Funzione {
     // l'ordine con cui vengono elencati qui, viene rispettato nella lista e nella scheda standard
     // la possibilità di avere valori nulli, di default è false
     static constraints = {
-        croce(blank: false)
+        croce(nullable: false, blank: false, display: false)
         ordine()
         sigla(nullable: false, blank: false)
         siglaVisibile(nullable: false, blank: false)

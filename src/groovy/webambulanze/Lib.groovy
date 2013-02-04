@@ -924,20 +924,31 @@ class Lib {
     }// fine del metodo
 
     //--Costruisce il tag controller per il testo indicato
-    public static String tagController(String controller, String titolo) {
+    public static String tagController(String controller, String titolo, String azione) {
         String testoOut = ''
 
         if (controller && titolo) {
             testoOut += '<li class="controller">'
             testoOut += '<a href="/webambulanze/'
             testoOut += controller
-            testoOut += '/index">'
+            testoOut += '/'
+            if (azione) {
+                testoOut += azione
+            } else {
+                testoOut += 'index'
+            }// fine del blocco if-else
+            testoOut += '">'
             testoOut += titolo
             testoOut += '</a>'
             testoOut += '</li>'
         }// fine del blocco if
 
         return testoOut
+    } // fine del metodo statico
+
+    //--Costruisce il tag controller per il testo indicato
+    public static String tagController(String controller, String titolo) {
+        return Lib.tagController(controller, titolo, '')
     } // fine del metodo statico
 
     //--Costruisce il tag controller per il testo indicato

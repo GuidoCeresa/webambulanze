@@ -36,7 +36,15 @@ public interface Cost {
     //--identificatore di turni
     public static String EXTRA = 'extra'
 
+    //--sigla e password del programmatore
+    public static String PROG_NICK = '---'
+    public static String PROG_PASS = 'fulvia'
+
     //--sigla e password per accesso libero alla croce demo
     public static String DEMO_OSPITE = 'ospite'
     public static String DEMO_PASSWORD = 'xyz123abc'
+
+    //--identificatore delle colonne per le statistiche
+    public static String CAMPO_TURNI = 'Turni'
+    public static String CAMPO_ORE = 'Ore'
 } // fine della interfaccia

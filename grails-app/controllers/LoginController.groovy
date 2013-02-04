@@ -7,6 +7,7 @@ import org.springframework.security.authentication.LockedException
 import org.springframework.security.core.context.SecurityContextHolder as SCH
 import org.springframework.security.web.WebAttributes
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
+import webambulanze.Cost
 import webambulanze.Utente
 
 import javax.servlet.http.HttpServletResponse
@@ -61,6 +62,14 @@ class LoginController {
             } // fine del ciclo each
 //            listaUtenti.add('---')
 //            listaUtenti.add('Ospite')
+        }// fine del blocco if
+
+        //--sposta in fondo un eventuale nome del programmatore
+        if (listaUtenti && Cost.PROG_NICK in listaUtenti) {
+            if (listaUtenti[0].equals(Cost.PROG_NICK)) {
+                listaUtenti.remove(0)
+                listaUtenti.add(Cost.PROG_NICK)
+            }// fine del blocco if
         }// fine del blocco if
 
 //        listaUtenti = Utente.executeQuery('select username from Utente order by username')

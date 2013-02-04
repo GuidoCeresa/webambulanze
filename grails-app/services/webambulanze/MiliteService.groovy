@@ -395,6 +395,35 @@ class MiliteService {
         return this.isLoggatoMilite() || this.isLoggatoAdminOrMore()
     }// fine del metodo
 
+    //--turni del milite effettuati a partire dal 1° gennaio anno corrente
+    //--@todo manca controllo anno
+    public int turniAnno(Milite milite) {
+        int turni = 0
+        Croce croce = null
+        def lista
+
+        if (grailsApplication.mainContext.servletContext.croce) {
+            croce = grailsApplication.mainContext.servletContext.croce
+        }// fine del blocco if
+
+        if (milite && croce) {
+            lista = Militeturno.findAllByCroceAndMilite(croce, milite)
+            if (lista) {
+                turni = lista.size()
+            }// fine del blocco if
+        }// fine del blocco if
+
+        return turni
+    }// fine del metodo
+
+    //--ore di servizio del milite effettuate a partire dal 1° gennaio anno corrente
+    public int oreAnno(Milite milite) {
+        int ore = 0
+
+
+        return ore
+    }// fine del metodo
+
 
 } // end of Service Class
 

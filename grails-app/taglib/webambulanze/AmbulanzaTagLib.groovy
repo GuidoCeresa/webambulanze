@@ -536,6 +536,106 @@ class AmbulanzaTagLib {
         out << testoOut
     }// fine della closure
 
+    //--disegna tutti i campi di una riga della tavola/lista
+    //--disegna eventuali campi extra per le funzioni dei militi di una croce
+    def rigaListaStatistiche = { args ->
+        String testoOut = ''
+        ArrayList lista = null
+        ArrayList listaExtra = null
+        def bean = null
+        String contPath = 'webambulanze.'
+        def campi
+        String cont
+        String campo
+        def rec = null
+        long id = 0.0
+        def value = null
+        ArrayList nomeFunzioniAttiveDelMilite = null
+        int turniAnno = 0
+        int oreAnno = 0
+        String tagTurni = ''
+        String tagOre = ''
+
+        if (args.campiLista) {
+            lista = args.campiLista
+        }// fine del blocco if
+        if (params.controller) {
+            cont = params.controller
+            contPath += Lib.primaMaiuscola(cont)
+        }// fine del blocco if
+        if (args.rec) {
+            rec = args.rec
+        }// fine del blocco if
+        try { // prova ad eseguire il codice
+            if (rec && rec.id) {
+                id = rec.id
+            }// fine del blocco if
+        } catch (Exception unErrore) { // intercetta l'errore
+            log.error unErrore
+        }// fine del blocco try-catch
+        if (args.campiExtra) {
+            listaExtra = args.campiExtra
+        }// fine del blocco if
+
+        if (rec && rec instanceof Milite) {
+            nomeFunzioniAttiveDelMilite = militeService.nomeFunzioniPerMilite(rec)
+        }// fine del blocco if
+
+        if (cont && rec) {
+            if (lista) {
+                lista?.each {
+                    campo = it
+                    if (rec."${campo}") {
+                        value = rec."${campo}"
+                    } else {
+                        value = null
+                    }// fine del blocco if-else
+
+                    testoOut += Lib.getCampoTabella(app, cont, id, value)
+                } // fine del ciclo each
+            } else {
+                bean = applicationContext.getBean(contPath)
+                if (bean) {
+                    campi = bean.properties.keySet()
+                    campi?.each {
+                        campo = it
+                        if (rec."${campo}") {
+                            value = rec."${campo}"
+                        } else {
+                            value = null
+                        }// fine del blocco if-else
+                        testoOut += Lib.getCampoTabella(app, cont, id, value)
+                    } // fine del ciclo each
+                }// fine del blocco if
+            }// fine del blocco if-else
+        }// fine del blocco if
+
+        if (cont && rec && listaExtra) {
+            turniAnno = militeService.turniAnno((Milite) rec)
+            oreAnno = militeService.oreAnno((Milite) rec)
+            value = false
+            listaExtra?.each {
+                campo = it
+                if (nomeFunzioniAttiveDelMilite.contains(campo)) {
+                    testoOut += Lib.getCampoTabella(app, cont, id, '?')
+                } else {
+                    if (campo.equals(Cost.CAMPO_TURNI) || campo.equals(Cost.CAMPO_ORE)) {
+                        if (campo.equals(Cost.CAMPO_TURNI)) {
+                            testoOut += Lib.getCampoTabella(app, cont, id, turniAnno)
+                        }// fine del blocco if
+                        if (campo.equals(Cost.CAMPO_ORE)) {
+                            testoOut += Lib.getCampoTabella(app, cont, id, oreAnno)
+                        }// fine del blocco if
+                    } else {
+                        testoOut += Lib.getCampoTabella(app, cont, id, '-')
+                    }// fine del blocco if-else
+                }// fine del blocco if-else
+            } // fine del ciclo each
+        }// fine del blocco if
+
+        out << testoOut
+    }// fine della closure
+
     /**
      * Caption sopra la tabella <br>
      */
@@ -709,6 +809,8 @@ class AmbulanzaTagLib {
                 testoOut += Lib.tagController('Funzione', 'Funzioni')
                 testoOut += Lib.tagController('TipoTurno', 'Tipologia turni')
                 testoOut += Lib.tagController('Milite', 'Militi')
+                testoOut += Lib.tagController('Milite', 'Turni dei militi (statistiche)', 'statistiche')
+                testoOut += Lib.tagController('Militeturno', 'Turni dei militi')
                 testoOut += Lib.tagController('Gen', 'Tabellone turni')
             } else {
                 if (militeService.isLoggatoCustode()) {
@@ -720,6 +822,7 @@ class AmbulanzaTagLib {
                     testoOut += Lib.tagController('Funzione', 'Funzioni (accesso in sola visione)')
                     testoOut += Lib.tagController('TipoTurno', 'Tipologia turni (accesso in sola visione)')
                     testoOut += Lib.tagController('Milite', 'Militi')
+                    testoOut += Lib.tagController('Milite', 'Turni dei militi (statistiche)', 'statistiche')
                     testoOut += Lib.tagController('Gen', 'Tabellone turni')
                 } else {
                     if (militeService.isLoggatoAdmin()) {
@@ -729,6 +832,7 @@ class AmbulanzaTagLib {
                         testoOut += Lib.tagController('Funzione', 'Funzioni (accesso in sola visione)')
                         testoOut += Lib.tagController('TipoTurno', 'Tipologia turni (accesso in sola visione)')
                         testoOut += Lib.tagController('Milite', 'Militi')
+                        testoOut += Lib.tagController('Milite', 'Turni dei militi (statistiche)', 'statistiche')
                         testoOut += Lib.tagController('Gen', 'Tabellone turni')
                     } else {
                         testoOut += Lib.tagController('Funzione', 'Funzioni (accesso in sola visione)')

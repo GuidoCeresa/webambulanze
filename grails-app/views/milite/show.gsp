@@ -145,6 +145,20 @@
 					
 				</li>
 			
+				<li class="fieldcontain">
+					<span id="oreAnno-label" class="property-label"><g:message code="milite.oreAnno.labelform" default="Ore Anno" /></span>
+					
+						<span class="property-value" aria-labelledby="oreAnno-label"><g:fieldValue bean="${militeInstance}" field="oreAnno"/></span>
+					
+				</li>
+			
+				<li class="fieldcontain">
+					<span id="turniAnno-label" class="property-label"><g:message code="milite.turniAnno.labelform" default="Turni Anno" /></span>
+					
+						<span class="property-value" aria-labelledby="turniAnno-label"><g:fieldValue bean="${militeInstance}" field="turniAnno"/></span>
+					
+				</li>
+			
 			</ol>
 
             <g:if test="${campiExtra}">

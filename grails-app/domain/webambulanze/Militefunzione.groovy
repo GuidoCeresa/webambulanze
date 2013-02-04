@@ -13,7 +13,7 @@ class Militefunzione {
      * la possibilità di avere valori nulli, di default è false
      */
     static constraints = {
-        croce(nullable: false)
+        croce(nullable: false, blank: false, display: false)
         milite(nullable: false)
         funzione(nullable: false)
     } // end of static constraints

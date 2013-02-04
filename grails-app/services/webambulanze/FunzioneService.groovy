@@ -20,6 +20,18 @@ class FunzioneService {
     }
 
     //--recupera tutti i records per la croce selezionata
+    def campiExtraStatistichePerCroce(Croce croce) {
+        def campiExtra = campiExtraPerCroce(croce)
+
+        if (campiExtra) {
+            campiExtra.add(0, Cost.CAMPO_ORE)
+            campiExtra.add(0, Cost.CAMPO_TURNI)
+        }// fine del blocco if
+
+        return campiExtra
+    }// fine del metodo
+
+    //--recupera tutti i records per la croce selezionata
     def campiExtraPerCroce(Croce croce) {
         def campiExtra = []
         def lista = Funzione.findAllByCroce(croce, [order: 'sigla'])
