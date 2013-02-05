@@ -42,7 +42,7 @@ public interface Cost {
 
     //--sigla e password per accesso libero alla croce demo
     public static String DEMO_OSPITE = 'ospite'
-    public static String DEMO_PASSWORD = 'xyz123abc'
+    public static String DEMO_PASSWORD = ''
 
     //--identificatore delle colonne per le statistiche
     public static String CAMPO_TURNI = 'Turni'

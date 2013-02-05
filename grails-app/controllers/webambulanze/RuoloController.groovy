@@ -26,13 +26,15 @@ class RuoloController {
         def campiLista = ['id', 'authority']
 
         params.max = Math.min(max ?: 10, 100)
-        [ruoloInstanceList: Ruolo.list(params), ruoloInstanceTotal: Ruolo.count(), campiLista: campiLista]
+        [ruoloInstanceList: Ruolo.list(params), ruoloInstanceTotal: 0, campiLista: campiLista]
     }
 
+    @Secured([Cost.ROLE_PROG])
     def create() {
         [ruoloInstance: new Ruolo(params)]
     } // fine del metodo
 
+    @Secured([Cost.ROLE_PROG])
     def save() {
         def ruoloInstance = new Ruolo(params)
         if (!ruoloInstance.save(flush: true)) {
@@ -55,6 +57,7 @@ class RuoloController {
         [ruoloInstance: ruoloInstance]
     } // fine del metodo
 
+    @Secured([Cost.ROLE_PROG])
     def edit(Long id) {
         def ruoloInstance = Ruolo.get(id)
         if (!ruoloInstance) {
@@ -66,6 +69,7 @@ class RuoloController {
         [ruoloInstance: ruoloInstance]
     } // fine del metodo
 
+    @Secured([Cost.ROLE_PROG])
     def update(Long id, Long version) {
         def ruoloInstance = Ruolo.get(id)
         if (!ruoloInstance) {
@@ -95,6 +99,7 @@ class RuoloController {
         redirect(action: "show", id: ruoloInstance.id)
     } // fine del metodo
 
+    @Secured([Cost.ROLE_PROG])
     def delete(Long id) {
         def ruoloInstance = Ruolo.get(id)
         if (!ruoloInstance) {

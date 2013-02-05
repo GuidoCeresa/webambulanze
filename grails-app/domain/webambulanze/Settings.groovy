@@ -78,7 +78,7 @@ class Settings {
      * la possibilità di avere valori nulli, di default è false
      */
     static constraints = {
-        croce(unique: true,nullable: false, blank: false, display: false)
+        croce(unique: true, nullable: false, blank: false, display: false)
         startLogin()
         startController()
         allControllers()
@@ -175,7 +175,6 @@ class Settings {
         return startController
     } // fine del metodo
 
-
     /**
      * restituisce la proprietà per l'istanza selezionata
      */
@@ -193,7 +192,6 @@ class Settings {
 
         return allControllers
     } // fine del metodo
-
 
     /**
      * restituisce la proprietà per l'istanza selezionata

@@ -16,6 +16,10 @@ import org.springframework.dao.DataIntegrityViolationException
 @Secured([Cost.ROLE_CUSTODE])
 class UtenteController {
 
+    // utilizzo di un service con la businessLogic per l'elaborazione dei dati
+    // il service viene iniettato automaticamente
+    def utenteService
+
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
     def index() {
@@ -38,8 +42,8 @@ class UtenteController {
             params.sort = 'username'
         }// fine del blocco if-else
         if (params.order) {
-            if (params.order=='asc') {
-                params.order ='desc'
+            if (params.order == 'asc') {
+                params.order = 'desc'
             } else {
                 params.order = 'asc'
             }// fine del blocco if-else
@@ -54,10 +58,12 @@ class UtenteController {
                 lista = Utente.findAll(params)
                 campiLista = ['id', 'croce'] + campiLista
             } else {
-                lista = Utente.findAllByCroce(croce, params)
+//                lista = Utente.findAllByCroce(croce, params)
+                lista = utenteService.utentiCustodiOrMore(croce, params)
             }// fine del blocco if-else
         } else {
-            lista = Utente.findAll(params)
+            lista = utenteService.utentiCustodiOrMore(params)
+//            lista = Utente.findAll(params)
         }// fine del blocco if-else
 
         [utenteInstanceList: lista, utenteInstanceTotal: 0, campiLista: campiLista]
@@ -68,11 +74,21 @@ class UtenteController {
     } // fine del metodo
 
     def save() {
+        Croce croce
         def utenteInstance = new Utente(params)
+
+        if (grailsApplication.mainContext.servletContext.croce) {
+            croce = grailsApplication.mainContext.servletContext.croce
+            utenteInstance.croce = croce
+        }// fine del blocco if
+
         if (!utenteInstance.save(flush: true)) {
             render(view: "create", model: [utenteInstance: utenteInstance])
             return
         }
+
+        Ruolo ruoloMilite = Ruolo.findByAuthority(Cost.ROLE_MILITE)
+        UtenteRuolo.create(utenteInstance, ruoloMilite, true)
 
         flash.message = message(code: 'default.created.message', args: [message(code: 'utente.label', default: 'Utente'), utenteInstance.id])
         redirect(action: "show", id: utenteInstance.id)

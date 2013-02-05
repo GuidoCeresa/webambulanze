@@ -276,20 +276,8 @@ class BootStrap implements Cost {
     //--occorre SEMPRE un accesso come utente
     //--li crea SOLO se non esistono già
     private static void securitySetupDemo() {
-        Utente utente
-        String nick
-        String pass
-        Ruolo custodeRole = Ruolo.findOrCreateByAuthority(ROLE_CUSTODE).save(failOnError: true)
-        Ruolo adminRole = Ruolo.findOrCreateByAuthority(ROLE_ADMIN).save(failOnError: true)
-        Ruolo militeRole = Ruolo.findOrCreateByAuthority(ROLE_MILITE).save(failOnError: true)
-        Ruolo ospiteRole = Ruolo.findOrCreateByAuthority(ROLE_OSPITE).save(failOnError: true)
-
-        // programmatore generale
-//        utente = newUtente(CROCE_DEMO, ROLE_PROG, 'gac', 'fulvia')
-//        if (custodeRole && adminRole && militeRole && ospiteRole && utente) {
-//            UtenteRuolo.findOrCreateByRuoloAndUtente(custodeRole, utente).save(failOnError: true)
-//            UtenteRuolo.findOrCreateByRuoloAndUtente(adminRole, utente).save(failOnError: true)
-//        }// fine del blocco if
+        // programmatore generale (sempre presente)
+        newUtente(CROCE_ROSSA, ROLE_PROG, PROG_NICK, PROG_PASS)
 
         // milite (anonimo)
         newUtente(CROCE_DEMO, ROLE_MILITE, DEMO_OSPITE, DEMO_PASSWORD)
@@ -307,13 +295,13 @@ class BootStrap implements Cost {
         Ruolo adminRole
         Ruolo militeRole
 
+        // programmatore generale (sempre presente)
+        newUtente(CROCE_ROSSA, ROLE_PROG, PROG_NICK, PROG_PASS)
+
         if (SVILUPPO_CROCE_ROSSA) {
             custodianRole = Ruolo.findOrCreateByAuthority(ROLE_CUSTODE).save(failOnError: true)
             adminRole = Ruolo.findOrCreateByAuthority(ROLE_ADMIN).save(failOnError: true)
             militeRole = Ruolo.findOrCreateByAuthority(ROLE_MILITE).save(failOnError: true)
-
-            // programmatore generale
-            newUtente(CROCE_ROSSA, ROLE_PROG, PROG_NICK, PROG_PASS)
 
             // custode
             utente = newUtente(CROCE_ROSSA, ROLE_CUSTODE, 'Biazzi Paolo', 'biazzi123')
