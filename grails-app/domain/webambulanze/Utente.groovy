@@ -13,13 +13,13 @@ class Utente {
     String username
     String password
     String pass
-    boolean enabled
+    boolean enabled = true
     boolean accountExpired
     boolean accountLocked
     boolean passwordExpired
 
     static constraints = {
-        croce(nullable: false, blank: false, display: false)
+        croce(nullable: false, blank: false)
         milite(nullable: true, blank: true)
         username blank: false, unique: true
         password blank: false

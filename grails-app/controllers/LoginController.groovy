@@ -60,8 +60,6 @@ class LoginController {
                 username = utente.username
                 listaUtenti.add(username)
             } // fine del ciclo each
-//            listaUtenti.add('---')
-//            listaUtenti.add('Ospite')
         }// fine del blocco if
 
         //--sposta in fondo un eventuale nome del programmatore
