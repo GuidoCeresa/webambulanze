@@ -72,6 +72,10 @@ class Settings {
     //--dopo il quale non si può più effettuare la cancellazione
     int minGiorniMancantiCancellazione = 0
 
+    //--se nel form del turno l'orario di inizio e fine turno è modificabile
+    //--negli extra è SEMPRE modificabile
+    boolean isOrarioTurnoModificabileForm = false
+
     /**
      * regolazione delle proprietà di ogni campo
      * l'ordine con cui vengono elencati qui, viene rispettato nella lista e nella scheda standard
@@ -94,6 +98,7 @@ class Settings {
         tipoControlloCancellazione()
         maxMinutiTrascorsiCancellazione()
         minGiorniMancantiCancellazione()
+        isOrarioTurnoModificabileForm()
     } // end of static constraints
 
     /*+

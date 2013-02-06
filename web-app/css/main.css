@@ -636,6 +636,7 @@ th:hover, tr:hover {
     background-position: 0.7em center;
     background-repeat: no-repeat;
     text-indent: 25px;
+    font-weight: bold;
 }
 
 .buttons .delete {

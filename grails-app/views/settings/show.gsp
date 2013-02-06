@@ -12,173 +12,224 @@
 <%@ page import="webambulanze.Settings" %>
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta name="layout" content="main">
-		<g:set var="entityName" value="${message(code: 'settings.label', default: 'Settings')}" />
-		<title><g:message code="default.show.label" args="[entityName]" /></title>
-	</head>
-	<body>
-		<a href="#show-settings" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
-		<div class="nav" role="navigation">
-			<ul>
-                <li><g:link class="home" controller="Gen" action="home"><g:message code="ambulanze.home.label"/></g:link></li>
-                <li><g:link class="list" action="list">
-                    <g:message code="settings.list.label"
-                               default="Elenco settings"/>
-                </g:link></li>
+<head>
+    <meta name="layout" content="main">
+    <g:set var="entityName" value="${message(code: 'settings.label', default: 'Settings')}"/>
+    <title><g:message code="default.show.label" args="[entityName]"/></title>
+</head>
 
-                <li><g:link class="create" action="create">
-                    <g:message code="settings.new.label"
-                               default="Nuovo settings"/>
-                </g:link></li>
+<body>
+<a href="#show-settings" class="skip" tabindex="-1"><g:message code="default.link.skip.label"
+                                                                                  default="Skip to content&hellip;"/></a>
 
-                <li><g:link class="edit" action="edit" id="${settingsInstance?.id}">
-                    <g:message code="settings.edit.label"
-                               default="Modifica settings"/>
-                </g:link></li>
-			</ul>
-		</div>
-		<div id="show-settings" class="content scaffold-show" role="main">
-            <h1><g:message code="settings.show.label" default="Mostra settings"/></h1>
-            <g:if test="${flash.message}">
-                <div class="message" role="status">${flash.message}</div>
-            </g:if>
-            <g:if test="${flash.errors}">
-                <div class="errors" role="status">${flash.errors}</div>
-            </g:if>
-            <g:if test="${flash.listaMessaggi}">
-                <ul><g:each in="${flash.listaMessaggi}" var="messaggio"><li><div class="message">${messaggio}</div></li></g:each></ul>
-            </g:if>
-            <g:if test="${flash.listaErrori}">
-                <ul><g:each in="${flash.listaErrori}" var="errore"><li class="errors"><div>${errore}</div></li></g:each></ul>
-            </g:if>
-			<ol class="property-list settings">
-			
-				<li class="fieldcontain">
-					<span id="croce-label" class="property-label"><g:message code="settings.croce.labelform" default="Croce" /></span>
-					
-						<span class="property-value" aria-labelledby="croce-label"><g:link controller="croce" action="show" id="${settingsInstance?.croce?.id}">${settingsInstance?.croce?.encodeAsHTML()}</g:link></span>
-					
-				</li>
-			
-				<li class="fieldcontain">
-					<span id="startLogin-label" class="property-label"><g:message code="settings.startLogin.labelform" default="Start Login" /></span>
-					
-						<span class="property-value" aria-labelledby="startLogin-label"><g:formatBoolean boolean="${settingsInstance?.startLogin}" /></span>
-					
-				</li>
-			
-				<li class="fieldcontain">
-					<span id="startController-label" class="property-label"><g:message code="settings.startController.labelform" default="Start Controller" /></span>
-					
-						<span class="property-value" aria-labelledby="startController-label"><g:fieldValue bean="${settingsInstance}" field="startController"/></span>
-					
-				</li>
-			
-				<li class="fieldcontain">
-					<span id="allControllers-label" class="property-label"><g:message code="settings.allControllers.labelform" default="All Controllers" /></span>
-					
-						<span class="property-value" aria-labelledby="allControllers-label"><g:formatBoolean boolean="${settingsInstance?.allControllers}" /></span>
-					
-				</li>
-			
-				<li class="fieldcontain">
-					<span id="controlli-label" class="property-label"><g:message code="settings.controlli.labelform" default="Controlli" /></span>
-					
-						<span class="property-value" aria-labelledby="controlli-label"><g:fieldValue bean="${settingsInstance}" field="controlli"/></span>
-					
-				</li>
-			
-				<li class="fieldcontain">
-					<span id="mostraSoloMilitiFunzione-label" class="property-label"><g:message code="settings.mostraSoloMilitiFunzione.labelform" default="Mostra Solo Militi Funzione" /></span>
-					
-						<span class="property-value" aria-labelledby="mostraSoloMilitiFunzione-label"><g:formatBoolean boolean="${settingsInstance?.mostraSoloMilitiFunzione}" /></span>
-					
-				</li>
-			
-				<li class="fieldcontain">
-					<span id="mostraMilitiFunzioneAndAltri-label" class="property-label"><g:message code="settings.mostraMilitiFunzioneAndAltri.labelform" default="Mostra Militi Funzione And Altri" /></span>
-					
-						<span class="property-value" aria-labelledby="mostraMilitiFunzioneAndAltri-label"><g:formatBoolean boolean="${settingsInstance?.mostraMilitiFunzioneAndAltri}" /></span>
-					
-				</li>
-			
-				<li class="fieldcontain">
-					<span id="militePuoInserireAltri-label" class="property-label"><g:message code="settings.militePuoInserireAltri.labelform" default="Milite Puo Inserire Altri" /></span>
-					
-						<span class="property-value" aria-labelledby="militePuoInserireAltri-label"><g:formatBoolean boolean="${settingsInstance?.militePuoInserireAltri}" /></span>
-					
-				</li>
-			
-				<li class="fieldcontain">
-					<span id="militePuoModificareAltri-label" class="property-label"><g:message code="settings.militePuoModificareAltri.labelform" default="Milite Puo Modificare Altri" /></span>
-					
-						<span class="property-value" aria-labelledby="militePuoModificareAltri-label"><g:formatBoolean boolean="${settingsInstance?.militePuoModificareAltri}" /></span>
-					
-				</li>
-			
-				<li class="fieldcontain">
-					<span id="militePuoCancellareAltri-label" class="property-label"><g:message code="settings.militePuoCancellareAltri.labelform" default="Milite Puo Cancellare Altri" /></span>
-					
-						<span class="property-value" aria-labelledby="militePuoCancellareAltri-label"><g:formatBoolean boolean="${settingsInstance?.militePuoCancellareAltri}" /></span>
-					
-				</li>
-			
-				<li class="fieldcontain">
-					<span id="tipoControlloModifica-label" class="property-label"><g:message code="settings.tipoControlloModifica.labelform" default="Tipo Controllo Modifica" /></span>
-					
-						<span class="property-value" aria-labelledby="tipoControlloModifica-label"><g:fieldValue bean="${settingsInstance}" field="tipoControlloModifica"/></span>
-					
-				</li>
-			
-				<li class="fieldcontain">
-					<span id="maxMinutiTrascorsiModifica-label" class="property-label"><g:message code="settings.maxMinutiTrascorsiModifica.labelform" default="Max Minuti Trascorsi Modifica" /></span>
-					
-						<span class="property-value" aria-labelledby="maxMinutiTrascorsiModifica-label"><g:fieldValue bean="${settingsInstance}" field="maxMinutiTrascorsiModifica"/></span>
-					
-				</li>
-			
-				<li class="fieldcontain">
-					<span id="minGiorniMancantiModifica-label" class="property-label"><g:message code="settings.minGiorniMancantiModifica.labelform" default="Min Giorni Mancanti Modifica" /></span>
-					
-						<span class="property-value" aria-labelledby="minGiorniMancantiModifica-label"><g:fieldValue bean="${settingsInstance}" field="minGiorniMancantiModifica"/></span>
-					
-				</li>
-			
-				<li class="fieldcontain">
-					<span id="tipoControlloCancellazione-label" class="property-label"><g:message code="settings.tipoControlloCancellazione.labelform" default="Tipo Controllo Cancellazione" /></span>
-					
-						<span class="property-value" aria-labelledby="tipoControlloCancellazione-label"><g:fieldValue bean="${settingsInstance}" field="tipoControlloCancellazione"/></span>
-					
-				</li>
-			
-				<li class="fieldcontain">
-					<span id="maxMinutiTrascorsiCancellazione-label" class="property-label"><g:message code="settings.maxMinutiTrascorsiCancellazione.labelform" default="Max Minuti Trascorsi Cancellazione" /></span>
-					
-						<span class="property-value" aria-labelledby="maxMinutiTrascorsiCancellazione-label"><g:fieldValue bean="${settingsInstance}" field="maxMinutiTrascorsiCancellazione"/></span>
-					
-				</li>
-			
-				<li class="fieldcontain">
-					<span id="minGiorniMancantiCancellazione-label" class="property-label"><g:message code="settings.minGiorniMancantiCancellazione.labelform" default="Min Giorni Mancanti Cancellazione" /></span>
-					
-						<span class="property-value" aria-labelledby="minGiorniMancantiCancellazione-label"><g:fieldValue bean="${settingsInstance}" field="minGiorniMancantiCancellazione"/></span>
-					
-				</li>
-			
-			</ol>
+<div class="nav" role="navigation">
+    <ul>
+        <li><g:link class="home" controller="Gen" action="home"><g:message code="ambulanze.home.label"/></g:link></li>
+        <li><g:link class="list" action="list">
+            <g:message code="settings.list.label"
+                       default="Elenco settings"/>
+        </g:link></li>
 
-            <g:if test="${campiExtra}">
-                <amb:extraScheda rec="${settingsInstance}" campiExtra="${campiExtra}"></amb:extraScheda>
-            </g:if>
+        <li><g:link class="create" action="create">
+            <g:message code="settings.new.label"
+                       default="Nuovo settings"/>
+        </g:link></li>
 
-            <g:form>
-				<fieldset class="buttons">
-					<g:hiddenField name="id" value="${settingsInstance?.id}" />
-					<g:link class="edit" action="edit" id="${settingsInstance?.id}"><g:message code="default.button.edit.label" default="Edit" /></g:link>
-					<g:actionSubmit class="delete" action="delete" value="${message(code: 'default.button.delete.label', default: 'Delete')}" onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" />
-				</fieldset>
-			</g:form>
-		</div>
-	</body>
+        <li><g:link class="edit" action="edit" id="${settingsInstance?.id}">
+            <g:message code="settings.edit.label" default="Modifica settings"/>
+        </g:link></li>
+    </ul>
+</div>
+
+<div id="show-settings" class="content scaffold-show" role="main">
+    <h1><g:message code="settings.show.label" default="Mostra settings"/></h1>
+    <g:if test="${flash.message}">
+        <div class="message" role="status">${flash.message}</div>
+    </g:if>
+    <g:if test="${flash.errors}">
+        <div class="errors" role="status">${flash.errors}</div>
+    </g:if>
+    <g:if test="${flash.listaMessaggi}">
+        <ul><g:each in="${flash.listaMessaggi}" var="messaggio"><li><div class="message">${messaggio}</div>
+        </li></g:each></ul>
+    </g:if>
+    <g:if test="${flash.listaErrori}">
+        <ul><g:each in="${flash.listaErrori}" var="errore"><li class="errors"><div>${errore}</div></li></g:each></ul>
+    </g:if>
+    <ol class="property-list settings">
+        
+        <li class="fieldcontain">
+            <span id="croce-label" class="property-label"><g:message
+                    code="settings.croce.labelform" default="Croce"/></span>
+            
+            <span class="property-value" aria-labelledby="croce-label"><g:link
+                    controller="croce" action="show"
+                    id="${settingsInstance?.croce?.id}">${settingsInstance?.croce?.encodeAsHTML()}</g:link></span>
+            
+        </li>
+        
+        <li class="fieldcontain">
+            <span id="startLogin-label" class="property-label"><g:message
+                    code="settings.startLogin.labelform" default="Start Login"/></span>
+            
+            <span class="property-value" aria-labelledby="startLogin-label"><g:formatBoolean
+                    boolean="${settingsInstance?.startLogin}"/></span>
+            
+        </li>
+        
+        <li class="fieldcontain">
+            <span id="startController-label" class="property-label"><g:message
+                    code="settings.startController.labelform" default="Start Controller"/></span>
+            
+            <span class="property-value" aria-labelledby="startController-label"><g:fieldValue bean="${settingsInstance}"
+                                                                                         field="startController"/></span>
+            
+        </li>
+        
+        <li class="fieldcontain">
+            <span id="allControllers-label" class="property-label"><g:message
+                    code="settings.allControllers.labelform" default="All Controllers"/></span>
+            
+            <span class="property-value" aria-labelledby="allControllers-label"><g:formatBoolean
+                    boolean="${settingsInstance?.allControllers}"/></span>
+            
+        </li>
+        
+        <li class="fieldcontain">
+            <span id="controlli-label" class="property-label"><g:message
+                    code="settings.controlli.labelform" default="Controlli"/></span>
+            
+            <span class="property-value" aria-labelledby="controlli-label"><g:fieldValue bean="${settingsInstance}"
+                                                                                         field="controlli"/></span>
+            
+        </li>
+        
+        <li class="fieldcontain">
+            <span id="mostraSoloMilitiFunzione-label" class="property-label"><g:message
+                    code="settings.mostraSoloMilitiFunzione.labelform" default="Mostra Solo Militi Funzione"/></span>
+            
+            <span class="property-value" aria-labelledby="mostraSoloMilitiFunzione-label"><g:formatBoolean
+                    boolean="${settingsInstance?.mostraSoloMilitiFunzione}"/></span>
+            
+        </li>
+        
+        <li class="fieldcontain">
+            <span id="mostraMilitiFunzioneAndAltri-label" class="property-label"><g:message
+                    code="settings.mostraMilitiFunzioneAndAltri.labelform" default="Mostra Militi Funzione And Altri"/></span>
+            
+            <span class="property-value" aria-labelledby="mostraMilitiFunzioneAndAltri-label"><g:formatBoolean
+                    boolean="${settingsInstance?.mostraMilitiFunzioneAndAltri}"/></span>
+            
+        </li>
+        
+        <li class="fieldcontain">
+            <span id="militePuoInserireAltri-label" class="property-label"><g:message
+                    code="settings.militePuoInserireAltri.labelform" default="Milite Puo Inserire Altri"/></span>
+            
+            <span class="property-value" aria-labelledby="militePuoInserireAltri-label"><g:formatBoolean
+                    boolean="${settingsInstance?.militePuoInserireAltri}"/></span>
+            
+        </li>
+        
+        <li class="fieldcontain">
+            <span id="militePuoModificareAltri-label" class="property-label"><g:message
+                    code="settings.militePuoModificareAltri.labelform" default="Milite Puo Modificare Altri"/></span>
+            
+            <span class="property-value" aria-labelledby="militePuoModificareAltri-label"><g:formatBoolean
+                    boolean="${settingsInstance?.militePuoModificareAltri}"/></span>
+            
+        </li>
+        
+        <li class="fieldcontain">
+            <span id="militePuoCancellareAltri-label" class="property-label"><g:message
+                    code="settings.militePuoCancellareAltri.labelform" default="Milite Puo Cancellare Altri"/></span>
+            
+            <span class="property-value" aria-labelledby="militePuoCancellareAltri-label"><g:formatBoolean
+                    boolean="${settingsInstance?.militePuoCancellareAltri}"/></span>
+            
+        </li>
+        
+        <li class="fieldcontain">
+            <span id="tipoControlloModifica-label" class="property-label"><g:message
+                    code="settings.tipoControlloModifica.labelform" default="Tipo Controllo Modifica"/></span>
+            
+            <span class="property-value" aria-labelledby="tipoControlloModifica-label"><g:fieldValue bean="${settingsInstance}"
+                                                                                         field="tipoControlloModifica"/></span>
+            
+        </li>
+        
+        <li class="fieldcontain">
+            <span id="maxMinutiTrascorsiModifica-label" class="property-label"><g:message
+                    code="settings.maxMinutiTrascorsiModifica.labelform" default="Max Minuti Trascorsi Modifica"/></span>
+            
+            <span class="property-value" aria-labelledby="maxMinutiTrascorsiModifica-label"><g:fieldValue bean="${settingsInstance}"
+                                                                                         field="maxMinutiTrascorsiModifica"/></span>
+            
+        </li>
+        
+        <li class="fieldcontain">
+            <span id="minGiorniMancantiModifica-label" class="property-label"><g:message
+                    code="settings.minGiorniMancantiModifica.labelform" default="Min Giorni Mancanti Modifica"/></span>
+            
+            <span class="property-value" aria-labelledby="minGiorniMancantiModifica-label"><g:fieldValue bean="${settingsInstance}"
+                                                                                         field="minGiorniMancantiModifica"/></span>
+            
+        </li>
+        
+        <li class="fieldcontain">
+            <span id="tipoControlloCancellazione-label" class="property-label"><g:message
+                    code="settings.tipoControlloCancellazione.labelform" default="Tipo Controllo Cancellazione"/></span>
+            
+            <span class="property-value" aria-labelledby="tipoControlloCancellazione-label"><g:fieldValue bean="${settingsInstance}"
+                                                                                         field="tipoControlloCancellazione"/></span>
+            
+        </li>
+        
+        <li class="fieldcontain">
+            <span id="maxMinutiTrascorsiCancellazione-label" class="property-label"><g:message
+                    code="settings.maxMinutiTrascorsiCancellazione.labelform" default="Max Minuti Trascorsi Cancellazione"/></span>
+            
+            <span class="property-value" aria-labelledby="maxMinutiTrascorsiCancellazione-label"><g:fieldValue bean="${settingsInstance}"
+                                                                                         field="maxMinutiTrascorsiCancellazione"/></span>
+            
+        </li>
+        
+        <li class="fieldcontain">
+            <span id="minGiorniMancantiCancellazione-label" class="property-label"><g:message
+                    code="settings.minGiorniMancantiCancellazione.labelform" default="Min Giorni Mancanti Cancellazione"/></span>
+            
+            <span class="property-value" aria-labelledby="minGiorniMancantiCancellazione-label"><g:fieldValue bean="${settingsInstance}"
+                                                                                         field="minGiorniMancantiCancellazione"/></span>
+            
+        </li>
+        
+        <li class="fieldcontain">
+            <span id="isOrarioTurnoModificabileForm-label" class="property-label"><g:message
+                    code="settings.isOrarioTurnoModificabileForm.labelform" default="Is Orario Turno Modificabile Form"/></span>
+            
+            <span class="property-value" aria-labelledby="isOrarioTurnoModificabileForm-label"><g:formatBoolean
+                    boolean="${settingsInstance?.isOrarioTurnoModificabileForm}"/></span>
+            
+        </li>
+        
+    </ol>
+
+    <g:if test="${campiExtra}">
+        <amb:extraScheda rec="${settingsInstance}" campiExtra="${campiExtra}"></amb:extraScheda>
+    </g:if>
+
+    <g:form>
+        <fieldset class="buttons">
+            <g:hiddenField name="id" value="${settingsInstance?.id}"/>
+            <g:link class="edit" action="edit" id="${settingsInstance?.id}">
+                <g:message code="settings.edit.label"
+                           default="Modifica settings"/>
+            </g:link>
+            <g:actionSubmit class="delete" action="delete"
+                            value="${message(code: 'default.button.delete.label', default: 'Delete')}"
+                            onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');"/>
+        </fieldset>
+    </g:form>
+</div>
+</body>
 </html>

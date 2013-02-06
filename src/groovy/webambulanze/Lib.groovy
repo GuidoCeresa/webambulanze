@@ -777,6 +777,46 @@ class Lib {
         return dataFormattata
     }// fine del metodo
 
+    public static String presentaOraData(Date data) {
+        String testo = ''
+        GregorianCalendar cal = new GregorianCalendar()
+        String settimana = getGiorno(data)
+        def mese
+        int numOra = Lib.getNumOra(data)
+        int numMinuti = Lib.getNumMinuti(data)
+        int numGiorno = Lib.getNumGiornoMese(data)
+        int numMese = Lib.getNumMese(data)
+        String numOraTxt
+        String numMinutiTxt
+
+        numOraTxt = numOra + ''
+        if (numOraTxt.length() == 1) {
+            numOraTxt = '0' + numOraTxt
+        }// fine del blocco if
+
+        numMinutiTxt = numMinuti + ''
+        if (numMinutiTxt.length() == 1) {
+            numMinutiTxt = '0' + numMinutiTxt
+        }// fine del blocco if
+
+        cal.setTime(data)
+        mese = cal.get(Calendar.MONTH)
+        mese++
+        mese = Mese.getLong(mese)  //scrive il nome del mese, ma allarga la colonna
+
+        testo += numOraTxt
+        testo += ':'
+        testo += numMinutiTxt
+        testo += ' di '
+        testo += settimana
+        testo += ', '
+        testo += numGiorno
+        testo += ' '
+        testo += mese
+
+        return testo
+    }// fine del metodo
+
     /**
      * Crea la data del primo gennaio corrente anno.
      * <p/>

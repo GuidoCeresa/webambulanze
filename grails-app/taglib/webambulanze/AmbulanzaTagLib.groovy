@@ -1286,6 +1286,7 @@ class AmbulanzaTagLib {
         String turnoIdTxt
         long turnoId
         int numFunzioni
+        TipoTurno tipoTurno
 
         if (params.turnoInstance) {
             turnoIdTxt = params.turnoInstance
@@ -1294,14 +1295,15 @@ class AmbulanzaTagLib {
         }// fine del blocco if
 
         if (turno) {
-            numFunzioni = turno.tipoTurno.numFunzioni()
+            tipoTurno = turno.tipoTurno
+            numFunzioni = tipoTurno.numFunzioni()
             testoOut += formCaption(turno)
 
             testoOut += formRiga('Giorno', Lib.presentaDataCompleta(turno.giorno))
-            testoOut += formRiga('Tipo di turno', Lib.primaMaiuscola(turno.tipoTurno.descrizione))
-            testoOut += formRiga('Inizio', formData(turno.inizio, 'inizio'))
+            testoOut += formRiga('Tipo di turno', formTipoTurno(turno))
+            testoOut += formRiga('Inizio', formData(tipoTurno, turno.inizio, 'inizio'))
             testoOut += formLegenda('Orario di inizio turno (eventualmente modificabile)')
-            testoOut += formRiga('Fine', formData(turno.fine, 'fine'))
+            testoOut += formRiga('Fine', formData(tipoTurno, turno.fine, 'fine'))
             testoOut += formLegenda('Orario di fine turno (eventualmente modificabile)')
             for (int k = 1; k <= numFunzioni; k++) {
                 testoOut += formRigaFunzione(turno, k)
@@ -1313,6 +1315,24 @@ class AmbulanzaTagLib {
         testoOut = Lib.tagTable(testoOut, Aspetto.formtable)
         out << testoOut
     }// fine della closure
+
+    private static String formTipoTurno(Turno turno) {
+        String testo = ''
+        TipoTurno tipoTurno
+        int durata
+
+        if (turno) {
+            tipoTurno = turno.tipoTurno
+        }// fine del blocco if
+
+        if (tipoTurno) {
+            testo = Lib.primaMaiuscola(tipoTurno.descrizione)
+            durata = tipoTurno.durata
+            testo += ' (' + durata + ' ore)'
+        }// fine del blocco if
+
+        return testo
+    }// fine del metodo
 
     private static String formRiga(String label, String value) {
         String testoOut = ''
@@ -1357,7 +1377,25 @@ class AmbulanzaTagLib {
     }// fine del metodo
 
 
-    private static String formData(Date data, String iniziofine) {
+    private String formData(TipoTurno tipoTurno, Date data, String iniziofine) {
+        String testoOut
+        boolean isExtra = false
+        boolean isOrarioTurnoModificabileForm = croceService.isOrarioTurnoModificabileForm(servletContext)
+
+        if (tipoTurno) {
+            isExtra = !tipoTurno.orario
+        }// fine del blocco if
+
+        if (isOrarioTurnoModificabileForm || isExtra) {
+            testoOut = formDataEdit(data, iniziofine)
+        } else {
+            testoOut = formDataShow(data)
+        }// fine del blocco if-else
+
+        return testoOut
+    }// fine del metodo
+
+    private static String formDataEdit(Date data, String iniziofine) {
         String testoOut = ''
         int numOra = Lib.getNumOra(data)
         int numMinuti = Lib.getNumMinuti(data)
@@ -1375,6 +1413,10 @@ class AmbulanzaTagLib {
         testoOut += formSelectMese(iniziofine, numMese)
 
         return testoOut
+    }// fine del metodo
+
+    private static String formDataShow(Date data) {
+        return Lib.presentaOraData(data)
     }// fine del metodo
 
     private static String formInput(Date data, String inizioFine) {
@@ -1624,7 +1666,7 @@ class AmbulanzaTagLib {
 
     //--selettore per il nome del milite
     //--se non è abilitato: valore vuoto o nome del milite già selezionato (da altri) e campo bloccato
-    private String formFunzioneEditLoggatoNonAbilitato(Turno turno, int riga, Funzione funzione) {
+    private static String formFunzioneEditLoggatoNonAbilitato(Turno turno, int riga, Funzione funzione) {
         String testo = ''
         def militeId = ''
         Milite militeDelTurnoPerLaFunzione = getMiliteForFunzione(turno, riga)
@@ -1658,7 +1700,7 @@ class AmbulanzaTagLib {
     }// fine del metodo
 
     private static Milite getMiliteForFunzione(Turno turno, int numFunzione) {
-        Milite milite
+        Milite milite = null
         String num = 'militeFunzione' + numFunzione
 
         if (turno."${num}") {

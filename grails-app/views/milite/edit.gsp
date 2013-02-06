@@ -55,11 +55,13 @@
         <g:render template="form"/>
     </fieldset>
     <fieldset class="buttons">
-        <g:actionSubmit class="save" action="update"
-                        value="${message(code: 'default.button.update.label', default: 'Update')}"/>
-        <g:actionSubmit class="delete" action="delete"
-                        value="${message(code: 'default.button.delete.label', default: 'Delete')}" formnovalidate=""
-                        onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');"/>
+        <g:hiddenField name="id" value="${militeInstance?.id}"/>
+        <g:link class="save" action="update" id="${militeInstance?.id}">
+            <g:message code="default.button.update.label" default="Update"/>
+        </g:link>
+        <g:link class="delete" action="delete" id="${militeInstance?.id}" onclick="return confirm('Sei sicuro?');">
+            <g:message code="default.button.delete.label" default="Delete"/>
+        </g:link>
     </fieldset>
     </g:form>
 </div>

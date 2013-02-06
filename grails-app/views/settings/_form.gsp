@@ -282,6 +282,24 @@
 <g:field name="minGiorniMancantiCancellazione" type="number" value="${settingsInstance.minGiorniMancantiCancellazione}" required=""/>
 </div>
 
+<div class="fieldcontain ${hasErrors(bean: settingsInstance, field: 'isOrarioTurnoModificabileForm', 'error')} ">
+	<label for="isOrarioTurnoModificabileForm">
+		<g:message code="settings.isOrarioTurnoModificabileForm.labelform" default="Is Orario Turno Modificabile Form" />
+		
+	</label>
+	
+
+
+
+
+
+
+
+
+
+<g:checkBox name="isOrarioTurnoModificabileForm" value="${settingsInstance?.isOrarioTurnoModificabileForm}" />
+</div>
+
 <g:if test="${campiExtra}">
     <amb:extraSchedaForm rec="${settingsInstance}" campiExtra="${campiExtra}"></amb:extraSchedaForm>
 </g:if>

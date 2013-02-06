@@ -86,4 +86,48 @@ class CroceService {
 
         return maxMinutiTrascorsiModifica
     }// fine del metodo
+
+    //--controlla il parametro mantenuto nei Settings associati alla croce corrente
+    public boolean isOrarioTurnoModificabileForm() {
+        boolean isOrarioTurnoModificabileForm = false
+        Croce croce = grailsApplication.mainContext.servletContext.croce
+        Settings settings
+
+        if (croce) {
+            settings = croce.settings
+        }// fine del blocco if
+
+        if (settings) {
+            isOrarioTurnoModificabileForm = settings.isOrarioTurnoModificabileForm
+        }// fine del blocco if
+
+        return isOrarioTurnoModificabileForm
+    }// fine del metodo
+
+    //--controlla il parametro mantenuto nei Settings associati alla croce corrente
+    public boolean isOrarioTurnoModificabileForm(def servletContext) {
+        boolean isOrarioTurnoModificabileForm = false
+        Croce croceContesto = servletContext.croce
+        Settings settings
+        String sigla
+        Croce croceCorrente
+
+        if (croceContesto) {
+            sigla = croceContesto.sigla
+        }// fine del blocco if
+
+        if (sigla) {
+            croceCorrente = Croce.findBySigla(sigla)
+        }// fine del blocco if
+
+        if (croceCorrente) {
+            settings = croceCorrente.settings
+        }// fine del blocco if
+
+        if (settings) {
+            isOrarioTurnoModificabileForm = settings.isOrarioTurnoModificabileForm
+        }// fine del blocco if
+
+        return isOrarioTurnoModificabileForm
+    }// fine del metodo
 } // end of Service Class

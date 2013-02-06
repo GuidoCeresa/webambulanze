@@ -99,71 +99,75 @@ class BootStrap implements Cost {
         servletContext.controlli = ''
     }// fine del metodo
 
-    //--creazione inziale della croce virtuale
+    //--Croce interna virtuale
     //--crea solo il record vuoto per farla apparire in lista e nei filtri
-    private static void creazioneCroceInterna() {
-        Croce croce
-
-        //--Interna
-        croce = Croce.findOrCreateBySigla(CROCE_ALGOS)
-        if (!croce.descrizione) {
-            croce.descrizione = 'Croce interna'
-        }// fine del blocco if
-        if (!croce.riferimento) {
-            croce.riferimento = ''
-        }// fine del blocco if
-        if (!croce.indirizzo) {
-            croce.indirizzo = ''
-        }// fine del blocco if
-        if (!croce.telefono) {
-            croce.telefono = ''
-        }// fine del blocco if
-        if (!croce.email) {
-            croce.email = ''
-        }// fine del blocco if
-        if (!croce.note) {
-            croce.note = 'Croce virtuale per mostrare le croci tutte insieme'
-        }// fine del blocco if
-        croce.save(failOnError: true)
-    }// fine del metodo
-
-    //--creazione inziale di una croce dimostrativa
-    //--crea solo il record vuoto per farla apparire in lista e nei filtri
-    private static void creazioneCroceDemo() {
-        Croce croce
-
-        //--Interna
-        croce = Croce.findOrCreateBySigla(CROCE_DEMO)
-        if (!croce.descrizione) {
-            croce.descrizione = 'Croce dimostrativa'
-        }// fine del blocco if
-        if (!croce.riferimento) {
-            croce.riferimento = ''
-        }// fine del blocco if
-        if (!croce.indirizzo) {
-            croce.indirizzo = ''
-        }// fine del blocco if
-        if (!croce.telefono) {
-            croce.telefono = ''
-        }// fine del blocco if
-        if (!croce.email) {
-            croce.email = ''
-        }// fine del blocco if
-        if (!croce.note) {
-            croce.note = 'Croce dimostrativa per mostrare le varie funzionalità possibili'
-        }// fine del blocco if
-        croce.save(failOnError: true)
-    }// fine del metodo
-
     //--creazione inziale della croce
-    //--le crea SOLO se non esistono già
-    //--modifica le proprietà coi valori di default se non sono già stati modificati
-    private static void creazioneCroceRossa() {
-        Croce croce
+    //--controlla SEMPRE
+    //--modifica le proprietà coi valori di default se sono stati vuotati
+    private static void creazioneCroceInterna() {
+        Croce croce = Croce.findOrCreateBySigla(CROCE_ALGOS)
 
-        if (SVILUPPO_CROCE_ROSSA) {
-            //--Croce Rossa
-            croce = Croce.findOrCreateBySigla(CROCE_ROSSA)
+        if (croce) {
+            if (!croce.descrizione) {
+                croce.descrizione = 'Croce interna'
+            }// fine del blocco if
+            if (!croce.riferimento) {
+                croce.riferimento = ''
+            }// fine del blocco if
+            if (!croce.indirizzo) {
+                croce.indirizzo = ''
+            }// fine del blocco if
+            if (!croce.telefono) {
+                croce.telefono = ''
+            }// fine del blocco if
+            if (!croce.email) {
+                croce.email = ''
+            }// fine del blocco if
+            if (!croce.note) {
+                croce.note = 'Croce virtuale per mostrare le croci tutte insieme'
+            }// fine del blocco if
+            croce.save(failOnError: true)
+        }// fine del blocco if
+    }// fine del metodo
+
+    //--Croce Dimostrativa
+    //--creazione inziale della croce
+    //--controlla SEMPRE
+    //--modifica le proprietà coi valori di default se sono stati vuotati
+    private static void creazioneCroceDemo() {
+        Croce croce = Croce.findOrCreateBySigla(CROCE_DEMO)
+
+        if (croce) {
+            if (!croce.descrizione) {
+                croce.descrizione = 'Croce dimostrativa'
+            }// fine del blocco if
+            if (!croce.riferimento) {
+                croce.riferimento = ''
+            }// fine del blocco if
+            if (!croce.indirizzo) {
+                croce.indirizzo = ''
+            }// fine del blocco if
+            if (!croce.telefono) {
+                croce.telefono = ''
+            }// fine del blocco if
+            if (!croce.email) {
+                croce.email = ''
+            }// fine del blocco if
+            if (!croce.note) {
+                croce.note = 'Croce dimostrativa per mostrare le varie funzionalità possibili'
+            }// fine del blocco if
+            croce.save(failOnError: true)
+        }// fine del blocco if
+    }// fine del metodo
+
+    //--Croce Rossa
+    //--creazione inziale della croce
+    //--controlla SEMPRE
+    //--modifica le proprietà coi valori di default se sono stati vuotati
+    private static void creazioneCroceRossa() {
+        Croce croce = Croce.findOrCreateBySigla(CROCE_ROSSA)
+
+        if (croce) {
             if (!croce.descrizione) {
                 croce.descrizione = 'Croce Rossa Italiana - Comitato Locale di Fidenza'
             }// fine del blocco if
@@ -184,36 +188,36 @@ class BootStrap implements Cost {
             }// fine del blocco if
             croce.save(failOnError: true)
         }// fine del blocco if
-
     }// fine del metodo
 
+    //--Croce Pubblica
     //--creazione inziale della croce
-    //--le crea SOLO se non esistono già
-    //--modifica le proprietà coi valori di default se non sono già stati modificati
+    //--controlla SEMPRE
+    //--modifica le proprietà coi valori di default se sono stati vuotati
     private static void creazioneCroceTidone() {
-        Croce croce
+        Croce croce = Croce.findOrCreateBySigla(CROCE_PUBBLICA)
 
-        //--Pubblica
-        croce = Croce.findOrCreateBySigla(CROCE_PUBBLICA)
-        if (!croce.descrizione) {
-            croce.descrizione = 'Pubblica Assistenza Val Tidone'
+        if (croce) {
+            if (!croce.descrizione) {
+                croce.descrizione = 'Pubblica Assistenza Val Tidone'
+            }// fine del blocco if
+            if (!croce.riferimento) {
+                croce.riferimento = 'Giuseppe Borlenghi'
+            }// fine del blocco if
+            if (!croce.indirizzo) {
+                croce.indirizzo = 'via Morselli, 16 - 29015 Castel San Giovanni (PC)'
+            }// fine del blocco if
+            if (!croce.telefono) {
+                croce.telefono = '0523 842229'
+            }// fine del blocco if
+            if (!croce.email) {
+                croce.email = 'info@pavaltidone.it'
+            }// fine del blocco if
+            if (!croce.note) {
+                croce.note = ''
+            }// fine del blocco if
+            croce.save(failOnError: true)
         }// fine del blocco if
-        if (!croce.riferimento) {
-            croce.riferimento = 'Giuseppe Borlenghi'
-        }// fine del blocco if
-        if (!croce.indirizzo) {
-            croce.indirizzo = 'via Morselli, 16 - 29015 Castel San Giovanni (PC)'
-        }// fine del blocco if
-        if (!croce.telefono) {
-            croce.telefono = '0523 842229'
-        }// fine del blocco if
-        if (!croce.email) {
-            croce.email = 'info@pavaltidone.it'
-        }// fine del blocco if
-        if (!croce.note) {
-            croce.note = ''
-        }// fine del blocco if
-        croce.save(failOnError: true)
     }// fine del metodo
 
     //--creazione ruoli generali di accesso alle autorizzazioni gestite dal security-plugin
@@ -327,14 +331,13 @@ class BootStrap implements Cost {
         }// fine del blocco if
     }// fine del metodo
 
+    //--Croce interna virtuale
     //--creazione record di configurazione (settings)
     //--lo crea SOLO se non esiste già
     private static void configurazioneCroceInterna() {
-        Croce croce
+        Croce croce = Croce.findOrCreateBySigla(CROCE_ALGOS)
         Settings setting
 
-        //--Interna
-        croce = Croce.findBySigla(CROCE_ALGOS)
         if (croce) {
             setting = Settings.findByCroce(croce)
             if (setting == null) {
@@ -354,19 +357,19 @@ class BootStrap implements Cost {
                 setting.tipoControlloCancellazione = ControlloTemporale.nessuno
                 setting.maxMinutiTrascorsiCancellazione = 0
                 setting.minGiorniMancantiCancellazione = 0
+                setting.isOrarioTurnoModificabileForm = false
                 setting.save(failOnError: true)
             }// fine del blocco if
         }// fine del blocco if
     }// fine del metodo
 
+    //--Croce interna dimostrativa
     //--creazione record di configurazione (settings)
     //--lo crea SOLO se non esiste già
     private static void configurazioneCroceDemo() {
-        Croce croce
+        Croce croce = Croce.findOrCreateBySigla(CROCE_DEMO)
         Settings setting
 
-        //--Interna
-        croce = Croce.findBySigla(CROCE_DEMO)
         if (croce) {
             setting = Settings.findByCroce(croce)
             if (setting == null) {
@@ -386,55 +389,51 @@ class BootStrap implements Cost {
                 setting.tipoControlloCancellazione = ControlloTemporale.nessuno
                 setting.maxMinutiTrascorsiCancellazione = 0
                 setting.minGiorniMancantiCancellazione = 0
+                setting.isOrarioTurnoModificabileForm = false
                 setting.save(failOnError: true)
             }// fine del blocco if
         }// fine del blocco if
     }// fine del metodo
 
+    //--Croce interna rossa
     //--creazione record di configurazione (settings)
-    //--uno per ogni croce
     //--lo crea SOLO se non esiste già
     private static void configurazioneCroceRossa() {
-        Croce croce
+        Croce croce = Croce.findOrCreateBySigla(CROCE_ROSSA)
         Settings setting
 
-        //--aggiunta solo per la croce citata
-        if (SVILUPPO_CROCE_ROSSA) {
-            croce = Croce.findBySigla(CROCE_ROSSA)
-            if (croce) {
-                setting = Settings.findByCroce(croce)
-                if (setting == null) {
-                    setting = new Settings(croce: croce)
-                    setting.startLogin = true
-                    setting.startController = 'turno'
-                    setting.allControllers = false
-                    setting.controlli = ''
-                    setting.mostraSoloMilitiFunzione = true
-                    setting.mostraMilitiFunzioneAndAltri = false
-                    setting.militePuoInserireAltri = false
-                    setting.militePuoModificareAltri = false
-                    setting.militePuoCancellareAltri = false
-                    setting.tipoControlloModifica = ControlloTemporale.tempoTrascorso
-                    setting.maxMinutiTrascorsiModifica = 30
-                    setting.minGiorniMancantiModifica = 0
-                    setting.tipoControlloCancellazione = ControlloTemporale.tempoTrascorso
-                    setting.maxMinutiTrascorsiCancellazione = 30
-                    setting.minGiorniMancantiCancellazione = 0
-                    setting.save(failOnError: true)
-                }// fine del blocco if
+        if (croce) {
+            setting = Settings.findByCroce(croce)
+            if (setting == null) {
+                setting = new Settings(croce: croce)
+                setting.startLogin = true
+                setting.startController = 'turno'
+                setting.allControllers = false
+                setting.controlli = ''
+                setting.mostraSoloMilitiFunzione = true
+                setting.mostraMilitiFunzioneAndAltri = false
+                setting.militePuoInserireAltri = false
+                setting.militePuoModificareAltri = false
+                setting.militePuoCancellareAltri = false
+                setting.tipoControlloModifica = ControlloTemporale.tempoTrascorso
+                setting.maxMinutiTrascorsiModifica = 30
+                setting.minGiorniMancantiModifica = 0
+                setting.tipoControlloCancellazione = ControlloTemporale.tempoTrascorso
+                setting.maxMinutiTrascorsiCancellazione = 30
+                setting.minGiorniMancantiCancellazione = 0
+                setting.isOrarioTurnoModificabileForm = false
+                setting.save(failOnError: true)
             }// fine del blocco if
         }// fine del blocco if
     }// fine del metodo
 
+    //--Croce interna tidone
     //--creazione record di configurazione (settings)
-    //--uno per ogni croce
     //--lo crea SOLO se non esiste già
     private static void configurazioneCroceTidone() {
-        Croce croce
+        Croce croce = Croce.findOrCreateBySigla(CROCE_PUBBLICA)
         Settings setting
 
-        //--aggiunta solo per la croce citata
-        croce = Croce.findBySigla(CROCE_PUBBLICA)
         if (croce) {
             setting = Settings.findByCroce(croce)
             if (setting == null) {
@@ -454,6 +453,7 @@ class BootStrap implements Cost {
                 setting.tipoControlloCancellazione = ControlloTemporale.nessuno
                 setting.maxMinutiTrascorsiCancellazione = 0
                 setting.minGiorniMancantiCancellazione = 0
+                setting.isOrarioTurnoModificabileForm = false
                 setting.save(failOnError: true)
             }// fine del blocco if
         }// fine del blocco if
@@ -480,25 +480,21 @@ class BootStrap implements Cost {
         }// fine del blocco each
     }// fine del metodo
 
-    //--creazione funzioni per ogni croce
+    //--creazione funzioni per la croce demo
     //--ogni croce ha SEMPRE diverse funzioni
     //--li crea SOLO se non esistono già
     private static void funzioniCroceDemo() {
-
-        //--aggiunta solo per la croce Demo
         funzDemo.add(newFunzione(CROCE_DEMO, 'aut', 'Aut', 'Autista', 1, ''))
         funzDemo.add(newFunzione(CROCE_DEMO, 'sec', 'Sec', 'Soccorritore', 2, ''))
         funzDemo.add(newFunzione(CROCE_DEMO, 'ter', 'Ter', 'Aiuto', 3, ''))
     }// fine del metodo
 
-    //--creazione funzioni per ogni croce
+    //--creazione funzioni per la croce rossa
     //--ogni croce ha SEMPRE diverse funzioni
     //--li crea SOLO se non esistono già
     private static void funzioniCroceRossa() {
-
-        //--aggiunta solo per la croce Rossa
-        //--turni automedica
         if (SVILUPPO_CROCE_ROSSA) {
+            //--turni automedica
             newFunzRossaMedica('aut-msa', 'Aut MSA', 'Autista automedica', 1, 'pri-msa, sec-msa')
             newFunzRossaMedica('pri-msa', '1° soc', 'Primo soccorritore automedica', 2, 'sec-msa')
             newFunzRossaMedica('sec-msa', '2° soc', 'Secondo soccorritore automedica', 3, '')
@@ -510,12 +506,10 @@ class BootStrap implements Cost {
         }// fine del blocco if
     }// fine del metodo
 
-    //--creazione funzioni per ogni croce
+    //--creazione funzioni per la croce tidone
     //--ogni croce ha SEMPRE diverse funzioni
     //--li crea SOLO se non esistono già
     private static void funzioniCroceTidone() {
-
-        //--aggiunta solo per la croce Pubblica
         //--turni ordinari
         newFunzTidoneOrd('autistaord', 'Aut Ord', 'Autista', 1, 'secondoord, terzoord')
         newFunzTidoneOrd('secondoord', '2° ord', 'Secondo', 2, 'terzoord')
@@ -596,25 +590,21 @@ class BootStrap implements Cost {
         return funzione
     }// fine del metodo
 
-    //--creazione delle tipologie di turni per ogni croce
+    //--creazione delle tipologie di turni per la croce demo
     //--ogni croce può avere tipologie differenti
     //--li crea SOLO se non esistono già
     private static void tipiDiTurnoDemo() {
-
-        //--aggiunta solo per la croce Demo
         newTipoTurno(CROCE_DEMO, 'mat', 'mattino', 1, 8, 14, false, true, true, false, 1, funzDemo)
         newTipoTurno(CROCE_DEMO, 'pom', 'pomeriggio', 2, 14, 20, false, true, true, false, 1, funzDemo)
         newTipoTurno(CROCE_DEMO, 'notte', 'notte', 3, 20, 8, true, true, true, false, 1, funzDemo)
     }// fine del metodo
 
-    //--creazione delle tipologie di turni per ogni croce
+    //--creazione delle tipologie di turni per la croce rossa
     //--ogni croce può avere tipologie differenti
     //--li crea SOLO se non esistono già
     private static void tipiDiTurnoRossa() {
-
-        //--aggiunta solo per la croce Rossa
-        //--turni automedica
         if (SVILUPPO_CROCE_ROSSA) {
+            //--turni automedica
             newTipoTurnoMedicRossa('msa-mat', 'automedica mattina', 1, 7, 13, false, true, true, false, 1)
             newTipoTurnoMedicRossa('msa-pom', 'automedica pomeriggio', 2, 13, 19, false, true, true, false, 1)
             newTipoTurnoMedicRossa('msa-notte', 'automedica notte', 3, 19, 7, true, true, true, false, 1)
@@ -627,12 +617,10 @@ class BootStrap implements Cost {
         }// fine del blocco if
     }// fine del metodo
 
-    //--creazione delle tipologie di turni per ogni croce
+    //--creazione delle tipologie di turni per la croce tidone
     //--ogni croce può avere tipologie differenti
     //--li crea SOLO se non esistono già
     private static void tipiDiTurnoTidone() {
-
-        //--aggiunta solo per la croce Pubblica
         //--ordinari escluso domenica
         //--118 esteso (mattino successivo alle 8) nei prefestivi
         newTipoTurnoOrdPAVT('ord-mat', 'ordinario mattino', 1, 7, 14, false, true, true, false, 2)
@@ -772,6 +760,15 @@ class BootStrap implements Cost {
         def listaMiliti
         Milite milite
 
+        if (!croce) {
+            return
+        }// fine del blocco if
+
+        //--prosegue solo se il database è vuoto
+        if (Milite.findAllByCroce(croce).size() > 0) {
+            return
+        }// fine del blocco if
+
         righe?.each {
             mappa = (Map) it
             nome = mappa.nome
@@ -808,7 +805,7 @@ class BootStrap implements Cost {
     }// fine del metodo
 
     //--creazione dell'elenco militi per la Croce Rossa Fidenza
-    //--elenco disponibile in csv con nomi tutti maiuscoli
+    //--elenco disponibile in csv
     //--li crea SOLO se non esistono già
     private static void militiRossa() {
         Croce croce = Croce.findBySigla(CROCE_ROSSA)
@@ -831,12 +828,16 @@ class BootStrap implements Cost {
         boolean als = false
         boolean aut = false
 
-        if (!SVILUPPO_CROCE_ROSSA) {
+        if (!croce) {
             return
         }// fine del blocco if
 
-        //--esegue solo se il database (della Rossa) è vuoto
+        //--prosegue solo se il database è vuoto
         if (Milite.findAllByCroce(croce).size() > 0) {
+            return
+        }// fine del blocco if
+
+        if (!SVILUPPO_CROCE_ROSSA) {
             return
         }// fine del blocco if
 
@@ -940,8 +941,18 @@ class BootStrap implements Cost {
         String telCellulare
         Map mappa
         righe = LibFile.leggeCsv(DIR_PATH + nomeFile)
+
         if (!righe) {
             // log 'file non trovato'
+        }// fine del blocco if
+
+        if (!croce) {
+            return
+        }// fine del blocco if
+
+        //--prosegue solo se il database è vuoto
+        if (Milite.findAllByCroce(croce).size() > 0) {
+            return
         }// fine del blocco if
 
         righe?.each {
@@ -1005,7 +1016,7 @@ class BootStrap implements Cost {
         }
     }// fine del metodo
 
-    //--creazione dei record utenti
+    //--creazione dei record utenti per la croce rossa
     //--uno per ogni milite
     //--nickname=cognomeNome
     //--password=cognome(minuscolo) + 3 cifre numeriche random
@@ -1016,17 +1027,21 @@ class BootStrap implements Cost {
         ArrayList listaMiliti
         Milite milite
 
-        if (SVILUPPO_CROCE_ROSSA) {
-            if (croce) {
-                listaUtenti = Utente.findAllByCroce(croce)
-                if (listaUtenti.size() > numUtentiRossa) {
-                    listaMiliti = Milite.findAllByCroce(croce)
-                    listaMiliti?.each {
-                        milite = (Milite) it
-                        newUtenteMilite(CROCE_ROSSA, milite)
-                    } // fine del ciclo each
-                }// fine del blocco if
-            }// fine del blocco if
+        if (!croce) {
+            return
+        }// fine del blocco if
+
+        if (!SVILUPPO_CROCE_ROSSA) {
+            return
+        }// fine del blocco if
+
+        listaUtenti = Utente.findAllByCroce(croce)
+        if (listaUtenti.size() > numUtentiRossa) {
+            listaMiliti = Milite.findAllByCroce(croce)
+            listaMiliti?.each {
+                milite = (Milite) it
+                newUtenteMilite(CROCE_ROSSA, milite)
+            } // fine del ciclo each
         }// fine del blocco if
     }// fine del metodo
 
@@ -1038,17 +1053,19 @@ class BootStrap implements Cost {
         def listaTipoTurno
         def listaTurni
 
-        if (croce) {
-            listaTurni = Turno.findAllByCroceAndGiornoGreaterThan(croce, primoGennaio2013)
-            listaTipoTurno = TipoTurno.findAllByCroce(croce, [sort: "ordine", order: "asc"])
-            if (listaTurni.size() < 100) {
-                if (listaTipoTurno) {
-                    for (int k = 0; k < 365; k++) {
-                        listaTipoTurno.each {
-                            creaTurnoVuotoDemo(croce, it, k)
-                        } // fine del ciclo each
-                    } // fine del ciclo for
-                }// fine del blocco if
+        if (!croce) {
+            return
+        }// fine del blocco if
+
+        listaTurni = Turno.findAllByCroceAndGiornoGreaterThan(croce, primoGennaio2013)
+        listaTipoTurno = TipoTurno.findAllByCroce(croce, [sort: "ordine", order: "asc"])
+        if (listaTurni.size() < 100) {
+            if (listaTipoTurno) {
+                for (int k = 0; k < 365; k++) {
+                    listaTipoTurno.each {
+                        creaTurnoVuotoDemo(croce, it, k)
+                    } // fine del ciclo each
+                } // fine del ciclo for
             }// fine del blocco if
         }// fine del blocco if
     }// fine del metodo
@@ -1061,19 +1078,23 @@ class BootStrap implements Cost {
         def listaTipoTurno
         def listaTurni
 
-        if (SVILUPPO_CROCE_ROSSA) {
-            if (croce) {
-                listaTurni = Turno.findAllByCroceAndGiornoGreaterThan(croce, primoGennaio2013)
-                listaTipoTurno = TipoTurno.findAllByCroce(croce, [sort: "ordine", order: "asc"])
-                if (listaTurni.size() < 100) {
-                    if (listaTipoTurno) {
-                        for (int k = 0; k < 365; k++) {
-                            listaTipoTurno.each {
-                                creaTurnoVuotoRossa(croce, it, k)
-                            } // fine del ciclo each
-                        } // fine del ciclo for
-                    }// fine del blocco if
-                }// fine del blocco if
+        if (!croce) {
+            return
+        }// fine del blocco if
+
+        if (!SVILUPPO_CROCE_ROSSA) {
+            return
+        }// fine del blocco if
+
+        listaTurni = Turno.findAllByCroceAndGiornoGreaterThan(croce, primoGennaio2013)
+        listaTipoTurno = TipoTurno.findAllByCroce(croce, [sort: "ordine", order: "asc"])
+        if (listaTurni.size() < 100) {
+            if (listaTipoTurno) {
+                for (int k = 0; k < 365; k++) {
+                    listaTipoTurno.each {
+                        creaTurnoVuotoRossa(croce, it, k)
+                    } // fine del ciclo each
+                } // fine del ciclo for
             }// fine del blocco if
         }// fine del blocco if
     }// fine del metodo
