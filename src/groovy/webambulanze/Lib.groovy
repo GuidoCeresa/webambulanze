@@ -870,6 +870,33 @@ class Lib {
         return giorno
     }// fine del metodo
 
+    /**
+     * Crea la data del giorno.
+     *
+     * @return la data creata
+     */
+    public static Date creaDataOggi() {
+        /* variabili e costanti locali di lavoro */
+        Date giorno = new Date()
+        Calendar cal
+
+        try { // prova ad eseguire il codice
+            cal = Calendar.getInstance()
+            cal.setTime(giorno)
+            cal.set(Calendar.HOUR_OF_DAY, 0)
+            cal.set(Calendar.MINUTE, 0)
+            cal.set(Calendar.SECOND, 0)
+            cal.set(Calendar.MILLISECOND, 0)
+
+            giorno = new java.util.Date(cal.getTime().getTime());
+
+        } catch (Exception unErrore) { // intercetta l'errore
+        }// fine del blocco try-catch
+
+        /* valore di ritorno */
+        return giorno
+    }// fine del metodo
+
     public static Date setOra(Date giornoIn, int ora) {
         Date giornoOut
         Calendar cal = Calendar.getInstance()

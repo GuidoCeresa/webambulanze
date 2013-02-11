@@ -1049,7 +1049,6 @@ class AmbulanzaTagLib {
         int numFunzioni
         Aspetto aspetto
 
-        aspetto = calcolaAspetto()
         if (turno == null) {
             html = htmlNew
             cella = Aspetto.turnovuoto
@@ -1066,6 +1065,8 @@ class AmbulanzaTagLib {
                 nomeMilite = testoVuoto
             }// fine del blocco if-else
         }// fine del blocco if-else
+
+        aspetto = calcolaAspetto(turno)
 
         if (numFunzioni) {
             for (int k = 1; k <= numFunzioni; k++) {
@@ -1087,30 +1088,48 @@ class AmbulanzaTagLib {
         testoCella += nomeMilite
         testoCella += '</a>'
 
-        testoOut += Lib.tagCella(testoCella, cella)
+        testoOut += Lib.tagCella(testoCella, aspetto)
 
         return testoOut
     }// fine del metodo
 
     private static Aspetto calcolaAspetto(Turno turno) {
-        Aspetto aspetto = null
+        Aspetto aspetto = Aspetto.turnovuoto
+        Date giornoCorrente = Lib.creaDataOggi()
+        Date giornoTurno
+        int delta
 
-        if (turno == null) {
-            html = htmlNew
-            cella = Aspetto.turnovuoto
-            nomeMilite = testoVuoto
-        } else {
-            numFunzioni = turno.tipoTurno.numFunzioni()
-            html = htmlFill
-            turnoId = turno.id
+        if (turno) {
+            giornoTurno = turno.giorno
+        }// fine del blocco if
+
+        if (giornoTurno) {
+            delta = giornoTurno - giornoCorrente
+
+            if (delta < 1) {
+                aspetto = Aspetto.turnoeffettuato
+                return aspetto
+            }// fine del blocco if
+
             if (turno.assegnato) {
-                cella = Aspetto.turnoassegnato
-                nomeMilite = testoVuoto
-            } else {
-                cella = Aspetto.turnoprevisto
-                nomeMilite = testoVuoto
-            }// fine del blocco if-else
-        }// fine del blocco if-else
+                aspetto = Aspetto.turnoassegnato
+                return aspetto
+            }// fine del blocco if
+
+            switch (delta) {
+                case 1:
+                    aspetto = Aspetto.turnocritico
+                    break
+                case 2:
+                case 3:
+                case 4:
+                    aspetto = Aspetto.turnolibero
+                    break
+                default: // caso non definito
+                    aspetto = Aspetto.turnoprevisto
+                    break
+            } // fine del blocco switch
+        }// fine del blocco if
 
         return aspetto
     }// fine del metodo
@@ -1278,8 +1297,8 @@ class AmbulanzaTagLib {
         testo += Lib.tagCella('Legenda', Aspetto.footerlegenda)
         testo += Lib.tagCella('', Aspetto.turnoeffettuato)
         testo += Lib.tagCella('Turno già effettuato')
-        testo += Lib.tagCella('', Aspetto.turnobloccato)
-        testo += Lib.tagCella('Turno assegnato bloccato e non più modificabile')
+//        testo += Lib.tagCella('', Aspetto.turnobloccato)
+//        testo += Lib.tagCella('Turno assegnato bloccato e non più modificabile')
         testo += Lib.tagCella('', Aspetto.turnocritico)
         testo += Lib.tagCella('Turno critico da assegnare subito')
         testo += Lib.tagCella('', Aspetto.turnolibero)
