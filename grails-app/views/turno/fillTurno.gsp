@@ -45,7 +45,7 @@
         <g:hiddenField name="version" value="${turnoInstance?.version}"/>
         <g:hiddenField name="nuovoTurno" value="${nuovoTurno}"/>
         <fieldset class="form">
-            <amb:fillForm turnoInstance="${turnoInstance?.id}"></amb:fillForm>
+            <amb:fillForm turnoInstance="${turnoInstance?.id}" nuovoTurno="${nuovoTurno}"></amb:fillForm>
         </fieldset>
         <fieldset class="buttons">
             <g:actionSubmit class="save" action="update"

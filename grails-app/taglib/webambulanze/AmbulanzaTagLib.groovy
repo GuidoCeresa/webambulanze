@@ -1047,7 +1047,9 @@ class AmbulanzaTagLib {
         Funzione funzioneDelTurno
         Milite milite
         int numFunzioni
+        Aspetto aspetto
 
+        aspetto = calcolaAspetto()
         if (turno == null) {
             html = htmlNew
             cella = Aspetto.turnovuoto
@@ -1088,6 +1090,29 @@ class AmbulanzaTagLib {
         testoOut += Lib.tagCella(testoCella, cella)
 
         return testoOut
+    }// fine del metodo
+
+    private static Aspetto calcolaAspetto(Turno turno) {
+        Aspetto aspetto = null
+
+        if (turno == null) {
+            html = htmlNew
+            cella = Aspetto.turnovuoto
+            nomeMilite = testoVuoto
+        } else {
+            numFunzioni = turno.tipoTurno.numFunzioni()
+            html = htmlFill
+            turnoId = turno.id
+            if (turno.assegnato) {
+                cella = Aspetto.turnoassegnato
+                nomeMilite = testoVuoto
+            } else {
+                cella = Aspetto.turnoprevisto
+                nomeMilite = testoVuoto
+            }// fine del blocco if-else
+        }// fine del blocco if-else
+
+        return aspetto
     }// fine del metodo
 
     private static String nomeMiliteCella(Turno turno, Funzione funzioneDellaRiga, int numFunzione) {
@@ -1287,11 +1312,20 @@ class AmbulanzaTagLib {
         long turnoId
         int numFunzioni
         TipoTurno tipoTurno
+        String nuovoTurnoTxt
+        boolean nuovoTurno = false
 
         if (params.turnoInstance) {
             turnoIdTxt = params.turnoInstance
             turnoId = Long.decode(turnoIdTxt)
             turno = Turno.get(turnoId)
+        }// fine del blocco if
+
+        if (params.nuovoTurno) {
+            nuovoTurnoTxt = params.nuovoTurno
+            if (nuovoTurnoTxt && nuovoTurnoTxt.equals('true')) {
+                nuovoTurno = true
+            }// fine del blocco if
         }// fine del blocco if
 
         if (turno) {
@@ -1306,7 +1340,7 @@ class AmbulanzaTagLib {
             testoOut += formRiga('Fine', formData(tipoTurno, turno.fine, 'fine'))
             testoOut += formLegenda('Orario di fine turno (eventualmente modificabile)')
             for (int k = 1; k <= numFunzioni; k++) {
-                testoOut += formRigaFunzione(turno, k)
+                testoOut += formRigaFunzione(turno, nuovoTurno, k)
                 testoOut += formLegenda('Lista (in ordine alfabetico) di tutti i militi')
             } // fine del ciclo for
             testoOut += formRiga('Note', formNote(turno.note))
@@ -1345,7 +1379,7 @@ class AmbulanzaTagLib {
         return testoOut
     }// fine del metodo
 
-    private String formRigaFunzione(Turno turno, int riga) {
+    private String formRigaFunzione(Turno turno, boolean nuovoTurno, int riga) {
         String testoOut = ''
         String testoRiga = ''
 
@@ -1353,7 +1387,7 @@ class AmbulanzaTagLib {
         testoRiga += Lib.tagCella(formFunzioneEdit(turno, riga), Aspetto.formeditleft)
         testoRiga += Lib.tagCella(formBox(turno, riga), Aspetto.formlabelright)
         testoRiga += Lib.tagCella('ore', Aspetto.formlabelright)
-        testoRiga += Lib.tagCella(formOreMilite(turno, riga), Aspetto.formeditright)
+        testoRiga += Lib.tagCella(formOreMilite(turno, nuovoTurno, riga), Aspetto.formeditright)
         testoOut += Lib.tagRiga(testoRiga)
 
         return testoOut
@@ -1738,10 +1772,14 @@ class AmbulanzaTagLib {
         return testo
     }
 
-    private static String formOreMilite(Turno turno, int numFunzione) {
+    private static String formOreMilite(Turno turno, boolean nuovoTurno, int numFunzione) {
         String testo = ''
         String label = 'oreMilite' + numFunzione
         String value = turno."${label}"
+
+        if (nuovoTurno) {
+            value = turno.tipoTurno.durata
+        }// fine del blocco if
 
         testo += "<input type=\"text\" name=\"${label}\" value=\"${value}\" style=\"width: 30px\" id=\"${label}\"/>"
 

@@ -139,7 +139,7 @@ class LogoService {
         logo.dettaglio = ''
         logo.save(flush: true)
 
-        postaService.sendLogoMail(logo)
+ //       postaService.sendLogoMail(logo)
 
         return testoFlash
     }// fine del metodo
