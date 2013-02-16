@@ -167,9 +167,10 @@ class AmbulanzaTagLib {
         testo += this.titoliTabella(inizio, fine)
         testo += this.corpoTabella(croce, inizio, fine)
         testo += this.legenda()
-        //      testoOut += this.noteBottom()
+        testo += copyright()
 
         testoOut = Lib.tagTable(testo)
+
         out << testoOut
     }// fine della closure
 
@@ -1316,6 +1317,21 @@ class AmbulanzaTagLib {
     }// fine del metodo
 
     /**
+     * Copyright e/o versione in fondo <br>
+     *
+     * @return testo del tag
+     */
+    private static String copyright() {
+        String testoOut
+        String testo
+
+        testo = 'Algos© 2013 - Versione 0.7 del 16 febbraio 2013'
+        testo = Lib.tagCella(testo, Aspetto.copyright)
+        testoOut = Lib.tagTable(testo)
+        return testoOut
+    }// fine del metodo
+
+    /**
      * Form del singolo turno <br>
      *
      * @param mappa parametri
@@ -1333,6 +1349,7 @@ class AmbulanzaTagLib {
         TipoTurno tipoTurno
         String nuovoTurnoTxt
         boolean nuovoTurno = false
+        boolean isTurnoExtra = false
 
         if (params.turnoInstance) {
             turnoIdTxt = params.turnoInstance
@@ -1349,6 +1366,10 @@ class AmbulanzaTagLib {
 
         if (turno) {
             tipoTurno = turno.tipoTurno
+            if (tipoTurno.sigla.equals(Cost.EXTRA)) {
+                isTurnoExtra = true
+            }// fine del blocco if
+
             numFunzioni = tipoTurno.numFunzioni()
             testoOut += formCaption(turno)
 
@@ -1358,6 +1379,10 @@ class AmbulanzaTagLib {
             testoOut += formLegenda('Orario di inizio turno (eventualmente modificabile)')
             testoOut += formRiga('Fine', formData(tipoTurno, turno.fine, 'fine'))
             testoOut += formLegenda('Orario di fine turno (eventualmente modificabile)')
+            if (isTurnoExtra) {
+                testoOut += formRiga('Titolo', Lib.tagCella('mario'))
+                testoOut += formRiga('Località', Lib.presentaDataCompleta(turno.giorno))
+            }// fine del blocco if
             for (int k = 1; k <= numFunzioni; k++) {
                 testoOut += formRigaFunzione(turno, nuovoTurno, k)
                 testoOut += formLegenda('Lista (in ordine alfabetico) di tutti i militi')
@@ -1433,7 +1458,7 @@ class AmbulanzaTagLib {
     private String formData(TipoTurno tipoTurno, Date data, String iniziofine) {
         String testoOut
         boolean isExtra = false
-        boolean isOrarioTurnoModificabileForm = croceService.isOrarioTurnoModificabileForm(servletContext)
+        boolean isOrarioTurnoModificabileForm = croceService.isOrarioTurnoModificabileForm()
 
         if (tipoTurno) {
             isExtra = !tipoTurno.orario

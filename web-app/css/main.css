@@ -916,3 +916,15 @@ table.amb {
     border-collapse: collapse;
     background-color: rgb(255, 250, 250);
 }
+
+td.copyright {
+    background: #339966;
+    color: #ffffff;
+    font-size: 0.6em;
+    font-weight: normal;
+    vertical-align: middle;
+    /*    border-width: 2px 0 0 0;*/
+    padding: 2px;
+    /*border-style: solid;*/
+    /*border-color: blue;*/
+}

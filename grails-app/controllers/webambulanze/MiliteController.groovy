@@ -169,7 +169,7 @@ class MiliteController {
 
         if (!militeInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'milite.label', default: 'Milite'), id])
-            redirect(action: "list")
+            redirect(action: 'list')
             return
         }
 

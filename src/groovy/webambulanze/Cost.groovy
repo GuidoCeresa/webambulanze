@@ -38,6 +38,7 @@ public interface Cost {
 
     //--sigla e password del programmatore
     public static String PROG_NICK = '---'
+    public static String PROG_NICK_DEMO = '----' //--i nick sono unici
     public static String PROG_PASS = 'fulvia'
 
     //--sigla e password per accesso libero alla croce demo

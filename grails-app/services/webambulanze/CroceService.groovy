@@ -9,7 +9,7 @@ class CroceService {
     //--recupera la croce corrente
     private boolean isFlag(codice) {
         boolean flag = false
-        Croce croce = grailsApplication.mainContext.servletContext.croce
+        Croce croce = getCroceCorrente()
         Settings settings
 
         if (croce) {
@@ -51,7 +51,7 @@ class CroceService {
     //--controlla il parametro mantenuto nei Settings associati alla croce corrente
     public ControlloTemporale getControlloModifica() {
         ControlloTemporale tipoControlloModifica = null
-        Croce croce = grailsApplication.mainContext.servletContext.croce
+        Croce croce = getCroceCorrente()
         Settings settings
 
         if (croce) {
@@ -73,7 +73,7 @@ class CroceService {
     //--controlla il parametro mantenuto nei Settings associati alla croce corrente
     public int getMaxMinutiTrascorsiModifica() {
         int maxMinutiTrascorsiModifica = 0
-        Croce croce = grailsApplication.mainContext.servletContext.croce
+        Croce croce = getCroceCorrente()
         Settings settings
 
         if (croce) {
@@ -90,7 +90,7 @@ class CroceService {
     //--controlla il parametro mantenuto nei Settings associati alla croce corrente
     public boolean isOrarioTurnoModificabileForm() {
         boolean isOrarioTurnoModificabileForm = false
-        Croce croce = grailsApplication.mainContext.servletContext.croce
+        Croce croce = getCroceCorrente()
         Settings settings
 
         if (croce) {
@@ -104,30 +104,28 @@ class CroceService {
         return isOrarioTurnoModificabileForm
     }// fine del metodo
 
-    //--controlla il parametro mantenuto nei Settings associati alla croce corrente
-    public boolean isOrarioTurnoModificabileForm(def servletContext) {
-        boolean isOrarioTurnoModificabileForm = false
-        Croce croceContesto = servletContext.croce
-        Settings settings
-        String sigla
+    //--restituisce la croce corrente
+    private Croce getCroceCorrente() {
         Croce croceCorrente
+        def context = grailsApplication.mainContext.servletContext
+
+        return getCroceCorrente(context)
+    }// fine del metodo
+
+    //--restituisce la croce corrente
+    private static Croce getCroceCorrente(def servletContext) {
+        Croce croceCorrente = null
+        Croce croceContesto = servletContext.croce
+        String siglaCroce
 
         if (croceContesto) {
-            sigla = croceContesto.sigla
+            siglaCroce = croceContesto.sigla
         }// fine del blocco if
 
-        if (sigla) {
-            croceCorrente = Croce.findBySigla(sigla)
+        if (siglaCroce) {
+            croceCorrente = Croce.findBySigla(siglaCroce)
         }// fine del blocco if
 
-        if (croceCorrente) {
-            settings = croceCorrente.settings
-        }// fine del blocco if
-
-        if (settings) {
-            isOrarioTurnoModificabileForm = settings.isOrarioTurnoModificabileForm
-        }// fine del blocco if
-
-        return isOrarioTurnoModificabileForm
+        return croceCorrente
     }// fine del metodo
 } // end of Service Class

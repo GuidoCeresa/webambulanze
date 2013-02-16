@@ -1,4 +1,5 @@
 package webambulanze
+
 import grails.plugins.springsecurity.Secured
 import org.springframework.security.core.context.SecurityContextHolder
 
@@ -119,6 +120,19 @@ class GenController {
             render(controller: 'gen', view: 'home')
         }// fine del blocco if-else
     } // fine del metodo
+
+    def logoutdemo() {
+        //--regolazioni generali
+        selezionaCroceBase(Cost.CROCE_DEMO)
+
+        if (grailsApplication.mainContext.servletContext.startController) {
+            //--va alla schermata specifica
+            redirect(controller: grailsApplication.mainContext.servletContext.startController)
+        } else {
+            //--va al menu base
+            render(controller: 'gen', view: 'home')
+        }// fine del blocco if-else
+    }
 
     //--chiamata da URL = demo
     //--selezione iniziale della croce dimostrativa su cui operare

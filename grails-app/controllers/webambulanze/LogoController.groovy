@@ -27,13 +27,12 @@ class LogoController {
         Croce croce
         String sigla
         def campiLista = [
-                'id',
-                'croceLogo',
                 'time',
                 'utente',
                 'ruolo',
                 'evento',
                 'livello',
+                'milite',
                 'tipoTurno',
                 'turno',
                 'giorno'
@@ -48,7 +47,7 @@ class LogoController {
                 params.order = 'asc'
             }// fine del blocco if-else
         } else {
-            params.order = 'asc'
+            params.order = 'desc'
         }// fine del blocco if-else
 
         if (grailsApplication.mainContext.servletContext.croce) {
@@ -56,6 +55,7 @@ class LogoController {
             sigla = croce.sigla
             if (sigla.equals(Cost.CROCE_ALGOS)) {
                 lista = Logo.findAll(params)
+                campiLista = ['id', 'crocelogo'] + campiLista
             } else {
                 lista = Logo.findAllByCroceLogo(croce, params)
             }// fine del blocco if-else

@@ -15,6 +15,9 @@ class BootStrap implements Cost {
     //--controllo di funzioni da utilizzare SOLAMENTE in fase di sviluppo
     private static boolean SVILUPPO_CROCE_ROSSA = false;
 
+    //--controllo di funzioni da utilizzare SOLAMENTE in fase di sviluppo
+    private static boolean ESISTE_COLLEGAMENTO_INTERNET = false;
+
     //--usato per controllare la creazione automatica delle password
     private static int numUtentiRossa = 0
 
@@ -62,9 +65,12 @@ class BootStrap implements Cost {
         tipiDiTurnoTidone()
 
         //--militi ed utenti (security)
-        militiDemo()
-        militiPubblica()
-        militiRossa()
+        if (ESISTE_COLLEGAMENTO_INTERNET) {
+            militiDemo()
+            militiPubblica()
+            militiRossa()
+        }// fine del blocco if
+
         //    militiNascita()
         //    militiBLSD()
         utentiRossa() //password
@@ -280,8 +286,23 @@ class BootStrap implements Cost {
     //--occorre SEMPRE un accesso come utente
     //--li crea SOLO se non esistono già
     private static void securitySetupDemo() {
+        Utente utente
+        Ruolo custodeRole
+        Ruolo adminRole
+        Ruolo militeRole
+
         // programmatore generale (sempre presente)
-        newUtente(CROCE_ROSSA, ROLE_PROG, PROG_NICK, PROG_PASS)
+        utente = newUtente(CROCE_DEMO, ROLE_PROG, PROG_NICK_DEMO, PROG_PASS)
+        if (utente) {
+            custodeRole = Ruolo.findByAuthority(ROLE_CUSTODE).save(failOnError: true)
+            adminRole = Ruolo.findByAuthority(ROLE_ADMIN).save(failOnError: true)
+            militeRole = Ruolo.findByAuthority(ROLE_MILITE).save(failOnError: true)
+            if (custodeRole && adminRole && militeRole && utente) {
+                UtenteRuolo.findOrCreateByRuoloAndUtente(custodeRole, utente).save(failOnError: true)
+                UtenteRuolo.findOrCreateByRuoloAndUtente(adminRole, utente).save(failOnError: true)
+                UtenteRuolo.findOrCreateByRuoloAndUtente(militeRole, utente).save(failOnError: true)
+            }// fine del blocco if
+        }// fine del blocco if
 
         // milite (anonimo)
         newUtente(CROCE_DEMO, ROLE_MILITE, DEMO_OSPITE, DEMO_PASSWORD)
@@ -1248,7 +1269,7 @@ class BootStrap implements Cost {
                 utente.milite = milite
             }// fine del blocco if
 
-            utente.save(flush: true)
+            def a = utente.save(flush: true)
             if (utente) {
                 UtenteRuolo.findOrCreateByRuoloAndUtente(ruolo, utente).save(failOnError: true)
             }// fine del blocco if

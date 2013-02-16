@@ -204,11 +204,12 @@
         <fieldset class="buttons">
             <g:hiddenField name="id" value="${militeInstance?.id}"/>
             <g:link class="edit" action="edit" id="${militeInstance?.id}">
-                <g:message code="milite.edit.label" default="Modifica milite"/>
+                <g:message code="milite.edit.label"
+                           default="Modifica milite"/>
             </g:link>
-            <g:link class="delete" action="delete" id="${militeInstance?.id}" onclick="return confirm('Sei sicuro?');">
-                <g:message code="default.button.delete.label" default="Delete"/>
-            </g:link>
+            <g:actionSubmit class="delete" action="delete"
+                            value="${message(code: 'default.button.delete.label', default: 'Delete')}"
+                            onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');"/>
         </fieldset>
     </g:form>
 </div>

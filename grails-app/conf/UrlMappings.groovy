@@ -28,6 +28,8 @@ class UrlMappings {
         "/CRF"(controller: 'Gen', action: 'selezionaCroceCRF')
         "/logoutselection"(controller: 'Gen', action: 'logoutselection')
         "/logoutalgos"(controller: 'Gen', action: 'logoutalgos')
+        "/logoutdemo"(controller: 'Gen', action: 'logoutdemo')
+        "/demogac"(controller: 'Gen', action: 'logoutdemo')
         "500"(view: '/error')
     }
 }
