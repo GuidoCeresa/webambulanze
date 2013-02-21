@@ -20,6 +20,10 @@ class UtenteController {
     // il service viene iniettato automaticamente
     def utenteService
 
+    // utilizzo di un service con la businessLogic per l'elaborazione dei dati
+    // il service viene iniettato automaticamente
+    def logoService
+
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
     def index() {
@@ -87,6 +91,8 @@ class UtenteController {
             return
         }
 
+        flash.message = logoService.setWarn(Evento.utenteCreato, utenteInstance.milite)
+
         Ruolo ruoloMilite = Ruolo.findByAuthority(Cost.ROLE_MILITE)
         UtenteRuolo.create(utenteInstance, ruoloMilite, true)
 
@@ -134,6 +140,7 @@ class UtenteController {
             }
         }
 
+        flash.listaMessaggi = utenteService.avvisoModifiche(params, utenteInstance)
         utenteInstance.properties = params
 
         if (!utenteInstance.save(flush: true)) {
@@ -141,7 +148,6 @@ class UtenteController {
             return
         }
 
-        flash.message = message(code: 'default.updated.message', args: [message(code: 'utente.label', default: 'Utente'), utenteInstance.id])
         redirect(action: "show", id: utenteInstance.id)
     } // fine del metodo
 

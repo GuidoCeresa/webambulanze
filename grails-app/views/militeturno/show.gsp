@@ -79,12 +79,40 @@
         </li>
         
         <li class="fieldcontain">
+            <span id="giorno-label" class="property-label"><g:message
+                    code="militeturno.giorno.labelform" default="Giorno"/></span>
+            
+            <span class="property-value" aria-labelledby="giorno-label"><amb:formatDate
+                    date="${militeturnoInstance?.giorno}"/></span>
+            
+        </li>
+        
+        <li class="fieldcontain">
             <span id="turno-label" class="property-label"><g:message
                     code="militeturno.turno.labelform" default="Turno"/></span>
             
             <span class="property-value" aria-labelledby="turno-label"><g:link
                     controller="turno" action="show"
                     id="${militeturnoInstance?.turno?.id}">${militeturnoInstance?.turno?.encodeAsHTML()}</g:link></span>
+            
+        </li>
+        
+        <li class="fieldcontain">
+            <span id="funzione-label" class="property-label"><g:message
+                    code="militeturno.funzione.labelform" default="Funzione"/></span>
+            
+            <span class="property-value" aria-labelledby="funzione-label"><g:link
+                    controller="funzione" action="show"
+                    id="${militeturnoInstance?.funzione?.id}">${militeturnoInstance?.funzione?.encodeAsHTML()}</g:link></span>
+            
+        </li>
+        
+        <li class="fieldcontain">
+            <span id="ore-label" class="property-label"><g:message
+                    code="militeturno.ore.labelform" default="Ore"/></span>
+            
+            <span class="property-value" aria-labelledby="ore-label"><g:fieldValue bean="${militeturnoInstance}"
+                                                                                         field="ore"/></span>
             
         </li>
         

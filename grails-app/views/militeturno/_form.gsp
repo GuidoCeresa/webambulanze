@@ -48,6 +48,24 @@
 <g:select id="milite" name="milite.id" from="${webambulanze.Milite.list()}" optionKey="id" required="" value="${militeturnoInstance?.milite?.id}" class="many-to-one"/>
 </div>
 
+<div class="fieldcontain ${hasErrors(bean: militeturnoInstance, field: 'giorno', 'error')} required">
+	<label for="giorno">
+		<g:message code="militeturno.giorno.labelform" default="Giorno" />
+		<span class="required-indicator">*</span>
+	</label>
+	
+
+
+
+
+
+
+
+
+
+<g:datePicker name="giorno" precision="day"  value="${militeturnoInstance?.giorno}"  />
+</div>
+
 <div class="fieldcontain ${hasErrors(bean: militeturnoInstance, field: 'turno', 'error')} required">
 	<label for="turno">
 		<g:message code="militeturno.turno.labelform" default="Turno" />
@@ -64,6 +82,42 @@
 
 
 <g:select id="turno" name="turno.id" from="${webambulanze.Turno.list()}" optionKey="id" required="" value="${militeturnoInstance?.turno?.id}" class="many-to-one"/>
+</div>
+
+<div class="fieldcontain ${hasErrors(bean: militeturnoInstance, field: 'funzione', 'error')} required">
+	<label for="funzione">
+		<g:message code="militeturno.funzione.labelform" default="Funzione" />
+		<span class="required-indicator">*</span>
+	</label>
+	
+
+
+
+
+
+
+
+
+
+<g:select id="funzione" name="funzione.id" from="${webambulanze.Funzione.list()}" optionKey="id" required="" value="${militeturnoInstance?.funzione?.id}" class="many-to-one"/>
+</div>
+
+<div class="fieldcontain ${hasErrors(bean: militeturnoInstance, field: 'ore', 'error')} required">
+	<label for="ore">
+		<g:message code="militeturno.ore.labelform" default="Ore" />
+		<span class="required-indicator">*</span>
+	</label>
+	
+
+
+
+
+
+
+
+
+
+<g:field name="ore" type="number" value="${militeturnoInstance.ore}" required=""/>
 </div>
 
 <g:if test="${campiExtra}">

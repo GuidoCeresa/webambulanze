@@ -9,5 +9,5 @@ package webambulanze
 public enum Livello {
     info,
     warn,
-    critical
+    error
 }

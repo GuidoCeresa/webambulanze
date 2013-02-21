@@ -2,6 +2,33 @@ package webambulanze
 
 class UtenteService {
 
+    // utilizzo di un service con la businessLogic per l'elaborazione dei dati
+    // il service viene iniettato automaticamente
+    def logoService
+
+    //--avviso conseguente alle modifiche effettuate
+    def avvisoModifiche = { mappa, Utente utente ->
+        ArrayList listaMessaggi = new ArrayList()
+        String value
+        String dettaglio = ''
+
+        if (mappa.pass) {
+            value = (String) mappa.pass
+            if (!value.equals(utente.pass)) {
+                dettaglio += 'Modificata la password di '
+                dettaglio += utente.milite
+                dettaglio += ' da '
+                dettaglio += utente.pass
+                dettaglio += ' a '
+                dettaglio += mappa.pass
+                listaMessaggi.add(dettaglio)
+                logoService.setWarn(Evento.utenteModificato, utente.milite, dettaglio)
+            }// fine del blocco if
+        }// fine del blocco if
+
+        return listaMessaggi
+    }// fine del metodo
+
     //--recupera i nomi di tutti gli utenti ESCLUSO il programatore
     public ArrayList utentiCustodiOrMore(Croce croce, def params) {
         ArrayList lista = new ArrayList()

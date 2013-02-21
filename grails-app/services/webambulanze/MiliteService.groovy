@@ -424,6 +424,5 @@ class MiliteService {
         return ore
     }// fine del metodo
 
-
 } // end of Service Class
 

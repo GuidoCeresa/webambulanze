@@ -105,7 +105,7 @@ class CroceService {
     }// fine del metodo
 
     //--restituisce la croce corrente
-    private Croce getCroceCorrente() {
+    public Croce getCroceCorrente() {
         Croce croceCorrente
         def context = grailsApplication.mainContext.servletContext
 
@@ -113,7 +113,7 @@ class CroceService {
     }// fine del metodo
 
     //--restituisce la croce corrente
-    private static Croce getCroceCorrente(def servletContext) {
+    public static Croce getCroceCorrente(def servletContext) {
         Croce croceCorrente = null
         Croce croceContesto = servletContext.croce
         String siglaCroce

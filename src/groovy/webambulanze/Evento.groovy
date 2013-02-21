@@ -24,6 +24,9 @@ public enum Evento {
     militeModificataScadenzaNonTrauma('Modificata la scadenza del brevetto NonTrauma del', ''),
     militeModificateFunzioni('Modificate le funzioni del milite', ''),
 
+    utenteCreato('Creato un nuovo', ''),
+    utenteModificato('Modificato l', ''),
+
     turnoCreando('Creazione di un nuovo turno', ''),
     turnoCreandoExtra('Creazione di un nuovo turno extra oltre a quelli già esistenti', ''),
     turnoCreato('È stato creato un nuovo turno', ''),

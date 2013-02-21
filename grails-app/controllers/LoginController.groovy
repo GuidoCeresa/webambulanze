@@ -63,10 +63,14 @@ class LoginController {
         }// fine del blocco if
 
         //--sposta in fondo un eventuale nome del programmatore
-        if (listaUtenti && Cost.PROG_NICK in listaUtenti) {
+        if (listaUtenti) {
             if (listaUtenti[0].equals(Cost.PROG_NICK)) {
                 listaUtenti.remove(0)
                 listaUtenti.add(Cost.PROG_NICK)
+            }// fine del blocco if
+            if (listaUtenti[0].equals(Cost.PROG_NICK_DEMO)) {
+                listaUtenti.remove(0)
+                listaUtenti.add(Cost.PROG_NICK_DEMO)
             }// fine del blocco if
         }// fine del blocco if
 

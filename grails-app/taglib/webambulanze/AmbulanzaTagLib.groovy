@@ -612,24 +612,24 @@ class AmbulanzaTagLib {
         }// fine del blocco if
 
         if (cont && rec && listaExtra) {
-            turniAnno = militeService.turniAnno((Milite) rec)
-            oreAnno = militeService.oreAnno((Milite) rec)
+            //turniAnno = militeService.turniAnno((Milite) rec)
+            //oreAnno = militeService.oreAnno((Milite) rec)
             value = false
             listaExtra?.each {
                 campo = it
                 if (nomeFunzioniAttiveDelMilite.contains(campo)) {
                     testoOut += Lib.getCampoTabella(app, cont, id, '?')
                 } else {
-                    if (campo.equals(Cost.CAMPO_TURNI) || campo.equals(Cost.CAMPO_ORE)) {
-                        if (campo.equals(Cost.CAMPO_TURNI)) {
-                            testoOut += Lib.getCampoTabella(app, cont, id, turniAnno)
-                        }// fine del blocco if
-                        if (campo.equals(Cost.CAMPO_ORE)) {
-                            testoOut += Lib.getCampoTabella(app, cont, id, oreAnno)
-                        }// fine del blocco if
-                    } else {
-                        testoOut += Lib.getCampoTabella(app, cont, id, '-')
-                    }// fine del blocco if-else
+//                    if (campo.equals(Cost.CAMPO_TURNI) || campo.equals(Cost.CAMPO_ORE)) {
+//                        if (campo.equals(Cost.CAMPO_TURNI)) {
+//                            testoOut += Lib.getCampoTabella(app, cont, id, turniAnno)
+//                        }// fine del blocco if
+//                        if (campo.equals(Cost.CAMPO_ORE)) {
+//                            testoOut += Lib.getCampoTabella(app, cont, id, oreAnno)
+//                        }// fine del blocco if
+//                    } else {
+//                        testoOut += Lib.getCampoTabella(app, cont, id, '-')
+//                    }// fine del blocco if-else
                 }// fine del blocco if-else
             } // fine del ciclo each
         }// fine del blocco if
@@ -812,6 +812,7 @@ class AmbulanzaTagLib {
                 testoOut += Lib.tagController('Milite', 'Militi')
                 testoOut += Lib.tagController('Milite', 'Turni dei militi (statistiche)', 'statistiche')
                 testoOut += Lib.tagController('Militeturno', 'Turni dei militi')
+                testoOut += Lib.tagController('Militeturno', 'Forza calcolo statistiche','calcola')
                 testoOut += Lib.tagController('Gen', 'Tabellone turni')
             } else {
                 if (militeService.isLoggatoCustode()) {
@@ -839,6 +840,7 @@ class AmbulanzaTagLib {
                         testoOut += Lib.tagController('Funzione', 'Funzioni (accesso in sola visione)')
                         testoOut += Lib.tagController('TipoTurno', 'Tipologia turni (accesso in sola visione)')
                         testoOut += Lib.tagController('Milite', 'Militi')
+                        testoOut += Lib.tagController('Milite', 'Turni dei militi (statistiche)', 'statistiche')
                         testoOut += Lib.tagController('Gen', 'Tabellone turni')
                     }// fine del blocco if
                 }// fine del blocco if
@@ -1325,7 +1327,7 @@ class AmbulanzaTagLib {
         String testoOut
         String testo
 
-        testo = 'Algos© 2013 - Versione 0.7 del 16 febbraio 2013'
+        testo = 'Algos© 2013 - v0.8 del 20 febbraio 2013'
         testo = Lib.tagCella(testo, Aspetto.copyright)
         testoOut = Lib.tagTable(testo)
         return testoOut

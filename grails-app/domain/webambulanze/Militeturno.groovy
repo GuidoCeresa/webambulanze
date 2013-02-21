@@ -5,7 +5,10 @@ class Militeturno {
     //--tabella di incrocio
     Croce croce //--ridondante, ma semplifica i filtri
     Milite milite
+    Date giorno //--ridondante, ma semplifica i filtri
     Turno turno
+    Funzione funzione
+    int ore //--ridondante, ma semplifica i filtri
 
     /**
      * regolazione delle proprietà di ogni campo
@@ -14,6 +17,11 @@ class Militeturno {
      */
     static constraints = {
         croce(nullable: false, blank: false)
+        milite(nullable: false, blank: false)
+        giorno(blank: true)
+        turno(nullable: false, blank: false)
+        funzione(blank: true)
+        ore(blank: true)
     } // end of static constraints
 
     static mapping = {
@@ -24,7 +32,7 @@ class Militeturno {
      * @todo da regolare (obbligatorio)
      */
     String toString() {
-        return ''
+        return milite.toString()
     } // end of toString
 
     /**
@@ -32,6 +40,7 @@ class Militeturno {
      * prima di creare un nuovo record
      */
     def beforeInsert = {
+        def stop
     } // end of def beforeInsert
 
     /**

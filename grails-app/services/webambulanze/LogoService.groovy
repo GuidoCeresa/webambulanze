@@ -17,10 +17,10 @@ class LogoService {
     def postaService
 
     //--registra un evento
-    private String setEventoMilite(Livello livello, Evento evento, Milite milite) {
+    private String setEventoMilite(Livello livello, Evento evento, Milite milite, String dettaglio) {
         String testoFlash
 
-        testoFlash = setBase(livello, evento, milite, null, null, null)
+        testoFlash = setBase(livello, evento, milite, null, null, null, dettaglio)
         if (milite) {
             testoFlash += ' milite ' + milite.nome + ' ' + milite.cognome
         }// fine del blocco if
@@ -30,12 +30,22 @@ class LogoService {
 
     //--registra un evento
     public String setInfo(Evento evento, Milite milite) {
-        return setEventoMilite(Livello.info, evento, milite)
+        return setInfo(evento, milite, '')
+    }// fine del metodo
+
+    //--registra un evento
+    public String setInfo(Evento evento, Milite milite, String dettaglio) {
+        return setEventoMilite(Livello.info, evento, milite, dettaglio)
     }// fine del metodo
 
     //--registra un evento
     public String setWarn(Evento evento, Milite milite) {
-        return setEventoMilite(Livello.warn, evento, milite)
+        return setWarn(evento, milite, '')
+    }// fine del metodo
+
+    //--registra un evento
+    public String setWarn(Evento evento, Milite milite, String dettaglio) {
+        return setEventoMilite(Livello.warn, evento, milite, dettaglio)
     }// fine del metodo
 
     //--registra un evento
@@ -45,7 +55,7 @@ class LogoService {
 
     //--registra un evento
     public String setWarn(Evento evento, TipoTurno tipoTurno, Date giorno) {
-        return setBase(Livello.warn, evento, null, null, tipoTurno, giorno)
+        return setBase(Livello.warn, evento, null, null, tipoTurno, giorno, '')
     }// fine del metodo
 
     //--registra un evento
@@ -78,14 +88,21 @@ class LogoService {
         if (turno) {
             tipoTurno = turno.tipoTurno
             giorno = turno.giorno
-            testoFlash = setBase(livello, evento, null, turno, tipoTurno, giorno)
+            testoFlash = setBase(livello, evento, null, turno, tipoTurno, giorno, '')
         }// fine del blocco if
 
         return testoFlash
     }// fine del metodo
 
     //--registra un evento generico (molto generico)
-    public String setBase(Livello livello, Evento evento, Milite milite, Turno turno, TipoTurno tipoTurno, Date giorno) {
+    public String setBase(
+            Livello livello,
+            Evento evento,
+            Milite milite,
+            Turno turno,
+            TipoTurno tipoTurno,
+            Date giorno,
+            String dettaglio) {
         String testoFlash = evento.avviso
         Logo logo = new Logo()
         Croce croce = null
@@ -136,10 +153,10 @@ class LogoService {
         logo.tipoTurno = tipoTurno
         logo.turno = turno
         logo.giorno = giorno
-        logo.dettaglio = ''
+        logo.dettaglio = dettaglio
         logo.save(flush: true)
 
- //       postaService.sendLogoMail(logo)
+        //       postaService.sendLogoMail(logo)
 
         return testoFlash
     }// fine del metodo

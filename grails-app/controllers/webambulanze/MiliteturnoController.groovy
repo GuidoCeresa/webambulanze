@@ -16,17 +16,25 @@ class MiliteturnoController {
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
+    // utilizzo di un service con la businessLogic per l'elaborazione dei dati
+    // il service viene iniettato automaticamente
+    def militeturnoService
+
     def index() {
-        redirect(action: "list", params: params)
+        redirect(action: 'list', params: params)
     } // fine del metodo
 
     def list(Integer max) {
         def lista
         Croce croce
         String sigla
+
         def campiLista = [
                 'milite',
-                'turno']
+                'giorno',
+                'turno',
+                'funzione',
+                'ore']
 
         if (!params.sort) {
             params.sort = 'id'
@@ -56,6 +64,11 @@ class MiliteturnoController {
 
         [militeturnoInstanceList: lista, militeturnoInstanceTotal: 0, campiLista: campiLista]
     }
+
+    def calcola() {
+        militeturnoService.calcola()
+        redirect(action: 'list', params: params)
+    } // fine del metodo
 
     def create() {
         [militeturnoInstance: new Militeturno(params)]

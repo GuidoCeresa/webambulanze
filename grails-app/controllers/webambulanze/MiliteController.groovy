@@ -42,7 +42,9 @@ class MiliteController {
         String sigla
         def campiLista = [
                 'cognome',
-                'nome']
+                'nome',
+                'turniAnno',
+                'oreAnno']
         def campiExtra = null
 
         if (!params.sort) {
@@ -65,7 +67,11 @@ class MiliteController {
                 lista = Milite.findAll(params)
                 campiLista = ['id', 'croce'] + campiLista
             } else {
-                lista = Milite.findAllByCroce(croce, params)
+                if (militeService.isLoggatoAdminOrMore()) {
+                    lista = Milite.findAllByCroce(croce, params)
+                } else {
+                    lista = militeService.militeLoggato
+                }// fine del blocco if-else
                 campiExtra = funzioneService.campiExtraStatistichePerCroce(croce)
             }// fine del blocco if-else
         } else {

@@ -24,8 +24,8 @@ class FunzioneService {
         def campiExtra = campiExtraPerCroce(croce)
 
         if (campiExtra) {
-            campiExtra.add(0, Cost.CAMPO_ORE)
-            campiExtra.add(0, Cost.CAMPO_TURNI)
+        //    campiExtra.add(0, Cost.CAMPO_ORE)
+        //    campiExtra.add(0, Cost.CAMPO_TURNI)
         }// fine del blocco if
 
         return campiExtra
