@@ -1,14 +1,21 @@
 package webambulanze
 
-class Militeturno {
+class Militestatistiche {
 
     //--tabella di incrocio - ridondante, ma velocizza la presentazione - costruita in background
     Croce croce //--ridondante, ma semplifica i filtri
     Milite milite
-    Date giorno //--ridondante, ma semplifica i filtri
-    Turno turno
-    Funzione funzione
-    int ore //--ridondante, ma semplifica i filtri
+    int turni = 0
+    int ore = 0
+    int funz1 = 0
+    int funz2 = 0
+    int funz3 = 0
+    int funz4 = 0
+    int funz5 = 0
+    int funz6 = 0
+    int funz7 = 0
+    int funz8 = 0
+    int funz9 = 0
 
     /**
      * regolazione delle proprietà di ogni campo
@@ -18,10 +25,17 @@ class Militeturno {
     static constraints = {
         croce(nullable: false, blank: false)
         milite(nullable: false, blank: false)
-        giorno(blank: false)
-        turno(nullable: false, blank: false)
-        funzione(blank: true)
-        ore(blank: true)
+        turni(nullable: true)
+        ore(nullable: true)
+        funz1(blank: true)
+        funz2(blank: true)
+        funz3(blank: true)
+        funz4(blank: true)
+        funz5(blank: true)
+        funz6(blank: true)
+        funz7(blank: true)
+        funz8(blank: true)
+        funz9(blank: true)
     } // end of static constraints
 
     static mapping = {
@@ -32,7 +46,7 @@ class Militeturno {
      * @todo da regolare (obbligatorio)
      */
     String toString() {
-        return milite.toString()
+        return ''
     } // end of toString
 
     /**
@@ -40,7 +54,6 @@ class Militeturno {
      * prima di creare un nuovo record
      */
     def beforeInsert = {
-        def stop
     } // end of def beforeInsert
 
     /**

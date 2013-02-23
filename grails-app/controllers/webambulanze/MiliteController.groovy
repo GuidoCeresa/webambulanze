@@ -36,6 +36,7 @@ class MiliteController {
         redirect(action: 'list', params: params)
     } // fine del metodo
 
+    //-deprecated
     def statistiche() {
         def lista
         Croce croce

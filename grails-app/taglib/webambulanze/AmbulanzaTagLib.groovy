@@ -802,49 +802,23 @@ class AmbulanzaTagLib {
             } // fine del ciclo each
         } else {
             if (militeService.isLoggatoProgrammatore()) {
-                testoOut += Lib.tagController('Ruolo', 'Ruoli')
-                testoOut += Lib.tagController('Utente', 'Password militi')
-                testoOut += Lib.tagController('Croce', 'Croci')
-                testoOut += Lib.tagController('Settings', 'Preferenze')
-                testoOut += Lib.tagController('Logo', 'Logs')
-                testoOut += Lib.tagController('Funzione', 'Funzioni')
-                testoOut += Lib.tagController('TipoTurno', 'Tipologia turni')
-                testoOut += Lib.tagController('Milite', 'Militi')
-                testoOut += Lib.tagController('Milite', 'Turni dei militi (statistiche)', 'statistiche')
-                testoOut += Lib.tagController('Militeturno', 'Turni dei militi')
                 testoOut += Lib.tagController('Militeturno', 'Forza calcolo statistiche','calcola')
-                testoOut += Lib.tagController('Gen', 'Tabellone turni')
-            } else {
-                if (militeService.isLoggatoCustode()) {
-                    testoOut += Lib.tagController('Ruolo', 'Ruoli (accesso limitato ad una sola persona)')
-                    testoOut += Lib.tagController('Utente', 'Password militi (accesso limitato ad una sola persona)')
-                    testoOut += Lib.tagController('Croce', 'Croci (accesso in sola visione limitato agli admin)')
-                    testoOut += Lib.tagController('Settings', 'Preferenze (accesso in sola visione limitato agli admin)')
-                    testoOut += Lib.tagController('Logo', 'Logs (accesso in sola visione limitato agli admin)')
-                    testoOut += Lib.tagController('Funzione', 'Funzioni (accesso in sola visione)')
-                    testoOut += Lib.tagController('TipoTurno', 'Tipologia turni (accesso in sola visione)')
-                    testoOut += Lib.tagController('Milite', 'Militi')
-                    testoOut += Lib.tagController('Milite', 'Turni dei militi (statistiche)', 'statistiche')
-                    testoOut += Lib.tagController('Gen', 'Tabellone turni')
-                } else {
-                    if (militeService.isLoggatoAdmin()) {
-                        testoOut += Lib.tagController('Croce', 'Croci (accesso in sola visione limitato agli admin)')
-                        testoOut += Lib.tagController('Settings', 'Preferenze (accesso in sola visione limitato agli admin)')
-                        testoOut += Lib.tagController('Logo', 'Logs (accesso in sola visione limitato agli admin)')
-                        testoOut += Lib.tagController('Funzione', 'Funzioni (accesso in sola visione)')
-                        testoOut += Lib.tagController('TipoTurno', 'Tipologia turni (accesso in sola visione)')
-                        testoOut += Lib.tagController('Milite', 'Militi')
-                        testoOut += Lib.tagController('Milite', 'Turni dei militi (statistiche)', 'statistiche')
-                        testoOut += Lib.tagController('Gen', 'Tabellone turni')
-                    } else {
-                        testoOut += Lib.tagController('Funzione', 'Funzioni (accesso in sola visione)')
-                        testoOut += Lib.tagController('TipoTurno', 'Tipologia turni (accesso in sola visione)')
-                        testoOut += Lib.tagController('Milite', 'Militi')
-                        testoOut += Lib.tagController('Milite', 'Turni dei militi (statistiche)', 'statistiche')
-                        testoOut += Lib.tagController('Gen', 'Tabellone turni')
-                    }// fine del blocco if
-                }// fine del blocco if
             }// fine del blocco if
+            if (militeService.isLoggatoCustodeOrMore()) {
+                testoOut += Lib.tagController('Ruolo', 'Ruoli (accesso limitato ad una sola persona)')
+                testoOut += Lib.tagController('Utente', 'Password militi (accesso limitato ad una sola persona)')
+            }// fine del blocco if
+            if (militeService.isLoggatoAdminOrMore()) {
+                testoOut += Lib.tagController('Croce', 'Croci (accesso in sola visione limitato agli admin)')
+                testoOut += Lib.tagController('Settings', 'Preferenze (accesso in sola visione limitato agli admin)')
+                testoOut += Lib.tagController('Logo', 'Logs (accesso in sola visione limitato agli admin)')
+            }// fine del blocco if
+            testoOut += Lib.tagController('Funzione', 'Funzioni')
+            testoOut += Lib.tagController('TipoTurno', 'Tipologia turni')
+            testoOut += Lib.tagController('Milite', 'Militi')
+            testoOut += Lib.tagController('Militestatistiche', 'Turni dei militi (statistiche)')
+//old            testoOut += Lib.tagController('Milite', 'Turni dei militi (statistiche)','statistiche')
+            testoOut += Lib.tagController('Gen', 'Tabellone turni')
         }// fine del blocco if-else
 
         out << testoOut

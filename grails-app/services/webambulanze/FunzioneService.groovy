@@ -1,15 +1,17 @@
 package webambulanze
 
 class FunzioneService {
+    // utilizzo di un service con la businessLogic per l'elaborazione dei dati
+    // il service viene iniettato automaticamente
+    def croceService
 
-
+    //--recupera tutte le funzioni della croce attiva
     def campiExtra(grailsApplication) {
         def campiExtra = null
-        Croce croce
         String sigla
+        Croce croce = croceService.getCroceCorrente()
 
-        if (grailsApplication.mainContext.servletContext.croce) {
-            croce = grailsApplication.mainContext.servletContext.croce
+        if (croce) {
             sigla = croce.sigla
             if (!sigla.equals(Cost.CROCE_ALGOS)) {
                 campiExtra = this.campiExtraPerCroce(croce)
@@ -19,13 +21,13 @@ class FunzioneService {
         return campiExtra
     }
 
-    //--recupera tutti i records per la croce selezionata
+    //--recupera tutte le funzioni della croce selezionata
     def campiExtraStatistichePerCroce(Croce croce) {
         def campiExtra = campiExtraPerCroce(croce)
 
         if (campiExtra) {
-        //    campiExtra.add(0, Cost.CAMPO_ORE)
-        //    campiExtra.add(0, Cost.CAMPO_TURNI)
+            //    campiExtra.add(0, Cost.CAMPO_ORE)
+            //    campiExtra.add(0, Cost.CAMPO_TURNI)
         }// fine del blocco if
 
         return campiExtra

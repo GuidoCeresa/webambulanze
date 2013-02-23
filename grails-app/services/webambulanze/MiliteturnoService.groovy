@@ -7,23 +7,28 @@ class MiliteturnoService {
     def croceService
 
     //--cancella tutti i records di Militeturno (dell'anno corrente)
-    //--ricalcola tutti i turni e crea i records
+    //--ricalcola tutti i turni
+    //--crea i records di MiliteTurno
+    //--cancella tutti i records di Militestatistiche (dell'anno corrente)
+    //--crea i records di Militestatistiche
     def calcola() {
         Croce croce = croceService.getCroceCorrente()
         Date primoGennaio = Lib.creaData1Gennaio()
 
-        cancella(croce, primoGennaio)
-        ricalcola(croce, primoGennaio)
+        cancellaMiliteTurno(croce, primoGennaio)
+        ricalcolaMiliteTurno(croce, primoGennaio)
         aggiornaMiliti(croce, primoGennaio)
+        cancellaMiliteStatistiche(croce)
+        ricalcolaMiliteStatistiche(croce)
     }// fine del metodo
 
     //--cancella tutti i records di Militeturno (dell'anno corrente)
-    def cancella(Croce croce, Date primoGennaio) {
+    def cancellaMiliteTurno(Croce croce, Date primoGennaio) {
         Militeturno.findAllByCroceAndGiornoGreaterThan(croce, primoGennaio)*.delete(flush: true)
     }// fine del metodo
 
     //--ricalcola tutti i turni e crea i records
-    def ricalcola(Croce croce, Date primoGennaio) {
+    def ricalcolaMiliteTurno(Croce croce, Date primoGennaio) {
         Militeturno militeturno
         Milite milite
         HashMap mappa
@@ -103,7 +108,7 @@ class MiliteturnoService {
             milite = (Milite) it
             contTurni = 0
             contOre = 0
-            listaTurni = Militeturno.findAllByCroceAndMiliteAndGiornoGreaterThan(croce, milite,primoGennaio)
+            listaTurni = Militeturno.findAllByCroceAndMiliteAndGiornoGreaterThan(croce, milite, primoGennaio)
             listaTurni?.each {
                 militeTurno = (Militeturno) it
                 contTurni++
@@ -112,6 +117,48 @@ class MiliteturnoService {
             milite.turniAnno = contTurni
             milite.oreAnno = contOre
             milite.save(flush: true)
+        } // fine del ciclo each
+
+    }// fine del metodo
+
+    //--cancella tutti i records di Militestatistiche (dell'anno corrente)
+    def cancellaMiliteStatistiche(Croce croce) {
+  //      Militestatistiche.findAllByCroce(croce)*.delete(flush: true)
+    }// fine del metodo
+
+    //--crea i records di Militestatistiche (1 per Milite) in base a quelli di MiliteTurno
+    def ricalcolaMiliteStatistiche(Croce croce) {
+        Militeturno militeturno
+        Militestatistiche militestatistiche
+        Milite milite
+        HashMap mappa
+        Turno turno
+        Date giorno
+        Funzione funzione
+        String nickMilite
+        int turni
+        int ore
+        def listaMiliti = Milite.findAllByCroce(croce)
+        def listaMiliteTurni
+
+        listaMiliti?.each {
+            milite = (Milite) it
+            turni = 0
+            ore = 0
+            listaMiliteTurni = Militeturno.findAllByCroceAndMilite(croce, milite)
+            listaMiliteTurni?.each {
+                turni++
+                ore += it.ore
+                funzione = it.funzione
+            } // fine del ciclo each
+            militestatistiche = new Militestatistiche()
+            militestatistiche.croce = croce
+            militestatistiche.milite = milite
+            militestatistiche.turni = turni
+            militestatistiche.ore = ore
+            militestatistiche.funz1=turni
+            militestatistiche.funz2=3
+            militestatistiche.save(flush: true)
         } // fine del ciclo each
 
     }// fine del metodo
@@ -141,4 +188,26 @@ class MiliteturnoService {
         return mappaMiliti
     }// fine del metodo
 
+    //--mappa (vuota) per le funzioni della croce
+    //--ogni funzione ha nome ed un intero per il totale delle ore
+    def LinkedHashMap mappaFunzioni(Croce croce) {
+        LinkedHashMap mappaFunzioni = new LinkedHashMap()
+
+        if (croce) {
+            mappaFunzioni = m
+        }// fine del blocco if
+
+        listaMiliti?.each {
+            milite = (Milite) it
+            mappa = new HashMap()
+            mappa.put('milite', null)
+            mappa.put('giorno', null)
+            mappa.put('turno', null)
+            mappa.put('funzione', null)
+            mappa.put('ore', 0)
+            mappaMiliti.put(milite.toString(), mappa)
+        } // fine del ciclo each
+
+        return mappaMiliti
+    }// fine del metodo
 } // end of Service Class
