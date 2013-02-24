@@ -73,7 +73,7 @@ class MiliteController {
                 } else {
                     lista = militeService.militeLoggato
                 }// fine del blocco if-else
-                campiExtra = funzioneService.campiExtraStatistichePerCroce(croce)
+                campiExtra = funzioneService.campiExtraPerCroce(croce)
             }// fine del blocco if-else
         } else {
             lista = Milite.findAll(params)

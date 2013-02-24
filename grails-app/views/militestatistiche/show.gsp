@@ -79,15 +79,6 @@
         </li>
         
         <li class="fieldcontain">
-            <span id="giorno-label" class="property-label"><g:message
-                    code="militestatistiche.giorno.labelform" default="Giorno"/></span>
-            
-            <span class="property-value" aria-labelledby="giorno-label"><amb:formatDate
-                    date="${militestatisticheInstance?.giorno}"/></span>
-            
-        </li>
-        
-        <li class="fieldcontain">
             <span id="turni-label" class="property-label"><g:message
                     code="militestatistiche.turni.labelform" default="Turni"/></span>
             
@@ -183,6 +174,105 @@
             
             <span class="property-value" aria-labelledby="funz9-label"><g:fieldValue bean="${militestatisticheInstance}"
                                                                                          field="funz9"/></span>
+            
+        </li>
+        
+        <li class="fieldcontain">
+            <span id="funz10-label" class="property-label"><g:message
+                    code="militestatistiche.funz10.labelform" default="Funz10"/></span>
+            
+            <span class="property-value" aria-labelledby="funz10-label"><g:fieldValue bean="${militestatisticheInstance}"
+                                                                                         field="funz10"/></span>
+            
+        </li>
+        
+        <li class="fieldcontain">
+            <span id="funz11-label" class="property-label"><g:message
+                    code="militestatistiche.funz11.labelform" default="Funz11"/></span>
+            
+            <span class="property-value" aria-labelledby="funz11-label"><g:fieldValue bean="${militestatisticheInstance}"
+                                                                                         field="funz11"/></span>
+            
+        </li>
+        
+        <li class="fieldcontain">
+            <span id="funz12-label" class="property-label"><g:message
+                    code="militestatistiche.funz12.labelform" default="Funz12"/></span>
+            
+            <span class="property-value" aria-labelledby="funz12-label"><g:fieldValue bean="${militestatisticheInstance}"
+                                                                                         field="funz12"/></span>
+            
+        </li>
+        
+        <li class="fieldcontain">
+            <span id="funz13-label" class="property-label"><g:message
+                    code="militestatistiche.funz13.labelform" default="Funz13"/></span>
+            
+            <span class="property-value" aria-labelledby="funz13-label"><g:fieldValue bean="${militestatisticheInstance}"
+                                                                                         field="funz13"/></span>
+            
+        </li>
+        
+        <li class="fieldcontain">
+            <span id="funz14-label" class="property-label"><g:message
+                    code="militestatistiche.funz14.labelform" default="Funz14"/></span>
+            
+            <span class="property-value" aria-labelledby="funz14-label"><g:fieldValue bean="${militestatisticheInstance}"
+                                                                                         field="funz14"/></span>
+            
+        </li>
+        
+        <li class="fieldcontain">
+            <span id="funz15-label" class="property-label"><g:message
+                    code="militestatistiche.funz15.labelform" default="Funz15"/></span>
+            
+            <span class="property-value" aria-labelledby="funz15-label"><g:fieldValue bean="${militestatisticheInstance}"
+                                                                                         field="funz15"/></span>
+            
+        </li>
+        
+        <li class="fieldcontain">
+            <span id="funz16-label" class="property-label"><g:message
+                    code="militestatistiche.funz16.labelform" default="Funz16"/></span>
+            
+            <span class="property-value" aria-labelledby="funz16-label"><g:fieldValue bean="${militestatisticheInstance}"
+                                                                                         field="funz16"/></span>
+            
+        </li>
+        
+        <li class="fieldcontain">
+            <span id="funz17-label" class="property-label"><g:message
+                    code="militestatistiche.funz17.labelform" default="Funz17"/></span>
+            
+            <span class="property-value" aria-labelledby="funz17-label"><g:fieldValue bean="${militestatisticheInstance}"
+                                                                                         field="funz17"/></span>
+            
+        </li>
+        
+        <li class="fieldcontain">
+            <span id="funz18-label" class="property-label"><g:message
+                    code="militestatistiche.funz18.labelform" default="Funz18"/></span>
+            
+            <span class="property-value" aria-labelledby="funz18-label"><g:fieldValue bean="${militestatisticheInstance}"
+                                                                                         field="funz18"/></span>
+            
+        </li>
+        
+        <li class="fieldcontain">
+            <span id="funz19-label" class="property-label"><g:message
+                    code="militestatistiche.funz19.labelform" default="Funz19"/></span>
+            
+            <span class="property-value" aria-labelledby="funz19-label"><g:fieldValue bean="${militestatisticheInstance}"
+                                                                                         field="funz19"/></span>
+            
+        </li>
+        
+        <li class="fieldcontain">
+            <span id="funz20-label" class="property-label"><g:message
+                    code="militestatistiche.funz20.labelform" default="Funz20"/></span>
+            
+            <span class="property-value" aria-labelledby="funz20-label"><g:fieldValue bean="${militestatisticheInstance}"
+                                                                                         field="funz20"/></span>
             
         </li>
         

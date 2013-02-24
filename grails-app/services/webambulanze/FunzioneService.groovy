@@ -22,13 +22,15 @@ class FunzioneService {
     }
 
     //--recupera tutte le funzioni della croce selezionata
-    def campiExtraStatistichePerCroce(Croce croce) {
-        def campiExtra = campiExtraPerCroce(croce)
+    LinkedHashMap mappaSiglaFunzioni(Croce croce) {
+        LinkedHashMap campiExtra = new LinkedHashMap()
+        def lista = Funzione.findAllByCroce(croce, [order: 'sigla'])
+        Funzione funzione
 
-        if (campiExtra) {
-            //    campiExtra.add(0, Cost.CAMPO_ORE)
-            //    campiExtra.add(0, Cost.CAMPO_TURNI)
-        }// fine del blocco if
+        lista?.each {
+            funzione =(Funzione)it
+            campiExtra.put(funzione.sigla, 0)
+        } // fine del ciclo each
 
         return campiExtra
     }// fine del metodo

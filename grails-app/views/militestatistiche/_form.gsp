@@ -48,24 +48,6 @@
 <g:select id="milite" name="milite.id" from="${webambulanze.Milite.list()}" optionKey="id" required="" value="${militestatisticheInstance?.milite?.id}" class="many-to-one"/>
 </div>
 
-<div class="fieldcontain ${hasErrors(bean: militestatisticheInstance, field: 'giorno', 'error')} required">
-	<label for="giorno">
-		<g:message code="militestatistiche.giorno.labelform" default="Giorno" />
-		<span class="required-indicator">*</span>
-	</label>
-	
-
-
-
-
-
-
-
-
-
-<g:datePicker name="giorno" precision="day"  value="${militestatisticheInstance?.giorno}"  />
-</div>
-
 <div class="fieldcontain ${hasErrors(bean: militestatisticheInstance, field: 'turni', 'error')} required">
 	<label for="turni">
 		<g:message code="militestatistiche.turni.labelform" default="Turni" />
@@ -262,6 +244,204 @@
 
 
 <g:field name="funz9" type="number" value="${militestatisticheInstance.funz9}" required=""/>
+</div>
+
+<div class="fieldcontain ${hasErrors(bean: militestatisticheInstance, field: 'funz10', 'error')} required">
+	<label for="funz10">
+		<g:message code="militestatistiche.funz10.labelform" default="Funz10" />
+		<span class="required-indicator">*</span>
+	</label>
+	
+
+
+
+
+
+
+
+
+
+<g:field name="funz10" type="number" value="${militestatisticheInstance.funz10}" required=""/>
+</div>
+
+<div class="fieldcontain ${hasErrors(bean: militestatisticheInstance, field: 'funz11', 'error')} required">
+	<label for="funz11">
+		<g:message code="militestatistiche.funz11.labelform" default="Funz11" />
+		<span class="required-indicator">*</span>
+	</label>
+	
+
+
+
+
+
+
+
+
+
+<g:field name="funz11" type="number" value="${militestatisticheInstance.funz11}" required=""/>
+</div>
+
+<div class="fieldcontain ${hasErrors(bean: militestatisticheInstance, field: 'funz12', 'error')} required">
+	<label for="funz12">
+		<g:message code="militestatistiche.funz12.labelform" default="Funz12" />
+		<span class="required-indicator">*</span>
+	</label>
+	
+
+
+
+
+
+
+
+
+
+<g:field name="funz12" type="number" value="${militestatisticheInstance.funz12}" required=""/>
+</div>
+
+<div class="fieldcontain ${hasErrors(bean: militestatisticheInstance, field: 'funz13', 'error')} required">
+	<label for="funz13">
+		<g:message code="militestatistiche.funz13.labelform" default="Funz13" />
+		<span class="required-indicator">*</span>
+	</label>
+	
+
+
+
+
+
+
+
+
+
+<g:field name="funz13" type="number" value="${militestatisticheInstance.funz13}" required=""/>
+</div>
+
+<div class="fieldcontain ${hasErrors(bean: militestatisticheInstance, field: 'funz14', 'error')} required">
+	<label for="funz14">
+		<g:message code="militestatistiche.funz14.labelform" default="Funz14" />
+		<span class="required-indicator">*</span>
+	</label>
+	
+
+
+
+
+
+
+
+
+
+<g:field name="funz14" type="number" value="${militestatisticheInstance.funz14}" required=""/>
+</div>
+
+<div class="fieldcontain ${hasErrors(bean: militestatisticheInstance, field: 'funz15', 'error')} required">
+	<label for="funz15">
+		<g:message code="militestatistiche.funz15.labelform" default="Funz15" />
+		<span class="required-indicator">*</span>
+	</label>
+	
+
+
+
+
+
+
+
+
+
+<g:field name="funz15" type="number" value="${militestatisticheInstance.funz15}" required=""/>
+</div>
+
+<div class="fieldcontain ${hasErrors(bean: militestatisticheInstance, field: 'funz16', 'error')} required">
+	<label for="funz16">
+		<g:message code="militestatistiche.funz16.labelform" default="Funz16" />
+		<span class="required-indicator">*</span>
+	</label>
+	
+
+
+
+
+
+
+
+
+
+<g:field name="funz16" type="number" value="${militestatisticheInstance.funz16}" required=""/>
+</div>
+
+<div class="fieldcontain ${hasErrors(bean: militestatisticheInstance, field: 'funz17', 'error')} required">
+	<label for="funz17">
+		<g:message code="militestatistiche.funz17.labelform" default="Funz17" />
+		<span class="required-indicator">*</span>
+	</label>
+	
+
+
+
+
+
+
+
+
+
+<g:field name="funz17" type="number" value="${militestatisticheInstance.funz17}" required=""/>
+</div>
+
+<div class="fieldcontain ${hasErrors(bean: militestatisticheInstance, field: 'funz18', 'error')} required">
+	<label for="funz18">
+		<g:message code="militestatistiche.funz18.labelform" default="Funz18" />
+		<span class="required-indicator">*</span>
+	</label>
+	
+
+
+
+
+
+
+
+
+
+<g:field name="funz18" type="number" value="${militestatisticheInstance.funz18}" required=""/>
+</div>
+
+<div class="fieldcontain ${hasErrors(bean: militestatisticheInstance, field: 'funz19', 'error')} required">
+	<label for="funz19">
+		<g:message code="militestatistiche.funz19.labelform" default="Funz19" />
+		<span class="required-indicator">*</span>
+	</label>
+	
+
+
+
+
+
+
+
+
+
+<g:field name="funz19" type="number" value="${militestatisticheInstance.funz19}" required=""/>
+</div>
+
+<div class="fieldcontain ${hasErrors(bean: militestatisticheInstance, field: 'funz20', 'error')} required">
+	<label for="funz20">
+		<g:message code="militestatistiche.funz20.labelform" default="Funz20" />
+		<span class="required-indicator">*</span>
+	</label>
+	
+
+
+
+
+
+
+
+
+
+<g:field name="funz20" type="number" value="${militestatisticheInstance.funz20}" required=""/>
 </div>
 
 <g:if test="${campiExtra}">

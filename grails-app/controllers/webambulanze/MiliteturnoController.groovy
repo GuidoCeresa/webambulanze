@@ -34,10 +34,11 @@ class MiliteturnoController {
                 'giorno',
                 'turno',
                 'funzione',
-                'ore']
+                'ore',
+                'dettaglio']
 
         if (!params.sort) {
-            params.sort = 'id'
+            params.sort = 'milite'
         }// fine del blocco if-else
         if (params.order) {
             if (params.order == 'asc') {
@@ -48,6 +49,9 @@ class MiliteturnoController {
         } else {
             params.order = 'asc'
         }// fine del blocco if-else
+        if (params.sort.equals('milite')) {
+            params.sort = 'milite.cognome'
+        }// fine del blocco if
 
         if (grailsApplication.mainContext.servletContext.croce) {
             croce = grailsApplication.mainContext.servletContext.croce
@@ -65,9 +69,39 @@ class MiliteturnoController {
         [militeturnoInstanceList: lista, militeturnoInstanceTotal: 0, campiLista: campiLista]
     }
 
-    def calcola() {
-        militeturnoService.calcola()
-        redirect(action: 'list', params: params)
+    def dettagli(Integer recNumber) {
+        def lista
+        Croce croce
+        String sigla
+        Milite milite
+
+        def campiLista = [
+                'milite',
+                'giorno',
+                'turno',
+                'funzione',
+                'ore',
+                'dettaglio']
+
+        //recNumber=params.id
+        params.sort = 'giorno'
+        params.order = 'desc'
+        milite = Milite.get(params.id)
+
+        if (grailsApplication.mainContext.servletContext.croce) {
+            croce = grailsApplication.mainContext.servletContext.croce
+            sigla = croce.sigla
+            if (sigla.equals(Cost.CROCE_ALGOS)) {
+                lista = Militeturno.findAll(params)
+                campiLista = ['id', 'croce'] + campiLista
+            } else {
+                lista = Militeturno.findAllByCroceAndMilite(croce, milite, params)
+            }// fine del blocco if-else
+        } else {
+            lista = Militeturno.findAll(params)
+        }// fine del blocco if-else
+
+        render(view: 'list', model: [militeturnoInstanceList: lista, militeturnoInstanceTotal: 0, campiLista: campiLista])
     } // fine del metodo
 
     def create() {

@@ -116,6 +116,15 @@
             
         </li>
         
+        <li class="fieldcontain">
+            <span id="dettaglio-label" class="property-label"><g:message
+                    code="militeturno.dettaglio.labelform" default="Dettaglio"/></span>
+            
+            <span class="property-value" aria-labelledby="dettaglio-label"><g:fieldValue bean="${militeturnoInstance}"
+                                                                                         field="dettaglio"/></span>
+            
+        </li>
+        
     </ol>
 
     <g:if test="${campiExtra}">

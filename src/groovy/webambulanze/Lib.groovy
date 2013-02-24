@@ -227,10 +227,12 @@ class Lib {
 //        return "<th class=\"sortable\"><a href=\"/${app}/${cont}/list?sort=${sort}&amp;order=${order}\">${title}</a></th>"
     }// fine del metodo
 
-    static String getCampoTabellaLong(String app, String cont, long id, def value) {
+    static String getCampoTabellaLong(String ref, def value) {
         String testo = ''
 
-        testo = "<a href=\"/${app}/${cont}/show/${id}\">${value}</a>"
+        testo += ref
+        testo += "${value}"
+        testo += "</a>"
 
         return Lib.tagCella(testo)
     }// fine del metodo
@@ -247,10 +249,12 @@ class Lib {
         return Lib.tagCella(testo)
     }// fine del metodo
 
-    static String getCampoTabellaStringa(String app, String cont, long id, def value) {
+    static String getCampoTabellaStringa(String ref, def value) {
         String testo = ''
 
-        testo = "<a href=\"/${app}/${cont}/show/${id}\">${value}</a>"
+        testo += ref
+        testo += "${value}"
+        testo += "</a>"
 
         return Lib.tagCella(testo)
     }// fine del metodo
@@ -260,9 +264,7 @@ class Lib {
         String dataTxt = Lib.presentaDataMese(value)
 
         testo = "<a href=\"/${app}/${cont}/show/${id}\">${dataTxt}</a>"
-        testo = Lib.tagCella(testo)
-
-        return testo
+        return Lib.tagCella(testo)
     }// fine del metodo
 
     static String getCampoTabellaTime(String app, String cont, long id, def value) {
@@ -298,11 +300,16 @@ class Lib {
     }// fine del metodo
 
     static String getCampoTabella(String app, String cont, long id, def value) {
+        return getCampoTabella(app, cont, id, value, 'show')
+    }// fine del metodo
+
+    static String getCampoTabella(String app, String cont, long id, def value, String action) {
         String testo = ''
+        String ref = "<a href=\"/${app}/${cont}/${action}/${id}\">"
 
         if (value instanceof Long || value instanceof Boolean || value instanceof String || value instanceof Date) {
             if (value instanceof Long) {
-                testo = getCampoTabellaLong(app, cont, id, value)
+                testo = getCampoTabellaLong(ref, value)
             }// fine del blocco if
 
             if (value instanceof Boolean) {
@@ -310,7 +317,7 @@ class Lib {
             }// fine del blocco if
 
             if (value instanceof String) {
-                testo = getCampoTabellaStringa(app, cont, id, value)
+                testo = getCampoTabellaStringa(ref, value)
             }// fine del blocco if
 
             if (value instanceof Date) {
@@ -322,9 +329,9 @@ class Lib {
             }// fine del blocco if
         } else {
             if (value) {
-                testo = getCampoTabellaStringa(app, cont, id, value)
+                testo = getCampoTabellaStringa(ref, value)
             } else {
-                testo = getCampoTabellaStringa(app, cont, id, '')
+                testo = getCampoTabellaStringa(ref, '')
             }// fine del blocco if-else
         }// fine del blocco if-else
 

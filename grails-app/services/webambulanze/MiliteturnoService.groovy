@@ -6,6 +6,10 @@ class MiliteturnoService {
     // il service viene iniettato automaticamente
     def croceService
 
+    // utilizzo di un service con la businessLogic per l'elaborazione dei dati
+    // il service viene iniettato automaticamente
+    def funzioneService
+
     //--cancella tutti i records di Militeturno (dell'anno corrente)
     //--ricalcola tutti i turni
     //--crea i records di MiliteTurno
@@ -13,10 +17,11 @@ class MiliteturnoService {
     //--crea i records di Militestatistiche
     def calcola() {
         Croce croce = croceService.getCroceCorrente()
+        Date oggi = Lib.creaDataOggi()
         Date primoGennaio = Lib.creaData1Gennaio()
 
         cancellaMiliteTurno(croce, primoGennaio)
-        ricalcolaMiliteTurno(croce, primoGennaio)
+        ricalcolaMiliteTurno(croce, primoGennaio, oggi)
         aggiornaMiliti(croce, primoGennaio)
         cancellaMiliteStatistiche(croce)
         ricalcolaMiliteStatistiche(croce)
@@ -28,65 +33,108 @@ class MiliteturnoService {
     }// fine del metodo
 
     //--ricalcola tutti i turni e crea i records
-    def ricalcolaMiliteTurno(Croce croce, Date primoGennaio) {
+    def ricalcolaMiliteTurno(Croce croce, Date primoGennaio, Date oggi) {
         Militeturno militeturno
         Milite milite
         HashMap mappa
         Turno turno
         Date giorno
         Funzione funzione
-        String nickMilite
+        String dettaglio
+        String nomeMilite
+        String nomeOreMilite
         int ore
-        LinkedHashMap mappaMiliti = mappaMiliti(croce)
-        def listaTurni = Turno.findAllByCroceAndGiornoGreaterThan(croce, primoGennaio)
+        def listaTurni = Turno.findAllByCroceAndGiornoBetween(croce, primoGennaio, oggi)
 
         listaTurni?.each {
             turno = (Turno) it
             giorno = turno.giorno
+
+            //--prima funzione
             funzione = turno.funzione1
             milite = turno.militeFunzione1
-            nickMilite = milite.toString()
             ore = turno.oreMilite1
-            militeturno = Militeturno.findOrCreateByCroceAndMiliteAndGiornoAndTurnoAndFunzioneAndOre(
-                    croce,
-                    milite,
-                    giorno,
-                    turno,
-                    funzione,
-                    ore).save(flush: true)
+            dettaglio = ''
+            if (turno.militeFunzione2) {
+                dettaglio += turno.militeFunzione2.toString()
+            }// fine del blocco if
+            if (turno.militeFunzione3) {
+                dettaglio += ', ' + turno.militeFunzione3.toString()
+            }// fine del blocco if
+            if (turno.militeFunzione4) {
+                dettaglio += ', ' + turno.militeFunzione4.toString()
+            }// fine del blocco if
+            registra(croce, milite, giorno, turno, funzione, ore, dettaglio)
 
-//            militeturno = new Militeturno()
-//            militeturno.croce = croce
-//            militeturno.milite = milite
-//            militeturno.giorno = giorno
-//            militeturno.turno = turno
-//            militeturno.funzione = funzione
-//            militeturno.ore = ore
-//           def a= militeturno.save(flush: true)
-            def stop2
+            //--seconda funzione
+            funzione = turno.funzione2
+            milite = turno.militeFunzione2
+            ore = turno.oreMilite2
+            dettaglio = ''
+            if (turno.militeFunzione1) {
+                dettaglio += turno.militeFunzione1.toString()
+            }// fine del blocco if
+            if (turno.militeFunzione3) {
+                dettaglio += ', ' + turno.militeFunzione3.toString()
+            }// fine del blocco if
+            if (turno.militeFunzione4) {
+                dettaglio += ', ' + turno.militeFunzione4.toString()
+            }// fine del blocco if
+            registra(croce, milite, giorno, turno, funzione, ore, dettaglio)
+
+            //--terza funzione
+            funzione = turno.funzione3
+            milite = turno.militeFunzione3
+            ore = turno.oreMilite3
+            dettaglio = ''
+            if (turno.militeFunzione1) {
+                dettaglio += turno.militeFunzione1.toString()
+            }// fine del blocco if
+            if (turno.militeFunzione2) {
+                dettaglio += ', ' + turno.militeFunzione2.toString()
+            }// fine del blocco if
+            if (turno.militeFunzione4) {
+                dettaglio += ', ' + turno.militeFunzione4.toString()
+            }// fine del blocco if
+            registra(croce, milite, giorno, turno, funzione, ore, dettaglio)
+
+            //--quarta funzione
+            funzione = turno.funzione4
+            milite = turno.militeFunzione4
+            ore = turno.oreMilite4
+            dettaglio = ''
+            if (turno.militeFunzione1) {
+                dettaglio += turno.militeFunzione1.toString()
+            }// fine del blocco if
+            if (turno.militeFunzione2) {
+                dettaglio += ', ' + turno.militeFunzione2.toString()
+            }// fine del blocco if
+            if (turno.militeFunzione3) {
+                dettaglio += ', ' + turno.militeFunzione3.toString()
+            }// fine del blocco if
+            registra(croce, milite, giorno, turno, funzione, ore, dettaglio)
+
+//            for (int k = 1; k <= 4; k++) {
+//                nomeFunz = 'funzione' + k
+//                nomeMilite = 'militeFunzione' + k
+//                nomeOreMilite = 'oreMilite' + k
+//                funzione = turno."${nomeFunz}"
+//                milite = turno."${nomeMilite}"
+//                ore = turno."${nomeOreMilite}"
+//                registra(croce, milite, giorno, turno, funzione, ore)
+//            } // fine del ciclo for
         } // fine del ciclo each
+    }// fine del metodo
 
-//        listaTurni?.each {
-//            turno = (Turno) it
-//            giorno = turno.giorno
-//            funzione = turno.funzione1
-//            milite = turno.militeFunzione1
-//            nickMilite = milite.toString()
-//            ore = turno.oreMilite1
-//            mappa = (HashMap) mappaMiliti.get(nickMilite)
-//            mappa.put('milite', milite)
-//            mappa.put('giorno', giorno)
-//            mappa.put('turno', turno)
-//            mappa.put('funzione', funzione)
-//            mappa.put('ore', ore)
-//            mappaMiliti.put(nickMilite, mappa)
-//        } // fine del ciclo each
-
-//        mappaMiliti?.each {
-//            mappa = (HashMap) it.getValue()
-//            milite = (Milite) mappa.get('milite')
-//        } // fine del ciclo each
-
+    def registra(Croce croce, Milite milite, Date giorno, Turno turno, Funzione funzione, int ore, String dettaglio) {
+        Militeturno.findOrCreateByCroceAndMiliteAndGiornoAndTurnoAndFunzioneAndOreAndDettaglio(
+                croce,
+                milite,
+                giorno,
+                turno,
+                funzione,
+                ore,
+                dettaglio).save(flush: true)
     }// fine del metodo
 
     //--aggiorna i records dei Militi
@@ -123,7 +171,11 @@ class MiliteturnoService {
 
     //--cancella tutti i records di Militestatistiche (dell'anno corrente)
     def cancellaMiliteStatistiche(Croce croce) {
-  //      Militestatistiche.findAllByCroce(croce)*.delete(flush: true)
+        def lista = Militestatistiche.findAllByCroce(croce)
+
+        lista?.each {
+            it.delete()
+        } // fine del ciclo each
     }// fine del metodo
 
     //--crea i records di Militestatistiche (1 per Milite) in base a quelli di MiliteTurno
@@ -135,29 +187,52 @@ class MiliteturnoService {
         Turno turno
         Date giorno
         Funzione funzione
+        String siglaFunzione
         String nickMilite
         int turni
         int ore
+        int oreFunz
         def listaMiliti = Milite.findAllByCroce(croce)
         def listaMiliteTurni
+        LinkedHashMap mappaSiglaFunzioni = funzioneService.mappaSiglaFunzioni(croce)
+        String nome
+        int cont
 
         listaMiliti?.each {
             milite = (Milite) it
             turni = 0
             ore = 0
+            oreFunz = 0
             listaMiliteTurni = Militeturno.findAllByCroceAndMilite(croce, milite)
+            mappaSiglaFunzioni?.each {
+                it.value = 0
+            } // fine del ciclo each
+
             listaMiliteTurni?.each {
                 turni++
                 ore += it.ore
                 funzione = it.funzione
+                siglaFunzione = funzione.sigla
+                if (mappaSiglaFunzioni.containsKey(siglaFunzione)) {
+                    oreFunz = it.ore + (int) mappaSiglaFunzioni.get(siglaFunzione)
+                    mappaSiglaFunzioni.put(siglaFunzione, oreFunz)
+                }// fine del blocco if
             } // fine del ciclo each
+
             militestatistiche = new Militestatistiche()
             militestatistiche.croce = croce
             militestatistiche.milite = milite
             militestatistiche.turni = turni
             militestatistiche.ore = ore
-            militestatistiche.funz1=turni
-            militestatistiche.funz2=3
+            cont = 0
+            mappaSiglaFunzioni?.each {
+                cont++
+                nome = 'funz' + cont
+                oreFunz = (int) it.value
+                if (cont <= 20) {
+                    militestatistiche."${nome}" = oreFunz
+                }// fine del blocco if
+            } // fine del ciclo each
             militestatistiche.save(flush: true)
         } // fine del ciclo each
 

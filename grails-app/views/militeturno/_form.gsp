@@ -120,6 +120,24 @@
 <g:field name="ore" type="number" value="${militeturnoInstance.ore}" required=""/>
 </div>
 
+<div class="fieldcontain ${hasErrors(bean: militeturnoInstance, field: 'dettaglio', 'error')} ">
+	<label for="dettaglio">
+		<g:message code="militeturno.dettaglio.labelform" default="Dettaglio" />
+		
+	</label>
+	
+
+
+
+
+
+
+
+
+
+<g:textField name="dettaglio" value="${militeturnoInstance?.dettaglio}"/>
+</div>
+
 <g:if test="${campiExtra}">
     <amb:extraSchedaForm rec="${militeturnoInstance}" campiExtra="${campiExtra}"></amb:extraSchedaForm>
 </g:if>

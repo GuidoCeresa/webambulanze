@@ -24,6 +24,10 @@ class MilitestatisticheController {
     // il service viene iniettato automaticamente
     def funzioneService
 
+    // utilizzo di un service con la businessLogic per l'elaborazione dei dati
+    // il service viene iniettato automaticamente
+    def militeturnoService
+
     def index() {
         redirect(action: "list", params: params)
     } // fine del metodo
@@ -33,12 +37,14 @@ class MilitestatisticheController {
         Croce croce
         String sigla
         Milite milite
-        def campiLista = [
+        HashMap mappa = new HashMap()
+        mappa.put('titolo', 'nomignolo')
+        mappa.put('campo', 'database')
+        def campiLista = [[:],
                 'milite',
                 'turni',
                 'ore']
         def campiExtra
-        def nome
 
         if (!params.sort) {
             params.sort = 'milite'
@@ -52,6 +58,9 @@ class MilitestatisticheController {
         } else {
             params.order = 'asc'
         }// fine del blocco if-else
+        if (params.sort.equals('milite')) {
+            params.sort = 'milite.cognome'
+        }// fine del blocco if
 
         if (grailsApplication.mainContext.servletContext.croce) {
             croce = grailsApplication.mainContext.servletContext.croce
@@ -68,10 +77,11 @@ class MilitestatisticheController {
                         lista = Militestatistiche.findByMilite(milite)
                     }// fine del blocco if
                 }// fine del blocco if-else
-                campiExtra = funzioneService.campiExtraStatistichePerCroce(croce)
+                campiExtra = funzioneService.campiExtraPerCroce(croce)
                 if (campiExtra) {
                     for (int k = 1; k <= campiExtra.size(); k++) {
-                        campiLista.add("funz"+"${k}")
+                        mappa = ['titolo': campiExtra.get(k - 1), 'campo': 'funz' + "${k}"]
+                        campiLista.add(mappa)
                     } // fine del ciclo for
                 }// fine del blocco if
 
@@ -80,7 +90,15 @@ class MilitestatisticheController {
             lista = Milite.findAll(params)
         }// fine del blocco if-else
 
+        //--elimina il primo elemento della lista che serviva solo per evitare che fosse una lista di stringhe
+        campiLista.remove([:])
+
         [militestatisticheInstanceList: lista, militestatisticheInstanceTotal: 0, campiLista: campiLista, campiExtra: null]
+    } // fine del metodo
+
+    def calcola() {
+        militeturnoService.calcola()
+        redirect(action: 'list', params: params)
     } // fine del metodo
 
     def create() {

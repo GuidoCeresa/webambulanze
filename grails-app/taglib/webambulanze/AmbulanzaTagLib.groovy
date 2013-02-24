@@ -267,10 +267,11 @@ class AmbulanzaTagLib {
         def campi
         String cont
         String oldSort = 'id'
-        String sort
+        String sort = ''
         String order = 'asc'
         String title = 'void'
         String campo
+        def elementoLista
 
         if (args.campiLista) {
             lista = args.campiLista
@@ -289,9 +290,23 @@ class AmbulanzaTagLib {
         if (cont) {
             if (lista) {
                 lista?.each {
-                    campo = it
-                    sort = campo
-                    title = message(code: "${cont}.${campo}.labellist")
+                    elementoLista = it
+                    if (elementoLista instanceof String) {
+                        campo = it
+                        sort = campo
+                        title = message(code: "${cont}.${campo}.labellist")
+                    } else {
+                        if (elementoLista instanceof Map && elementoLista.titolo && elementoLista.campo) {
+                            campo = elementoLista.campo
+                            sort = elementoLista.campo
+                            title = elementoLista.titolo
+                        } else { // emergency error
+                            campo = 'it'
+                            sort = 'asc'
+                            title = 'ID'
+                        }// fine del blocco if-else
+                    }// fine del blocco if-else
+
                     if (sort.equals(oldSort)) {
                         testoOut += Lib.getTitoloTabellaNotSorted(app, cont, sort, order, title)
                     } else {
@@ -372,11 +387,13 @@ class AmbulanzaTagLib {
         String contPath = 'webambulanze.'
         def campi
         String cont
-        String campo
+        String campo = ''
         def rec = null
         long id = 0.0
         def value = null
         ArrayList nomeFunzioniAttiveDelMilite = null
+        def elementoLista
+        String action
 
         if (args.campiLista) {
             lista = args.campiLista
@@ -404,16 +421,33 @@ class AmbulanzaTagLib {
         }// fine del blocco if
 
         if (cont && rec) {
+            if (cont.equals('militestatistiche')) {
+                cont = 'militeturno'
+            }// fine del blocco if
+
             if (lista) {
                 lista?.each {
-                    campo = it
+                    elementoLista = it
+                    if (elementoLista instanceof String) {
+                        campo = it
+                    } else {
+                        if (elementoLista instanceof Map && elementoLista.campo) {
+                            campo = elementoLista.campo
+                        }// fine del blocco if
+                    }// fine del blocco if-else
                     if (rec."${campo}") {
                         value = rec."${campo}"
                     } else {
                         value = null
                     }// fine del blocco if-else
 
-                    testoOut += Lib.getCampoTabella(app, cont, id, value)
+                    if (cont.equals('militeturno')) {
+                        action = 'dettagli'
+                        id =  rec.milite.id
+                        testoOut += Lib.getCampoTabella(app, cont, id, value, action)
+                    } else {
+                        testoOut += Lib.getCampoTabella(app, cont, id, value)
+                    }// fine del blocco if-else
                 } // fine del ciclo each
             } else {
                 bean = applicationContext.getBean(contPath)
@@ -802,7 +836,8 @@ class AmbulanzaTagLib {
             } // fine del ciclo each
         } else {
             if (militeService.isLoggatoProgrammatore()) {
-                testoOut += Lib.tagController('Militeturno', 'Forza calcolo statistiche','calcola')
+                testoOut += Lib.tagController('Militestatistiche', 'Forza calcolo statistiche', 'calcola')
+                testoOut += Lib.tagController('Militeturno', 'Statistiche dettagliate')
             }// fine del blocco if
             if (militeService.isLoggatoCustodeOrMore()) {
                 testoOut += Lib.tagController('Ruolo', 'Ruoli (accesso limitato ad una sola persona)')

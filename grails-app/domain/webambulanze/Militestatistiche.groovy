@@ -16,6 +16,17 @@ class Militestatistiche {
     int funz7 = 0
     int funz8 = 0
     int funz9 = 0
+    int funz10 = 0
+    int funz11 = 0
+    int funz12 = 0
+    int funz13 = 0
+    int funz14 = 0
+    int funz15 = 0
+    int funz16 = 0
+    int funz17 = 0
+    int funz18 = 0
+    int funz19 = 0
+    int funz20 = 0
 
     /**
      * regolazione delle proprietà di ogni campo
@@ -36,6 +47,17 @@ class Militestatistiche {
         funz7(blank: true)
         funz8(blank: true)
         funz9(blank: true)
+        funz10(blank: true)
+        funz11(blank: true)
+        funz12(blank: true)
+        funz13(blank: true)
+        funz14(blank: true)
+        funz15(blank: true)
+        funz16(blank: true)
+        funz17(blank: true)
+        funz18(blank: true)
+        funz19(blank: true)
+        funz20(blank: true)
     } // end of static constraints
 
     static mapping = {

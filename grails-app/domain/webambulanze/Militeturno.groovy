@@ -9,6 +9,7 @@ class Militeturno {
     Turno turno
     Funzione funzione
     int ore //--ridondante, ma semplifica i filtri
+    String dettaglio
 
     /**
      * regolazione delle proprietà di ogni campo
@@ -22,6 +23,7 @@ class Militeturno {
         turno(nullable: false, blank: false)
         funzione(blank: true)
         ore(blank: true)
+        dettaglio(nullable: true, blank: true)
     } // end of static constraints
 
     static mapping = {
