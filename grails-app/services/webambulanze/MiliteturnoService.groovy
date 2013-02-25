@@ -17,14 +17,17 @@ class MiliteturnoService {
     //--crea i records di Militestatistiche
     def calcola() {
         Croce croce = croceService.getCroceCorrente()
-        Date oggi = Lib.creaDataOggi()
-        Date primoGennaio = Lib.creaData1Gennaio()
 
-        cancellaMiliteTurno(croce, primoGennaio)
-        ricalcolaMiliteTurno(croce, primoGennaio, oggi)
-        aggiornaMiliti(croce, primoGennaio)
-        cancellaMiliteStatistiche(croce)
-        ricalcolaMiliteStatistiche(croce)
+        if (croce) {
+            Date oggi = Lib.creaDataOggi()
+            Date primoGennaio = Lib.creaData1Gennaio()
+
+            cancellaMiliteTurno(croce, primoGennaio)
+            ricalcolaMiliteTurno(croce, primoGennaio, oggi)
+            aggiornaMiliti(croce, primoGennaio)
+            cancellaMiliteStatistiche(croce)
+            ricalcolaMiliteStatistiche(croce)
+        }// fine del blocco if
     }// fine del metodo
 
     //--cancella tutti i records di Militeturno (dell'anno corrente)

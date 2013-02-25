@@ -10,8 +10,10 @@
 
 package webambulanze
 
+import grails.plugins.springsecurity.Secured
 import org.springframework.dao.DataIntegrityViolationException
 
+@Secured([Cost.ROLE_MILITE])
 class MilitestatisticheController {
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
@@ -101,10 +103,12 @@ class MilitestatisticheController {
         redirect(action: 'list', params: params)
     } // fine del metodo
 
+    @Secured([Cost.ROLE_PROG])
     def create() {
         [militestatisticheInstance: new Militestatistiche(params)]
     } // fine del metodo
 
+    @Secured([Cost.ROLE_PROG])
     def save() {
         def militestatisticheInstance = new Militestatistiche(params)
         if (!militestatisticheInstance.save(flush: true)) {
@@ -116,6 +120,7 @@ class MilitestatisticheController {
         redirect(action: "show", id: militestatisticheInstance.id)
     } // fine del metodo
 
+    @Secured([Cost.ROLE_PROG])
     def show(Long id) {
         def militestatisticheInstance = Militestatistiche.get(id)
         if (!militestatisticheInstance) {
@@ -127,6 +132,7 @@ class MilitestatisticheController {
         [militestatisticheInstance: militestatisticheInstance]
     } // fine del metodo
 
+    @Secured([Cost.ROLE_PROG])
     def edit(Long id) {
         def militestatisticheInstance = Militestatistiche.get(id)
         if (!militestatisticheInstance) {
@@ -138,6 +144,7 @@ class MilitestatisticheController {
         [militestatisticheInstance: militestatisticheInstance]
     } // fine del metodo
 
+    @Secured([Cost.ROLE_PROG])
     def update(Long id, Long version) {
         def militestatisticheInstance = Militestatistiche.get(id)
         if (!militestatisticheInstance) {
@@ -167,6 +174,7 @@ class MilitestatisticheController {
         redirect(action: "show", id: militestatisticheInstance.id)
     } // fine del metodo
 
+    @Secured([Cost.ROLE_PROG])
     def delete(Long id) {
         def militestatisticheInstance = Militestatistiche.get(id)
         if (!militestatisticheInstance) {

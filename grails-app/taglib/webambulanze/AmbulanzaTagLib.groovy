@@ -837,7 +837,6 @@ class AmbulanzaTagLib {
         } else {
             if (militeService.isLoggatoProgrammatore()) {
                 testoOut += Lib.tagController('Militestatistiche', 'Forza calcolo statistiche', 'calcola')
-                testoOut += Lib.tagController('Militeturno', 'Statistiche dettagliate')
             }// fine del blocco if
             if (militeService.isLoggatoCustodeOrMore()) {
                 testoOut += Lib.tagController('Ruolo', 'Ruoli (accesso limitato ad una sola persona)')
@@ -847,6 +846,7 @@ class AmbulanzaTagLib {
                 testoOut += Lib.tagController('Croce', 'Croci (accesso in sola visione limitato agli admin)')
                 testoOut += Lib.tagController('Settings', 'Preferenze (accesso in sola visione limitato agli admin)')
                 testoOut += Lib.tagController('Logo', 'Logs (accesso in sola visione limitato agli admin)')
+                testoOut += Lib.tagController('Militeturno', 'Statistiche dettagliate')
             }// fine del blocco if
             testoOut += Lib.tagController('Funzione', 'Funzioni')
             testoOut += Lib.tagController('TipoTurno', 'Tipologia turni')

@@ -10,8 +10,10 @@
 
 package webambulanze
 
+import grails.plugins.springsecurity.Secured
 import org.springframework.dao.DataIntegrityViolationException
 
+@Secured([Cost.ROLE_MILITE])
 class MiliteturnoController {
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
@@ -104,10 +106,12 @@ class MiliteturnoController {
         render(view: 'list', model: [militeturnoInstanceList: lista, militeturnoInstanceTotal: 0, campiLista: campiLista])
     } // fine del metodo
 
+    @Secured([Cost.ROLE_PROG])
     def create() {
         [militeturnoInstance: new Militeturno(params)]
     } // fine del metodo
 
+    @Secured([Cost.ROLE_PROG])
     def save() {
         def militeturnoInstance = new Militeturno(params)
         if (!militeturnoInstance.save(flush: true)) {
@@ -119,6 +123,7 @@ class MiliteturnoController {
         redirect(action: "show", id: militeturnoInstance.id)
     } // fine del metodo
 
+    @Secured([Cost.ROLE_PROG])
     def show(Long id) {
         def militeturnoInstance = Militeturno.get(id)
         if (!militeturnoInstance) {
@@ -130,6 +135,7 @@ class MiliteturnoController {
         [militeturnoInstance: militeturnoInstance]
     } // fine del metodo
 
+    @Secured([Cost.ROLE_PROG])
     def edit(Long id) {
         def militeturnoInstance = Militeturno.get(id)
         if (!militeturnoInstance) {
@@ -141,6 +147,7 @@ class MiliteturnoController {
         [militeturnoInstance: militeturnoInstance]
     } // fine del metodo
 
+    @Secured([Cost.ROLE_PROG])
     def update(Long id, Long version) {
         def militeturnoInstance = Militeturno.get(id)
         if (!militeturnoInstance) {
@@ -170,6 +177,7 @@ class MiliteturnoController {
         redirect(action: "show", id: militeturnoInstance.id)
     } // fine del metodo
 
+    @Secured([Cost.ROLE_PROG])
     def delete(Long id) {
         def militeturnoInstance = Militeturno.get(id)
         if (!militeturnoInstance) {
