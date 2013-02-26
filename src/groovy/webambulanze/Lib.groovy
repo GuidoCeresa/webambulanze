@@ -997,6 +997,15 @@ class Lib {
         return settimana
     }// fine del metodo
 
+    public static int getDurataOre(Date inizio, Date fine) {
+        int durata
+
+        durata = getNumOra(inizio) - getNumOra(fine)
+        durata = Math.abs(durata)
+
+        return durata
+    }// fine del metodo
+
     //--Costruisce il tag controller per il testo indicato
     public static String tagController(String controller, String titolo, String azione) {
         String testoOut = ''

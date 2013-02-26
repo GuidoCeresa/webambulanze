@@ -19,7 +19,8 @@ public interface Cost {
     public static String CROCE_ALGOS = 'ALGOS'
     public static String CROCE_DEMO = 'DEMO'
     public static String CROCE_PUBBLICA = 'PAVT'
-    public static String CROCE_ROSSA = 'CRF'
+    public static String CROCE_ROSSA_FIDENZA = 'CRF'
+    public static String CROCE_ROSSA_PONTE_TARO = 'CRPT'
 
     //--codifica delle preferenze
     public static String PREF_mostraSoloMilitiFunzione = 'mostraSoloMilitiFunzione'
@@ -44,6 +45,10 @@ public interface Cost {
     //--sigla e password per accesso libero alla croce demo
     public static String DEMO_OSPITE = 'ospite'
     public static String DEMO_PASSWORD = ''
+
+    //--sigla e password per accesso libero alla croce rossa ponte taro
+    public static String CRPT_OSPITE = '.ospite.'
+    public static String CRPT_PASSWORD = '123'
 
     //--identificatore delle colonne per le statistiche
     public static String CAMPO_TURNI = 'Turni'

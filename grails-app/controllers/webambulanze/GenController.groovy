@@ -41,7 +41,7 @@ class GenController {
             redirect(action: 'selezionaCrocePAVT')
         }// fine del blocco if
 
-        if (croce && croce.equals(Cost.CROCE_ROSSA)) {
+        if (croce && croce.equals(Cost.CROCE_ROSSA_FIDENZA)) {
             redirect(action: 'selezionaCroceCRF')
         }// fine del blocco if
     }
@@ -170,14 +170,32 @@ class GenController {
         }// fine del blocco if-else
     } // fine del metodo
 
-    //--chiamata da URL = croce rossa
+    //--chiamata da URL = croce rossa fidenza
     //--selezione iniziale della croce su cui operare
     //--seleziona la necessità del login
     //--regola la schermata iniziale
-//    @Secured([Cost.ROLE_MILITE])
     def selezionaCroceCRF() {
         //--regolazioni generali
-        selezionaCroceBase(Cost.CROCE_ROSSA)
+        selezionaCroceBase(Cost.CROCE_ROSSA_FIDENZA)
+
+        if (grailsApplication.mainContext.servletContext.startController) {
+            //--va alla schermata specifica
+            redirect(controller: grailsApplication.mainContext.servletContext.startController)
+        } else {
+            //--va al menu base
+            render(controller: 'gen', view: 'home')
+        }// fine del blocco if-else
+    } // fine del metodo
+
+    //--chiamata da URL = croce rossa ponte taro
+    //--selezione iniziale della croce su cui operare
+    //--seleziona la necessità del login
+    //--regola la schermata iniziale
+    def selezionaCroceCRPT() {
+        //--regolazioni generali
+        selezionaCroceBase(Cost.CROCE_ROSSA_PONTE_TARO)
+
+        springSecurityService.reauthenticate(Cost.CRPT_OSPITE, Cost.CRPT_PASSWORD)
 
         if (grailsApplication.mainContext.servletContext.startController) {
             //--va alla schermata specifica

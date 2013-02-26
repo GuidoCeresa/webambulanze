@@ -443,7 +443,7 @@ class AmbulanzaTagLib {
 
                     if (cont.equals('militeturno')) {
                         action = 'dettagli'
-                        id =  rec.milite.id
+                        id = rec.milite.id
                         testoOut += Lib.getCampoTabella(app, cont, id, value, action)
                     } else {
                         testoOut += Lib.getCampoTabella(app, cont, id, value)
@@ -1336,7 +1336,7 @@ class AmbulanzaTagLib {
         String testoOut
         String testo
 
-        testo = 'Algos© 2013 - v0.8 del 20 febbraio 2013'
+        testo = 'Algos© 2013 - v0.9 del 25 febbraio 2013'
         testo = Lib.tagCella(testo, Aspetto.copyright)
         testoOut = Lib.tagTable(testo)
         return testoOut
@@ -1360,6 +1360,7 @@ class AmbulanzaTagLib {
         TipoTurno tipoTurno
         String nuovoTurnoTxt
         boolean nuovoTurno = false
+        boolean mostraOreSingoloMilite = false
         boolean isTurnoExtra = false
 
         if (params.turnoInstance) {
@@ -1372,7 +1373,12 @@ class AmbulanzaTagLib {
             nuovoTurnoTxt = params.nuovoTurno
             if (nuovoTurnoTxt && nuovoTurnoTxt.equals('true')) {
                 nuovoTurno = true
+                mostraOreSingoloMilite = true
             }// fine del blocco if
+        }// fine del blocco if
+
+        if (turno.militeFunzione1 == null && turno.militeFunzione2 == null && turno.militeFunzione3 == null) {
+            mostraOreSingoloMilite = true
         }// fine del blocco if
 
         if (turno) {
@@ -1395,7 +1401,7 @@ class AmbulanzaTagLib {
                 testoOut += formRiga('Località', Lib.presentaDataCompleta(turno.giorno))
             }// fine del blocco if
             for (int k = 1; k <= numFunzioni; k++) {
-                testoOut += formRigaFunzione(turno, nuovoTurno, k)
+                testoOut += formRigaFunzione(turno, mostraOreSingoloMilite, k)
                 testoOut += formLegenda('Lista (in ordine alfabetico) di tutti i militi')
             } // fine del ciclo for
             testoOut += formRiga('Note', formNote(turno.note))
@@ -1434,7 +1440,7 @@ class AmbulanzaTagLib {
         return testoOut
     }// fine del metodo
 
-    private String formRigaFunzione(Turno turno, boolean nuovoTurno, int riga) {
+    private String formRigaFunzione(Turno turno, boolean mostraOreSingoloMilite, int riga) {
         String testoOut = ''
         String testoRiga = ''
 
@@ -1442,7 +1448,7 @@ class AmbulanzaTagLib {
         testoRiga += Lib.tagCella(formFunzioneEdit(turno, riga), Aspetto.formeditleft)
         testoRiga += Lib.tagCella(formBox(turno, riga), Aspetto.formlabelright)
         testoRiga += Lib.tagCella('ore', Aspetto.formlabelright)
-        testoRiga += Lib.tagCella(formOreMilite(turno, nuovoTurno, riga), Aspetto.formeditright)
+        testoRiga += Lib.tagCella(formOreMilite(turno, mostraOreSingoloMilite, riga), Aspetto.formeditright)
         testoOut += Lib.tagRiga(testoRiga)
 
         return testoOut
@@ -1827,12 +1833,12 @@ class AmbulanzaTagLib {
         return testo
     }
 
-    private static String formOreMilite(Turno turno, boolean nuovoTurno, int numFunzione) {
+    private static String formOreMilite(Turno turno, boolean mostraOreSingoloMilite, int numFunzione) {
         String testo = ''
         String label = 'oreMilite' + numFunzione
         String value = turno."${label}"
 
-        if (nuovoTurno) {
+        if (value.equals('0') && mostraOreSingoloMilite) {
             value = turno.tipoTurno.durata
         }// fine del blocco if
 

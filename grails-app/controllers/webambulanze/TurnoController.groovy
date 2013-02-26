@@ -355,6 +355,7 @@ class TurnoController {
 
     //--controlla che tutte le funzioni obbligatorie siano state assegnate
     //--pone a true il flag ''assegnato'' del turno
+    //--controlla che non ci sia il flag di avviso e/o la durata del singolo milite sia maggiore del turno
     private void regolaFunzioniTurno(Turno turno) {
         TipoTurno tipoTurno
         boolean assegnato = false
@@ -384,6 +385,7 @@ class TurnoController {
         turno.assegnato = assegnato
     } // fine del metodo
 
+    //--controlla che non ci sia il flag di avviso e/o la durata del singolo milite sia maggiore del turno
     private boolean regolaFunzione(Turno turno, int pos) {
         boolean assegnata = false
         Milite milite = null
@@ -391,6 +393,10 @@ class TurnoController {
         long militeId = 0
         String milFunz = 'militeFunzione' + pos
         String milFunzId = 'militeFunzione' + pos + '_id'
+        String probFunz = 'problemiFunzione' + pos
+        String oreMilFunz = 'oreMilite' + pos
+        int oreMilite = 0
+        int durataTurno = 1000 //un numero grande a piacere :-)
 
         if (turno && pos > 0) {
             if (params."${milFunzId}") {
@@ -405,7 +411,21 @@ class TurnoController {
                 }// fine del blocco if
                 if (milite) {
                     turno."${milFunz}" = milite
-                    assegnata = true
+                }// fine del blocco if
+
+                if (milite) {
+                    if (params."${probFunz}") {
+                        durataTurno = Lib.getDurataOre(turno.inizio, turno.fine)
+                        if (params."${oreMilFunz}") {
+                            oreMilite = Integer.decode(params."${oreMilFunz}")
+                        }// fine del blocco if
+
+                        if (oreMilite >= durataTurno) {
+                            assegnata = true
+                        }// fine del blocco if
+                    } else {
+                        assegnata = true
+                    }// fine del blocco if-else
                 }// fine del blocco if
             } else {
                 turno."${milFunz}" = null

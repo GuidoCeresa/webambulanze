@@ -26,6 +26,8 @@ class UrlMappings {
         "/PAVT"(controller: 'Gen', action: 'selezionaCrocePAVT')
         "/crf"(controller: 'Gen', action: 'selezionaCroceCRF')
         "/CRF"(controller: 'Gen', action: 'selezionaCroceCRF')
+        "/crpt"(controller: 'Gen', action: 'selezionaCroceCRPT')
+        "/CRPT"(controller: 'Gen', action: 'selezionaCroceCRPT')
         "/logoutselection"(controller: 'Gen', action: 'logoutselection')
         "/logoutalgos"(controller: 'Gen', action: 'logoutalgos')
         "/logoutdemo"(controller: 'Gen', action: 'logoutdemo')
