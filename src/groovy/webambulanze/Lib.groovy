@@ -251,12 +251,22 @@ class Lib {
 
     static String getCampoTabellaStringa(String ref, def value) {
         String testo = ''
+        String valore = "${value}"
 
         testo += ref
         testo += "${value}"
         testo += "</a>"
 
-        return Lib.tagCella(testo)
+        if (valore.equals(Cost.STATUS_VERDE) || valore.equals(Cost.STATUS_ROSSO)) {
+            if (valore.equals(Cost.STATUS_VERDE)) {
+                return Lib.tagCella(valore, Aspetto.verde)
+            } else {
+                return Lib.tagCella(valore, Aspetto.rosso)
+            }// fine del blocco if-else
+        } else {
+            return Lib.tagCella(testo)
+        }// fine del blocco if-else
+
     }// fine del metodo
 
     static String getCampoTabellaData(String app, String cont, long id, def value) {
@@ -1037,6 +1047,21 @@ class Lib {
     //--Costruisce il tag controller per il testo indicato
     public static String tagController(String controller) {
         return Lib.tagController(controller, controller)
+    } // fine del metodo statico
+
+    //--Turni odierni necessari
+    //--Normalmente 2 turni al mese
+    //--Il mese corrente lo si considera ''in corso'' e il conteggio scatta alla fine del mese
+    //--Così il 25 febbraio bastano 2 turni, il 30 marzo ne bastano 4 ma il 1° aprile ce ne vogliono 6
+    public static int turniNecessari() {
+        int turniNecessari
+        Date oggi = new Date()
+        int turniMese = 2
+        int numMeseCorrente = getNumMese(oggi)
+
+        turniNecessari = turniMese * (numMeseCorrente - 1)
+
+        return turniNecessari
     } // fine del metodo statico
 
 

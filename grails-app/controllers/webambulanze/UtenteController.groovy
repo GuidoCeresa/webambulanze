@@ -24,6 +24,10 @@ class UtenteController {
     // il service viene iniettato automaticamente
     def logoService
 
+    // utilizzo di un service con la businessLogic per l'elaborazione dei dati
+    // il service viene iniettato automaticamente
+    def croceService
+
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
     def index() {
@@ -73,8 +77,17 @@ class UtenteController {
         [utenteInstanceList: lista, utenteInstanceTotal: 0, campiLista: campiLista]
     }
 
+    //--ATTENZIONE - se si ricreano le viste, occorre modificare  -form.gsp
+    //--mettendo from="${utenteInstanceList}" nel primo campo
     def create() {
-        [utenteInstance: new Utente(params)]
+        if (!params.sort) {
+            params.sort = 'username'
+        }// fine del blocco if-else
+
+        Croce croce = croceService.croceCorrente
+        def lista = utenteService.utentiCustodiOrMore(croce, params)
+
+        [utenteInstance: new Utente(params), utenteInstanceList: lista,]
     } // fine del metodo
 
     def save() {
@@ -91,7 +104,9 @@ class UtenteController {
             return
         }
 
-        flash.message = logoService.setWarn(Evento.utenteCreato, utenteInstance.milite)
+        if (utenteInstance.milite) {
+            flash.message = logoService.setWarn(Evento.utenteCreato, utenteInstance.milite)
+        }// fine del blocco if
 
         Ruolo ruoloMilite = Ruolo.findByAuthority(Cost.ROLE_MILITE)
         UtenteRuolo.create(utenteInstance, ruoloMilite, true)
@@ -151,6 +166,7 @@ class UtenteController {
         redirect(action: "show", id: utenteInstance.id)
     } // fine del metodo
 
+    @Secured([Cost.ROLE_PROG])
     def delete(Long id) {
         def utenteInstance = Utente.get(id)
         if (!utenteInstance) {
@@ -160,13 +176,21 @@ class UtenteController {
         }
 
         try {
-            utenteInstance.delete(flush: true)
+            utenteInstance.delete()
             flash.message = message(code: 'default.deleted.message', args: [message(code: 'utente.label', default: 'Utente'), id])
-            redirect(action: "list")
+            redirect(action: 'list')
         }
         catch (DataIntegrityViolationException e) {
+            try { // prova ad eseguire il codice
+              //  String query = "delete from utente_ruolo where utente_id=" + utenteInstance.id
+              //  Ruolo ruolo = Ruolo.get(4)
+              //  UtenteRuolo.remove utenteInstance, ruolo
+              //  utenteInstance.delete()
+            } catch (Exception unErrore) { // intercetta l'errore
+                log.error unErrore
+            }// fine del blocco try-catch
             flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'utente.label', default: 'Utente'), id])
-            redirect(action: "show", id: id)
+            redirect(action: 'show', id: id)
         }
     } // fine del metodo
 

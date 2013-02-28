@@ -928,3 +928,13 @@ td.copyright {
     /*border-style: solid;*/
     /*border-color: blue;*/
 }
+
+td.verde {
+    color: green;
+    font-weight: bold;
+}
+
+td.rosso {
+    color: red;
+    font-weight: bold;
+}

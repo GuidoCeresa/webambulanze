@@ -233,7 +233,7 @@ class BootStrap implements Cost {
                 croce.descrizione = 'Croce Rossa Italiana - Comitato Locale di Fidenza'
             }// fine del blocco if
             if (!croce.riferimento) {
-                croce.riferimento = 'Rita Tanzi'
+                croce.riferimento = 'Annarita Tanzi'
             }// fine del blocco if
             if (!croce.indirizzo) {
                 croce.indirizzo = 'via la Bionda, 3 - 43036 Fidenza (PR)'
@@ -245,7 +245,7 @@ class BootStrap implements Cost {
                 croce.email = 'cl.fidenza@cri.it'
             }// fine del blocco if
             if (!croce.note) {
-                croce.note = 'Rita Tanzi (348 6052310), Paolo Biazzi (328 4820471) e Massimiliano Abati'
+                croce.note = 'Annarita Tanzi (348 6052310), Paolo Biazzi (328 4820471) e Massimiliano Abati'
             }// fine del blocco if
             croce.save(failOnError: true)
         }// fine del blocco if
@@ -380,7 +380,7 @@ class BootStrap implements Cost {
         Ruolo militeRole
 
         // programmatore generale (sempre presente)
-        newUtente(CROCE_ROSSA_FIDENZA, ROLE_PROG, PROG_NICK, PROG_PASS)
+        newUtente(CROCE_ROSSA_FIDENZA, ROLE_PROG, PROG_NICK_CRF, PROG_PASS)
 
         if (SVILUPPO_CROCE_ROSSA_FIDENZA) {
             custodianRole = Ruolo.findOrCreateByAuthority(ROLE_CUSTODE).save(failOnError: true)
@@ -396,7 +396,7 @@ class BootStrap implements Cost {
             }// fine del blocco if
 
             // admin
-            utente = newUtente(CROCE_ROSSA_FIDENZA, ROLE_ADMIN, 'Tanzi Rita', 'tanzi123')
+            utente = newUtente(CROCE_ROSSA_FIDENZA, ROLE_ADMIN, 'Tanzi Annarita', 'tanzi123')
             numUtentiRossaFidenza++
             if (custodianRole && adminRole && militeRole && utente) {
                 UtenteRuolo.findOrCreateByRuoloAndUtente(militeRole, utente).save(failOnError: true)
@@ -424,7 +424,7 @@ class BootStrap implements Cost {
         Ruolo militeRole
 
         // programmatore generale (sempre presente)
-        newUtente(CROCE_ROSSA_PONTE_TARO, ROLE_PROG, PROG_NICK, PROG_PASS)
+        newUtente(CROCE_ROSSA_PONTE_TARO, ROLE_PROG, PROG_NICK_CRPT, PROG_PASS)
 
         if (SVILUPPO_CROCE_ROSSA_PONTE_TARO) {
             custodianRole = Ruolo.findOrCreateByAuthority(ROLE_CUSTODE).save(failOnError: true)

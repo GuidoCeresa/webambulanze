@@ -11,13 +11,24 @@ class CalcolaJob {
     // il service viene iniettato automaticamente
     def mailService
 
+    // utilizzo di un service con la businessLogic per l'elaborazione dei dati
+    // il service viene iniettato automaticamente
+    def logoService
+
+    static boolean USA_MAIL =false
+
     static triggers = {
         cron name: 'myTrigger', cronExpression: "0 0 3 * * ?"     // alle 3 di notte di ogni giorno
     }
 
     def execute() {
         militeturnoService.calcola()
-        spedisceMailDiControllo('Ricalcolo effettuato')
+
+        if (USA_MAIL) {
+            spedisceMailDiControllo('Ricalcolo effettuato')
+        } else {
+            logoService.setInfo(Evento.statistiche)
+        }// fine del blocco if-else
     }// fine del metodo execute
 
     //--provvisorio all'inizio

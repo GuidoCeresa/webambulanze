@@ -27,7 +27,7 @@
 
 
 
-<g:select id="milite" name="milite.id" from="${webambulanze.Milite.list()}" optionKey="id" value="${utenteInstance?.milite?.id}" class="many-to-one" noSelection="['null': '']"/>
+<g:select id="milite" name="milite.id" from="${utenteInstanceList}" optionKey="id" value="${utenteInstance?.milite?.id}" class="many-to-one" noSelection="['null': '']"/>
 </div>
 
 <div class="fieldcontain ${hasErrors(bean: utenteInstance, field: 'username', 'error')} required">

@@ -1,4 +1,3 @@
-
 /* Created by Algos s.r.l. */
 /* Date: mag 2012 */
 /* Questo file è stato installato dal plugin AlgosBase */
@@ -17,7 +16,8 @@ class UrlMappings {
                 // apply constraints here
             }
         }
-        "/"(controller: 'Gen', action: 'selezionaCroce')
+        //      "/"(controller: 'Gen', action: 'selezionaCroce')
+  //      "/"(controller: 'Gen', action: 'ingressoVuoto')
         "/algos"(controller: 'Gen', action: 'selezionaCroceAlgos')
         "/ALGOS"(controller: 'Gen', action: 'selezionaCroceAlgos')
         "/demo"(controller: 'Gen', action: 'selezionaCroceDemo')

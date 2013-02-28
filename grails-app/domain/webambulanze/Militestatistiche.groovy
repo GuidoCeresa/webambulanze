@@ -5,6 +5,7 @@ class Militestatistiche {
     //--tabella di incrocio - ridondante, ma velocizza la presentazione - costruita in background
     Croce croce //--ridondante, ma semplifica i filtri
     Milite milite
+    String status
     int turni = 0
     int ore = 0
     int funz1 = 0
@@ -36,6 +37,7 @@ class Militestatistiche {
     static constraints = {
         croce(nullable: false, blank: false)
         milite(nullable: false, blank: false)
+        status(nullable: true, blank: true)
         turni(nullable: true)
         ore(nullable: true)
         funz1(blank: true)

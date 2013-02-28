@@ -182,6 +182,7 @@ class MiliteturnoService {
     }// fine del metodo
 
     //--crea i records di Militestatistiche (1 per Milite) in base a quelli di MiliteTurno
+    //--controlla la frequenza (2 al mese) e mette in verde od in rosso il numero di turni
     def ricalcolaMiliteStatistiche(Croce croce) {
         Militeturno militeturno
         Militestatistiche militestatistiche
@@ -225,6 +226,7 @@ class MiliteturnoService {
             militestatistiche = new Militestatistiche()
             militestatistiche.croce = croce
             militestatistiche.milite = milite
+            militestatistiche.status = turni < Lib.turniNecessari() ? Cost.STATUS_ROSSO : Cost.STATUS_VERDE
             militestatistiche.turni = turni
             militestatistiche.ore = ore
             cont = 0

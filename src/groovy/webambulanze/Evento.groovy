@@ -10,6 +10,7 @@ public enum Evento {
 
     generico('evento generico', ''),
     tabellone('modifiche al tabellone', ''),
+    statistiche('effettuato il ricalcolo delle statistiche', ''),
 
     militeCreato('Creato un nuovo', ''),
     militeModificato('Modificato il', ''),

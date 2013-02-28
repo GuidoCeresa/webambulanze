@@ -44,6 +44,7 @@ class MilitestatisticheController {
         mappa.put('campo', 'database')
         def campiLista = [[:],
                 'milite',
+                'status',
                 'turni',
                 'ore']
         def campiExtra

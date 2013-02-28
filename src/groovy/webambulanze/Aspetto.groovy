@@ -38,5 +38,7 @@ public enum Aspetto {
     formeditright,
     formlegenda,
     amb,
-    copyright
+    copyright,
+    rosso,
+    verde
 }// fine della classe Enumeration

@@ -65,7 +65,7 @@ class UtenteService {
             listaIn?.each {
                 utente = (Utente) it
                 nick = utente.username
-                if (nick.equals(Cost.PROG_NICK)) {
+                if (nick.equals(Cost.PROG_NICK_CRF)) {
                     objProg = utente
                 }// fine del blocco if
             } // fine del ciclo each

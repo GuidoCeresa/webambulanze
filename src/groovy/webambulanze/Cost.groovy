@@ -38,7 +38,8 @@ public interface Cost {
     public static String EXTRA = 'extra'
 
     //--sigla e password del programmatore
-    public static String PROG_NICK = '---'
+    public static String PROG_NICK_CRF = '---'
+    public static String PROG_NICK_CRPT = '--' //--i nick sono unici
     public static String PROG_NICK_DEMO = '----' //--i nick sono unici
     public static String PROG_PASS = 'fulvia'
 
@@ -48,9 +49,13 @@ public interface Cost {
 
     //--sigla e password per accesso libero alla croce rossa ponte taro
     public static String CRPT_OSPITE = '.ospite.'
-    public static String CRPT_PASSWORD = '123'
+    public static String CRPT_PASSWORD = ''
 
     //--identificatore delle colonne per le statistiche
     public static String CAMPO_TURNI = 'Turni'
     public static String CAMPO_ORE = 'Ore'
+
+    //--identificatore delle numero di turni valido o meno per le statistiche
+    public static String STATUS_VERDE = 'ok'
+    public static String STATUS_ROSSO = 'rosso'
 } // fine della interfaccia
