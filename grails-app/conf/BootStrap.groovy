@@ -1173,7 +1173,7 @@ class BootStrap implements Cost {
     //--li crea SOLO se non esistono già
     private static void militiRossaPonteTaro() {
         Croce croce = Croce.findBySigla(CROCE_ROSSA_PONTE_TARO)
-        String nomeFileSoci = 'crpt'
+        String nomeFileSoci = 'pontetaro'
         def righe
         String nome = ''
         String cognome = ''
@@ -1208,7 +1208,8 @@ class BootStrap implements Cost {
         //--telefoni
         righe = LibFile.leggeCsv(DIR_PATH + nomeFileSoci)
         righe?.each {
-            cognomenome = ''
+            cognome = ''
+            nome = ''
             cellulare = ''
             fisso = ''
             blsTxt = ''

@@ -55,7 +55,7 @@ class LogoController {
             sigla = croce.sigla
             if (sigla.equals(Cost.CROCE_ALGOS)) {
                 lista = Logo.findAll(params)
-                campiLista = ['id', 'crocelogo'] + campiLista
+                campiLista = ['id', 'croceLogo'] + campiLista
             } else {
                 lista = Logo.findAllByCroceLogo(croce, params)
             }// fine del blocco if-else
