@@ -73,6 +73,7 @@ class GenController {
 
         //--selezione iniziale della croce su cui operare
         grailsApplication.mainContext.servletContext.croce = Croce.findBySigla(croce)
+        //session.croce=Croce.findBySigla(croce)
 
         //--seleziona la necessità del login
         grailsApplication.mainContext.servletContext.startLogin = Settings.startLogin(croce)

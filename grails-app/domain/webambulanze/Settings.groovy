@@ -76,6 +76,10 @@ class Settings {
     //--negli extra è SEMPRE modificabile
     boolean isOrarioTurnoModificabileForm = false
 
+    //--abilita il ricalcolo notturno delle statistiche
+    //--cancella e ricostruisce (sola per la croce selezionata), due tavole di statistiche
+    boolean isCalcoloNotturnoStatistiche = false
+
     /**
      * regolazione delle proprietà di ogni campo
      * l'ordine con cui vengono elencati qui, viene rispettato nella lista e nella scheda standard
@@ -99,6 +103,7 @@ class Settings {
         maxMinutiTrascorsiCancellazione()
         minGiorniMancantiCancellazione()
         isOrarioTurnoModificabileForm()
+        isCalcoloNotturnoStatistiche()
     } // end of static constraints
 
     /*+

@@ -471,6 +471,7 @@ class BootStrap implements Cost {
                 setting.maxMinutiTrascorsiCancellazione = 0
                 setting.minGiorniMancantiCancellazione = 0
                 setting.isOrarioTurnoModificabileForm = false
+                setting.isCalcoloNotturnoStatistiche = false
                 setting.save(failOnError: true)
             }// fine del blocco if
         }// fine del blocco if
@@ -503,6 +504,7 @@ class BootStrap implements Cost {
                 setting.maxMinutiTrascorsiCancellazione = 0
                 setting.minGiorniMancantiCancellazione = 0
                 setting.isOrarioTurnoModificabileForm = false
+                setting.isCalcoloNotturnoStatistiche = true
                 setting.save(failOnError: true)
             }// fine del blocco if
         }// fine del blocco if
@@ -535,6 +537,7 @@ class BootStrap implements Cost {
                 setting.maxMinutiTrascorsiCancellazione = 0
                 setting.minGiorniMancantiCancellazione = 0
                 setting.isOrarioTurnoModificabileForm = false
+                setting.isCalcoloNotturnoStatistiche = false
                 setting.save(failOnError: true)
             }// fine del blocco if
         }// fine del blocco if
@@ -567,6 +570,7 @@ class BootStrap implements Cost {
                 setting.maxMinutiTrascorsiCancellazione = 30
                 setting.minGiorniMancantiCancellazione = 0
                 setting.isOrarioTurnoModificabileForm = false
+                setting.isCalcoloNotturnoStatistiche = true
                 setting.save(failOnError: true)
             }// fine del blocco if
         }// fine del blocco if
@@ -599,6 +603,7 @@ class BootStrap implements Cost {
                 setting.maxMinutiTrascorsiCancellazione = 30
                 setting.minGiorniMancantiCancellazione = 0
                 setting.isOrarioTurnoModificabileForm = false
+                setting.isCalcoloNotturnoStatistiche = false
                 setting.save(failOnError: true)
             }// fine del blocco if
         }// fine del blocco if

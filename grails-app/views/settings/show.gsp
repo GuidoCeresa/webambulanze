@@ -212,6 +212,15 @@
             
         </li>
         
+        <li class="fieldcontain">
+            <span id="isCalcoloNotturnoStatistiche-label" class="property-label"><g:message
+                    code="settings.isCalcoloNotturnoStatistiche.labelform" default="Is Calcolo Notturno Statistiche"/></span>
+            
+            <span class="property-value" aria-labelledby="isCalcoloNotturnoStatistiche-label"><g:formatBoolean
+                    boolean="${settingsInstance?.isCalcoloNotturnoStatistiche}"/></span>
+            
+        </li>
+        
     </ol>
 
     <g:if test="${campiExtra}">

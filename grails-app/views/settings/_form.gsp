@@ -300,6 +300,24 @@
 <g:checkBox name="isOrarioTurnoModificabileForm" value="${settingsInstance?.isOrarioTurnoModificabileForm}" />
 </div>
 
+<div class="fieldcontain ${hasErrors(bean: settingsInstance, field: 'isCalcoloNotturnoStatistiche', 'error')} ">
+	<label for="isCalcoloNotturnoStatistiche">
+		<g:message code="settings.isCalcoloNotturnoStatistiche.labelform" default="Is Calcolo Notturno Statistiche" />
+		
+	</label>
+	
+
+
+
+
+
+
+
+
+
+<g:checkBox name="isCalcoloNotturnoStatistiche" value="${settingsInstance?.isCalcoloNotturnoStatistiche}" />
+</div>
+
 <g:if test="${campiExtra}">
     <amb:extraSchedaForm rec="${settingsInstance}" campiExtra="${campiExtra}"></amb:extraSchedaForm>
 </g:if>
