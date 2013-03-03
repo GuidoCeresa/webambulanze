@@ -19,84 +19,95 @@ class RuoloController {
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
     def index() {
-        redirect(action: "list", params: params)
+        redirect(action: 'list', params: params)
     } // fine del metodo
 
     def list(Integer max) {
+        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+
         def campiLista = ['id', 'authority']
 
-        params.max = Math.min(max ?: 10, 100)
-        [ruoloInstanceList: Ruolo.list(params), ruoloInstanceTotal: 0, campiLista: campiLista]
-    }
+        render(view: 'list', model: [ruoloInstanceList: Ruolo.list(params), ruoloInstanceTotal: 0, campiLista: campiLista], params: params)
+    } // fine del metodo
 
     @Secured([Cost.ROLE_PROG])
     def create() {
-        [ruoloInstance: new Ruolo(params)]
+        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+
+        render(view: 'create', model: [ruoloInstance: new Ruolo(params)], params: params)
     } // fine del metodo
 
     @Secured([Cost.ROLE_PROG])
     def save() {
+        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+
         def ruoloInstance = new Ruolo(params)
         if (!ruoloInstance.save(flush: true)) {
-            render(view: "create", model: [ruoloInstance: ruoloInstance])
+            render(view: 'create', model: [ruoloInstance: ruoloInstance], params: params)
             return
-        }
+        }// fine del blocco if
 
         flash.message = message(code: 'default.created.message', args: [message(code: 'ruolo.label', default: 'Ruolo'), ruoloInstance.id])
-        redirect(action: "show", id: ruoloInstance.id)
+        redirect(action: 'show', id: ruoloInstance.id)
     } // fine del metodo
 
     def show(Long id) {
+        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+
         def ruoloInstance = Ruolo.get(id)
         if (!ruoloInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'ruolo.label', default: 'Ruolo'), id])
-            redirect(action: "list")
+            redirect(action: 'list')
             return
-        }
+        }// fine del blocco if
 
-        [ruoloInstance: ruoloInstance]
+        render(view: 'show', model: [ruoloInstance: ruoloInstance], params: params)
     } // fine del metodo
 
     @Secured([Cost.ROLE_PROG])
     def edit(Long id) {
+        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+
         def ruoloInstance = Ruolo.get(id)
         if (!ruoloInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'ruolo.label', default: 'Ruolo'), id])
-            redirect(action: "list")
+            redirect(action: 'list')
             return
-        }
+        }// fine del blocco if
 
-        [ruoloInstance: ruoloInstance]
+        render(view: 'edit', model: [ruoloInstance: ruoloInstance], params: params)
     } // fine del metodo
 
     @Secured([Cost.ROLE_PROG])
     def update(Long id, Long version) {
+        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+
         def ruoloInstance = Ruolo.get(id)
         if (!ruoloInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'ruolo.label', default: 'Ruolo'), id])
-            redirect(action: "list")
+            redirect(action: 'list')
             return
-        }
+        }// fine del blocco if
 
         if (version != null) {
             if (ruoloInstance.version > version) {
                 ruoloInstance.errors.rejectValue("version", "default.optimistic.locking.failure",
                         [message(code: 'ruolo.label', default: 'Ruolo')] as Object[],
                         "Another user has updated this Ruolo while you were editing")
-                render(view: "edit", model: [ruoloInstance: ruoloInstance])
+                render(view: 'edit', model: [ruoloInstance: ruoloInstance], params: params)
                 return
-            }
-        }
+            }// fine del blocco if
+        }// fine del blocco if
 
         ruoloInstance.properties = params
 
         if (!ruoloInstance.save(flush: true)) {
-            render(view: "edit", model: [ruoloInstance: ruoloInstance])
+            render(view: 'edit', model: [ruoloInstance: ruoloInstance], params: params)
             return
-        }
+        }// fine del blocco if
 
         flash.message = message(code: 'default.updated.message', args: [message(code: 'ruolo.label', default: 'Ruolo'), ruoloInstance.id])
-        redirect(action: "show", id: ruoloInstance.id)
+        redirect(action: 'show', id: ruoloInstance.id)
     } // fine del metodo
 
     @Secured([Cost.ROLE_PROG])
@@ -106,17 +117,17 @@ class RuoloController {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'ruolo.label', default: 'Ruolo'), id])
             redirect(action: "list")
             return
-        }
+        }// fine del blocco if
 
         try {
             ruoloInstance.delete(flush: true)
             flash.message = message(code: 'default.deleted.message', args: [message(code: 'ruolo.label', default: 'Ruolo'), id])
-            redirect(action: "list")
+            redirect(action: 'list')
         }
         catch (DataIntegrityViolationException e) {
             flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'ruolo.label', default: 'Ruolo'), id])
-            redirect(action: "show", id: id)
-        }
+            redirect(action: 'show', id: id)
+        }// fine del blocco if
     } // fine del metodo
 
 } // fine della controller classe

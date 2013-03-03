@@ -25,6 +25,10 @@ class LoginController {
      */
     def springSecurityService
 
+    // utilizzo di un service con la businessLogic per l'elaborazione dei dati
+    // il service viene iniettato automaticamente
+    def croceService
+
     /**
      * Default action; redirects to 'defaultTargetUrl' if logged in, /login/auth otherwise.
      */
@@ -42,16 +46,16 @@ class LoginController {
      * Show the login page.
      */
     def auth = {
-        def croce
+        Croce croce
         def listaGrezza
         Utente utente
         String username
         ArrayList<String> listaUtenti
         def config = SpringSecurityUtils.securityConfig
 
-        def siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
-        croce = Croce.findBySigla((String) session[Cost.SESSIONE_SIGLA_CROCE])
+        croce = croceService.getCroceCorrente(session)
         if (croce) {
+            params.siglaCroce = croce.sigla
             listaGrezza = Utente.findAllByCroce(croce, [sort: 'username'])
         } else {
             listaGrezza = Utente.findAll([sort: 'username'])
@@ -91,7 +95,7 @@ class LoginController {
         String view = 'auth'
         String postUrl = "${request.contextPath}${config.apf.filterProcessesUrl}"
         render view: view, model: [postUrl: postUrl,
-                rememberMeParameter: config.rememberMe.parameter, listaUtenti: listaUtenti, siglaCroce: siglaCroce]
+                rememberMeParameter: config.rememberMe.parameter, listaUtenti: listaUtenti]
     }
 
     /**

@@ -246,16 +246,10 @@ class MiliteService {
     }// fine del metodo
 
     //--lista dei militi abilitati alla funzione
-    public ArrayList listaMilitiAbilitati(Funzione funzione) {
+    public ArrayList listaMilitiAbilitati(Croce croce,Funzione funzione) {
         ArrayList listaMilitiAbilitati = null
         ArrayList listaAllMiliti = null
-        Croce croce
         Milite milite
-
-        //--variabile globale
-        if (grailsApplication.mainContext.servletContext.croce) {
-            croce = grailsApplication.mainContext.servletContext.croce
-        }// fine del blocco if
 
         if (croce) {
             listaAllMiliti = Milite.findAllByCroce(croce, [sort: 'cognome', order: 'asc'])
@@ -276,17 +270,11 @@ class MiliteService {
 
     //--lista dei militi abilitati alla funzione
     //--seguiti da tutti i rimanenti
-    public ArrayList listaMilitiAbilitatiAndAltri(Funzione funzione) {
+    public ArrayList listaMilitiAbilitatiAndAltri(Croce croce,Funzione funzione) {
         ArrayList listaMilitiAbilitati = null
         ArrayList listaMilitiAltri = null
         ArrayList listaAllMiliti = null
-        Croce croce
         Milite milite
-
-        //--variabile globale
-        if (grailsApplication.mainContext.servletContext.croce) {
-            croce = grailsApplication.mainContext.servletContext.croce
-        }// fine del blocco if
 
         if (croce) {
             listaAllMiliti = Milite.findAllByCroce(croce, [sort: 'cognome', order: 'asc'])

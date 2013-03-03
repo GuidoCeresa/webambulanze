@@ -98,6 +98,7 @@
 </head>
 
 <body>
+<amb:titoloPagina></amb:titoloPagina>
 
 <g:if test="${application.loginObbligatorio}">
     <sec:ifNotLoggedIn>

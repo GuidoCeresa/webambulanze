@@ -20,7 +20,7 @@ public interface Cost {
     public static String CROCE_DEMO = 'DEMO'
     public static String CROCE_PUBBLICA = 'PAVT'
     public static String CROCE_ROSSA_FIDENZA = 'CRF'
-    public static String CROCE_ROSSA_PONTE_TARO = 'CRPT'
+    public static String CROCE_ROSSA_PONTETARO = 'CRPT'
 
     //--codifica degli attributi della sessione
     public static String SESSIONE_SIGLA_CROCE = 'siglaCroce'
@@ -39,6 +39,7 @@ public interface Cost {
     public static String PREF_calcoloNotturnoStatistiche = 'isCalcoloNotturnoStatistiche'
     public static String PREF_fissaLimiteMassimoSingoloTurno = 'fissaLimiteMassimoSingoloTurno'
     public static String PREF_oreMassimeSingoloTurno = 'oreMassimeSingoloTurno'
+    public static String PREF_maxMinutiTrascorsiModifica = 'maxMinutiTrascorsiModifica'
 
     //--spazio vuoto
     public static String SPAZIO_10 = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'

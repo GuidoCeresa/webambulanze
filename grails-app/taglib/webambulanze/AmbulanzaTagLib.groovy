@@ -154,7 +154,7 @@ class AmbulanzaTagLib {
      *        dataFine:   giorno finale del periodo da considerare
      * @return testo del tag
      */
-    def tabella = { params ->
+    def tabella = { mappa ->
         String testoOut
         String testo = ''
         Croce croce = null
@@ -164,11 +164,11 @@ class AmbulanzaTagLib {
         if (params.siglaCroce) {
             croce = Croce.findBySigla((String) params.siglaCroce)
         }// fine del blocco if
-        if (params.dataInizio && params.dataInizio instanceof Date) {
-            inizio = (Date) params.dataInizio
+        if (mappa.dataInizio && mappa.dataInizio instanceof Date) {
+            inizio = (Date) mappa.dataInizio
         }// fine del blocco if
-        if (params.dataFine && params.dataFine instanceof Date) {
-            fine = (Date) params.dataFine
+        if (mappa.dataFine && mappa.dataFine instanceof Date) {
+            fine = (Date) mappa.dataFine
         }// fine del blocco if
 
 //        testo += this.captionTabella(params)
@@ -1358,7 +1358,7 @@ class AmbulanzaTagLib {
      *        dataFine:   giorno finale del periodo da considerare
      * @return testo del tag
      */
-    def fillForm = { params ->
+    def fillForm = { mappa ->
         String testoOut = ''
         Croce croce
         String testoRiga
@@ -1375,13 +1375,13 @@ class AmbulanzaTagLib {
         if (params.siglaCroce) {
             croce = Croce.findBySigla((String) params.siglaCroce)
         }// fine del blocco if
-        if (params.turnoInstance) {
-            turnoIdTxt = params.turnoInstance
+        if (mappa.turnoInstance) {
+            turnoIdTxt = mappa.turnoInstance
             turnoId = Long.decode(turnoIdTxt)
             turno = Turno.get(turnoId)
         }// fine del blocco if
-        if (params.nuovoTurno) {
-            nuovoTurnoTxt = params.nuovoTurno
+        if (mappa.nuovoTurno) {
+            nuovoTurnoTxt = mappa.nuovoTurno
             if (nuovoTurnoTxt && nuovoTurnoTxt.equals('true')) {
                 nuovoTurno = true
                 mostraOreSingoloMilite = true
@@ -1675,10 +1675,10 @@ class AmbulanzaTagLib {
         String nomeMiliteRigaCorrente = ''
 
         if (isMostraSoloMilitiFunzione) {
-            listaMiliti = militeService.listaMilitiAbilitati(funzione)
+            listaMiliti = militeService.listaMilitiAbilitati(croce, funzione)
         } else {
             if (isMostraMilitiFunzioneAndAltri) {
-                listaMiliti = militeService.listaMilitiAbilitatiAndAltri(funzione)
+                listaMiliti = militeService.listaMilitiAbilitatiAndAltri(croce, funzione)
             } else {
                 listaMiliti = Milite.findAllByCroce(croce, [sort: 'cognome', order: 'asc'])
             }// fine del blocco if-else

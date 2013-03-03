@@ -27,25 +27,25 @@ class GenController {
 
     //--selezione della croce su cui ritornare
     def logoutselection() {
-        String croce = SIGLA_CROCE
+        String siglaCroce = GenController.SIGLA_CROCE
 
-        if (croce && croce.equals(Cost.CROCE_ALGOS)) {
+        if (siglaCroce.equals(Cost.CROCE_ALGOS)) {
             redirect(action: 'selezionaCroce')
         }// fine del blocco if
 
-        if (croce && croce.equals(Cost.CROCE_DEMO)) {
+        if (siglaCroce.equals(Cost.CROCE_DEMO)) {
             redirect(action: 'selezionaCroceDemo')
         }// fine del blocco if
 
-        if (croce && croce.equals(Cost.CROCE_PUBBLICA)) {
+        if (siglaCroce.equals(Cost.CROCE_PUBBLICA)) {
             redirect(action: 'selezionaCrocePAVT')
         }// fine del blocco if
 
-        if (croce && croce.equals(Cost.CROCE_ROSSA_FIDENZA)) {
+        if (siglaCroce.equals(Cost.CROCE_ROSSA_FIDENZA)) {
             redirect(action: 'selezionaCroceRossaFidenza')
         }// fine del blocco if
 
-        if (croce && croce.equals(Cost.CROCE_ROSSA_PONTE_TARO)) {
+        if (siglaCroce.equals(Cost.CROCE_ROSSA_PONTETARO)) {
             redirect(action: 'selezionaCroceRossaPonteTaro')
         }// fine del blocco if
     } // fine del metodo
@@ -58,10 +58,12 @@ class GenController {
         render(controller: 'gen', view: 'home')
     } // fine del metodo
 
-//--chiamata dai menu delle liste e form
+    //--chiamata dai menu delle liste e form
+    //--va al menu base
     def home() {
-        //--va al menu base
-        render(controller: 'gen', view: 'home')
+        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+
+        render(controller: 'gen', view: 'home', params: params)
     } // fine del metodo
 
     //--selezione iniziale della croce su cui operare
@@ -106,6 +108,7 @@ class GenController {
     //--chiamata da URL = algos
     //--selezione iniziale della croce interna su cui operare
     //--regola la schermata iniziale
+    @Secured([Cost.ROLE_ADMIN])
     def selezionaCroceAlgos() {
         //--regolazioni generali
         selezionaCroceBase(Cost.CROCE_ALGOS)
@@ -117,14 +120,14 @@ class GenController {
     //--selezione iniziale della croce interna su cui operare
     //--seleziona la necessità del login
     //--regola la schermata iniziale
-    @Secured([Cost.ROLE_ADMIN])
     def selezionaCroceAlgosSicura() {
+        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
         if (session[Cost.SESSIONE_START_CONTROLLER]) {
             //--va alla schermata specifica
-            redirect(controller: session[Cost.SESSIONE_START_CONTROLLER])
+            redirect(controller: session[Cost.SESSIONE_START_CONTROLLER], params: params)
         } else {
             //--va al menu base
-            render(controller: 'gen', view: 'home')
+            render(controller: 'gen', view: 'home', params: params)
         }// fine del blocco if-else
     } // fine del metodo
 
@@ -132,12 +135,13 @@ class GenController {
         //--regolazioni generali
         selezionaCroceBase(Cost.CROCE_DEMO)
 
+        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
         if (session[Cost.SESSIONE_START_CONTROLLER]) {
             //--va alla schermata specifica
-            redirect(controller: session[Cost.SESSIONE_START_CONTROLLER])
+            redirect(controller: session[Cost.SESSIONE_START_CONTROLLER], params: params)
         } else {
             //--va al menu base
-            render(controller: 'gen', view: 'home')
+            render(controller: 'gen', view: 'home', params: params)
         }// fine del blocco if-else
     }
 
@@ -203,7 +207,7 @@ class GenController {
     //--regola la schermata iniziale
     def selezionaCroceRossaPonteTaro() {
         //--regolazioni generali
-        selezionaCroceBase(Cost.CROCE_ROSSA_PONTE_TARO)
+        selezionaCroceBase(Cost.CROCE_ROSSA_PONTETARO)
 
         springSecurityService.reauthenticate(Cost.CRPT_OSPITE, Cost.CRPT_PASSWORD)
 

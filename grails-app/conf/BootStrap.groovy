@@ -256,10 +256,10 @@ class BootStrap implements Cost {
     //--controlla SEMPRE
     //--modifica le proprietà coi valori di default se sono stati vuotati
     private static void creazioneCroceRossaPonteTaro() {
-        Croce croce = Croce.findBySigla(CROCE_ROSSA_PONTE_TARO)
+        Croce croce = Croce.findBySigla(CROCE_ROSSA_PONTETARO)
 
         if (!croce) {
-            croce = new Croce(sigla: CROCE_ROSSA_PONTE_TARO)
+            croce = new Croce(sigla: CROCE_ROSSA_PONTETARO)
         }// fine del blocco if
 
         if (croce) {
@@ -424,7 +424,7 @@ class BootStrap implements Cost {
         Ruolo militeRole
 
         // programmatore generale (sempre presente)
-        newUtente(CROCE_ROSSA_PONTE_TARO, ROLE_PROG, PROG_NICK_CRPT, PROG_PASS)
+        newUtente(CROCE_ROSSA_PONTETARO, ROLE_PROG, PROG_NICK_CRPT, PROG_PASS)
 
         if (SVILUPPO_CROCE_ROSSA_PONTE_TARO) {
             custodianRole = Ruolo.findOrCreateByAuthority(ROLE_CUSTODE).save(failOnError: true)
@@ -432,7 +432,7 @@ class BootStrap implements Cost {
             militeRole = Ruolo.findOrCreateByAuthority(ROLE_MILITE).save(failOnError: true)
 
             // custode
-            utente = newUtente(CROCE_ROSSA_PONTE_TARO, ROLE_CUSTODE, 'Michelini Mauro', 'michelini123')
+            utente = newUtente(CROCE_ROSSA_PONTETARO, ROLE_CUSTODE, 'Michelini Mauro', 'michelini123')
             numUtentiRossaPonteTaro++
             if (custodianRole && adminRole && militeRole && utente) {
                 UtenteRuolo.findOrCreateByRuoloAndUtente(adminRole, utente).save(failOnError: true)
@@ -440,7 +440,7 @@ class BootStrap implements Cost {
             }// fine del blocco if
 
             // milite (anonimo)
-            newUtente(CROCE_ROSSA_PONTE_TARO, ROLE_MILITE, CRPT_OSPITE, CRPT_PASSWORD)
+            newUtente(CROCE_ROSSA_PONTETARO, ROLE_MILITE, CRPT_OSPITE, CRPT_PASSWORD)
         }// fine del blocco if
     }// fine del metodo
 
@@ -588,7 +588,7 @@ class BootStrap implements Cost {
     //--creazione record di configurazione (settings)
     //--lo crea SOLO se non esiste già
     private static void configurazioneCroceRossaPonteTaro() {
-        Croce croce = Croce.findBySigla(CROCE_ROSSA_PONTE_TARO)
+        Croce croce = Croce.findBySigla(CROCE_ROSSA_PONTETARO)
         Settings setting
 
         if (croce) {
@@ -746,7 +746,7 @@ class BootStrap implements Cost {
             int ordine,
             String funzioniAutomatiche) {
 
-        funzCRPT.add(newFunzione(CROCE_ROSSA_PONTE_TARO, sigla, siglaVisibile, descrizione, ordine, funzioniAutomatiche))
+        funzCRPT.add(newFunzione(CROCE_ROSSA_PONTETARO, sigla, siglaVisibile, descrizione, ordine, funzioniAutomatiche))
     }// fine del metodo
 
     //--crea una funzione funzione per la croce
@@ -909,7 +909,7 @@ class BootStrap implements Cost {
             boolean orario,
             boolean mult,
             int funzObb) {
-        newTipoTurno(CROCE_ROSSA_PONTE_TARO, sigla, desc, ord, oraIni, oraFine, next, vis, orario, mult, funzObb, funzCRPT)
+        newTipoTurno(CROCE_ROSSA_PONTETARO, sigla, desc, ord, oraIni, oraFine, next, vis, orario, mult, funzObb, funzCRPT)
     }// fine del metodo
 
     //--regola il tipo di turno coi parametri indicati
@@ -1187,7 +1187,7 @@ class BootStrap implements Cost {
     //--elenco disponibile in csv
     //--li crea SOLO se non esistono già
     private static void militiRossaPonteTaro() {
-        Croce croce = Croce.findBySigla(CROCE_ROSSA_PONTE_TARO)
+        Croce croce = Croce.findBySigla(CROCE_ROSSA_PONTETARO)
         String nomeFileSoci = 'pontetaro'
         def righe
         String nome = ''

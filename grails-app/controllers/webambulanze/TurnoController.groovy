@@ -42,54 +42,54 @@ class TurnoController {
 
     @Secured([Cost.ROLE_MILITE])
     def tabellone = {
-        String siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
         flash.message = ''
         dataInizio = AmbulanzaTagLib.creaDataOggi()
         dataFine = (dataInizio + delta).toTimestamp()
-        render(view: 'tabellone', model: [siglaCroce: siglaCroce, dataInizio: dataInizio, dataFine: dataFine])
+        render(view: 'tabellone', model: [dataInizio: dataInizio, dataFine: dataFine], params: params)
     }// fine della closure
 
     @Secured([Cost.ROLE_MILITE])
     def tabCorrente = {
-        String siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
         logoService.setInfo(Evento.tabellone)
-        render(view: 'tabellone', model: [siglaCroce: siglaCroce, dataInizio: dataInizio, dataFine: dataFine])
+        render(view: 'tabellone', model: [dataInizio: dataInizio, dataFine: dataFine], params: params)
     }// fine della closure
 
     @Secured([Cost.ROLE_MILITE])
     def tabellonePrima = {
-        String siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
         flash.message = ''
         dataInizio -= giorniVisibili
         dataFine -= giorniVisibili
-        render(view: 'tabellone', model: [siglaCroce: siglaCroce, dataInizio: dataInizio, dataFine: dataFine])
+        render(view: 'tabellone', model: [dataInizio: dataInizio, dataFine: dataFine], params: params)
     }// fine della closure
 
     @Secured([Cost.ROLE_MILITE])
     def tabelloneOggi = {
-        String siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
         flash.message = ''
         dataInizio = AmbulanzaTagLib.creaDataOggi()
         dataFine = (dataInizio + delta).toTimestamp()
-        render(view: 'tabellone', model: [siglaCroce: siglaCroce, dataInizio: dataInizio, dataFine: dataFine])
+        render(view: 'tabellone', model: [dataInizio: dataInizio, dataFine: dataFine], params: params)
     }// fine della closure
 
     @Secured([Cost.ROLE_MILITE])
     def tabelloneLunedi = {
-        String siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
         flash.message = ''
         dataInizio = AmbulanzaTagLib.creaDataLunedi()
         dataFine = (dataInizio + delta).toTimestamp()
-        render(view: 'tabellone', model: [siglaCroce: siglaCroce, dataInizio: dataInizio, dataFine: dataFine])
+        render(view: 'tabellone', model: [dataInizio: dataInizio, dataFine: dataFine], params: params)
     }// fine della closure
 
     @Secured([Cost.ROLE_MILITE])
     def tabelloneDopo = {
-        String siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
         flash.message = ''
         dataInizio += giorniVisibili
         dataFine += giorniVisibili
-        render(view: 'tabellone', model: [siglaCroce: siglaCroce, dataInizio: dataInizio, dataFine: dataFine])
+        render(view: 'tabellone', model: [dataInizio: dataInizio, dataFine: dataFine], params: params)
     }// fine della closure
 
     @Secured([Cost.ROLE_MILITE])
@@ -161,9 +161,9 @@ class TurnoController {
 
     @Secured([Cost.ROLE_MILITE])
     def newFillTurno(Turno turnoInstance, boolean nuovoTurno) {
-        String siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
 
-        render(view: 'fillTurno', model: [siglaCroce:siglaCroce,turnoInstance: turnoInstance, nuovoTurno: nuovoTurno])
+        render(view: 'fillTurno', model: [turnoInstance: turnoInstance, nuovoTurno: nuovoTurno], params: params)
     }// fine del metodo
 
     def uscitaSenzaModifiche = {
@@ -324,7 +324,7 @@ class TurnoController {
         }
         turnoInstance.properties = params
 
-        if (controllaErrori(turnoInstance)) {
+        if (isEsistonoErrori(turnoInstance)) {
             render(view: 'tabellone', model: [dataInizio: dataInizio, dataFine: dataFine])
             return
         }// fine del blocco if
@@ -486,7 +486,7 @@ class TurnoController {
 
     } // fine del metodo
 
-    private boolean controllaErrori(Turno turno) {
+    private boolean isEsistonoErrori(Turno turno) {
         boolean isEsistonoErrori = false
         ArrayList listaErrori = this.esistonoErrori(turno, params)
 
@@ -535,8 +535,8 @@ class TurnoController {
         ArrayList listaTmp = new ArrayList()
         HashMap mapTmp = new HashMap()
         boolean isAdmin = militeService.isLoggatoAdminOrMore()
-        boolean isControlloModificaTempoTrascorso = croceService.isControlloModificaTempoTrascorso()
-        int maxMinutiTrascorsiModifica = croceService.getMaxMinutiTrascorsiModifica()
+        boolean isControlloModificaTempoTrascorso = croceService.isControlloModificaTempoTrascorso(session)
+        int maxMinutiTrascorsiModifica = croceService.maxMinutiTrascorsiModifica(session)
         long oldTime
         long actualTime
         int minutiTrascorsi

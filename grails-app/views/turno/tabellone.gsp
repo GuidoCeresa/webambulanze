@@ -61,7 +61,7 @@
 </div>
 
 
-<amb:tabella siglaCroce="${siglaCroce}" dataInizio="${dataInizio}" dataFine="${dataFine}"></amb:tabella>
+<amb:tabella dataInizio="${dataInizio}" dataFine="${dataFine}"></amb:tabella>
 
 </body>
 </html>

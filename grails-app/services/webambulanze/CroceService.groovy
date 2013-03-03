@@ -7,9 +7,8 @@ class CroceService {
 
     //--controlla il valore mantenuto nei Settings associati alla croce indicata
     //--recupera la croce corrente
-    private int getInt(session, codice) {
+    private static int getInt(Croce croce, codice) {
         int value = 0
-        Croce croce = getCroceCorrente(session)
         Settings settings
 
         if (croce) {
@@ -113,8 +112,13 @@ class CroceService {
         return oreMassimeSingoloTurno(getCroceCorrente(session))
     }// fine del metodo
 
+    //--controlla il flag mantenuto nei Settings associati alla croce corrente
+    public int maxMinutiTrascorsiModifica(def session) {
+        return getInt(getCroceCorrente(session), Cost.PREF_maxMinutiTrascorsiModifica)
+    }// fine del metodo
+
     //--controlla il parametro mantenuto nei Settings associati alla croce corrente
-    public ControlloTemporale getControlloModifica(session) {
+    public ControlloTemporale getControlloModifica(def session) {
         ControlloTemporale tipoControlloModifica = null
         Croce croce = getCroceCorrente(session)
         Settings settings
@@ -131,37 +135,14 @@ class CroceService {
     }// fine del metodo
 
     //--controlla il parametro mantenuto nei Settings associati alla croce corrente
-    public boolean isControlloModificaTempoTrascorso() {
-        return (getControlloModifica() == ControlloTemporale.tempoTrascorso)
+    public boolean isControlloModificaTempoTrascorso(def session) {
+        return (getControlloModifica(session) == ControlloTemporale.tempoTrascorso)
     }// fine del metodo
-
-    //--controlla il parametro mantenuto nei Settings associati alla croce corrente
-    public int getMaxMinutiTrascorsiModifica(session) {
-        int maxMinutiTrascorsiModifica = 0
-        Croce croce = getCroceCorrente(session)
-        Settings settings
-
-        if (croce) {
-            settings = croce.settings
-        }// fine del blocco if
-
-        if (settings) {
-            maxMinutiTrascorsiModifica = settings.maxMinutiTrascorsiModifica
-        }// fine del blocco if
-
-        return maxMinutiTrascorsiModifica
-    }// fine del metodo
-
 
     //--restituisce la croce corrente
     public Croce getCroceCorrente(def session) {
         Croce croceCorrente = null
-        Croce croceSessione = session['croce']
-        String siglaCroce
-
-        if (croceSessione) {
-            siglaCroce = croceSessione.sigla
-        }// fine del blocco if
+        String siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
 
         if (siglaCroce) {
             croceCorrente = Croce.findBySigla(siglaCroce)
