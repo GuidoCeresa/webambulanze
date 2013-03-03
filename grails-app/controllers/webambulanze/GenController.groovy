@@ -42,9 +42,13 @@ class GenController {
         }// fine del blocco if
 
         if (croce && croce.equals(Cost.CROCE_ROSSA_FIDENZA)) {
-            redirect(action: 'selezionaCroceCRF')
+            redirect(action: 'selezionaCroceRossaFidenza')
         }// fine del blocco if
-    }
+
+        if (croce && croce.equals(Cost.CROCE_ROSSA_PONTE_TARO)) {
+            redirect(action: 'selezionaCroceRossaPonteTaro')
+        }// fine del blocco if
+    } // fine del metodo
 
     //--riparte come algos
     def logoutalgos() {
@@ -52,9 +56,9 @@ class GenController {
 
         //--va al menu base
         render(controller: 'gen', view: 'home')
-    }
+    } // fine del metodo
 
-    //--chiamata dai menu delle liste e form
+//--chiamata dai menu delle liste e form
     def home() {
         //--va al menu base
         render(controller: 'gen', view: 'home')
@@ -63,29 +67,31 @@ class GenController {
     //--selezione iniziale della croce su cui operare
     //--seleziona la necessità del login
     //--regola la schermata iniziale
-    def selezionaCroceBase(String croce) {
-        SIGLA_CROCE = croce
+    def selezionaCroceBase(String siglaCroce) {
 
         //--pulizia
-        session.invalidate()
         SecurityContextHolder.clearContext()
         rememberMeServices.logout request, response, null
 
         //--selezione iniziale della croce su cui operare
-        grailsApplication.mainContext.servletContext.croce = Croce.findBySigla(croce)
-        //session.croce=Croce.findBySigla(croce)
+        //grailsApplication.mainContext.servletContext.croce = Croce.findBySigla(croce)
+        session[Cost.SESSIONE_SIGLA_CROCE] = siglaCroce
 
-        //--seleziona la necessità del login
-        grailsApplication.mainContext.servletContext.startLogin = Settings.startLogin(croce)
+        //--seleziona la necessità del login iniziale
+        //grailsApplication.mainContext.servletContext.startLogin = Settings.startLogin(croce)
+        session[Cost.SESSIONE_LOGIN] = Settings.startLogin(siglaCroce)
 
         //--seleziona la videata iniziale
-        grailsApplication.mainContext.servletContext.startController = Settings.startController(croce)
+        //grailsApplication.mainContext.servletContext.startController = Settings.startController(croce)
+        session[Cost.SESSIONE_START_CONTROLLER] = Settings.startController(siglaCroce)
 
         //--seleziona (flag booleano) se mostrare tutti i controllers nella videata Home
-        grailsApplication.mainContext.servletContext.allControllers = Settings.allControllers(croce)
+        //grailsApplication.mainContext.servletContext.allControllers = Settings.allControllers(croce)
+        session[Cost.SESSIONE_TUTTI_CONTROLLI] = Settings.allControllers(siglaCroce)
 
         //--seleziona (lista di stringhe) i controllers da mostrare nella videata Home
-        grailsApplication.mainContext.servletContext.controlli = Settings.controlli(croce)
+        //grailsApplication.mainContext.servletContext.controlli = Settings.controlli(croce)
+        session[Cost.SESSIONE_QUALI_CONTROLLI] = Settings.controlli(siglaCroce)
     } // fine del metodo
 
     //--chiamata senza specificazione, parte la croce demo
@@ -113,9 +119,9 @@ class GenController {
     //--regola la schermata iniziale
     @Secured([Cost.ROLE_ADMIN])
     def selezionaCroceAlgosSicura() {
-        if (grailsApplication.mainContext.servletContext.startController) {
+        if (session[Cost.SESSIONE_START_CONTROLLER]) {
             //--va alla schermata specifica
-            redirect(controller: grailsApplication.mainContext.servletContext.startController)
+            redirect(controller: session[Cost.SESSIONE_START_CONTROLLER])
         } else {
             //--va al menu base
             render(controller: 'gen', view: 'home')
@@ -126,9 +132,9 @@ class GenController {
         //--regolazioni generali
         selezionaCroceBase(Cost.CROCE_DEMO)
 
-        if (grailsApplication.mainContext.servletContext.startController) {
+        if (session[Cost.SESSIONE_START_CONTROLLER]) {
             //--va alla schermata specifica
-            redirect(controller: grailsApplication.mainContext.servletContext.startController)
+            redirect(controller: session[Cost.SESSIONE_START_CONTROLLER])
         } else {
             //--va al menu base
             render(controller: 'gen', view: 'home')
@@ -145,12 +151,13 @@ class GenController {
 
         springSecurityService.reauthenticate(Cost.DEMO_OSPITE, Cost.DEMO_PASSWORD)
 
-        if (grailsApplication.mainContext.servletContext.startController) {
+        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+        if (session[Cost.SESSIONE_START_CONTROLLER]) {
             //--va alla schermata specifica
-            redirect(controller: grailsApplication.mainContext.servletContext.startController)
+            redirect(controller: session[Cost.SESSIONE_START_CONTROLLER], params: params)
         } else {
             //--va al menu base
-            render(controller: 'gen', view: 'home')
+            render(controller: 'gen', view: 'home', params: params)
         }// fine del blocco if-else
     } // fine del metodo
 
@@ -162,12 +169,13 @@ class GenController {
         //--regolazioni generali
         selezionaCroceBase(Cost.CROCE_PUBBLICA)
 
-        if (grailsApplication.mainContext.servletContext.startController) {
+        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+        if (session[Cost.SESSIONE_START_CONTROLLER]) {
             //--va alla schermata specifica
-            redirect(controller: grailsApplication.mainContext.servletContext.startController)
+            redirect(controller: session[Cost.SESSIONE_START_CONTROLLER], params: params)
         } else {
             //--va al menu base
-            render(controller: 'gen', view: 'home')
+            render(controller: 'gen', view: 'home', params: params)
         }// fine del blocco if-else
     } // fine del metodo
 
@@ -175,16 +183,17 @@ class GenController {
     //--selezione iniziale della croce su cui operare
     //--seleziona la necessità del login
     //--regola la schermata iniziale
-    def selezionaCroceCRF() {
+    def selezionaCroceRossaFidenza() {
         //--regolazioni generali
         selezionaCroceBase(Cost.CROCE_ROSSA_FIDENZA)
 
-        if (grailsApplication.mainContext.servletContext.startController) {
+        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+        if (session[Cost.SESSIONE_START_CONTROLLER]) {
             //--va alla schermata specifica
-            redirect(controller: grailsApplication.mainContext.servletContext.startController)
+            redirect(controller: session[Cost.SESSIONE_START_CONTROLLER], params: params)
         } else {
             //--va al menu base
-            render(controller: 'gen', view: 'home')
+            render(controller: 'gen', view: 'home', params: params)
         }// fine del blocco if-else
     } // fine del metodo
 
@@ -192,19 +201,20 @@ class GenController {
     //--selezione iniziale della croce su cui operare
     //--seleziona la necessità del login
     //--regola la schermata iniziale
-    def selezionaCroceCRPT() {
+    def selezionaCroceRossaPonteTaro() {
         //--regolazioni generali
         selezionaCroceBase(Cost.CROCE_ROSSA_PONTE_TARO)
 
         springSecurityService.reauthenticate(Cost.CRPT_OSPITE, Cost.CRPT_PASSWORD)
 
-        if (grailsApplication.mainContext.servletContext.startController) {
+        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+        if (session[Cost.SESSIONE_START_CONTROLLER]) {
             //--va alla schermata specifica
-            redirect(controller: grailsApplication.mainContext.servletContext.startController)
+            redirect(controller: session[Cost.SESSIONE_START_CONTROLLER], params: params)
         } else {
             //--va al menu base
-            render(controller: 'gen', view: 'home')
+            render(controller: 'gen', view: 'home', params: params)
         }// fine del blocco if-else
     } // fine del metodo
 
-}
+} // fine della controller classe

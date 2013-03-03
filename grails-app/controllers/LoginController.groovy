@@ -8,6 +8,7 @@ import org.springframework.security.core.context.SecurityContextHolder as SCH
 import org.springframework.security.web.WebAttributes
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 import webambulanze.Cost
+import webambulanze.Croce
 import webambulanze.Utente
 
 import javax.servlet.http.HttpServletResponse
@@ -28,6 +29,8 @@ class LoginController {
      * Default action; redirects to 'defaultTargetUrl' if logged in, /login/auth otherwise.
      */
     def index = {
+        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+
         if (springSecurityService.isLoggedIn()) {
             redirect uri: SpringSecurityUtils.securityConfig.successHandler.defaultTargetUrl
         } else {
@@ -46,7 +49,8 @@ class LoginController {
         ArrayList<String> listaUtenti
         def config = SpringSecurityUtils.securityConfig
 
-        croce = grailsApplication.mainContext.servletContext.croce
+        def siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+        croce = Croce.findBySigla((String) session[Cost.SESSIONE_SIGLA_CROCE])
         if (croce) {
             listaGrezza = Utente.findAllByCroce(croce, [sort: 'username'])
         } else {
@@ -84,11 +88,10 @@ class LoginController {
             redirect uri: config.successHandler.defaultTargetUrl
             return
         }
-
         String view = 'auth'
         String postUrl = "${request.contextPath}${config.apf.filterProcessesUrl}"
         render view: view, model: [postUrl: postUrl,
-                rememberMeParameter: config.rememberMe.parameter, listaUtenti: listaUtenti]
+                rememberMeParameter: config.rememberMe.parameter, listaUtenti: listaUtenti, siglaCroce: siglaCroce]
     }
 
     /**
@@ -114,6 +117,7 @@ class LoginController {
      * Login page for users with a remember-me cookie but accessing a IS_AUTHENTICATED_FULLY page.
      */
     def full = {
+        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
         def config = SpringSecurityUtils.securityConfig
         render view: 'auth', params: params,
                 model: [hasCookie: authenticationTrustResolver.isRememberMe(SCH.context?.authentication),
@@ -124,6 +128,7 @@ class LoginController {
      * Callback after a failed login. Redirects to the auth page with a warning message.
      */
     def authfail = {
+        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
 
         def username = session[UsernamePasswordAuthenticationFilter.SPRING_SECURITY_LAST_USERNAME_KEY]
         String msg = ''

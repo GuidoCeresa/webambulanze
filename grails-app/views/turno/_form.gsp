@@ -444,6 +444,24 @@
 <g:checkBox name="problemiFunzione4" value="${turnoInstance?.problemiFunzione4}" />
 </div>
 
+<div class="fieldcontain ${hasErrors(bean: turnoInstance, field: 'titoloExtra', 'error')} ">
+	<label for="titoloExtra">
+		<g:message code="turno.titoloExtra.labelform" default="Titolo Extra" />
+		
+	</label>
+	
+
+
+
+
+
+
+
+
+
+<g:textField name="titoloExtra" value="${turnoInstance?.titoloExtra}"/>
+</div>
+
 <div class="fieldcontain ${hasErrors(bean: turnoInstance, field: 'localitàExtra', 'error')} ">
 	<label for="localitàExtra">
 		<g:message code="turno.localitàExtra.labelform" default="Località Extra" />

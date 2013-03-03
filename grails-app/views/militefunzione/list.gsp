@@ -19,6 +19,7 @@
 </head>
 
 <body>
+<amb:titoloPagina></amb:titoloPagina>
 <a href="#list-militefunzione" class="skip" tabindex="-1"><g:message code="default.link.skip.label"
                                                                                   default="Skip to content&hellip;"/></a>
 

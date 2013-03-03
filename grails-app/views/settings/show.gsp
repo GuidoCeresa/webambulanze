@@ -19,6 +19,7 @@
 </head>
 
 <body>
+<amb:titoloPagina></amb:titoloPagina>
 <a href="#show-settings" class="skip" tabindex="-1"><g:message code="default.link.skip.label"
                                                                                   default="Skip to content&hellip;"/></a>
 
@@ -218,6 +219,24 @@
             
             <span class="property-value" aria-labelledby="isCalcoloNotturnoStatistiche-label"><g:formatBoolean
                     boolean="${settingsInstance?.isCalcoloNotturnoStatistiche}"/></span>
+            
+        </li>
+        
+        <li class="fieldcontain">
+            <span id="fissaLimiteMassimoSingoloTurno-label" class="property-label"><g:message
+                    code="settings.fissaLimiteMassimoSingoloTurno.labelform" default="Fissa Limite Massimo Singolo Turno"/></span>
+            
+            <span class="property-value" aria-labelledby="fissaLimiteMassimoSingoloTurno-label"><g:formatBoolean
+                    boolean="${settingsInstance?.fissaLimiteMassimoSingoloTurno}"/></span>
+            
+        </li>
+        
+        <li class="fieldcontain">
+            <span id="oreMassimeSingoloTurno-label" class="property-label"><g:message
+                    code="settings.oreMassimeSingoloTurno.labelform" default="Ore Massime Singolo Turno"/></span>
+            
+            <span class="property-value" aria-labelledby="oreMassimeSingoloTurno-label"><g:fieldValue bean="${settingsInstance}"
+                                                                                         field="oreMassimeSingoloTurno"/></span>
             
         </li>
         

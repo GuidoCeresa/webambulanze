@@ -29,7 +29,6 @@
 </head>
 
 <body>
-<amb:titoloPagina></amb:titoloPagina>
 <g:layoutBody/>
 <div class="footer" role="contentinfo"></div>
 

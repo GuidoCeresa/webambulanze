@@ -100,7 +100,7 @@ class MilitestatisticheController {
     } // fine del metodo
 
     def calcola() {
-        militeturnoService.calcola()
+        militeturnoService.calcola(session)
         redirect(action: 'list', params: params)
     } // fine del metodo
 

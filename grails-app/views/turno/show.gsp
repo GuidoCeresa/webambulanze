@@ -19,6 +19,7 @@
 </head>
 
 <body>
+<amb:titoloPagina></amb:titoloPagina>
 <a href="#show-turno" class="skip" tabindex="-1"><g:message code="default.link.skip.label"
                                                                                   default="Skip to content&hellip;"/></a>
 
@@ -290,6 +291,15 @@
             
             <span class="property-value" aria-labelledby="problemiFunzione4-label"><g:formatBoolean
                     boolean="${turnoInstance?.problemiFunzione4}"/></span>
+            
+        </li>
+        
+        <li class="fieldcontain">
+            <span id="titoloExtra-label" class="property-label"><g:message
+                    code="turno.titoloExtra.labelform" default="Titolo Extra"/></span>
+            
+            <span class="property-value" aria-labelledby="titoloExtra-label"><g:fieldValue bean="${turnoInstance}"
+                                                                                         field="titoloExtra"/></span>
             
         </li>
         

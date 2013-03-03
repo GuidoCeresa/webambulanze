@@ -48,8 +48,8 @@ class CroceController {
             params.order = 'asc'
         }// fine del blocco if-else
 
-        if (grailsApplication.mainContext.servletContext.croce) {
-            croce = grailsApplication.mainContext.servletContext.croce
+        if (session['croce']) {
+            croce = session['croce']
             sigla = croce.sigla
             if (sigla.equals(Cost.CROCE_ALGOS)) {
                 lista = Croce.findAll(params)

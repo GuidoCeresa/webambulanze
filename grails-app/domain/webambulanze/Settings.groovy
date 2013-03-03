@@ -80,6 +80,13 @@ class Settings {
     //--cancella e ricostruisce (sola per la croce selezionata), due tavole di statistiche
     boolean isCalcoloNotturnoStatistiche = false
 
+    //--flag per controllare il numero massimo di ore inserite dal milite per un singolo turno
+    boolean fissaLimiteMassimoSingoloTurno = false
+
+    //--numero massimo di ore inserite dal milite per un singolo turno
+    //--ha senso solo se fissaLimiteMassimoSingoloTurno è true
+    int oreMassimeSingoloTurno = 0
+
     /**
      * regolazione delle proprietà di ogni campo
      * l'ordine con cui vengono elencati qui, viene rispettato nella lista e nella scheda standard
@@ -104,6 +111,8 @@ class Settings {
         minGiorniMancantiCancellazione()
         isOrarioTurnoModificabileForm()
         isCalcoloNotturnoStatistiche()
+        fissaLimiteMassimoSingoloTurno()
+        oreMassimeSingoloTurno()
     } // end of static constraints
 
     /*+

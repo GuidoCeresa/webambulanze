@@ -6,10 +6,10 @@ class FunzioneService {
     def croceService
 
     //--recupera tutte le funzioni della croce attiva
-    def campiExtra(grailsApplication) {
+    def campiExtra(session) {
         def campiExtra = null
         String sigla
-        Croce croce = croceService.getCroceCorrente()
+        Croce croce = croceService.getCroceCorrente(session)
 
         if (croce) {
             sigla = croce.sigla

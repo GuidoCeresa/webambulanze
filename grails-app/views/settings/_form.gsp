@@ -318,6 +318,42 @@
 <g:checkBox name="isCalcoloNotturnoStatistiche" value="${settingsInstance?.isCalcoloNotturnoStatistiche}" />
 </div>
 
+<div class="fieldcontain ${hasErrors(bean: settingsInstance, field: 'fissaLimiteMassimoSingoloTurno', 'error')} ">
+	<label for="fissaLimiteMassimoSingoloTurno">
+		<g:message code="settings.fissaLimiteMassimoSingoloTurno.labelform" default="Fissa Limite Massimo Singolo Turno" />
+		
+	</label>
+	
+
+
+
+
+
+
+
+
+
+<g:checkBox name="fissaLimiteMassimoSingoloTurno" value="${settingsInstance?.fissaLimiteMassimoSingoloTurno}" />
+</div>
+
+<div class="fieldcontain ${hasErrors(bean: settingsInstance, field: 'oreMassimeSingoloTurno', 'error')} required">
+	<label for="oreMassimeSingoloTurno">
+		<g:message code="settings.oreMassimeSingoloTurno.labelform" default="Ore Massime Singolo Turno" />
+		<span class="required-indicator">*</span>
+	</label>
+	
+
+
+
+
+
+
+
+
+
+<g:field name="oreMassimeSingoloTurno" type="number" value="${settingsInstance.oreMassimeSingoloTurno}" required=""/>
+</div>
+
 <g:if test="${campiExtra}">
     <amb:extraSchedaForm rec="${settingsInstance}" campiExtra="${campiExtra}"></amb:extraSchedaForm>
 </g:if>

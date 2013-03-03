@@ -22,12 +22,23 @@ public interface Cost {
     public static String CROCE_ROSSA_FIDENZA = 'CRF'
     public static String CROCE_ROSSA_PONTE_TARO = 'CRPT'
 
+    //--codifica degli attributi della sessione
+    public static String SESSIONE_SIGLA_CROCE = 'siglaCroce'
+    public static String SESSIONE_LOGIN = 'startLogin'
+    public static String SESSIONE_START_CONTROLLER = 'startController'
+    public static String SESSIONE_TUTTI_CONTROLLI = 'allControllers'
+    public static String SESSIONE_QUALI_CONTROLLI = 'controlli'
+
     //--codifica delle preferenze
     public static String PREF_mostraSoloMilitiFunzione = 'mostraSoloMilitiFunzione'
     public static String PREF_mostraMilitiFunzioneAndAltri = 'mostraMilitiFunzioneAndAltri'
     public static String PREF_militePuoInserireAltri = 'militePuoInserireAltri'
     public static String PREF_militePuoModificareAltri = 'militePuoModificareAltri'
     public static String PREF_militePuoCancellareAltri = 'militePuoCancellareAltri'
+    public static String PREF_isOrarioTurnoModificabileForm = 'isOrarioTurnoModificabileForm'
+    public static String PREF_calcoloNotturnoStatistiche = 'isCalcoloNotturnoStatistiche'
+    public static String PREF_fissaLimiteMassimoSingoloTurno = 'fissaLimiteMassimoSingoloTurno'
+    public static String PREF_oreMassimeSingoloTurno = 'oreMassimeSingoloTurno'
 
     //--spazio vuoto
     public static String SPAZIO_10 = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'

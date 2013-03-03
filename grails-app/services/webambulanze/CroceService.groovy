@@ -5,11 +5,46 @@ class CroceService {
     // la variabile/proprietà viene iniettata automaticamente
     def grailsApplication
 
+    //--controlla il valore mantenuto nei Settings associati alla croce indicata
+    //--recupera la croce corrente
+    private int getInt(session, codice) {
+        int value = 0
+        Croce croce = getCroceCorrente(session)
+        Settings settings
+
+        if (croce) {
+            settings = croce.settings
+        }// fine del blocco if
+
+        if (settings) {
+            value = settings."${codice}"
+        }// fine del blocco if
+
+        return value
+    }// fine del metodo
+
     //--controlla il flag mantenuto nei Settings associati alla croce indicata
     //--recupera la croce corrente
-    private boolean isFlag(codice) {
+    private boolean isFlag(session, codice) {
         boolean flag = false
-        Croce croce = getCroceCorrente()
+        Croce croce = getCroceCorrente(session)
+        Settings settings
+
+        if (croce) {
+            settings = croce.settings
+        }// fine del blocco if
+
+        if (settings) {
+            flag = settings."${codice}"
+        }// fine del blocco if
+
+        return flag
+    }// fine del metodo
+
+    //--controlla il flag mantenuto nei Settings associati alla croce indicata
+    //--recupera la croce corrente
+    private static boolean isFlag(Croce croce, codice) {
+        boolean flag = false
         Settings settings
 
         if (croce) {
@@ -24,34 +59,64 @@ class CroceService {
     }// fine del metodo
 
     //--controlla il flag mantenuto nei Settings associati alla croce corrente
-    public boolean isMostraSoloMilitiFunzione() {
-        return isFlag(Cost.PREF_mostraSoloMilitiFunzione)
+    public boolean isMostraSoloMilitiFunzione(Croce croce) {
+        return isFlag(croce, Cost.PREF_mostraSoloMilitiFunzione)
     }// fine del metodo
 
     //--controlla il flag mantenuto nei Settings associati alla croce corrente
-    public boolean isMostraMilitiFunzioneAndAltri() {
-        return isFlag(Cost.PREF_mostraMilitiFunzioneAndAltri)
+    public boolean isMostraMilitiFunzioneAndAltri(Croce croce) {
+        return isFlag(croce, Cost.PREF_mostraMilitiFunzioneAndAltri)
     }// fine del metodo
 
     //--controlla il flag mantenuto nei Settings associati alla croce corrente
-    public boolean isMilitePuoInserireAltri() {
-        return isFlag(Cost.PREF_militePuoInserireAltri)
+    public boolean isMilitePuoInserireAltri(Croce croce) {
+        return isFlag(croce, Cost.PREF_militePuoInserireAltri)
     }// fine del metodo
 
     //--controlla il flag mantenuto nei Settings associati alla croce corrente
-    public boolean isMilitePuoModificareAltri() {
-        return isFlag(Cost.PREF_militePuoModificareAltri)
+    public boolean isMilitePuoModificareAltri(Croce croce) {
+        return isFlag(croce, Cost.PREF_militePuoModificareAltri)
     }// fine del metodo
 
     //--controlla il flag mantenuto nei Settings associati alla croce corrente
-    public boolean isMilitePuoCancellareAltri() {
-        return isFlag(Cost.PREF_militePuoCancellareAltri)
+    public boolean isMilitePuoCancellareAltri(Croce croce) {
+        return isFlag(croce, Cost.PREF_militePuoCancellareAltri)
+    }// fine del metodo
+
+    //--controlla il flag mantenuto nei Settings associati alla croce corrente
+    public boolean isOrarioTurnoModificabileForm(Croce croce) {
+        return isFlag(croce, Cost.PREF_isOrarioTurnoModificabileForm)
+    }// fine del metodo
+
+    //--controlla il flag mantenuto nei Settings associati alla croce corrente
+    public boolean isCalcoloNotturnoStatistiche(Croce croce) {
+        return isFlag(croce, Cost.PREF_calcoloNotturnoStatistiche)
+    }// fine del metodo
+
+    //--controlla il flag mantenuto nei Settings associati alla croce corrente
+    public boolean fissaLimiteMassimoSingoloTurno(Croce croce) {
+        return isFlag(croce, Cost.PREF_fissaLimiteMassimoSingoloTurno)
+    }// fine del metodo
+
+    //--controlla il flag mantenuto nei Settings associati alla croce corrente
+    public boolean fissaLimiteMassimoSingoloTurno(def session) {
+        return fissaLimiteMassimoSingoloTurno(getCroceCorrente(session))
+    }// fine del metodo
+
+    //--controlla il flag mantenuto nei Settings associati alla croce corrente
+    public int oreMassimeSingoloTurno(Croce croce) {
+        return getInt(croce, Cost.PREF_oreMassimeSingoloTurno)
+    }// fine del metodo
+
+    //--controlla il flag mantenuto nei Settings associati alla croce corrente
+    public int oreMassimeSingoloTurno(def session) {
+        return oreMassimeSingoloTurno(getCroceCorrente(session))
     }// fine del metodo
 
     //--controlla il parametro mantenuto nei Settings associati alla croce corrente
-    public ControlloTemporale getControlloModifica() {
+    public ControlloTemporale getControlloModifica(session) {
         ControlloTemporale tipoControlloModifica = null
-        Croce croce = getCroceCorrente()
+        Croce croce = getCroceCorrente(session)
         Settings settings
 
         if (croce) {
@@ -71,9 +136,9 @@ class CroceService {
     }// fine del metodo
 
     //--controlla il parametro mantenuto nei Settings associati alla croce corrente
-    public int getMaxMinutiTrascorsiModifica() {
+    public int getMaxMinutiTrascorsiModifica(session) {
         int maxMinutiTrascorsiModifica = 0
-        Croce croce = getCroceCorrente()
+        Croce croce = getCroceCorrente(session)
         Settings settings
 
         if (croce) {
@@ -87,39 +152,15 @@ class CroceService {
         return maxMinutiTrascorsiModifica
     }// fine del metodo
 
-    //--controlla il parametro mantenuto nei Settings associati alla croce corrente
-    public boolean isOrarioTurnoModificabileForm() {
-        boolean isOrarioTurnoModificabileForm = false
-        Croce croce = getCroceCorrente()
-        Settings settings
-
-        if (croce) {
-            settings = croce.settings
-        }// fine del blocco if
-
-        if (settings) {
-            isOrarioTurnoModificabileForm = settings.isOrarioTurnoModificabileForm
-        }// fine del blocco if
-
-        return isOrarioTurnoModificabileForm
-    }// fine del metodo
 
     //--restituisce la croce corrente
-    public Croce getCroceCorrente() {
-        Croce croceCorrente
-        def context = grailsApplication.mainContext.servletContext
-
-        return getCroceCorrente(context)
-    }// fine del metodo
-
-    //--restituisce la croce corrente
-    public static Croce getCroceCorrente(def servletContext) {
+    public Croce getCroceCorrente(def session) {
         Croce croceCorrente = null
-        Croce croceContesto = servletContext.croce
+        Croce croceSessione = session['croce']
         String siglaCroce
 
-        if (croceContesto) {
-            siglaCroce = croceContesto.sigla
+        if (croceSessione) {
+            siglaCroce = croceSessione.sigla
         }// fine del blocco if
 
         if (siglaCroce) {

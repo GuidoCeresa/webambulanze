@@ -127,7 +127,7 @@ class MiliteController {
 
     @Secured([Cost.ROLE_ADMIN])
     def create() {
-        def campiExtra = funzioneService.campiExtra(grailsApplication)
+        def campiExtra = funzioneService.campiExtra(session)
         [militeInstance: new Milite(params), campiExtra: campiExtra]
     } // fine del metodo
 
@@ -158,7 +158,7 @@ class MiliteController {
 
     def show(Long id) {
         def militeInstance = Milite.get(id)
-        def campiExtra = funzioneService.campiExtra(grailsApplication)
+        def campiExtra = funzioneService.campiExtra(session)
 
         if (!militeInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'milite.label', default: 'Milite'), id])
@@ -172,7 +172,7 @@ class MiliteController {
     @Secured([Cost.ROLE_ADMIN])
     def edit(Long id) {
         def militeInstance = Milite.get(id)
-        def campiExtra = funzioneService.campiExtra(grailsApplication)
+        def campiExtra = funzioneService.campiExtra(session)
 
         if (!militeInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'milite.label', default: 'Milite'), id])

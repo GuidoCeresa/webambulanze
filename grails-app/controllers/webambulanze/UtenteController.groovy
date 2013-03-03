@@ -84,7 +84,7 @@ class UtenteController {
             params.sort = 'username'
         }// fine del blocco if-else
 
-        Croce croce = croceService.croceCorrente
+        Croce croce = croceService.getCroceCorrente(session)
         def lista = utenteService.utentiCustodiOrMore(croce, params)
 
         [utenteInstance: new Utente(params), utenteInstanceList: lista,]

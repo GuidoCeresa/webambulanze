@@ -15,10 +15,9 @@ class MiliteturnoService {
     //--crea i records di MiliteTurno
     //--cancella tutti i records di Militestatistiche (dell'anno corrente)
     //--crea i records di Militestatistiche
-    def calcola() {
-        Croce croce = croceService.getCroceCorrente()
-
-        if (croce) {
+    //--opera sulla croce indicata (se ha il flag abilitato)
+    def calcola(Croce croce) {
+        if (croce && croceService.isCalcoloNotturnoStatistiche(croce)) {
             Date oggi = Lib.creaDataOggi()
             Date primoGennaio = Lib.creaData1Gennaio()
 
@@ -27,6 +26,36 @@ class MiliteturnoService {
             aggiornaMiliti(croce, primoGennaio)
             cancellaMiliteStatistiche(croce)
             ricalcolaMiliteStatistiche(croce)
+        }// fine del blocco if
+    }// fine del metodo
+
+    //--cancella tutti i records di Militeturno (dell'anno corrente)
+    //--ricalcola tutti i turni
+    //--crea i records di MiliteTurno
+    //--cancella tutti i records di Militestatistiche (dell'anno corrente)
+    //--crea i records di Militestatistiche
+    //--chiamato da CalcolaJob, opera su tutte le croci (col flag abilitato)
+    def calcola() {
+        def listaCroci = Croce.findAll()
+
+        if (listaCroci) {
+            listaCroci?.each {
+                calcola(it)
+            } // fine del ciclo each
+        }// fine del blocco if
+    }// fine del metodo
+
+    //--cancella tutti i records di Militeturno (dell'anno corrente)
+    //--ricalcola tutti i turni
+    //--crea i records di MiliteTurno
+    //--cancella tutti i records di Militestatistiche (dell'anno corrente)
+    //--crea i records di Militestatistiche
+    //--opera sulla croce della sessione corrente (se ha il flag abilitato)
+    def calcola(session) {
+        Croce croce = croceService.getCroceCorrente(session)
+
+        if (croce) {
+            calcola(croce)
         }// fine del blocco if
     }// fine del metodo
 
@@ -117,15 +146,6 @@ class MiliteturnoService {
             }// fine del blocco if
             registra(croce, milite, giorno, turno, funzione, ore, dettaglio)
 
-//            for (int k = 1; k <= 4; k++) {
-//                nomeFunz = 'funzione' + k
-//                nomeMilite = 'militeFunzione' + k
-//                nomeOreMilite = 'oreMilite' + k
-//                funzione = turno."${nomeFunz}"
-//                milite = turno."${nomeMilite}"
-//                ore = turno."${nomeOreMilite}"
-//                registra(croce, milite, giorno, turno, funzione, ore)
-//            } // fine del ciclo for
         } // fine del ciclo each
     }// fine del metodo
 

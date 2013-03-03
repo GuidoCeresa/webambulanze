@@ -97,8 +97,12 @@ class AmbulanzaTagLib {
         Milite milite
         String tagAnonimo = 'anonymousUser'
         String nomeAnonimo = "Sei collegato come 'anonimo'"
-        Croce croce = grailsApplication.mainContext.servletContext.croce
+        Croce croce
         def user = springSecurityService.principal
+
+        if (params.siglaCroce) {
+            croce = Croce.findBySigla((String) params.siglaCroce)
+        }// fine del blocco if
 
         if (croce) {
             titolo = croce.descrizione
@@ -151,11 +155,15 @@ class AmbulanzaTagLib {
      * @return testo del tag
      */
     def tabella = { params ->
-        String testoOut = ''
+        String testoOut
         String testo = ''
-        Croce croce = grailsApplication.mainContext.servletContext.croce
+        Croce croce = null
         Date inizio = null
         Date fine = null
+
+        if (params.siglaCroce) {
+            croce = Croce.findBySigla((String) params.siglaCroce)
+        }// fine del blocco if
         if (params.dataInizio && params.dataInizio instanceof Date) {
             inizio = (Date) params.dataInizio
         }// fine del blocco if
@@ -1352,6 +1360,7 @@ class AmbulanzaTagLib {
      */
     def fillForm = { params ->
         String testoOut = ''
+        Croce croce
         String testoRiga
         Turno turno = null
         String turnoIdTxt
@@ -1363,12 +1372,14 @@ class AmbulanzaTagLib {
         boolean mostraOreSingoloMilite = false
         boolean isTurnoExtra = false
 
+        if (params.siglaCroce) {
+            croce = Croce.findBySigla((String) params.siglaCroce)
+        }// fine del blocco if
         if (params.turnoInstance) {
             turnoIdTxt = params.turnoInstance
             turnoId = Long.decode(turnoIdTxt)
             turno = Turno.get(turnoId)
         }// fine del blocco if
-
         if (params.nuovoTurno) {
             nuovoTurnoTxt = params.nuovoTurno
             if (nuovoTurnoTxt && nuovoTurnoTxt.equals('true')) {
@@ -1392,9 +1403,9 @@ class AmbulanzaTagLib {
 
             testoOut += formRiga('Giorno', Lib.presentaDataCompleta(turno.giorno))
             testoOut += formRiga('Tipo di turno', formTipoTurno(turno))
-            testoOut += formRiga('Inizio', formData(tipoTurno, turno.inizio, 'inizio'))
+            testoOut += formRiga('Inizio', formData(croce, tipoTurno, turno.inizio, 'inizio'))
             testoOut += formLegenda('Orario di inizio turno (eventualmente modificabile)')
-            testoOut += formRiga('Fine', formData(tipoTurno, turno.fine, 'fine'))
+            testoOut += formRiga('Fine', formData(croce, tipoTurno, turno.fine, 'fine'))
             testoOut += formLegenda('Orario di fine turno (eventualmente modificabile)')
             if (isTurnoExtra) {
                 testoOut += formRiga('Titolo', Lib.tagCella('mario'))
@@ -1472,10 +1483,10 @@ class AmbulanzaTagLib {
     }// fine del metodo
 
 
-    private String formData(TipoTurno tipoTurno, Date data, String iniziofine) {
+    private String formData(Croce croce, TipoTurno tipoTurno, Date data, String iniziofine) {
         String testoOut
         boolean isExtra = false
-        boolean isOrarioTurnoModificabileForm = croceService.isOrarioTurnoModificabileForm()
+        boolean isOrarioTurnoModificabileForm = croceService.isOrarioTurnoModificabileForm(croce)
 
         if (tipoTurno) {
             isExtra = !tipoTurno.orario
@@ -1628,8 +1639,9 @@ class AmbulanzaTagLib {
     //--2) solo il milite loggato
     private String formFunzioneEdit(Turno turno, int riga) {
         String testo = ''
+        Croce croce = turno.croce
         boolean isAdmin = militeService.isLoggatoAdminOrMore()
-        boolean isPuoInserireAltri = croceService.isMilitePuoInserireAltri()
+        boolean isPuoInserireAltri = croceService.isMilitePuoInserireAltri(croce)
         Funzione funzione = getFunzione(turno, riga)
 
         testo += "<select name=\"militeFunzione${riga}_id\" id=\"militeFunzione${riga}_id\">\n"
@@ -1651,9 +1663,9 @@ class AmbulanzaTagLib {
     //--3) prima i militi della funzione e poi gli altri in ordine alfabetico
     private String formFunzioneEditAll(Turno turno, int riga) {
         String testo = ''
-        boolean isMostraSoloMilitiFunzione = croceService.isMostraSoloMilitiFunzione()
-        boolean isMostraMilitiFunzioneAndAltri = croceService.isMostraMilitiFunzioneAndAltri()
         Croce croce = turno.croce
+        boolean isMostraSoloMilitiFunzione = croceService.isMostraSoloMilitiFunzione(croce)
+        boolean isMostraMilitiFunzioneAndAltri = croceService.isMostraMilitiFunzioneAndAltri(croce)
         Funzione funzione = getFunzione(turno, riga)
         ArrayList listaMiliti
         def militeId = ''

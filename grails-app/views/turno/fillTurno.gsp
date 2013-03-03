@@ -18,6 +18,7 @@
 </head>
 
 <body>
+<amb:titoloPagina></amb:titoloPagina>
 <a href="#edit-turno" class="skip" tabindex="-1"><g:message code="default.link.skip.label"
                                                             default="Skip to content&hellip;"/></a>
 
@@ -45,7 +46,7 @@
         <g:hiddenField name="version" value="${turnoInstance?.version}"/>
         <g:hiddenField name="nuovoTurno" value="${nuovoTurno}"/>
         <fieldset class="form">
-            <amb:fillForm turnoInstance="${turnoInstance?.id}" nuovoTurno="${nuovoTurno}"></amb:fillForm>
+            <amb:fillForm siglaCroce="${siglaCroce}" turnoInstance="${turnoInstance?.id}" nuovoTurno="${nuovoTurno}" ></amb:fillForm>
         </fieldset>
         <fieldset class="buttons">
             <g:actionSubmit class="save" action="update"

@@ -19,6 +19,7 @@
 </head>
 
 <body>
+<amb:titoloPagina></amb:titoloPagina>
 <a href="#show-militestatistiche" class="skip" tabindex="-1"><g:message code="default.link.skip.label"
                                                                                   default="Skip to content&hellip;"/></a>
 
@@ -75,6 +76,15 @@
             <span class="property-value" aria-labelledby="milite-label"><g:link
                     controller="milite" action="show"
                     id="${militestatisticheInstance?.milite?.id}">${militestatisticheInstance?.milite?.encodeAsHTML()}</g:link></span>
+            
+        </li>
+        
+        <li class="fieldcontain">
+            <span id="status-label" class="property-label"><g:message
+                    code="militestatistiche.status.labelform" default="Status"/></span>
+            
+            <span class="property-value" aria-labelledby="status-label"><g:fieldValue bean="${militestatisticheInstance}"
+                                                                                         field="status"/></span>
             
         </li>
         

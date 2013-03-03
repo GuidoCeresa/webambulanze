@@ -270,7 +270,7 @@ class BootStrap implements Cost {
                 croce.riferimento = 'Mauro Michelini'
             }// fine del blocco if
             if (!croce.indirizzo) {
-                croce.indirizzo = '43010 Ponte Taro (PR)'
+                croce.indirizzo = 'Via Gramsci, 1 - 43010 Ponte Taro (PR)'
             }// fine del blocco if
             if (!croce.telefono) {
                 croce.telefono = '348 8979700'
@@ -472,6 +472,8 @@ class BootStrap implements Cost {
                 setting.minGiorniMancantiCancellazione = 0
                 setting.isOrarioTurnoModificabileForm = false
                 setting.isCalcoloNotturnoStatistiche = false
+                setting.fissaLimiteMassimoSingoloTurno = false
+                setting.oreMassimeSingoloTurno = 0
                 setting.save(failOnError: true)
             }// fine del blocco if
         }// fine del blocco if
@@ -505,6 +507,8 @@ class BootStrap implements Cost {
                 setting.minGiorniMancantiCancellazione = 0
                 setting.isOrarioTurnoModificabileForm = false
                 setting.isCalcoloNotturnoStatistiche = true
+                setting.fissaLimiteMassimoSingoloTurno = false
+                setting.oreMassimeSingoloTurno = 0
                 setting.save(failOnError: true)
             }// fine del blocco if
         }// fine del blocco if
@@ -538,6 +542,8 @@ class BootStrap implements Cost {
                 setting.minGiorniMancantiCancellazione = 0
                 setting.isOrarioTurnoModificabileForm = false
                 setting.isCalcoloNotturnoStatistiche = false
+                setting.fissaLimiteMassimoSingoloTurno = false
+                setting.oreMassimeSingoloTurno = 0
                 setting.save(failOnError: true)
             }// fine del blocco if
         }// fine del blocco if
@@ -571,6 +577,8 @@ class BootStrap implements Cost {
                 setting.minGiorniMancantiCancellazione = 0
                 setting.isOrarioTurnoModificabileForm = false
                 setting.isCalcoloNotturnoStatistiche = true
+                setting.fissaLimiteMassimoSingoloTurno = true
+                setting.oreMassimeSingoloTurno = 13
                 setting.save(failOnError: true)
             }// fine del blocco if
         }// fine del blocco if
@@ -604,6 +612,8 @@ class BootStrap implements Cost {
                 setting.minGiorniMancantiCancellazione = 0
                 setting.isOrarioTurnoModificabileForm = false
                 setting.isCalcoloNotturnoStatistiche = false
+                setting.fissaLimiteMassimoSingoloTurno = false
+                setting.oreMassimeSingoloTurno = 0
                 setting.save(failOnError: true)
             }// fine del blocco if
         }// fine del blocco if

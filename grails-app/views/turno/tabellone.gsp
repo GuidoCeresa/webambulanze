@@ -6,6 +6,7 @@
 </head>
 
 <body>
+<amb:titoloPagina></amb:titoloPagina>
 
 <g:if test="${flash.message}">
     <div class="message" role="status">${flash.message}</div>
@@ -60,7 +61,7 @@
 </div>
 
 
-<amb:tabella dataInizio="${dataInizio}" dataFine="${dataFine}"></amb:tabella>
+<amb:tabella siglaCroce="${siglaCroce}" dataInizio="${dataInizio}" dataFine="${dataFine}"></amb:tabella>
 
 </body>
 </html>

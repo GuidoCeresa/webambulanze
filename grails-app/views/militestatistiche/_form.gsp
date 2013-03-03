@@ -48,6 +48,24 @@
 <g:select id="milite" name="milite.id" from="${webambulanze.Milite.list()}" optionKey="id" required="" value="${militestatisticheInstance?.milite?.id}" class="many-to-one"/>
 </div>
 
+<div class="fieldcontain ${hasErrors(bean: militestatisticheInstance, field: 'status', 'error')} ">
+	<label for="status">
+		<g:message code="militestatistiche.status.labelform" default="Status" />
+		
+	</label>
+	
+
+
+
+
+
+
+
+
+
+<g:textField name="status" value="${militestatisticheInstance?.status}"/>
+</div>
+
 <div class="fieldcontain ${hasErrors(bean: militestatisticheInstance, field: 'turni', 'error')} required">
 	<label for="turni">
 		<g:message code="militestatistiche.turni.labelform" default="Turni" />
