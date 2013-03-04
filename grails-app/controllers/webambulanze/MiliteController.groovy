@@ -32,6 +32,10 @@ class MiliteController {
     // il service viene iniettato automaticamente
     def logoService
 
+    // utilizzo di un service con la businessLogic per l'elaborazione dei dati
+    // il service viene iniettato automaticamente
+    def croceService
+
     def index() {
         redirect(action: 'list', params: params)
     } // fine del metodo
@@ -48,9 +52,6 @@ class MiliteController {
                 'oreAnno']
         def campiExtra = null
 
-        if (!params.sort) {
-            params.sort = 'cognome'
-        }// fine del blocco if-else
         if (params.order) {
             if (params.order == 'asc') {
                 params.order = 'desc'
@@ -61,13 +62,15 @@ class MiliteController {
             params.order = 'asc'
         }// fine del blocco if-else
 
-        if (grailsApplication.mainContext.servletContext.croce) {
-            croce = grailsApplication.mainContext.servletContext.croce
-            sigla = croce.sigla
-            if (sigla.equals(Cost.CROCE_ALGOS)) {
-                lista = Milite.findAll(params)
+        if (croce) {
+            params.siglaCroce = croce.sigla
+            if (params.siglaCroce.equals(Cost.CROCE_ALGOS)) {
+                lista = Milite.findAll("from Milite order by croce_id,cognome")
                 campiLista = ['id', 'croce'] + campiLista
             } else {
+                if (!params.sort) {
+                    params.sort = 'cognome'
+                }// fine del blocco if-else
                 if (militeService.isLoggatoAdminOrMore()) {
                     lista = Milite.findAllByCroce(croce, params)
                 } else {
@@ -79,13 +82,17 @@ class MiliteController {
             lista = Milite.findAll(params)
         }// fine del blocco if-else
 
-        render(view: 'militeturno', model: [militeInstanceList: lista, militeInstanceTotal: 0, campiLista: campiLista, campiExtra: campiExtra])
+        render(view: 'militeturno', model: [
+                militeInstanceList: lista,
+                militeInstanceTotal: 0,
+                campiLista: campiLista,
+                campiExtra: campiExtra],
+                params: params)
     } // fine del metodo
 
     def list(Integer max) {
         def lista
-        Croce croce
-        String sigla
+        Croce croce = croceService.getCroceCorrente(session)
         def campiLista = [
                 'cognome',
                 'nome',
@@ -95,9 +102,6 @@ class MiliteController {
                 'scadenzaNonTrauma']
         def campiExtra = null
 
-        if (!params.sort) {
-            params.sort = 'cognome'
-        }// fine del blocco if-else
         if (params.order) {
             if (params.order == 'asc') {
                 params.order = 'desc'
@@ -108,39 +112,58 @@ class MiliteController {
             params.order = 'asc'
         }// fine del blocco if-else
 
-        if (grailsApplication.mainContext.servletContext.croce) {
-            croce = grailsApplication.mainContext.servletContext.croce
-            sigla = croce.sigla
-            if (sigla.equals(Cost.CROCE_ALGOS)) {
-                lista = Milite.findAll(params)
+        if (croce) {
+            params.siglaCroce = croce.sigla
+            if (params.siglaCroce.equals(Cost.CROCE_ALGOS)) {
+                lista = Milite.findAll("from Milite order by croce_id,cognome")
                 campiLista = ['id', 'croce'] + campiLista
             } else {
-                lista = Milite.findAllByCroce(croce, params)
+                if (!params.sort) {
+                    params.sort = 'cognome'
+                }// fine del blocco if-else
+                if (militeService.isLoggatoAdminOrMore()) {
+                    lista = Milite.findAllByCroce(croce, params)
+                } else {
+                    lista = militeService.militeLoggato
+                }// fine del blocco if-else
                 campiExtra = funzioneService.campiExtraPerCroce(croce)
             }// fine del blocco if-else
         } else {
             lista = Milite.findAll(params)
         }// fine del blocco if-else
 
-        [militeInstanceList: lista, militeInstanceTotal: 0, campiLista: campiLista, campiExtra: campiExtra]
-    }
+        render(view: 'list', model: [
+                militeInstanceList: lista,
+                militeInstanceTotal: 0,
+                campiLista: campiLista,
+                campiExtra: campiExtra],
+                params: params)
+    } // fine del metodo
 
     @Secured([Cost.ROLE_ADMIN])
     def create() {
+        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+
         def campiExtra = funzioneService.campiExtra(session)
-        [militeInstance: new Milite(params), campiExtra: campiExtra]
+        render(view: 'create', model: [militeInstance: new Milite(params), campiExtra: campiExtra], params: params)
     } // fine del metodo
 
     @Secured([Cost.ROLE_ADMIN])
     def save() {
+        Croce croce = croceService.getCroceCorrente(session)
         def militeInstance = new Milite(params)
-        if (!militeInstance.croce) {
-            militeInstance.croce = grailsApplication.mainContext.servletContext.croce
+
+        if (croce) {
+            params.siglaCroce = croce.sigla
+            if (!militeInstance.croce) {
+                militeInstance.croce = croce
+            }// fine del blocco if
         }// fine del blocco if
+
         if (!militeInstance.save(flush: true)) {
-            render(view: "create", model: [militeInstance: militeInstance])
+            render(view: 'create', model: [militeInstance: militeInstance], params: params)
             return
-        }
+        }// fine del blocco if
 
         flash.message = logoService.setWarn(Evento.militeCreato, militeInstance)
 
@@ -164,9 +187,10 @@ class MiliteController {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'milite.label', default: 'Milite'), id])
             redirect(action: 'list')
             return
-        }
+        }// fine del blocco if
 
-        [militeInstance: militeInstance, campiExtra: campiExtra]
+        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+        render(view: 'show', model: [militeInstance: militeInstance, campiExtra: campiExtra], params: params)
     } // fine del metodo
 
     @Secured([Cost.ROLE_ADMIN])
@@ -178,36 +202,40 @@ class MiliteController {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'milite.label', default: 'Milite'), id])
             redirect(action: 'list')
             return
-        }
+        }// fine del blocco if
 
-        [militeInstance: militeInstance, campiExtra: campiExtra]
+        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+        render(view: 'edit', model: [militeInstance: militeInstance, campiExtra: campiExtra], params: params)
     } // fine del metodo
 
     @Secured([Cost.ROLE_ADMIN])
     def update(Long id, Long version) {
         def militeInstance = Milite.get(id)
+
         if (!militeInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'milite.label', default: 'Milite'), id])
-            redirect(action: "list")
+            redirect(action: 'list')
             return
-        }
+        }// fine del blocco if
 
+        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
         if (version != null) {
             if (militeInstance.version > version) {
                 militeInstance.errors.rejectValue("version", "default.optimistic.locking.failure",
                         [message(code: 'milite.label', default: 'Milite')] as Object[],
                         "Another user has updated this Milite while you were editing")
-                render(view: "edit", model: [militeInstance: militeInstance])
+                render(view: 'edit', model: [militeInstance: militeInstance], params: params)
                 return
-            }
-        }
+            }// fine del blocco if
+        }// fine del blocco if
+
         flash.listaMessaggi = militeService.avvisoModifiche(params, militeInstance)
         militeInstance.properties = params
 
         if (!militeInstance.save(flush: true)) {
-            render(view: "edit", model: [militeInstance: militeInstance])
+            render(view: 'edit', model: [militeInstance: militeInstance], params: params)
             return
-        }
+        }// fine del blocco if
 
         //--sicronizza le funzioni del milite nella tavola d'incrocio Militefunzione
         params.croce = militeInstance.croce
@@ -225,20 +253,21 @@ class MiliteController {
     @Secured([Cost.ROLE_PROG])
     def delete(Long id) {
         def militeInstance = Milite.get(id)
+
         if (!militeInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'milite.label', default: 'Milite'), id])
-            redirect(action: "list")
+            redirect(action: 'list')
             return
-        }
+        }// fine del blocco if
 
         try {
             militeInstance.delete(flush: true)
             flash.message = message(code: 'default.deleted.message', args: [message(code: 'milite.label', default: 'Milite'), id])
-            redirect(action: "list")
+            redirect(action: 'list')
         }
         catch (DataIntegrityViolationException e) {
             flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'milite.label', default: 'Milite'), id])
-            redirect(action: "show", id: id)
+            redirect(action: 'show', id: id)
         }
     } // fine del metodo
 

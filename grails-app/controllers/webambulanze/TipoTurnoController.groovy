@@ -28,8 +28,6 @@ class TipoTurnoController {
 
     def list(Integer max) {
         def lista
-        def sort
-        def order
         Croce croce = croceService.getCroceCorrente(session)
         def campiLista = [
                 'ordine',

@@ -42,7 +42,7 @@ class Milite {
      * la possibilità di avere valori nulli, di default è false
      */
     static constraints = {
-        croce(nullable: false, blank: false, display: false)
+        croce(nullable: false, blank: false)
         cognome(nullable: false, blank: false)
         nome(nullable: false, blank: false)
         dataNascita(nullable: true)
