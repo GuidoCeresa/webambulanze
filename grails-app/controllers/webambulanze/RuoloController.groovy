@@ -58,6 +58,7 @@ class RuoloController {
         params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
 
         def ruoloInstance = new Ruolo(params)
+
         if (!ruoloInstance.save(flush: true)) {
             render(view: 'create', model: [ruoloInstance: ruoloInstance], params: params)
             return
@@ -71,6 +72,7 @@ class RuoloController {
         params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
 
         def ruoloInstance = Ruolo.get(id)
+
         if (!ruoloInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'ruolo.label', default: 'Ruolo'), id])
             redirect(action: 'list')
@@ -85,6 +87,7 @@ class RuoloController {
         params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
 
         def ruoloInstance = Ruolo.get(id)
+
         if (!ruoloInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'ruolo.label', default: 'Ruolo'), id])
             redirect(action: 'list')
@@ -99,6 +102,7 @@ class RuoloController {
         params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
 
         def ruoloInstance = Ruolo.get(id)
+
         if (!ruoloInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'ruolo.label', default: 'Ruolo'), id])
             redirect(action: 'list')
@@ -129,6 +133,7 @@ class RuoloController {
     @Secured([Cost.ROLE_PROG])
     def delete(Long id) {
         def ruoloInstance = Ruolo.get(id)
+
         if (!ruoloInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'ruolo.label', default: 'Ruolo'), id])
             redirect(action: "list")

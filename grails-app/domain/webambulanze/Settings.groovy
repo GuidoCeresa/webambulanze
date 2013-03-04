@@ -93,7 +93,7 @@ class Settings {
      * la possibilità di avere valori nulli, di default è false
      */
     static constraints = {
-        croce(unique: true, nullable: false, blank: false, display: false)
+        croce(unique: true, nullable: false, blank: false)
         startLogin()
         startController()
         allControllers()

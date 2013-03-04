@@ -127,6 +127,7 @@ class UtenteController {
         params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
 
         def utenteInstance = Utente.get(id)
+
         if (!utenteInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'utente.label', default: 'Utente'), id])
             redirect(action: 'list')
@@ -143,6 +144,7 @@ class UtenteController {
         def lista = null
 
         def utenteInstance = Utente.get(id)
+
         if (!utenteInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'utente.label', default: 'Utente'), id])
             redirect(action: 'list')
@@ -161,6 +163,7 @@ class UtenteController {
         params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
 
         def utenteInstance = Utente.get(id)
+
         if (!utenteInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'utente.label', default: 'Utente'), id])
             redirect(action: "list")
@@ -191,6 +194,7 @@ class UtenteController {
     @Secured([Cost.ROLE_PROG])
     def delete(Long id) {
         def utenteInstance = Utente.get(id)
+
         if (!utenteInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'utente.label', default: 'Utente'), id])
             redirect(action: "list")

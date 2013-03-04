@@ -12,6 +12,24 @@
 
 
 
+<div class="fieldcontain ${hasErrors(bean: settingsInstance, field: 'croce', 'error')} required">
+	<label for="croce">
+		<g:message code="settings.croce.labelform" default="Croce" />
+		<span class="required-indicator">*</span>
+	</label>
+	
+
+
+
+
+
+
+
+
+
+<g:select id="croce" name="croce.id" from="${webambulanze.Croce.list()}" optionKey="id" required="" value="${settingsInstance?.croce?.id}" class="many-to-one"/>
+</div>
+
 <div class="fieldcontain ${hasErrors(bean: settingsInstance, field: 'startLogin', 'error')} ">
 	<label for="startLogin">
 		<g:message code="settings.startLogin.labelform" default="Start Login" />

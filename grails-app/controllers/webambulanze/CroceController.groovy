@@ -74,7 +74,6 @@ class CroceController {
         } else {
             redirect(action: 'list')
         }// fine del blocco if-else
-
     } // fine del metodo
 
     @Secured([Cost.ROLE_PROG])
@@ -93,6 +92,7 @@ class CroceController {
 
     def show(Long id) {
         def croceInstance = Croce.get(id)
+
         if (!croceInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'croce.label', default: 'Croce'), id])
             redirect(action: 'list')
@@ -106,6 +106,7 @@ class CroceController {
     @Secured([Cost.ROLE_PROG])
     def edit(Long id) {
         def croceInstance = Croce.get(id)
+
         if (!croceInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'croce.label', default: 'Croce'), id])
             redirect(action: 'list')
@@ -119,6 +120,7 @@ class CroceController {
     @Secured([Cost.ROLE_PROG])
     def update(Long id, Long version) {
         def croceInstance = Croce.get(id)
+
         if (!croceInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'croce.label', default: 'Croce'), id])
             redirect(action: 'list')
@@ -150,6 +152,7 @@ class CroceController {
     @Secured([Cost.ROLE_PROG])
     def delete(Long id) {
         def croceInstance = Croce.get(id)
+
         if (!croceInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'croce.label', default: 'Croce'), id])
             redirect(action: 'list')
