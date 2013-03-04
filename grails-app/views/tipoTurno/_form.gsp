@@ -12,6 +12,24 @@
 
 
 
+<div class="fieldcontain ${hasErrors(bean: tipoTurnoInstance, field: 'croce', 'error')} required">
+	<label for="croce">
+		<g:message code="tipoTurno.croce.labelform" default="Croce" />
+		<span class="required-indicator">*</span>
+	</label>
+	
+
+
+
+
+
+
+
+
+
+<g:select id="croce" name="croce.id" from="${webambulanze.Croce.list()}" optionKey="id" required="" value="${tipoTurnoInstance?.croce?.id}" class="many-to-one"/>
+</div>
+
 <div class="fieldcontain ${hasErrors(bean: tipoTurnoInstance, field: 'sigla', 'error')} required">
 	<label for="sigla">
 		<g:message code="tipoTurno.sigla.labelform" default="Sigla" />

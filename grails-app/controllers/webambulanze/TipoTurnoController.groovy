@@ -30,8 +30,7 @@ class TipoTurnoController {
         def lista
         def sort
         def order
-        Croce croce
-        String sigla
+        Croce croce = croceService.getCroceCorrente(session)
         def campiLista = [
                 'ordine',
                 'sigla',
@@ -49,9 +48,6 @@ class TipoTurnoController {
                 'funzione3',
                 'funzione4']
 
-        if (!params.sort) {
-            params.sort = 'ordine'
-        }// fine del blocco if-else
         if (params.order) {
             if (params.order == 'asc') {
                 params.order = 'desc'
@@ -62,112 +58,129 @@ class TipoTurnoController {
             params.order = 'asc'
         }// fine del blocco if-else
 
-        if (grailsApplication.mainContext.servletContext.croce) {
-            croce = grailsApplication.mainContext.servletContext.croce
-            sigla = croce.sigla
-            if (sigla.equals(Cost.CROCE_ALGOS)) {
-                lista = TipoTurno.findAll(params)
+        if (croce) {
+            params.siglaCroce = croce.sigla
+            if (params.siglaCroce.equals(Cost.CROCE_ALGOS)) {
+                lista = TipoTurno.findAll("from TipoTurno order by croce_id,ordine")
                 campiLista = ['id', 'croce'] + campiLista
             } else {
+                if (!params.sort) {
+                    params.sort = 'ordine'
+                }// fine del blocco if-else
                 lista = TipoTurno.findAllByCroce(croce, params)
             }// fine del blocco if-else
         } else {
             lista = TipoTurno.findAll(params)
         }// fine del blocco if-else
 
-        [tipoTurnoInstanceList: lista, tipoTurnoInstanceTotal: 0, campiLista: campiLista]
-    }
+        render(view: 'list', model: [tipoTurnoInstanceList: lista, tipoTurnoInstanceTotal: 0, campiLista: campiLista], params: params)
+    } // fine del metodo
 
     @Secured([Cost.ROLE_PROG])
     def create() {
-        [tipoTurnoInstance: new TipoTurno(params)]
+        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+
+        render(view: 'create', model: [tipoTurnoInstance: new TipoTurno(params)], params: params)
     } // fine del metodo
 
     @Secured([Cost.ROLE_PROG])
     def save() {
+        Croce croce = croceService.getCroceCorrente(session)
         def tipoTurnoInstance = new TipoTurno(params)
-        if (!tipoTurnoInstance.croce) {
-            tipoTurnoInstance.croce = grailsApplication.mainContext.servletContext.croce
+
+        if (croce) {
+            params.siglaCroce = croce.sigla
+            if (!tipoTurnoInstance.croce) {
+                tipoTurnoInstance.croce = croce
+            }// fine del blocco if
         }// fine del blocco if
+
         if (!tipoTurnoInstance.save(flush: true)) {
-            render(view: "create", model: [tipoTurnoInstance: tipoTurnoInstance])
+            render(view: 'create', model: [tipoTurnoInstance: tipoTurnoInstance], params: params)
             return
-        }
+        }// fine del blocco if
 
         flash.message = message(code: 'default.created.message', args: [message(code: 'tipoTurno.label', default: 'TipoTurno'), tipoTurnoInstance.id])
-        redirect(action: "show", id: tipoTurnoInstance.id)
+        redirect(action: 'show', id: tipoTurnoInstance.id)
     } // fine del metodo
 
     def show(Long id) {
         def tipoTurnoInstance = TipoTurno.get(id)
+
         if (!tipoTurnoInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'tipoTurno.label', default: 'TipoTurno'), id])
-            redirect(action: "list")
+            redirect(action: 'list')
             return
-        }
+        }// fine del blocco if
 
-        [tipoTurnoInstance: tipoTurnoInstance]
+        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+        render(view: 'show', model: [tipoTurnoInstance: tipoTurnoInstance], params: params)
     } // fine del metodo
 
     @Secured([Cost.ROLE_PROG])
     def edit(Long id) {
         def tipoTurnoInstance = TipoTurno.get(id)
+
         if (!tipoTurnoInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'tipoTurno.label', default: 'TipoTurno'), id])
-            redirect(action: "list")
+            redirect(action: 'list')
             return
-        }
+        }// fine del blocco if
 
-        [tipoTurnoInstance: tipoTurnoInstance]
+        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+        render(view: 'edit', model: [tipoTurnoInstance: tipoTurnoInstance], params: params)
     } // fine del metodo
 
     @Secured([Cost.ROLE_PROG])
     def update(Long id, Long version) {
         def tipoTurnoInstance = TipoTurno.get(id)
+
         if (!tipoTurnoInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'tipoTurno.label', default: 'TipoTurno'), id])
-            redirect(action: "list")
+            redirect(action: 'list')
             return
-        }
+        }// fine del blocco if
 
+        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
         if (version != null) {
             if (tipoTurnoInstance.version > version) {
                 tipoTurnoInstance.errors.rejectValue("version", "default.optimistic.locking.failure",
                         [message(code: 'tipoTurno.label', default: 'TipoTurno')] as Object[],
                         "Another user has updated this TipoTurno while you were editing")
-                render(view: "edit", model: [tipoTurnoInstance: tipoTurnoInstance])
+                render(view: 'edit', model: [tipoTurnoInstance: tipoTurnoInstance], params: params)
                 return
-            }
-        }
+            }// fine del blocco if
+        }// fine del blocco if
 
         tipoTurnoInstance.properties = params
 
         if (!tipoTurnoInstance.save(flush: true)) {
-            render(view: "edit", model: [tipoTurnoInstance: tipoTurnoInstance])
+            render(view: 'edit', model: [tipoTurnoInstance: tipoTurnoInstance], params: params)
             return
-        }
+        }// fine del blocco if
 
         flash.message = message(code: 'default.updated.message', args: [message(code: 'tipoTurno.label', default: 'TipoTurno'), tipoTurnoInstance.id])
-        redirect(action: "show", id: tipoTurnoInstance.id)
+        redirect(action: 'show', id: tipoTurnoInstance.id)
     } // fine del metodo
 
     @Secured([Cost.ROLE_PROG])
     def delete(Long id) {
         def tipoTurnoInstance = TipoTurno.get(id)
+
         if (!tipoTurnoInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'tipoTurno.label', default: 'TipoTurno'), id])
-            redirect(action: "list")
+            redirect(action: 'list')
             return
-        }
+        }// fine del blocco if
 
         try {
             tipoTurnoInstance.delete(flush: true)
             flash.message = message(code: 'default.deleted.message', args: [message(code: 'tipoTurno.label', default: 'TipoTurno'), id])
-            redirect(action: "list")
+            redirect(action: 'list')
         }
         catch (DataIntegrityViolationException e) {
             flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'tipoTurno.label', default: 'TipoTurno'), id])
-            redirect(action: "show", id: id)
+            redirect(action: 'show', id: id)
         }
     } // fine del metodo
 
