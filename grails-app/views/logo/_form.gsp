@@ -12,6 +12,24 @@
 
 
 
+<div class="fieldcontain ${hasErrors(bean: logoInstance, field: 'croceLogo', 'error')} required">
+	<label for="croceLogo">
+		<g:message code="logo.croceLogo.labelform" default="Croce Logo" />
+		<span class="required-indicator">*</span>
+	</label>
+	
+
+
+
+
+
+
+
+
+
+<g:select id="croceLogo" name="croceLogo.id" from="${webambulanze.Croce.list()}" optionKey="id" required="" value="${logoInstance?.croceLogo?.id}" class="many-to-one"/>
+</div>
+
 <div class="fieldcontain ${hasErrors(bean: logoInstance, field: 'time', 'error')} ">
 	<label for="time">
 		<g:message code="logo.time.labelform" default="Time" />

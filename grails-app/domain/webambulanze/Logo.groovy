@@ -22,7 +22,7 @@ class Logo {
      * la possibilità di avere valori nulli, di default è false
      */
     static constraints = {
-        croceLogo(nullable: false, blank: false, display: false)
+        croceLogo(nullable: false, blank: false)
         time(nullable: true)
         utente(nullable: true)
         ruolo(nullable: true)

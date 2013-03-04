@@ -62,10 +62,7 @@ class UtenteController {
         if (croce) {
             params.siglaCroce = croce.sigla
             if (params.siglaCroce.equals(Cost.CROCE_ALGOS)) {
-                if (!params.sort) {
-                    params.sort = 'croce'
-                }// fine del blocco if-else
-                lista = Utente.findAll("from Utente order by croce_id,username asc")
+                lista = Utente.findAll("from Utente order by croce_id,username")
                 campiLista = ['id', 'croce'] + campiLista
             } else {
                 if (!params.sort) {

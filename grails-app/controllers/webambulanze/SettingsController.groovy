@@ -60,7 +60,7 @@ class SettingsController {
                 if (!params.sort) {
                     params.sort = 'croce'
                 }// fine del blocco if-else
-                lista = Settings.findAll()
+                lista = Settings.findAll(params)
                 campiLista = ['id', 'croce'] + campiLista
             } else {
                 lista = Settings.findAllByCroce(croce)
@@ -69,7 +69,7 @@ class SettingsController {
             lista = Settings.findAll()
         }// fine del blocco if-else
 
-        render(view: 'list', model: [settingsInstanceList: lista, utenteInstsettingsInstanceTotalanceTotal: 0, campiLista: campiLista], params: params)
+        render(view: 'list', model: [settingsInstanceList: lista, settingsInstanceTotal: 0, campiLista: campiLista], params: params)
     } // fine del metodo
 
     @Secured([Cost.ROLE_PROG])

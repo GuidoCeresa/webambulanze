@@ -16,16 +16,19 @@ import org.springframework.dao.DataIntegrityViolationException
 @Secured([Cost.ROLE_ADMIN])
 class LogoController {
 
+    // utilizzo di un service con la businessLogic per l'elaborazione dei dati
+    // il service viene iniettato automaticamente
+    def croceService
+
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
     def index() {
-        redirect(action: "list", params: params)
+        redirect(action: 'list', params: params)
     } // fine del metodo
 
     def list(Integer max) {
         def lista
-        Croce croce
-        String sigla
+        Croce croce = croceService.getCroceCorrente(session)
         def campiLista = [
                 'time',
                 'utente',
@@ -37,9 +40,6 @@ class LogoController {
                 'turno',
                 'giorno'
         ]
-        if (!params.sort) {
-            params.sort = 'time'
-        }// fine del blocco if-else
         if (params.order) {
             if (params.order == 'asc') {
                 params.order = 'desc'
@@ -50,109 +50,125 @@ class LogoController {
             params.order = 'desc'
         }// fine del blocco if-else
 
-        if (grailsApplication.mainContext.servletContext.croce) {
-            croce = grailsApplication.mainContext.servletContext.croce
-            sigla = croce.sigla
-            if (sigla.equals(Cost.CROCE_ALGOS)) {
-                lista = Logo.findAll(params)
+        if (croce) {
+            params.siglaCroce = croce.sigla
+            if (params.siglaCroce.equals(Cost.CROCE_ALGOS)) {
+                lista = Logo.findAll("from Logo order by croce_logo_id,time")
                 campiLista = ['id', 'croceLogo'] + campiLista
             } else {
+                if (!params.sort) {
+                    params.sort = 'time'
+                }// fine del blocco if-else
                 lista = Logo.findAllByCroceLogo(croce, params)
             }// fine del blocco if-else
         } else {
             lista = Logo.findAll(params)
         }// fine del blocco if-else
 
-        [logoInstanceList: lista, logoInstanceTotal: 0, campiLista: campiLista]
-    }
+        render(view: 'list', model: [logoInstanceList: lista, logoInstanceTotal: 0, campiLista: campiLista], params: params)
+    } // fine del metodo
 
     @Secured([Cost.ROLE_PROG])
     def create() {
-        [logoInstance: new Logo(params)]
+        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+        if (params.siglaCroce && !params.siglaCroce.equals(Cost.CROCE_ALGOS)) {
+            render(view: 'create', model: [logoInstance: new Logo(params)], params: params)
+        } else {
+            redirect(action: 'list')
+        }// fine del blocco if-else
     } // fine del metodo
 
     @Secured([Cost.ROLE_PROG])
     def save() {
         def logoInstance = new Logo(params)
+
+        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
         if (!logoInstance.save(flush: true)) {
-            render(view: "create", model: [logoInstance: logoInstance])
+            render(view: 'create', model: [logoInstance: logoInstance], params: params)
             return
-        }
+        }// fine del blocco if
 
         flash.message = message(code: 'default.created.message', args: [message(code: 'logo.label', default: 'Logo'), logoInstance.id])
-        redirect(action: "show", id: logoInstance.id)
+        redirect(action: 'show', id: logoInstance.id)
     } // fine del metodo
 
     def show(Long id) {
         def logoInstance = Logo.get(id)
+
         if (!logoInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'logo.label', default: 'Logo'), id])
-            redirect(action: "list")
+            redirect(action: 'list')
             return
-        }
+        }// fine del blocco if
 
-        [logoInstance: logoInstance]
+        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+        render(view: 'show', model: [logoInstance: logoInstance], params: params)
     } // fine del metodo
 
     @Secured([Cost.ROLE_PROG])
     def edit(Long id) {
         def logoInstance = Logo.get(id)
+
         if (!logoInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'logo.label', default: 'Logo'), id])
-            redirect(action: "list")
+            redirect(action: 'list')
             return
-        }
+        }// fine del blocco if
 
-        [logoInstance: logoInstance]
+        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+        render(view: 'edit', model: [logoInstance: logoInstance], params: params)
     } // fine del metodo
 
     @Secured([Cost.ROLE_PROG])
     def update(Long id, Long version) {
         def logoInstance = Logo.get(id)
+
         if (!logoInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'logo.label', default: 'Logo'), id])
-            redirect(action: "list")
+            redirect(action: 'list')
             return
-        }
+        }// fine del blocco if
 
+        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
         if (version != null) {
             if (logoInstance.version > version) {
                 logoInstance.errors.rejectValue("version", "default.optimistic.locking.failure",
                         [message(code: 'logo.label', default: 'Logo')] as Object[],
                         "Another user has updated this Logo while you were editing")
-                render(view: "edit", model: [logoInstance: logoInstance])
+                render(view: 'edit', model: [logoInstance: logoInstance], params: params)
                 return
-            }
-        }
+            }// fine del blocco if
+        }// fine del blocco if
 
         logoInstance.properties = params
 
         if (!logoInstance.save(flush: true)) {
-            render(view: "edit", model: [logoInstance: logoInstance])
+            render(view: 'edit', model: [logoInstance: logoInstance], params: params)
             return
-        }
+        }// fine del blocco if
 
         flash.message = message(code: 'default.updated.message', args: [message(code: 'logo.label', default: 'Logo'), logoInstance.id])
-        redirect(action: "show", id: logoInstance.id)
+        redirect(action: 'show', id: logoInstance.id)
     } // fine del metodo
 
     @Secured([Cost.ROLE_PROG])
     def delete(Long id) {
         def logoInstance = Logo.get(id)
+
         if (!logoInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'logo.label', default: 'Logo'), id])
-            redirect(action: "list")
+            redirect(action: 'list')
             return
-        }
+        }// fine del blocco if
 
         try {
             logoInstance.delete(flush: true)
             flash.message = message(code: 'default.deleted.message', args: [message(code: 'logo.label', default: 'Logo'), id])
-            redirect(action: "list")
+            redirect(action: 'list')
         }
         catch (DataIntegrityViolationException e) {
             flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'logo.label', default: 'Logo'), id])
-            redirect(action: "show", id: id)
+            redirect(action: 'show', id: id)
         }
     } // fine del metodo
 
