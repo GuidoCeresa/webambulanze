@@ -15,11 +15,11 @@ import org.springframework.dao.DataIntegrityViolationException
 @Secured([Cost.ROLE_ADMIN])
 class CroceController {
 
+    static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
+
     // utilizzo di un service con la businessLogic per l'elaborazione dei dati
     // il service viene iniettato automaticamente
     def croceService
-
-    static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
     def index() {
         redirect(action: 'list', params: params)

@@ -16,9 +16,9 @@ import org.springframework.dao.DataIntegrityViolationException
 @Secured([Cost.ROLE_MILITE])
 class MiliteController {
 
-    private static boolean EDIT_VERSO_LISTA = true
-
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
+
+    private static boolean EDIT_VERSO_LISTA = true
 
     // utilizzo di un service con la businessLogic per l'elaborazione dei dati
     // il service viene iniettato automaticamente

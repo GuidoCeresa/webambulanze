@@ -18,6 +18,10 @@ class TipoTurnoController {
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
+    // utilizzo di un service con la businessLogic per l'elaborazione dei dati
+    // il service viene iniettato automaticamente
+    def croceService
+
     def index() {
         redirect(action: "list", params: params)
     } // fine del metodo

@@ -16,6 +16,8 @@ import org.springframework.dao.DataIntegrityViolationException
 @Secured([Cost.ROLE_CUSTODE])
 class UtenteController {
 
+    static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
+
     // utilizzo di un service con la businessLogic per l'elaborazione dei dati
     // il service viene iniettato automaticamente
     def utenteService
@@ -31,8 +33,6 @@ class UtenteController {
     // utilizzo di un service con la businessLogic per l'elaborazione dei dati
     // il service viene iniettato automaticamente
     def militeService
-
-    static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
     def index() {
         redirect(action: 'list', params: params)

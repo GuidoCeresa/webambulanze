@@ -17,6 +17,8 @@ import java.sql.Timestamp
 
 class TurnoController {
 
+    static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
+
     // utilizzo di un service con la businessLogic per l'elaborazione dei dati
     // il service viene iniettato automaticamente
     def springSecurityService
@@ -38,7 +40,6 @@ class TurnoController {
 
     static int giorniVisibili = 7
     static int delta = giorniVisibili - 1
-    static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
     @Secured([Cost.ROLE_MILITE])
     def tabellone = {
