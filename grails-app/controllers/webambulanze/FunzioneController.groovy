@@ -16,6 +16,10 @@ import org.springframework.dao.DataIntegrityViolationException
 @Secured([Cost.ROLE_MILITE])
 class FunzioneController {
 
+    // utilizzo di un service con la businessLogic per l'elaborazione dei dati
+    // il service viene iniettato automaticamente
+    def croceService
+
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
     def index() {
@@ -24,20 +28,16 @@ class FunzioneController {
 
     def list(Integer max) {
         def lista
-        Croce croce
-        String sigla
+        Croce croce = croceService.getCroceCorrente(session)
         def campiLista = [
                 'ordine',
                 'sigla',
                 'descrizione',
                 'funzioniDipendenti']
 
-        if (!params.sort) {
-            params.sort = 'ordine'
-        }// fine del blocco if-else
         if (params.order) {
-            if (params.order=='asc') {
-                params.order ='desc'
+            if (params.order == 'asc') {
+                params.order = 'desc'
             } else {
                 params.order = 'asc'
             }// fine del blocco if-else
@@ -45,112 +45,129 @@ class FunzioneController {
             params.order = 'asc'
         }// fine del blocco if-else
 
-        if (grailsApplication.mainContext.servletContext.croce) {
-            croce = grailsApplication.mainContext.servletContext.croce
-            sigla = croce.sigla
-            if (sigla.equals(Cost.CROCE_ALGOS)) {
-                lista = Funzione.findAll(params)
+        if (croce) {
+            params.siglaCroce = croce.sigla
+            if (params.siglaCroce.equals(Cost.CROCE_ALGOS)) {
+                lista = Funzione.findAll("from Funzione order by croce_id,ordine")
                 campiLista = ['id', 'croce'] + campiLista
             } else {
+                if (!params.sort) {
+                    params.sort = 'ordine'
+                }// fine del blocco if-else
                 lista = Funzione.findAllByCroce(croce, params)
             }// fine del blocco if-else
         } else {
             lista = Funzione.findAll(params)
         }// fine del blocco if-else
 
-        [funzioneInstanceList: lista, funzioneInstanceTotal: 0, campiLista: campiLista]
+        render(view: 'list', model: [funzioneInstanceList: lista, funzioneInstanceTotal: 0, campiLista: campiLista], params: params)
     } // fine del metodo
 
     @Secured([Cost.ROLE_PROG])
     def create() {
-        [funzioneInstance: new Funzione(params)]
+        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+
+        render(view: 'create', model: [funzioneInstance: new Funzione(params)], params: params)
     } // fine del metodo
 
     @Secured([Cost.ROLE_PROG])
     def save() {
+        Croce croce = croceService.getCroceCorrente(session)
         def funzioneInstance = new Funzione(params)
-        if (!funzioneInstance.croce) {
-            funzioneInstance.croce = grailsApplication.mainContext.servletContext.croce
+
+        if (croce) {
+            params.siglaCroce = croce.sigla
+            if (!funzioneInstance.croce) {
+                funzioneInstance.croce = croce
+            }// fine del blocco if
         }// fine del blocco if
+
         if (!funzioneInstance.save(flush: true)) {
-            render(view: "create", model: [funzioneInstance: funzioneInstance])
+            render(view: 'create', model: [funzioneInstance: funzioneInstance], params: params)
             return
-        }
+        }// fine del blocco if
 
         flash.message = message(code: 'default.created.message', args: [message(code: 'funzione.label', default: 'Funzione'), funzioneInstance.id])
-        redirect(action: "show", id: funzioneInstance.id)
+        redirect(action: 'show', id: funzioneInstance.id)
     } // fine del metodo
 
     def show(Long id) {
         def funzioneInstance = Funzione.get(id)
+
         if (!funzioneInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'funzione.label', default: 'Funzione'), id])
-            redirect(action: "list")
+            redirect(action: 'list')
             return
-        }
+        }// fine del blocco if
 
-        [funzioneInstance: funzioneInstance]
+        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+        render(view: 'show', model: [funzioneInstance: funzioneInstance], params: params)
     } // fine del metodo
 
     @Secured([Cost.ROLE_PROG])
     def edit(Long id) {
         def funzioneInstance = Funzione.get(id)
+
         if (!funzioneInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'funzione.label', default: 'Funzione'), id])
-            redirect(action: "list")
+            redirect(action: 'list')
             return
-        }
+        }// fine del blocco if
 
-        [funzioneInstance: funzioneInstance]
+        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+        render(view: 'edit', model: [funzioneInstance: funzioneInstance], params: params)
     } // fine del metodo
 
     @Secured([Cost.ROLE_PROG])
     def update(Long id, Long version) {
         def funzioneInstance = Funzione.get(id)
+
         if (!funzioneInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'funzione.label', default: 'Funzione'), id])
-            redirect(action: "list")
+            redirect(action: 'list')
             return
-        }
+        }// fine del blocco if
 
+        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
         if (version != null) {
             if (funzioneInstance.version > version) {
                 funzioneInstance.errors.rejectValue("version", "default.optimistic.locking.failure",
                         [message(code: 'funzione.label', default: 'Funzione')] as Object[],
                         "Another user has updated this Funzione while you were editing")
-                render(view: "edit", model: [funzioneInstance: funzioneInstance])
+                render(view: 'edit', model: [funzioneInstance: funzioneInstance], params: params)
                 return
-            }
-        }
+            }// fine del blocco if
+        }// fine del blocco if
 
         funzioneInstance.properties = params
 
         if (!funzioneInstance.save(flush: true)) {
-            render(view: "edit", model: [funzioneInstance: funzioneInstance])
+            render(view: 'edit', model: [funzioneInstance: funzioneInstance], params: params)
             return
-        }
+        }// fine del blocco if
 
         flash.message = message(code: 'default.updated.message', args: [message(code: 'funzione.label', default: 'Funzione'), funzioneInstance.id])
-        redirect(action: "show", id: funzioneInstance.id)
+        redirect(action: 'show', id: funzioneInstance.id)
     } // fine del metodo
 
     @Secured([Cost.ROLE_PROG])
     def delete(Long id) {
         def funzioneInstance = Funzione.get(id)
+
         if (!funzioneInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'funzione.label', default: 'Funzione'), id])
-            redirect(action: "list")
+            redirect(action: 'list')
             return
-        }
+        }// fine del blocco if
 
         try {
             funzioneInstance.delete(flush: true)
             flash.message = message(code: 'default.deleted.message', args: [message(code: 'funzione.label', default: 'Funzione'), id])
-            redirect(action: "list")
+            redirect(action: 'list')
         }
         catch (DataIntegrityViolationException e) {
             flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'funzione.label', default: 'Funzione'), id])
-            redirect(action: "show", id: id)
+            redirect(action: 'show', id: id)
         }
     } // fine del metodo
 
