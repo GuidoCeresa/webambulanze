@@ -246,7 +246,7 @@ class MiliteService {
     }// fine del metodo
 
     //--lista dei militi abilitati alla funzione
-    public ArrayList listaMilitiAbilitati(Croce croce,Funzione funzione) {
+    public ArrayList listaMilitiAbilitati(Croce croce, Funzione funzione) {
         ArrayList listaMilitiAbilitati = null
         ArrayList listaAllMiliti = null
         Milite milite
@@ -270,7 +270,7 @@ class MiliteService {
 
     //--lista dei militi abilitati alla funzione
     //--seguiti da tutti i rimanenti
-    public ArrayList listaMilitiAbilitatiAndAltri(Croce croce,Funzione funzione) {
+    public ArrayList listaMilitiAbilitatiAndAltri(Croce croce, Funzione funzione) {
         ArrayList listaMilitiAbilitati = null
         ArrayList listaMilitiAltri = null
         ArrayList listaAllMiliti = null
@@ -404,13 +404,39 @@ class MiliteService {
         return turni
     }// fine del metodo
 
-    //--ore di servizio del milite effettuate a partire dal 1° gennaio anno corrente
-    public int oreAnno(Milite milite) {
-        int ore = 0
+    //--recupera i nomi di tutti gli militi
+    //--in ordine alfabetico
+    public ArrayList allMilitiDellaCroce(Croce croce) {
+        ArrayList listaMiliti = new ArrayList()
 
+        if (croce) {
+            listaMiliti = Milite.findAllByCroce(croce, [sort: 'cognome'])
+        }// fine del blocco if
 
-        return ore
+        return listaMiliti
     }// fine del metodo
+
+    //--recupera i nomi di tutti gli militi
+    //--in ordine alfabetico
+    //--riga vuota iniziale (per il valore nullo)
+    public ArrayList allNomiMilitiDellaCroce(Croce croce) {
+        ArrayList listaNomiMiliti = new ArrayList()
+        ArrayList listaMiliti
+
+        if (croce) {
+            listaMiliti = allMilitiDellaCroce(croce)
+        }// fine del blocco if
+
+        if (listaMiliti) {
+            listaMiliti?.each {
+                listaNomiMiliti.add(it.toString())
+            } // fine del ciclo each
+            listaMiliti.add(0,'')
+        }// fine del blocco if
+
+        return listaNomiMiliti
+    }// fine del metodo
+
 
 } // end of Service Class
 

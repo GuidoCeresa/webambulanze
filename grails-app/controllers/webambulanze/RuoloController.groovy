@@ -23,11 +23,27 @@ class RuoloController {
     } // fine del metodo
 
     def list(Integer max) {
+        def lista = Ruolo.list(params)
         params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
 
-        def campiLista = ['id', 'authority']
+        if (!params.sort) {
+            params.sort = 'id'
+        }// fine del blocco if-else
+        if (params.order) {
+            if (params.order == 'asc') {
+                params.order = 'desc'
+            } else {
+                params.order = 'asc'
+            }// fine del blocco if-else
+        } else {
+            params.order = 'asc'
+        }// fine del blocco if-else
 
-        render(view: 'list', model: [ruoloInstanceList: Ruolo.list(params), ruoloInstanceTotal: 0, campiLista: campiLista], params: params)
+        def campiLista = [
+                'id',
+                'authority']
+
+        render(view: 'list', model: [ruoloInstanceList: lista, ruoloInstanceTotal: 0, campiLista: campiLista], params: params)
     } // fine del metodo
 
     @Secured([Cost.ROLE_PROG])

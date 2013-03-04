@@ -30,7 +30,7 @@ class UtenteService {
     }// fine del metodo
 
     //--recupera i nomi di tutti gli utenti ESCLUSO il programatore
-    public ArrayList utentiCustodiOrMore(Croce croce, def params) {
+    public ArrayList tuttiQuelliDellaCroceSenzaProgrammatore(Croce croce, def params) {
         ArrayList lista = new ArrayList()
 
         if (croce) {
@@ -42,14 +42,11 @@ class UtenteService {
     }// fine del metodo
 
     //--recupera i nomi di tutti gli utenti ESCLUSO il programatore
-    public ArrayList utentiCustodiOrMore(def params) {
+    public ArrayList tuttiSenzaProgrammatore(def params) {
         ArrayList lista = new ArrayList()
-        Croce croce
 
-        if (croce) {
-            lista = Utente.findAll(params)
-            lista = eliminaProgrammatore(lista)
-        }// fine del blocco if
+        lista = Utente.findAll(params)
+        lista = eliminaProgrammatore(lista)
 
         return lista
     }// fine del metodo

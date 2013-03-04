@@ -28,16 +28,19 @@ class UtenteController {
     // il service viene iniettato automaticamente
     def croceService
 
+    // utilizzo di un service con la businessLogic per l'elaborazione dei dati
+    // il service viene iniettato automaticamente
+    def militeService
+
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
     def index() {
-        redirect(action: "list", params: params)
+        redirect(action: 'list', params: params)
     } // fine del metodo
 
     def list(Integer max) {
         def lista
-        Croce croce
-        String sigla
+        Croce croce = croceService.getCroceCorrente(session)
         def campiLista = [
                 'username',
                 'pass',
@@ -59,50 +62,52 @@ class UtenteController {
             params.order = 'asc'
         }// fine del blocco if-else
 
-        if (grailsApplication.mainContext.servletContext.croce) {
-            croce = grailsApplication.mainContext.servletContext.croce
-            sigla = croce.sigla
-            if (sigla.equals(Cost.CROCE_ALGOS)) {
+        if (croce) {
+            params.siglaCroce = croce.sigla
+            if (params.siglaCroce.equals(Cost.CROCE_ALGOS)) {
                 lista = Utente.findAll(params)
                 campiLista = ['id', 'croce'] + campiLista
             } else {
-//                lista = Utente.findAllByCroce(croce, params)
-                lista = utenteService.utentiCustodiOrMore(croce, params)
+                lista = utenteService.tuttiQuelliDellaCroceSenzaProgrammatore(croce, params)
             }// fine del blocco if-else
         } else {
-            lista = utenteService.utentiCustodiOrMore(params)
-//            lista = Utente.findAll(params)
+            lista = utenteService.tuttiSenzaProgrammatore(params)
         }// fine del blocco if-else
 
-        [utenteInstanceList: lista, utenteInstanceTotal: 0, campiLista: campiLista]
-    }
+        render(view: 'list', model: [utenteInstanceList: lista, utenteInstanceTotal: 0, campiLista: campiLista], params: params)
+    } // fine del metodo
 
     //--ATTENZIONE - se si ricreano le viste, occorre modificare  -form.gsp
-    //--mettendo from="${utenteInstanceList}" nel primo campo
+    //--mettendo from="${lista}" nel primo campo
     def create() {
+        def lista = null
+        Croce croce = croceService.getCroceCorrente(session)
+
         if (!params.sort) {
             params.sort = 'username'
-        }// fine del blocco if-else
+        }// fine del blocco if
 
-        Croce croce = croceService.getCroceCorrente(session)
-        def lista = utenteService.utentiCustodiOrMore(croce, params)
+        if (croce) {
+            params.siglaCroce = croce.sigla
+            lista = militeService.allMilitiDellaCroce(croce)
+        }// fine del blocco if
 
-        [utenteInstance: new Utente(params), utenteInstanceList: lista,]
+        render(view: 'create', model: [utenteInstance: new Utente(params), lista: lista], params: params)
     } // fine del metodo
 
     def save() {
-        Croce croce
+        Croce croce = croceService.getCroceCorrente(session)
         def utenteInstance = new Utente(params)
 
-        if (grailsApplication.mainContext.servletContext.croce) {
-            croce = grailsApplication.mainContext.servletContext.croce
+        if (croce) {
+            params.siglaCroce = croce.sigla
             utenteInstance.croce = croce
         }// fine del blocco if
 
         if (!utenteInstance.save(flush: true)) {
-            render(view: "create", model: [utenteInstance: utenteInstance])
+            render(view: 'create', model: [utenteInstance: utenteInstance], params: params)
             return
-        }
+        }// fine del blocco if
 
         if (utenteInstance.milite) {
             flash.message = logoService.setWarn(Evento.utenteCreato, utenteInstance.milite)
@@ -112,58 +117,72 @@ class UtenteController {
         UtenteRuolo.create(utenteInstance, ruoloMilite, true)
 
         flash.message = message(code: 'default.created.message', args: [message(code: 'utente.label', default: 'Utente'), utenteInstance.id])
-        redirect(action: "show", id: utenteInstance.id)
+        redirect(action: 'show', id: utenteInstance.id)
     } // fine del metodo
 
     def show(Long id) {
+        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+
         def utenteInstance = Utente.get(id)
         if (!utenteInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'utente.label', default: 'Utente'), id])
-            redirect(action: "list")
+            redirect(action: 'list')
             return
-        }
+        }// fine del blocco if
 
-        [utenteInstance: utenteInstance]
+        render(view: 'show', model: [utenteInstance: utenteInstance], params: params)
     } // fine del metodo
 
+    //--ATTENZIONE - se si ricreano le viste, occorre modificare  -form.gsp
+    //--mettendo from="${lista}" nel primo campo
     def edit(Long id) {
+        def lista = null
+        Croce croce = croceService.getCroceCorrente(session)
+
         def utenteInstance = Utente.get(id)
         if (!utenteInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'utente.label', default: 'Utente'), id])
-            redirect(action: "list")
+            redirect(action: 'list')
             return
-        }
+        }// fine del blocco if
 
-        [utenteInstance: utenteInstance]
+        if (croce) {
+            params.siglaCroce = croce.sigla
+            lista = militeService.allMilitiDellaCroce(croce)
+        }// fine del blocco if
+
+        render(view: 'edit', model: [utenteInstance: utenteInstance, lista: lista], params: params)
     } // fine del metodo
 
     def update(Long id, Long version) {
+        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+
         def utenteInstance = Utente.get(id)
         if (!utenteInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'utente.label', default: 'Utente'), id])
             redirect(action: "list")
             return
-        }
+        }// fine del blocco if
 
         if (version != null) {
             if (utenteInstance.version > version) {
                 utenteInstance.errors.rejectValue("version", "default.optimistic.locking.failure",
                         [message(code: 'utente.label', default: 'Utente')] as Object[],
                         "Another user has updated this Utente while you were editing")
-                render(view: "edit", model: [utenteInstance: utenteInstance])
+                render(view: 'edit', model: [utenteInstance: utenteInstance], params: params)
                 return
-            }
-        }
+            }// fine del blocco if
+        }// fine del blocco if
 
         flash.listaMessaggi = utenteService.avvisoModifiche(params, utenteInstance)
         utenteInstance.properties = params
 
         if (!utenteInstance.save(flush: true)) {
-            render(view: "edit", model: [utenteInstance: utenteInstance])
+            render(view: 'edit', model: [utenteInstance: utenteInstance], params: params)
             return
-        }
+        }// fine del blocco if
 
-        redirect(action: "show", id: utenteInstance.id)
+        redirect(action: 'show', id: utenteInstance.id)
     } // fine del metodo
 
     @Secured([Cost.ROLE_PROG])
@@ -173,7 +192,7 @@ class UtenteController {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'utente.label', default: 'Utente'), id])
             redirect(action: "list")
             return
-        }
+        }// fine del blocco if
 
         try {
             utenteInstance.delete()
@@ -182,10 +201,10 @@ class UtenteController {
         }
         catch (DataIntegrityViolationException e) {
             try { // prova ad eseguire il codice
-              //  String query = "delete from utente_ruolo where utente_id=" + utenteInstance.id
-              //  Ruolo ruolo = Ruolo.get(4)
-              //  UtenteRuolo.remove utenteInstance, ruolo
-              //  utenteInstance.delete()
+                //  String query = "delete from utente_ruolo where utente_id=" + utenteInstance.id
+                //  Ruolo ruolo = Ruolo.get(4)
+                //  UtenteRuolo.remove utenteInstance, ruolo
+                //  utenteInstance.delete()
             } catch (Exception unErrore) { // intercetta l'errore
                 log.error unErrore
             }// fine del blocco try-catch
