@@ -48,6 +48,24 @@
 <g:textField name="descrizione" required="" value="${croceInstance?.descrizione}"/>
 </div>
 
+<div class="fieldcontain ${hasErrors(bean: croceInstance, field: 'presidente', 'error')} ">
+	<label for="presidente">
+		<g:message code="croce.presidente.labelform" default="Presidente" />
+		
+	</label>
+	
+
+
+
+
+
+
+
+
+
+<g:textField name="presidente" value="${croceInstance?.presidente}"/>
+</div>
+
 <div class="fieldcontain ${hasErrors(bean: croceInstance, field: 'riferimento', 'error')} ">
 	<label for="riferimento">
 		<g:message code="croce.riferimento.labelform" default="Riferimento" />
@@ -118,6 +136,42 @@
 
 
 <g:field type="email" name="email" value="${croceInstance?.email}"/>
+</div>
+
+<div class="fieldcontain ${hasErrors(bean: croceInstance, field: 'custode', 'error')} ">
+	<label for="custode">
+		<g:message code="croce.custode.labelform" default="Custode" />
+		
+	</label>
+	
+
+
+
+
+
+
+
+
+
+<g:textField name="custode" value="${croceInstance?.custode}"/>
+</div>
+
+<div class="fieldcontain ${hasErrors(bean: croceInstance, field: 'amministratori', 'error')} ">
+	<label for="amministratori">
+		<g:message code="croce.amministratori.labelform" default="Amministratori" />
+		
+	</label>
+	
+
+
+
+
+
+
+
+
+
+<g:textArea name="amministratori" cols="40" rows="5" value="${croceInstance?.amministratori}"/>
 </div>
 
 <div class="fieldcontain ${hasErrors(bean: croceInstance, field: 'note', 'error')} ">

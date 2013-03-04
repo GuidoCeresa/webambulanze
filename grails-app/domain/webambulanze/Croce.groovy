@@ -8,7 +8,10 @@ class Croce {
     //--descrizione completa
     String descrizione = ''
 
-    //--riferimento (presidente, responsabile)
+    //--riferimento (presidente)
+    String presidente
+
+    //--riferimento (responsabile)
     String riferimento
 
     //--indirizzo
@@ -23,6 +26,12 @@ class Croce {
     //--settings
     Settings settings
 
+    //--custodian records
+    String custode
+
+    //--admin
+    String amministratori
+
     //--note
     String note
 
@@ -34,12 +43,15 @@ class Croce {
     static constraints = {
         sigla(nullable: false, blank: false, unique: true)
         descrizione(nullable: false, blank: false)
-        riferimento(nullable: false, blank: true)
+        presidente(nullable: true, blank: true)
+        riferimento(nullable: true, blank: true)
         indirizzo(nullable: false, blank: true)
         telefono(nullable: false, blank: true)
         email(email: true)
         settings(nullable: true, display: false)
-        note(widget: 'textarea', nullable: false, blank: true)
+        custode(nullable: true, blank: true)
+        amministratori(widget: 'textarea', nullable: true, blank: true)
+        note(widget: 'textarea', nullable: true, blank: true)
     } // end of static constraints
 
     /*+

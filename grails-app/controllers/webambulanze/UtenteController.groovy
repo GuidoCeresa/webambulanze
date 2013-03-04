@@ -49,9 +49,6 @@ class UtenteController {
                 'accountLocked',
                 'passwordExpired']
 
-        if (!params.sort) {
-            params.sort = 'username'
-        }// fine del blocco if-else
         if (params.order) {
             if (params.order == 'asc') {
                 params.order = 'desc'
@@ -65,9 +62,15 @@ class UtenteController {
         if (croce) {
             params.siglaCroce = croce.sigla
             if (params.siglaCroce.equals(Cost.CROCE_ALGOS)) {
-                lista = Utente.findAll(params)
+                if (!params.sort) {
+                    params.sort = 'croce'
+                }// fine del blocco if-else
+                lista = Utente.findAll("from Utente order by croce_id,username asc")
                 campiLista = ['id', 'croce'] + campiLista
             } else {
+                if (!params.sort) {
+                    params.sort = 'username'
+                }// fine del blocco if-else
                 lista = utenteService.tuttiQuelliDellaCroceSenzaProgrammatore(croce, params)
             }// fine del blocco if-else
         } else {

@@ -78,6 +78,15 @@
         </li>
         
         <li class="fieldcontain">
+            <span id="presidente-label" class="property-label"><g:message
+                    code="croce.presidente.labelform" default="Presidente"/></span>
+            
+            <span class="property-value" aria-labelledby="presidente-label"><g:fieldValue bean="${croceInstance}"
+                                                                                         field="presidente"/></span>
+            
+        </li>
+        
+        <li class="fieldcontain">
             <span id="riferimento-label" class="property-label"><g:message
                     code="croce.riferimento.labelform" default="Riferimento"/></span>
             
@@ -120,6 +129,24 @@
             <span class="property-value" aria-labelledby="settings-label"><g:link
                     controller="settings" action="show"
                     id="${croceInstance?.settings?.id}">${croceInstance?.settings?.encodeAsHTML()}</g:link></span>
+            
+        </li>
+        
+        <li class="fieldcontain">
+            <span id="custode-label" class="property-label"><g:message
+                    code="croce.custode.labelform" default="Custode"/></span>
+            
+            <span class="property-value" aria-labelledby="custode-label"><g:fieldValue bean="${croceInstance}"
+                                                                                         field="custode"/></span>
+            
+        </li>
+        
+        <li class="fieldcontain">
+            <span id="amministratori-label" class="property-label"><g:message
+                    code="croce.amministratori.labelform" default="Amministratori"/></span>
+            
+            <span class="property-value" aria-labelledby="amministratori-label"><g:fieldValue bean="${croceInstance}"
+                                                                                         field="amministratori"/></span>
             
         </li>
         

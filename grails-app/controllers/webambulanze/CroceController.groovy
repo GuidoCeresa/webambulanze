@@ -14,33 +14,35 @@ import org.springframework.dao.DataIntegrityViolationException
 
 @Secured([Cost.ROLE_ADMIN])
 class CroceController {
+
+    // utilizzo di un service con la businessLogic per l'elaborazione dei dati
+    // il service viene iniettato automaticamente
+    def croceService
+
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
     def index() {
-        redirect(action: "list", params: params)
+        redirect(action: 'list', params: params)
     } // fine del metodo
 
     def list(Integer max) {
         def lista
-        Croce croce
-        String sigla
+        Croce croce = croceService.getCroceCorrente(session)
         def campiLista = [
-                'id',
-                'sigla',
                 'descrizione',
+                'presidente',
                 'riferimento',
-                'indirizzo',
                 'telefono',
-                'email',
                 'settings',
-                'note']
+                'custode',
+                'amministratori','note']
 
         if (!params.sort) {
-            params.sort = 'sigla'
+            params.sort = 'id'
         }// fine del blocco if-else
         if (params.order) {
-            if (params.order=='asc') {
-                params.order ='desc'
+            if (params.order == 'asc') {
+                params.order = 'desc'
             } else {
                 params.order = 'asc'
             }// fine del blocco if-else
@@ -48,23 +50,25 @@ class CroceController {
             params.order = 'asc'
         }// fine del blocco if-else
 
-        if (session['croce']) {
-            croce = session['croce']
-            sigla = croce.sigla
-            if (sigla.equals(Cost.CROCE_ALGOS)) {
+        if (croce) {
+            params.siglaCroce = croce.sigla
+            if (params.siglaCroce.equals(Cost.CROCE_ALGOS)) {
                 lista = Croce.findAll(params)
+                campiLista = ['id', 'sigla'] + campiLista
             } else {
-                lista = Croce.findAllBySigla(sigla, params)
+                lista = Croce.findAllBySigla(params.siglaCroce, params)
             }// fine del blocco if-else
         } else {
             lista = Croce.findAll(params)
         }// fine del blocco if-else
 
-        [croceInstanceList: lista, croceInstanceTotal: 0, campiLista: campiLista]
-    }
+        render(view: 'list', model: [croceInstanceList: lista, croceInstanceTotal: 0, campiLista: campiLista], params: params)
+    } // fine del metodo
 
     @Secured([Cost.ROLE_PROG])
     def create() {
+        Croce croce = croceService.getCroceCorrente(session)
+
         [croceInstance: new Croce(params)]
     } // fine del metodo
 
