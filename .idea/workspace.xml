@@ -5,9 +5,6 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/grails-app/domain/webambulanze/Croce.groovy" afterPath="$PROJECT_DIR$/grails-app/domain/webambulanze/Croce.groovy" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/grails-app/controllers/webambulanze/CroceController.groovy" afterPath="$PROJECT_DIR$/grails-app/controllers/webambulanze/CroceController.groovy" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/grails-app/controllers/webambulanze/UtenteController.groovy" afterPath="$PROJECT_DIR$/grails-app/controllers/webambulanze/UtenteController.groovy" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/grails-app/views/croce/_form.gsp" afterPath="$PROJECT_DIR$/grails-app/views/croce/_form.gsp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/grails-app/i18n/messages_it.properties" afterPath="$PROJECT_DIR$/grails-app/i18n/messages_it.properties" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/grails-app/views/croce/show.gsp" afterPath="$PROJECT_DIR$/grails-app/views/croce/show.gsp" />
     </list>
     <ignored path="webambulanze.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -78,12 +75,12 @@
     <file path="$PROJECT_DIR$/../webbio/grails-app/services/BiografiaService.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1357107650937" ignored="false" />
     <file path="/BiografiaService.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1357107556546" ignored="false" />
     <file path="$PROJECT_DIR$/test/unit/webambulanze/AziendaControllerTests.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1357321487347" ignored="false" />
-    <file path="/CroceController.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1362382653627" ignored="false" />
+    <file path="/CroceController.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1362405744353" ignored="false" />
     <file path="/SettingsController.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1357917384683" ignored="false" />
     <file path="/create.gsp" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1357335838563" ignored="false" />
     <file path="/edit.gsp" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1360693400726" ignored="false" />
     <file path="/Mese.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1358461690950" ignored="false" />
-    <file path="/Croce.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1362384197848" ignored="false" />
+    <file path="/Croce.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1362406220130" ignored="false" />
     <file path="/FunzioneService.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1362157358764" ignored="false" />
     <file path="/Militefunzione.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1357408867822" ignored="false" />
     <file path="/MilitefunzioneController.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1357408889105" ignored="false" />
@@ -96,7 +93,7 @@
     <file path="/UserController.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1357716525958" ignored="false" />
     <file path="/Role.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1357713282235" ignored="false" />
     <file path="/User.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1357716246647" ignored="false" />
-    <file path="/UtenteController.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1362403883285" ignored="false" />
+    <file path="/UtenteController.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1362408535718" ignored="false" />
     <file path="/TipoTurnoController.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1358866709289" ignored="false" />
     <file path="/tabellone.gsp" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1362236659027" ignored="false" />
     <file path="$PROJECT_DIR$/../untitled/grails-app/conf/BuildConfig.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1359112507656" ignored="false" />
@@ -263,38 +260,7 @@
     <favorites_list name="webambulanze" />
   </component>
   <component name="FileEditorManager">
-    <leaf>
-      <file leaf-file-name="UtenteController.groovy" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/grails-app/controllers/webambulanze/UtenteController.groovy">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="67" column="51" selection-start="2340" selection-end="2340" vertical-scroll-proportion="0.4722222">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Utente.groovy" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/grails-app/domain/webambulanze/Utente.groovy">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="12" column="19" selection-start="181" selection-end="189" vertical-scroll-proportion="-3.6">
-              <folding />
-            </state>
-          </provider>
-          <provider editor-type-id="org.jetbrains.plugins.grails.perspectives.DomainClassesRelationsEditorProvider">
-            <state />
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="CroceController.groovy" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/grails-app/controllers/webambulanze/CroceController.groovy">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="71" column="0" selection-start="2437" selection-end="2437" vertical-scroll-proportion="-13.043478">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <leaf />
   </component>
   <component name="FindManager">
     <FindUsagesManager>
@@ -324,10 +290,10 @@
         <option value="$PROJECT_DIR$/grails-app/services/webambulanze/UtenteService.groovy" />
         <option value="$PROJECT_DIR$/grails-app/views/utente/_form.gsp" />
         <option value="$PROJECT_DIR$/grails-app/services/webambulanze/MiliteService.groovy" />
-        <option value="$PROJECT_DIR$/grails-app/domain/webambulanze/Croce.groovy" />
         <option value="$PROJECT_DIR$/grails-app/i18n/messages_it.properties" />
-        <option value="$PROJECT_DIR$/grails-app/controllers/webambulanze/CroceController.groovy" />
+        <option value="$PROJECT_DIR$/grails-app/domain/webambulanze/Croce.groovy" />
         <option value="$PROJECT_DIR$/grails-app/controllers/webambulanze/UtenteController.groovy" />
+        <option value="$PROJECT_DIR$/grails-app/controllers/webambulanze/CroceController.groovy" />
       </list>
     </option>
   </component>
@@ -395,6 +361,46 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="grails-app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="webambulanze" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="webambulanze" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="grails-app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="views" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="webambulanze" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="webambulanze" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="grails-app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="views" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="utente" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -706,7 +712,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="104" y="25" width="1293" height="878" extended-state="0" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32894737" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Persistence" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24859664" sideWeight="0.47763157" order="2" side_tool="true" content_ui="tabs" />
@@ -714,7 +720,7 @@
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32189974" sideWeight="0.49355876" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24939856" sideWeight="0.71503955" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.34564644" sideWeight="0.9991981" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.34564644" sideWeight="0.9991981" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.45264623" sideWeight="0.35346216" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24859664" sideWeight="0.29210526" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33377308" sideWeight="0.47423512" order="7" side_tool="false" content_ui="tabs" />
@@ -797,13 +803,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/templates/scaffolding/_form.gsp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="-1.0197369">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/grails-app/views/turno/fillTurno.gsp">
       <provider selected="true" editor-type-id="text-editor">
         <state line="64" column="28" selection-start="3204" selection-end="3204" vertical-scroll-proportion="0.79676676">
@@ -811,23 +810,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/grails-app/views/utente/edit.gsp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="-1.4144737">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/grails-app/controllers/webambulanze/RuoloController.groovy">
       <provider selected="true" editor-type-id="text-editor">
         <state line="112" column="49" selection-start="4160" selection-end="4252" vertical-scroll-proportion="4.5652175">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/grails-app/views/utente/_form.gsp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="29" column="47" selection-start="765" selection-end="769" vertical-scroll-proportion="0.24626866">
           <folding />
         </state>
       </provider>
@@ -887,9 +872,40 @@
         <state />
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/grails-app/domain/webambulanze/Utente.groovy">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="12" column="19" selection-start="181" selection-end="189" vertical-scroll-proportion="0.035885166">
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="org.jetbrains.plugins.grails.perspectives.DomainClassesRelationsEditorProvider">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/grails-app/views/utente/show.gsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="-2.7573528">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/grails-app/views/utente/edit.gsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="-1.6911764">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/grails-app/views/utente/_form.gsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="29" column="47" selection-start="765" selection-end="769" vertical-scroll-proportion="1.0661764">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/grails-app/domain/webambulanze/Croce.groovy">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="46" column="34" selection-start="1000" selection-end="1000" vertical-scroll-proportion="0.93301433">
+        <state line="48" column="105" selection-start="1107" selection-end="1107" vertical-scroll-proportion="0.54545456">
           <folding />
         </state>
       </provider>
@@ -899,24 +915,14 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/grails-app/controllers/webambulanze/CroceController.groovy">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="71" column="0" selection-start="2437" selection-end="2437" vertical-scroll-proportion="-13.043478">
+        <state line="162" column="0" selection-start="6302" selection-end="6302" vertical-scroll-proportion="1.1203704">
           <folding />
         </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/grails-app/domain/webambulanze/Utente.groovy">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="12" column="19" selection-start="181" selection-end="189" vertical-scroll-proportion="-3.6">
-          <folding />
-        </state>
-      </provider>
-      <provider editor-type-id="org.jetbrains.plugins.grails.perspectives.DomainClassesRelationsEditorProvider">
-        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/grails-app/controllers/webambulanze/UtenteController.groovy">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="67" column="51" selection-start="2340" selection-end="2340" vertical-scroll-proportion="0.4722222">
+        <state line="214" column="34" selection-start="8441" selection-end="8486" vertical-scroll-proportion="0.8541667">
           <folding />
         </state>
       </provider>

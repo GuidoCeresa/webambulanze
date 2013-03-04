@@ -35,7 +35,8 @@ class CroceController {
                 'telefono',
                 'settings',
                 'custode',
-                'amministratori','note']
+                'amministratori',
+                'note']
 
         if (!params.sort) {
             params.sort = 'id'
@@ -67,32 +68,39 @@ class CroceController {
 
     @Secured([Cost.ROLE_PROG])
     def create() {
-        Croce croce = croceService.getCroceCorrente(session)
+        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+        if (params.siglaCroce && params.siglaCroce.equals(Cost.CROCE_ALGOS)) {
+            render(view: 'create', model: [croceInstance: new Croce(params)], params: params)
+        } else {
+            redirect(action: 'list')
+        }// fine del blocco if-else
 
-        [croceInstance: new Croce(params)]
     } // fine del metodo
 
     @Secured([Cost.ROLE_PROG])
     def save() {
         def croceInstance = new Croce(params)
+
+        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
         if (!croceInstance.save(flush: true)) {
-            render(view: "create", model: [croceInstance: croceInstance])
+            render(view: 'create', model: [croceInstance: croceInstance], params: params)
             return
-        }
+        }// fine del blocco if
 
         flash.message = message(code: 'default.created.message', args: [message(code: 'croce.label', default: 'Croce'), croceInstance.id])
-        redirect(action: "show", id: croceInstance.id)
+        redirect(action: 'show', id: croceInstance.id)
     } // fine del metodo
 
     def show(Long id) {
         def croceInstance = Croce.get(id)
         if (!croceInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'croce.label', default: 'Croce'), id])
-            redirect(action: "list")
+            redirect(action: 'list')
             return
-        }
+        }// fine del blocco if
 
-        [croceInstance: croceInstance]
+        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+        render(view: 'show', model: [croceInstance: croceInstance], params: params)
     } // fine del metodo
 
     @Secured([Cost.ROLE_PROG])
@@ -100,11 +108,12 @@ class CroceController {
         def croceInstance = Croce.get(id)
         if (!croceInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'croce.label', default: 'Croce'), id])
-            redirect(action: "list")
+            redirect(action: 'list')
             return
-        }
+        }// fine del blocco if
 
-        [croceInstance: croceInstance]
+        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+        render(view: 'edit', model: [croceInstance: croceInstance], params: params)
     } // fine del metodo
 
     @Secured([Cost.ROLE_PROG])
@@ -112,29 +121,30 @@ class CroceController {
         def croceInstance = Croce.get(id)
         if (!croceInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'croce.label', default: 'Croce'), id])
-            redirect(action: "list")
+            redirect(action: 'list')
             return
-        }
+        }// fine del blocco if
 
+        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
         if (version != null) {
             if (croceInstance.version > version) {
                 croceInstance.errors.rejectValue("version", "default.optimistic.locking.failure",
                         [message(code: 'croce.label', default: 'Croce')] as Object[],
                         "Another user has updated this Croce while you were editing")
-                render(view: "edit", model: [croceInstance: croceInstance])
+                render(view: 'edit', model: [croceInstance: croceInstance], params: params)
                 return
-            }
-        }
+            }// fine del blocco if
+        }// fine del blocco if
 
         croceInstance.properties = params
 
         if (!croceInstance.save(flush: true)) {
-            render(view: "edit", model: [croceInstance: croceInstance])
+            render(view: 'edit', model: [croceInstance: croceInstance], params: params)
             return
-        }
+        }// fine del blocco if
 
         flash.message = message(code: 'default.updated.message', args: [message(code: 'croce.label', default: 'Croce'), croceInstance.id])
-        redirect(action: "show", id: croceInstance.id)
+        redirect(action: 'show', id: croceInstance.id)
     } // fine del metodo
 
     @Secured([Cost.ROLE_PROG])
@@ -142,18 +152,18 @@ class CroceController {
         def croceInstance = Croce.get(id)
         if (!croceInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'croce.label', default: 'Croce'), id])
-            redirect(action: "list")
+            redirect(action: 'list')
             return
-        }
+        }// fine del blocco if
 
         try {
             croceInstance.delete(flush: true)
             flash.message = message(code: 'default.deleted.message', args: [message(code: 'croce.label', default: 'Croce'), id])
-            redirect(action: "list")
+            redirect(action: 'list')
         }
         catch (DataIntegrityViolationException e) {
             flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'croce.label', default: 'Croce'), id])
-            redirect(action: "show", id: id)
+            redirect(action: 'show', id: id)
         }
     } // fine del metodo
 

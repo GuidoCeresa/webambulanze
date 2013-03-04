@@ -139,8 +139,8 @@ class UtenteController {
     //--ATTENZIONE - se si ricreano le viste, occorre modificare  -form.gsp
     //--mettendo from="${lista}" nel primo campo
     def edit(Long id) {
-        def lista = null
         Croce croce = croceService.getCroceCorrente(session)
+        def lista = null
 
         def utenteInstance = Utente.get(id)
         if (!utenteInstance) {
