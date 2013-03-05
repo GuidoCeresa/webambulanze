@@ -21,7 +21,7 @@ class MilitefunzioneController {
     def croceService
 
     def index() {
-        redirect(action: "list", params: params)
+        redirect(action: 'list', params: params)
     } // fine del metodo
 
     def list(Integer max) {
@@ -57,7 +57,7 @@ class MilitefunzioneController {
         }// fine del blocco if-else
 
         render(view: 'list', model: [militefunzioneInstanceList: lista, militefunzioneInstanceTotal: 0, campiLista: campiLista], params: params)
-    }
+    } // fine del metodo
 
     def create() {
         params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
@@ -100,13 +100,15 @@ class MilitefunzioneController {
 
     def edit(Long id) {
         def militefunzioneInstance = Militefunzione.get(id)
+
         if (!militefunzioneInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'militefunzione.label', default: 'Militefunzione'), id])
-            redirect(action: "list")
+            redirect(action: 'list')
             return
-        }
+        }// fine del blocco if
 
-        [militefunzioneInstance: militefunzioneInstance]
+        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+        render(view: 'edit', model: [militefunzioneInstance: militefunzioneInstance], params: params)
     } // fine del metodo
 
     def update(Long id, Long version) {

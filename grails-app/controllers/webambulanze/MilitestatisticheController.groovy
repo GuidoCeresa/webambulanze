@@ -30,14 +30,17 @@ class MilitestatisticheController {
     // il service viene iniettato automaticamente
     def militeturnoService
 
+    // utilizzo di un service con la businessLogic per l'elaborazione dei dati
+    // il service viene iniettato automaticamente
+    def croceService
+
     def index() {
-        redirect(action: "list", params: params)
+        redirect(action: 'list', params: params)
     } // fine del metodo
 
     def list(int max) {
         def lista = null
-        Croce croce
-        String sigla
+        Croce croce = croceService.getCroceCorrente(session)
         Milite milite
         HashMap mappa = new HashMap()
         mappa.put('titolo', 'nomignolo')
@@ -49,9 +52,6 @@ class MilitestatisticheController {
                 'ore']
         def campiExtra
 
-        if (!params.sort) {
-            params.sort = 'milite'
-        }// fine del blocco if-else
         if (params.order) {
             if (params.order == 'asc') {
                 params.order = 'desc'
@@ -65,13 +65,15 @@ class MilitestatisticheController {
             params.sort = 'milite.cognome'
         }// fine del blocco if
 
-        if (grailsApplication.mainContext.servletContext.croce) {
-            croce = grailsApplication.mainContext.servletContext.croce
-            sigla = croce.sigla
-            if (sigla.equals(Cost.CROCE_ALGOS)) {
-                lista = Milite.findAll(params)
+        if (croce) {
+            params.siglaCroce = croce.sigla
+            if (params.siglaCroce.equals(Cost.CROCE_ALGOS)) {
+                lista = Militestatistiche.findAll("from Militestatistiche order by croce_id,milite_id")
                 campiLista = ['id', 'croce'] + campiLista
             } else {
+                if (!params.sort) {
+                    params.sort = 'milite'
+                }// fine del blocco if-else
                 if (militeService.isLoggatoAdminOrMore()) {
                     lista = Militestatistiche.findAllByCroce(croce, params)
                 } else {
@@ -96,7 +98,7 @@ class MilitestatisticheController {
         //--elimina il primo elemento della lista che serviva solo per evitare che fosse una lista di stringhe
         campiLista.remove([:])
 
-        [militestatisticheInstanceList: lista, militestatisticheInstanceTotal: 0, campiLista: campiLista, campiExtra: null]
+        render(view: 'list', model: [militestatisticheInstanceList: lista, militestatisticheInstanceTotal: 0, campiLista: campiLista, campiExtra: null], params: params)
     } // fine del metodo
 
     def calcola() {
@@ -106,60 +108,77 @@ class MilitestatisticheController {
 
     @Secured([Cost.ROLE_PROG])
     def create() {
-        [militestatisticheInstance: new Militestatistiche(params)]
+        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+
+        render(view: 'create', model: [militestatisticheInstance: new Militestatistiche(params)], params: params)
     } // fine del metodo
 
     @Secured([Cost.ROLE_PROG])
     def save() {
+        Croce croce = croceService.getCroceCorrente(session)
         def militestatisticheInstance = new Militestatistiche(params)
+
+        if (croce) {
+            params.siglaCroce = croce.sigla
+            if (!militestatisticheInstance.croce) {
+                militestatisticheInstance.croce = croce
+            }// fine del blocco if
+        }// fine del blocco if
+
         if (!militestatisticheInstance.save(flush: true)) {
-            render(view: "create", model: [militestatisticheInstance: militestatisticheInstance])
+            render(view: 'create', model: [militestatisticheInstance: militestatisticheInstance], params: params)
             return
-        }
+        }// fine del blocco if
 
         flash.message = message(code: 'default.created.message', args: [message(code: 'militestatistiche.label', default: 'Militestatistiche'), militestatisticheInstance.id])
-        redirect(action: "show", id: militestatisticheInstance.id)
+        redirect(action: 'show', id: militestatisticheInstance.id)
     } // fine del metodo
 
     @Secured([Cost.ROLE_PROG])
     def show(Long id) {
         def militestatisticheInstance = Militestatistiche.get(id)
+
         if (!militestatisticheInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'militestatistiche.label', default: 'Militestatistiche'), id])
-            redirect(action: "list")
+            redirect(action: 'list')
             return
-        }
+        }// fine del blocco if
 
-        [militestatisticheInstance: militestatisticheInstance]
+        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+        render(view: 'show', model: [militestatisticheInstance: militestatisticheInstance], params: params)
     } // fine del metodo
 
     @Secured([Cost.ROLE_PROG])
     def edit(Long id) {
         def militestatisticheInstance = Militestatistiche.get(id)
+
         if (!militestatisticheInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'militestatistiche.label', default: 'Militestatistiche'), id])
-            redirect(action: "list")
+            redirect(action: 'list')
             return
-        }
+        }// fine del blocco if
 
-        [militestatisticheInstance: militestatisticheInstance]
+        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+        render(view: 'edit', model: [militestatisticheInstance: militestatisticheInstance], params: params)
     } // fine del metodo
 
     @Secured([Cost.ROLE_PROG])
     def update(Long id, Long version) {
         def militestatisticheInstance = Militestatistiche.get(id)
+
         if (!militestatisticheInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'militestatistiche.label', default: 'Militestatistiche'), id])
-            redirect(action: "list")
+            redirect(action: 'list')
             return
-        }
+        }// fine del blocco if
 
+        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
         if (version != null) {
             if (militestatisticheInstance.version > version) {
                 militestatisticheInstance.errors.rejectValue("version", "default.optimistic.locking.failure",
                         [message(code: 'militestatistiche.label', default: 'Militestatistiche')] as Object[],
                         "Another user has updated this Militestatistiche while you were editing")
-                render(view: "edit", model: [militestatisticheInstance: militestatisticheInstance])
+                render(view: 'edit', model: [militestatisticheInstance: militestatisticheInstance], params: params)
                 return
             }
         }
@@ -167,31 +186,32 @@ class MilitestatisticheController {
         militestatisticheInstance.properties = params
 
         if (!militestatisticheInstance.save(flush: true)) {
-            render(view: "edit", model: [militestatisticheInstance: militestatisticheInstance])
+            render(view: 'edit', model: [militestatisticheInstance: militestatisticheInstance], params: params)
             return
-        }
+        }// fine del blocco if
 
         flash.message = message(code: 'default.updated.message', args: [message(code: 'militestatistiche.label', default: 'Militestatistiche'), militestatisticheInstance.id])
-        redirect(action: "show", id: militestatisticheInstance.id)
+        redirect(action: 'show', id: militestatisticheInstance.id)
     } // fine del metodo
 
     @Secured([Cost.ROLE_PROG])
     def delete(Long id) {
         def militestatisticheInstance = Militestatistiche.get(id)
+
         if (!militestatisticheInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'militestatistiche.label', default: 'Militestatistiche'), id])
-            redirect(action: "list")
+            redirect(action: 'list')
             return
-        }
+        }// fine del blocco if
 
         try {
             militestatisticheInstance.delete(flush: true)
             flash.message = message(code: 'default.deleted.message', args: [message(code: 'militestatistiche.label', default: 'Militestatistiche'), id])
-            redirect(action: "list")
+            redirect(action: 'list')
         }
         catch (DataIntegrityViolationException e) {
             flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'militestatistiche.label', default: 'Militestatistiche'), id])
-            redirect(action: "show", id: id)
+            redirect(action: 'show', id: id)
         }
     } // fine del metodo
 
