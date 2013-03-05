@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2bee2297-4103-4d78-b423-f3f184afbabb" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/grails-app/controllers/webambulanze/MilitefunzioneController.groovy" afterPath="$PROJECT_DIR$/grails-app/controllers/webambulanze/MilitefunzioneController.groovy" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/grails-app/controllers/webambulanze/MilitestatisticheController.groovy" afterPath="$PROJECT_DIR$/grails-app/controllers/webambulanze/MilitestatisticheController.groovy" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/grails-app/i18n/messages_it.properties" afterPath="$PROJECT_DIR$/grails-app/i18n/messages_it.properties" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/grails-app/controllers/webambulanze/MiliteturnoController.groovy" afterPath="$PROJECT_DIR$/grails-app/controllers/webambulanze/MiliteturnoController.groovy" />
     </list>
     <ignored path="webambulanze.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -268,17 +266,22 @@
       <file leaf-file-name="MilitefunzioneController.groovy" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/grails-app/controllers/webambulanze/MilitefunzioneController.groovy">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="138" column="29" selection-start="5641" selection-end="5672" vertical-scroll-proportion="1.3043479">
+            <state line="120" column="27" selection-start="4715" selection-end="4746" vertical-scroll-proportion="3.2608695">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MilitestatisticheController.groovy" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/grails-app/controllers/webambulanze/MilitestatisticheController.groovy">
+      <file leaf-file-name="MiliteturnoController.groovy" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/grails-app/controllers/webambulanze/MiliteturnoController.groovy">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="217" column="47" selection-start="9104" selection-end="9104" vertical-scroll-proportion="0.7569444">
-              <folding />
+            <state line="207" column="34" selection-start="8246" selection-end="8246" vertical-scroll-proportion="0.8958333">
+              <folding>
+                <marker date="1362479170000" expanded="true" signature="4872:5082" placeholder="{...}" />
+                <marker date="1362479170000" expanded="true" signature="5434:5644" placeholder="{...}" />
+                <marker date="1362479170000" expanded="true" signature="6012:6222" placeholder="{...}" />
+                <marker date="1362479170000" expanded="true" signature="6394:6830" placeholder="{...}" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -301,7 +304,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/grails-app/domain/webambulanze/Logo.groovy" />
         <option value="$PROJECT_DIR$/grails-app/domain/webambulanze/Funzione.groovy" />
         <option value="$PROJECT_DIR$/grails-app/controllers/webambulanze/CroceController.groovy" />
         <option value="$PROJECT_DIR$/grails-app/controllers/webambulanze/FunzioneController.groovy" />
@@ -317,6 +319,7 @@
         <option value="$PROJECT_DIR$/grails-app/i18n/messages_it.properties" />
         <option value="$PROJECT_DIR$/grails-app/controllers/webambulanze/MilitefunzioneController.groovy" />
         <option value="$PROJECT_DIR$/grails-app/controllers/webambulanze/MilitestatisticheController.groovy" />
+        <option value="$PROJECT_DIR$/grails-app/controllers/webambulanze/MiliteturnoController.groovy" />
       </list>
     </option>
   </component>
@@ -786,13 +789,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/grails-app/controllers/webambulanze/SettingsController.groovy">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="20" column="0" selection-start="734" selection-end="734" vertical-scroll-proportion="-12.391304">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/grails-app/controllers/webambulanze/TurnoController.groovy">
       <provider selected="true" editor-type-id="text-editor">
         <state line="21" column="0" selection-start="730" selection-end="730" vertical-scroll-proportion="-3.9130435">
@@ -899,17 +895,29 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/grails-app/controllers/webambulanze/MilitefunzioneController.groovy">
+    <entry file="file://$PROJECT_DIR$/grails-app/controllers/webambulanze/MilitestatisticheController.groovy">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="138" column="29" selection-start="5641" selection-end="5672" vertical-scroll-proportion="1.3043479">
+        <state line="70" column="0" selection-start="2266" selection-end="2393" vertical-scroll-proportion="-6.521739">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/grails-app/controllers/webambulanze/MilitestatisticheController.groovy">
+    <entry file="file://$PROJECT_DIR$/grails-app/controllers/webambulanze/MilitefunzioneController.groovy">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="217" column="47" selection-start="9104" selection-end="9104" vertical-scroll-proportion="0.7569444">
+        <state line="120" column="27" selection-start="4715" selection-end="4746" vertical-scroll-proportion="3.2608695">
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/grails-app/controllers/webambulanze/MiliteturnoController.groovy">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="207" column="34" selection-start="8246" selection-end="8246" vertical-scroll-proportion="0.8958333">
+          <folding>
+            <marker date="1362479170000" expanded="true" signature="4872:5082" placeholder="{...}" />
+            <marker date="1362479170000" expanded="true" signature="5434:5644" placeholder="{...}" />
+            <marker date="1362479170000" expanded="true" signature="6012:6222" placeholder="{...}" />
+            <marker date="1362479170000" expanded="true" signature="6394:6830" placeholder="{...}" />
+          </folding>
         </state>
       </provider>
     </entry>

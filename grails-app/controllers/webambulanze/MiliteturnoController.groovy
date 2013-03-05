@@ -20,7 +20,7 @@ class MiliteturnoController {
 
     // utilizzo di un service con la businessLogic per l'elaborazione dei dati
     // il service viene iniettato automaticamente
-    def militeturnoService
+    def croceService
 
     def index() {
         redirect(action: 'list', params: params)
@@ -28,9 +28,7 @@ class MiliteturnoController {
 
     def list(Integer max) {
         def lista
-        Croce croce
-        String sigla
-
+        Croce croce = croceService.getCroceCorrente(session)
         def campiLista = [
                 'milite',
                 'giorno',
@@ -39,9 +37,6 @@ class MiliteturnoController {
                 'ore',
                 'dettaglio']
 
-        if (!params.sort) {
-            params.sort = 'milite'
-        }// fine del blocco if-else
         if (params.order) {
             if (params.order == 'asc') {
                 params.order = 'desc'
@@ -55,28 +50,28 @@ class MiliteturnoController {
             params.sort = 'milite.cognome'
         }// fine del blocco if
 
-        if (grailsApplication.mainContext.servletContext.croce) {
-            croce = grailsApplication.mainContext.servletContext.croce
-            sigla = croce.sigla
-            if (sigla.equals(Cost.CROCE_ALGOS)) {
-                lista = Militeturno.findAll(params)
+        if (croce) {
+            params.siglaCroce = croce.sigla
+            if (params.siglaCroce.equals(Cost.CROCE_ALGOS)) {
+                lista = Militeturno.findAll("from Militeturno order by croce_id,milite_id")
                 campiLista = ['id', 'croce'] + campiLista
             } else {
+                if (!params.sort) {
+                    params.sort = 'milite'
+                }// fine del blocco if-else
                 lista = Militeturno.findAllByCroce(croce, params)
             }// fine del blocco if-else
         } else {
             lista = Militeturno.findAll(params)
         }// fine del blocco if-else
 
-        [militeturnoInstanceList: lista, militeturnoInstanceTotal: 0, campiLista: campiLista]
-    }
+        render(view: 'list', model: [militeturnoInstanceList: lista, militeturnoInstanceTotal: 0, campiLista: campiLista, campiExtra: null], params: params)
+    } // fine del metodo
 
     def dettagli(Integer recNumber) {
         def lista
-        Croce croce
-        String sigla
         Milite milite
-
+        Croce croce = croceService.getCroceCorrente(session)
         def campiLista = [
                 'milite',
                 'giorno',
@@ -90,11 +85,10 @@ class MiliteturnoController {
         params.order = 'desc'
         milite = Milite.get(params.id)
 
-        if (grailsApplication.mainContext.servletContext.croce) {
-            croce = grailsApplication.mainContext.servletContext.croce
-            sigla = croce.sigla
-            if (sigla.equals(Cost.CROCE_ALGOS)) {
-                lista = Militeturno.findAll(params)
+        if (croce) {
+            params.siglaCroce = croce.sigla
+            if (params.siglaCroce.equals(Cost.CROCE_ALGOS)) {
+                lista = Militeturno.findAll("from Militeturno order by croce_id,milite_id")
                 campiLista = ['id', 'croce'] + campiLista
             } else {
                 lista = Militeturno.findAllByCroceAndMilite(croce, milite, params)
@@ -103,97 +97,115 @@ class MiliteturnoController {
             lista = Militeturno.findAll(params)
         }// fine del blocco if-else
 
-        render(view: 'list', model: [militeturnoInstanceList: lista, militeturnoInstanceTotal: 0, campiLista: campiLista])
+        render(view: 'list', model: [militeturnoInstanceList: lista, militeturnoInstanceTotal: 0, campiLista: campiLista], params: params)
     } // fine del metodo
 
     @Secured([Cost.ROLE_PROG])
     def create() {
-        [militeturnoInstance: new Militeturno(params)]
+        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+
+        render(view: 'create', model: [militeturnoInstance: new Militeturno(params)], params: params)
     } // fine del metodo
 
     @Secured([Cost.ROLE_PROG])
     def save() {
+        Croce croce = croceService.getCroceCorrente(session)
         def militeturnoInstance = new Militeturno(params)
+
+        if (croce) {
+            params.siglaCroce = croce.sigla
+            if (!militeturnoInstance.croce) {
+                militeturnoInstance.croce = croce
+            }// fine del blocco if
+        }// fine del blocco if
+
         if (!militeturnoInstance.save(flush: true)) {
-            render(view: "create", model: [militeturnoInstance: militeturnoInstance])
+            render(view: 'create', model: [militeturnoInstance: militeturnoInstance], params: params)
             return
-        }
+        }// fine del blocco if
 
         flash.message = message(code: 'default.created.message', args: [message(code: 'militeturno.label', default: 'Militeturno'), militeturnoInstance.id])
-        redirect(action: "show", id: militeturnoInstance.id)
+        redirect(action: 'show', id: militeturnoInstance.id)
     } // fine del metodo
 
     @Secured([Cost.ROLE_PROG])
     def show(Long id) {
         def militeturnoInstance = Militeturno.get(id)
+
         if (!militeturnoInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'militeturno.label', default: 'Militeturno'), id])
-            redirect(action: "list")
+            redirect(action: 'list')
             return
-        }
+        }// fine del blocco if
 
-        [militeturnoInstance: militeturnoInstance]
+        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+        render(view: 'show', model: [militeturnoInstance: militeturnoInstance], params: params)
     } // fine del metodo
 
     @Secured([Cost.ROLE_PROG])
     def edit(Long id) {
         def militeturnoInstance = Militeturno.get(id)
+
         if (!militeturnoInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'militeturno.label', default: 'Militeturno'), id])
-            redirect(action: "list")
+            redirect(action: 'list')
             return
-        }
+        }// fine del blocco if
 
-        [militeturnoInstance: militeturnoInstance]
+        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+        render(view: 'edit', model: [militeturnoInstance: militeturnoInstance], params: params)
     } // fine del metodo
 
     @Secured([Cost.ROLE_PROG])
     def update(Long id, Long version) {
         def militeturnoInstance = Militeturno.get(id)
+
         if (!militeturnoInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'militeturno.label', default: 'Militeturno'), id])
-            redirect(action: "list")
+            redirect(action: 'list')
             return
-        }
+        }// fine del blocco if
 
+        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
         if (version != null) {
             if (militeturnoInstance.version > version) {
                 militeturnoInstance.errors.rejectValue("version", "default.optimistic.locking.failure",
                         [message(code: 'militeturno.label', default: 'Militeturno')] as Object[],
                         "Another user has updated this Militeturno while you were editing")
-                render(view: "edit", model: [militeturnoInstance: militeturnoInstance])
+                render(view: 'edit', model: [militeturnoInstance: militeturnoInstance], params: params)
                 return
-            }
-        }
+            }// fine del blocco if
+        }// fine del blocco if
 
         militeturnoInstance.properties = params
 
         if (!militeturnoInstance.save(flush: true)) {
-            render(view: "edit", model: [militeturnoInstance: militeturnoInstance])
+            render(view: 'edit', model: [militeturnoInstance: militeturnoInstance], params: params)
             return
-        }
+        }// fine del blocco if
 
         flash.message = message(code: 'default.updated.message', args: [message(code: 'militeturno.label', default: 'Militeturno'), militeturnoInstance.id])
-        redirect(action: "show", id: militeturnoInstance.id)
+        redirect(action: 'show', id: militeturnoInstance.id)
     } // fine del metodo
 
     @Secured([Cost.ROLE_PROG])
     def delete(Long id) {
         def militeturnoInstance = Militeturno.get(id)
+
         if (!militeturnoInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'militeturno.label', default: 'Militeturno'), id])
-            redirect(action: "list")
+            redirect(action: 'list')
             return
-        }
+        }// fine del blocco if
 
         try {
             militeturnoInstance.delete(flush: true)
             flash.message = message(code: 'default.deleted.message', args: [message(code: 'militeturno.label', default: 'Militeturno'), id])
-            redirect(action: "list")
+            redirect(action: 'list')
         }
         catch (DataIntegrityViolationException e) {
             flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'militeturno.label', default: 'Militeturno'), id])
-            redirect(action: "show", id: id)
+            redirect(action: 'show', id: id)
         }
     } // fine del metodo
 
