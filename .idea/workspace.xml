@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2bee2297-4103-4d78-b423-f3f184afbabb" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/grails-app/controllers/webambulanze/MiliteturnoController.groovy" afterPath="$PROJECT_DIR$/grails-app/controllers/webambulanze/MiliteturnoController.groovy" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/grails-app/controllers/webambulanze/TurnoController.groovy" afterPath="$PROJECT_DIR$/grails-app/controllers/webambulanze/TurnoController.groovy" />
     </list>
     <ignored path="webambulanze.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -86,7 +86,7 @@
     <file path="/Beta.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1357461462033" ignored="false" />
     <file path="/MiliteService.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1362382066836" ignored="false" />
     <file path="/Turno.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1360707406216" ignored="false" />
-    <file path="/TurnoController.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1362333675410" ignored="false" />
+    <file path="/TurnoController.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1362493383112" ignored="false" />
     <file path="/Settings.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1362292454762" ignored="false" />
     <file path="/UserController.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1357716525958" ignored="false" />
     <file path="/Role.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1357713282235" ignored="false" />
@@ -266,21 +266,23 @@
       <file leaf-file-name="MilitefunzioneController.groovy" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/grails-app/controllers/webambulanze/MilitefunzioneController.groovy">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="120" column="27" selection-start="4715" selection-end="4746" vertical-scroll-proportion="3.2608695">
+            <state line="128" column="42" selection-start="5207" selection-end="5317" vertical-scroll-proportion="9.26087">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MiliteturnoController.groovy" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/grails-app/controllers/webambulanze/MiliteturnoController.groovy">
+      <file leaf-file-name="TurnoController.groovy" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/grails-app/controllers/webambulanze/TurnoController.groovy">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="207" column="34" selection-start="8246" selection-end="8246" vertical-scroll-proportion="0.8958333">
+            <state line="406" column="0" selection-start="15173" selection-end="15173" vertical-scroll-proportion="0.8263889">
               <folding>
-                <marker date="1362479170000" expanded="true" signature="4872:5082" placeholder="{...}" />
-                <marker date="1362479170000" expanded="true" signature="5434:5644" placeholder="{...}" />
-                <marker date="1362479170000" expanded="true" signature="6012:6222" placeholder="{...}" />
-                <marker date="1362479170000" expanded="true" signature="6394:6830" placeholder="{...}" />
+                <element signature="e#492#536#0" expanded="true" />
+                <marker date="1362493645000" expanded="true" signature="10807:11005" placeholder="{...}" />
+                <marker date="1362493645000" expanded="true" signature="11296:11494" placeholder="{...}" />
+                <marker date="1362493645000" expanded="true" signature="12039:12237" placeholder="{...}" />
+                <marker date="1362493645000" expanded="true" signature="12403:12803" placeholder="{...}" />
+                <marker date="1362493645000" expanded="true" signature="13630:13760" placeholder="{...}" />
               </folding>
             </state>
           </provider>
@@ -309,7 +311,6 @@
         <option value="$PROJECT_DIR$/grails-app/controllers/webambulanze/FunzioneController.groovy" />
         <option value="$PROJECT_DIR$/grails-app/controllers/webambulanze/LogoController.groovy" />
         <option value="$PROJECT_DIR$/grails-app/controllers/webambulanze/SettingsController.groovy" />
-        <option value="$PROJECT_DIR$/grails-app/controllers/webambulanze/TurnoController.groovy" />
         <option value="$PROJECT_DIR$/grails-app/controllers/webambulanze/UtenteController.groovy" />
         <option value="$PROJECT_DIR$/grails-app/domain/webambulanze/TipoTurno.groovy" />
         <option value="$PROJECT_DIR$/grails-app/controllers/webambulanze/TipoTurnoController.groovy" />
@@ -320,6 +321,7 @@
         <option value="$PROJECT_DIR$/grails-app/controllers/webambulanze/MilitefunzioneController.groovy" />
         <option value="$PROJECT_DIR$/grails-app/controllers/webambulanze/MilitestatisticheController.groovy" />
         <option value="$PROJECT_DIR$/grails-app/controllers/webambulanze/MiliteturnoController.groovy" />
+        <option value="$PROJECT_DIR$/grails-app/controllers/webambulanze/TurnoController.groovy" />
       </list>
     </option>
   </component>
@@ -789,13 +791,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/grails-app/controllers/webambulanze/TurnoController.groovy">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="21" column="0" selection-start="730" selection-end="730" vertical-scroll-proportion="-3.9130435">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/grails-app/controllers/webambulanze/UtenteController.groovy">
       <provider selected="true" editor-type-id="text-editor">
         <state line="20" column="0" selection-start="734" selection-end="734" vertical-scroll-proportion="-2.6086957">
@@ -902,21 +897,30 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/grails-app/controllers/webambulanze/MilitefunzioneController.groovy">
+    <entry file="file://$PROJECT_DIR$/grails-app/controllers/webambulanze/MiliteturnoController.groovy">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="120" column="27" selection-start="4715" selection-end="4746" vertical-scroll-proportion="3.2608695">
+        <state line="207" column="34" selection-start="8246" selection-end="8246" vertical-scroll-proportion="-16.826086">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/grails-app/controllers/webambulanze/MiliteturnoController.groovy">
+    <entry file="file://$PROJECT_DIR$/grails-app/controllers/webambulanze/MilitefunzioneController.groovy">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="207" column="34" selection-start="8246" selection-end="8246" vertical-scroll-proportion="0.8958333">
+        <state line="128" column="42" selection-start="5207" selection-end="5317" vertical-scroll-proportion="9.26087">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/grails-app/controllers/webambulanze/TurnoController.groovy">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="406" column="0" selection-start="15173" selection-end="15173" vertical-scroll-proportion="0.8263889">
           <folding>
-            <marker date="1362479170000" expanded="true" signature="4872:5082" placeholder="{...}" />
-            <marker date="1362479170000" expanded="true" signature="5434:5644" placeholder="{...}" />
-            <marker date="1362479170000" expanded="true" signature="6012:6222" placeholder="{...}" />
-            <marker date="1362479170000" expanded="true" signature="6394:6830" placeholder="{...}" />
+            <element signature="e#492#536#0" expanded="true" />
+            <marker date="1362493645000" expanded="true" signature="10807:11005" placeholder="{...}" />
+            <marker date="1362493645000" expanded="true" signature="11296:11494" placeholder="{...}" />
+            <marker date="1362493645000" expanded="true" signature="12039:12237" placeholder="{...}" />
+            <marker date="1362493645000" expanded="true" signature="12403:12803" placeholder="{...}" />
+            <marker date="1362493645000" expanded="true" signature="13630:13760" placeholder="{...}" />
           </folding>
         </state>
       </provider>

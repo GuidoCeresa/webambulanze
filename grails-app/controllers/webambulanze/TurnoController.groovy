@@ -9,7 +9,6 @@
 /* flagOverwrite = false */
 
 package webambulanze
-
 import grails.plugins.springsecurity.Secured
 import org.springframework.dao.DataIntegrityViolationException
 
@@ -216,8 +215,7 @@ class TurnoController {
 
     def list(Integer max) {
         def lista
-        Croce croce
-        String sigla
+        Croce croce = croceService.getCroceCorrente(session)
         def campiLista = [
                 'tipoTurno',
                 'giorno',
@@ -227,9 +225,6 @@ class TurnoController {
                 'note',
                 'assegnato']
 
-        if (!params.sort) {
-            params.sort = 'giorno'
-        }// fine del blocco if-else
         if (params.order) {
             if (params.order == 'asc') {
                 params.order = 'desc'
@@ -240,34 +235,48 @@ class TurnoController {
             params.order = 'asc'
         }// fine del blocco if-else
 
-        if (grailsApplication.mainContext.servletContext.croce) {
-            croce = grailsApplication.mainContext.servletContext.croce
-            sigla = croce.sigla
-            if (sigla.equals(Cost.CROCE_ALGOS)) {
+        if (croce) {
+            params.siglaCroce = croce.sigla
+            if (params.siglaCroce.equals(Cost.CROCE_ALGOS)) {
                 lista = Turno.findAll(params)
+                lista = Turno.findAll("from Turno order by croce_id,giorno")
                 campiLista = ['id', 'croce'] + campiLista
             } else {
+                if (!params.sort) {
+                    params.sort = 'giorno'
+                }// fine del blocco if-else
                 lista = Turno.findAllByCroce(croce, params)
             }// fine del blocco if-else
         } else {
             lista = Turno.findAll(params)
         }// fine del blocco if-else
 
-        [turnoInstanceList: lista, turnoInstanceTotal: 0, campiLista: campiLista]
+        render(view: 'list', model: [turnoInstanceList: lista, turnoInstanceTotal: 0, campiLista: campiLista], params: params)
     } // fine del metodo
 
     @Secured([Cost.ROLE_ADMIN])
     def create() {
-        [turnoInstance: new Turno(params)]
+        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+
+        render(view: 'create', model: [turnoInstance: new Turno(params)], params: params)
     } // fine del metodo
 
     @Secured([Cost.ROLE_ADMIN])
     def save() {
+        Croce croce = croceService.getCroceCorrente(session)
         def turnoInstance = new Turno(params)
+
+        if (croce) {
+            params.siglaCroce = croce.sigla
+            if (!turnoInstance.croce) {
+                turnoInstance.croce = croce
+            }// fine del blocco if
+        }// fine del blocco if
+
         if (!turnoInstance.save(flush: true)) {
-            render(view: "create", model: [turnoInstance: turnoInstance])
+            render(view: 'create', model: [turnoInstance: turnoInstance], params: params)
             return
-        }
+        }// fine del blocco if
 
         flash.message = message(code: 'default.created.message', args: [message(code: 'turno.label', default: 'Turno'), turnoInstance.id])
         redirect(action: 'show', id: turnoInstance.id)
@@ -275,24 +284,27 @@ class TurnoController {
 
     def show(Long id) {
         def turnoInstance = Turno.get(id)
+
         if (!turnoInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'turno.label', default: 'Turno'), id])
-            redirect(action: "list")
+            redirect(action: 'list')
             return
-        }
+        }// fine del blocco if
 
-        [turnoInstance: turnoInstance]
+        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+        render(view: 'show', model: [turnoInstance: turnoInstance], params: params)
     } // fine del metodo
 
     def edit(Long id) {
         def turnoInstance = Turno.get(id)
+
         if (!turnoInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'turno.label', default: 'Turno'), id])
-            redirect(action: "list")
+            redirect(action: 'list')
             return
-        }
+        }// fine del blocco if
 
-        [turnoInstance: turnoInstance]
+        render(view: 'edit', model: [turnoInstance: turnoInstance], params: params)
     } // fine del metodo
 
     @Secured([Cost.ROLE_MILITE])
@@ -310,23 +322,25 @@ class TurnoController {
         def turnoInstance = Turno.get(id)
         if (!turnoInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'turno.label', default: 'Turno'), id])
-            redirect(action: "list")
+            redirect(action: 'list')
             return
-        }
+        }// fine del blocco if
 
+        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
         if (version != null) {
             if (turnoInstance.version > version) {
                 turnoInstance.errors.rejectValue("version", "default.optimistic.locking.failure",
                         [message(code: 'turno.label', default: 'Turno')] as Object[],
                         "Another user has updated this Turno while you were editing")
-                render(view: "edit", model: [turnoInstance: turnoInstance])
+                render(view: 'edit', model: [turnoInstance: turnoInstance], params: params)
                 return
-            }
-        }
+            }// fine del blocco if
+        }// fine del blocco if
+
         turnoInstance.properties = params
 
         if (isEsistonoErrori(turnoInstance)) {
-            render(view: 'tabellone', model: [dataInizio: dataInizio, dataFine: dataFine])
+            render(view: 'edit', model: [turnoInstance: turnoInstance], params: params)
             return
         }// fine del blocco if
 
@@ -342,13 +356,52 @@ class TurnoController {
         //--di solito c'è un giro solo, ma andava in errore per valori NULL del campo oreMilite1/2/3/4
         if (!turnoInstance.save(flush: true)) {
             if (!turnoInstance.save(flush: true)) {
-                render(view: "edit", model: [turnoInstance: turnoInstance])
+                render(view: 'edit', model: [turnoInstance: turnoInstance], params: params)
                 return
-            }
-        }
+            }// fine del blocco if
+        }// fine del blocco if
+
         this.controllaAnomalie(turnoInstance, nuovoTurno)
 
         redirect(action: 'tabCorrente')
+    } // fine del metodo
+
+    def delete(Long id) {
+        def turnoInstance = Turno.get(id)
+        TipoTurno tipoTurno = turnoInstance.tipoTurno
+        Date giorno = turnoInstance.giorno
+        def listaLog
+        Logo logo
+
+        if (!turnoInstance) {
+            flash.message = message(code: 'default.not.found.message', args: [message(code: 'turno.label', default: 'Turno'), id])
+            redirect(action: 'list')
+            return
+        }// fine del blocco if
+
+        cancella(turnoInstance)
+        flash.message = message(code: 'turno.deleted.message', args: descGiorno(turnoInstance))
+        logoService.setWarn(Evento.turnoEliminato, tipoTurno, giorno)
+        redirect(action: 'tabCorrente')
+    } // fine del metodo
+
+    def cancella(Turno turno) {
+        def listaLog
+        Logo logo
+
+        try {
+            listaLog = Logo.findAllByTurno(turno)
+            listaLog?.each {
+                logo = (Logo) it
+                logo.turno = null
+                logo.save(flush: true)
+            } // fine del ciclo each
+
+            turno.delete(flush: true)
+        }
+        catch (DataIntegrityViolationException e) {
+            flash.message = message(code: 'turno.not.deleted.message')
+        }
     } // fine del metodo
 
     //--controlla che tutte le funzioni obbligatorie siano state assegnate
@@ -674,48 +727,9 @@ class TurnoController {
             }// fine del blocco if
         }// fine del blocco if
 
-
         return listaErrori
     } // fine del metodo
 
-    def delete(Long id) {
-        def turnoInstance = Turno.get(id)
-        TipoTurno tipoTurno = turnoInstance.tipoTurno
-        Date giorno = turnoInstance.giorno
-        String tipo = ''
-        String giornoTxt = ''
-        def listaLog
-        Logo logo
-
-        if (!turnoInstance) {
-            flash.message = message(code: 'default.not.found.message', args: [message(code: 'turno.label', default: 'Turno'), id])
-            redirect(action: "list")
-            return
-        }
-        cancella(turnoInstance)
-        flash.message = message(code: 'turno.deleted.message', args: descGiorno(turnoInstance))
-        logoService.setWarn(Evento.turnoEliminato, tipoTurno, giorno)
-        redirect(action: 'tabCorrente')
-    } // fine del metodo
-
-    def cancella(Turno turno) {
-        def listaLog
-        Logo logo
-
-        try {
-            listaLog = Logo.findAllByTurno(turno)
-            listaLog?.each {
-                logo = (Logo) it
-                logo.turno = null
-                logo.save(flush: true)
-            } // fine del ciclo each
-
-            turno.delete(flush: true)
-        }
-        catch (DataIntegrityViolationException e) {
-            flash.message = message(code: 'turno.not.deleted.message')
-        }
-    } // fine del metodo
 
     private static descGiorno(Turno turno) {
         TipoTurno tipoTurno
