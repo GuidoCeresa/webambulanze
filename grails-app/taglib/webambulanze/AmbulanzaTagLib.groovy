@@ -845,6 +845,7 @@ class AmbulanzaTagLib {
         } else {
             if (militeService.isLoggatoProgrammatore()) {
                 testoOut += Lib.tagController('Militestatistiche', 'Forza calcolo statistiche', 'calcola')
+                testoOut += Lib.tagController('Militefunzione', 'Tavola incrocio militi-funzioni')
             }// fine del blocco if
             if (militeService.isLoggatoCustodeOrMore()) {
                 testoOut += Lib.tagController('Ruolo', 'Ruoli (accesso limitato ad una sola persona)')
