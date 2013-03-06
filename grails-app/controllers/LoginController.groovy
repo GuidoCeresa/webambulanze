@@ -53,7 +53,7 @@ class LoginController {
         ArrayList<String> listaUtenti
         def config = SpringSecurityUtils.securityConfig
 
-        croce = croceService.getCroceCorrente(session)
+        croce = croceService.getCroce(session)
         if (croce) {
             params.siglaCroce = croce.sigla
             listaGrezza = Utente.findAllByCroce(croce, [sort: 'username'])

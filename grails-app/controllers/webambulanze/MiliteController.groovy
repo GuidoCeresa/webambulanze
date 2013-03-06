@@ -92,7 +92,7 @@ class MiliteController {
 
     def list(Integer max) {
         def lista
-        Croce croce = croceService.getCroceCorrente(session)
+        Croce croce = croceService.getCroce(session)
         def campiLista = [
                 'cognome',
                 'nome',
@@ -150,7 +150,7 @@ class MiliteController {
 
     @Secured([Cost.ROLE_ADMIN])
     def save() {
-        Croce croce = croceService.getCroceCorrente(session)
+        Croce croce = croceService.getCroce(session)
         def militeInstance = new Milite(params)
 
         if (croce) {

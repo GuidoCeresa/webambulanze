@@ -14,9 +14,6 @@ class MiliteService {
     // il service viene iniettato automaticamente
     def logoService
 
-    // la variabile/proprietà viene iniettata automaticamente
-    def grailsApplication
-
     //--recupera tutte le funzioni abilitate per il milite selezionato
     def ArrayList funzioniPerMilite(Milite milite) {
         ArrayList funzioniAttiveDelMilite = null
@@ -309,9 +306,8 @@ class MiliteService {
         Croce croce
         def milFunz
 
-        //--variabile globale
-        if (grailsApplication.mainContext.servletContext.croce) {
-            croce = grailsApplication.mainContext.servletContext.croce
+        if (funzione) {
+            croce = funzione.croce
         }// fine del blocco if
 
         if (croce && milite && funzione) {
@@ -390,8 +386,8 @@ class MiliteService {
         Croce croce = null
         def lista
 
-        if (grailsApplication.mainContext.servletContext.croce) {
-            croce = grailsApplication.mainContext.servletContext.croce
+        if (milite) {
+            croce = milite.croce
         }// fine del blocco if
 
         if (milite && croce) {

@@ -27,7 +27,7 @@ class CroceController {
 
     def list(Integer max) {
         def lista
-        Croce croce = croceService.getCroceCorrente(session)
+        Croce croce = croceService.getCroce(session)
         def campiLista = [
                 'descrizione',
                 'presidente',

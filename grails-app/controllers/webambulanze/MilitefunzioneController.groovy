@@ -26,7 +26,7 @@ class MilitefunzioneController {
 
     def list(Integer max) {
         def lista
-        Croce croce = croceService.getCroceCorrente(session)
+        Croce croce = croceService.getCroce(session)
         def campiLista = [
                 'milite',
                 'funzione']
@@ -66,7 +66,7 @@ class MilitefunzioneController {
     } // fine del metodo
 
     def save() {
-        Croce croce = croceService.getCroceCorrente(session)
+        Croce croce = croceService.getCroce(session)
         def militefunzioneInstance = new Militefunzione(params)
 
         if (croce) {

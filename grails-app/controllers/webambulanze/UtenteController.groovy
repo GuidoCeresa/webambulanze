@@ -40,7 +40,7 @@ class UtenteController {
 
     def list(Integer max) {
         def lista
-        Croce croce = croceService.getCroceCorrente(session)
+        Croce croce = croceService.getCroce(session)
         def campiLista = [
                 'username',
                 'pass',
@@ -81,7 +81,7 @@ class UtenteController {
     //--mettendo from="${lista}" nel primo campo
     def create() {
         def lista = null
-        Croce croce = croceService.getCroceCorrente(session)
+        Croce croce = croceService.getCroce(session)
 
         if (!params.sort) {
             params.sort = 'username'
@@ -96,7 +96,7 @@ class UtenteController {
     } // fine del metodo
 
     def save() {
-        Croce croce = croceService.getCroceCorrente(session)
+        Croce croce = croceService.getCroce(session)
         def utenteInstance = new Utente(params)
 
         if (croce) {
@@ -137,7 +137,7 @@ class UtenteController {
     //--ATTENZIONE - se si ricreano le viste, occorre modificare  -form.gsp
     //--mettendo from="${lista}" nel primo campo
     def edit(Long id) {
-        Croce croce = croceService.getCroceCorrente(session)
+        Croce croce = croceService.getCroce(session)
         def lista = null
 
         def utenteInstance = Utente.get(id)

@@ -2,11 +2,23 @@ package webambulanze
 
 class CroceService {
 
-    // la variabile/proprietà viene iniettata automaticamente
-    def grailsApplication
+    //--controlla il valore mantenuto nei Settings associati alla croce indicata
+    private static String getStr(Croce croce, codice) {
+        String value = ''
+        Settings settings
+
+        if (croce) {
+            settings = croce.settings
+        }// fine del blocco if
+
+        if (settings) {
+            value = settings."${codice}"
+        }// fine del blocco if
+
+        return value
+    }// fine del metodo
 
     //--controlla il valore mantenuto nei Settings associati alla croce indicata
-    //--recupera la croce corrente
     private static int getInt(Croce croce, codice) {
         int value = 0
         Settings settings
@@ -23,10 +35,9 @@ class CroceService {
     }// fine del metodo
 
     //--controlla il flag mantenuto nei Settings associati alla croce indicata
-    //--recupera la croce corrente
     private boolean isFlag(session, codice) {
         boolean flag = false
-        Croce croce = getCroceCorrente(session)
+        Croce croce = getCroce(session)
         Settings settings
 
         if (croce) {
@@ -99,7 +110,7 @@ class CroceService {
 
     //--controlla il flag mantenuto nei Settings associati alla croce corrente
     public boolean fissaLimiteMassimoSingoloTurno(def session) {
-        return fissaLimiteMassimoSingoloTurno(getCroceCorrente(session))
+        return fissaLimiteMassimoSingoloTurno(getCroce(session))
     }// fine del metodo
 
     //--controlla il flag mantenuto nei Settings associati alla croce corrente
@@ -109,18 +120,18 @@ class CroceService {
 
     //--controlla il flag mantenuto nei Settings associati alla croce corrente
     public int oreMassimeSingoloTurno(def session) {
-        return oreMassimeSingoloTurno(getCroceCorrente(session))
+        return oreMassimeSingoloTurno(getCroce(session))
     }// fine del metodo
 
     //--controlla il flag mantenuto nei Settings associati alla croce corrente
     public int maxMinutiTrascorsiModifica(def session) {
-        return getInt(getCroceCorrente(session), Cost.PREF_maxMinutiTrascorsiModifica)
+        return getInt(getCroce(session), Cost.PREF_maxMinutiTrascorsiModifica)
     }// fine del metodo
 
     //--controlla il parametro mantenuto nei Settings associati alla croce corrente
     public ControlloTemporale getControlloModifica(def session) {
         ControlloTemporale tipoControlloModifica = null
-        Croce croce = getCroceCorrente(session)
+        Croce croce = getCroce(session)
         Settings settings
 
         if (croce) {
@@ -139,8 +150,60 @@ class CroceService {
         return (getControlloModifica(session) == ControlloTemporale.tempoTrascorso)
     }// fine del metodo
 
+    //--controlla il parametro mantenuto nei Settings associati alla croce
+    public boolean isStartLogin(String siglaCroce) {
+        Croce croce
+
+        if (siglaCroce) {
+            croce = this.getCroce(siglaCroce)
+            return getStr(croce, Cost.PREF_startLogin)
+        } else {
+            return false
+        }// fine del blocco if-else
+
+    }// fine del metodo
+
+    //--controlla il parametro mantenuto nei Settings associati alla croce
+    public String getStartController(String siglaCroce) {
+        Croce croce
+
+        if (siglaCroce) {
+            croce = this.getCroce(siglaCroce)
+            return getStr(croce, Cost.PREF_startController)
+        } else {
+            return ''
+        }// fine del blocco if-else
+
+    }// fine del metodo
+
+    //--controlla il parametro mantenuto nei Settings associati alla croce
+    public boolean isAllControllers(String siglaCroce) {
+        Croce croce
+
+        if (siglaCroce) {
+            croce = this.getCroce(siglaCroce)
+            return getStr(croce, Cost.PREF_allControllers)
+        } else {
+            return false
+        }// fine del blocco if-else
+
+    }// fine del metodo
+
+    //--controlla il parametro mantenuto nei Settings associati alla croce
+    public String getControlli(String siglaCroce) {
+        Croce croce
+
+        if (siglaCroce) {
+            croce = this.getCroce(siglaCroce)
+            return getStr(croce, Cost.PREF_controlli)
+        } else {
+            return ''
+        }// fine del blocco if-else
+
+    }// fine del metodo
+
     //--restituisce la croce corrente
-    public Croce getCroceCorrente(def session) {
+    public Croce getCroce(def session) {
         Croce croceCorrente = null
         String siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
 
@@ -149,5 +212,16 @@ class CroceService {
         }// fine del blocco if
 
         return croceCorrente
+    }// fine del metodo
+
+    //--restituisce la croce corrente
+    public Croce getCroce(String siglaCroce) {
+        Croce croce = null
+
+        if (siglaCroce) {
+            croce = Croce.findBySigla(siglaCroce)
+        }// fine del blocco if
+
+        return croce
     }// fine del metodo
 } // end of Service Class

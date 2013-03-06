@@ -9,7 +9,7 @@ class FunzioneService {
     def campiExtra(session) {
         def campiExtra = null
         String sigla
-        Croce croce = croceService.getCroceCorrente(session)
+        Croce croce = croceService.getCroce(session)
 
         if (croce) {
             sigla = croce.sigla

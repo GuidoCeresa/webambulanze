@@ -52,7 +52,6 @@ class TurnoController {
     @Secured([Cost.ROLE_MILITE])
     def tabCorrente = {
         params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
-        logoService.setInfo(Evento.tabellone)
         render(view: 'tabellone', model: [dataInizio: dataInizio, dataFine: dataFine], params: params)
     }// fine della closure
 
@@ -99,7 +98,7 @@ class TurnoController {
         String giornoNum
         Turno nuovoOppureEsistente = null
         TipoTurno tipoTurno = null
-        Croce croce = croceService.getCroceCorrente(session)
+        Croce croce = croceService.getCroce(session)
         Date giorno = Lib.creaData1Gennaio()
         int offSet
         String giornoTxt = ''
@@ -152,6 +151,9 @@ class TurnoController {
             turnoId = Long.decode(turnoIdTxt)
             turnoInstance = Turno.findById(turnoId)
         }// fine del blocco if
+
+        //--log
+        Milite milite = militeService.getMiliteLoggato()
 
         params.nuovoTurno = false
         params.turno = turnoInstance
@@ -215,7 +217,7 @@ class TurnoController {
 
     def list(Integer max) {
         def lista
-        Croce croce = croceService.getCroceCorrente(session)
+        Croce croce = croceService.getCroce(session)
         def campiLista = [
                 'tipoTurno',
                 'giorno',
@@ -263,7 +265,7 @@ class TurnoController {
 
     @Secured([Cost.ROLE_ADMIN])
     def save() {
-        Croce croce = croceService.getCroceCorrente(session)
+        Croce croce = croceService.getCroce(session)
         def turnoInstance = new Turno(params)
 
         if (croce) {

@@ -40,7 +40,7 @@ class MilitestatisticheController {
 
     def list(int max) {
         def lista = null
-        Croce croce = croceService.getCroceCorrente(session)
+        Croce croce = croceService.getCroce(session)
         Milite milite
         HashMap mappa = new HashMap()
         mappa.put('titolo', 'nomignolo')
@@ -115,7 +115,7 @@ class MilitestatisticheController {
 
     @Secured([Cost.ROLE_PROG])
     def save() {
-        Croce croce = croceService.getCroceCorrente(session)
+        Croce croce = croceService.getCroce(session)
         def militestatisticheInstance = new Militestatistiche(params)
 
         if (croce) {

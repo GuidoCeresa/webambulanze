@@ -30,6 +30,10 @@ public interface Cost {
     public static String SESSIONE_QUALI_CONTROLLI = 'controlli'
 
     //--codifica delle preferenze
+    public static boolean PREF_startLogin = 'startLogin'
+    public static String PREF_startController = 'startController'
+    public static boolean PREF_allControllers = 'allControllers'
+    public static String PREF_controlli = 'controlli'
     public static String PREF_mostraSoloMilitiFunzione = 'mostraSoloMilitiFunzione'
     public static String PREF_mostraMilitiFunzioneAndAltri = 'mostraMilitiFunzioneAndAltri'
     public static String PREF_militePuoInserireAltri = 'militePuoInserireAltri'

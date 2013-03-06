@@ -21,7 +21,7 @@ class Settings {
 
     //--nomi dei controllers da
     //--mostrare nella gsp inziale
-    def String controlli = ''
+    String controlli = ''
 
     //--mostra solo i militi abilitati alla funzione
     //--oppure tutti

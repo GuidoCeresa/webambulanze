@@ -28,7 +28,7 @@ class MiliteturnoController {
 
     def list(Integer max) {
         def lista
-        Croce croce = croceService.getCroceCorrente(session)
+        Croce croce = croceService.getCroce(session)
         def campiLista = [
                 'milite',
                 'giorno',
@@ -71,7 +71,7 @@ class MiliteturnoController {
     def dettagli(Integer recNumber) {
         def lista
         Milite milite
-        Croce croce = croceService.getCroceCorrente(session)
+        Croce croce = croceService.getCroce(session)
         def campiLista = [
                 'milite',
                 'giorno',
@@ -109,7 +109,7 @@ class MiliteturnoController {
 
     @Secured([Cost.ROLE_PROG])
     def save() {
-        Croce croce = croceService.getCroceCorrente(session)
+        Croce croce = croceService.getCroce(session)
         def militeturnoInstance = new Militeturno(params)
 
         if (croce) {

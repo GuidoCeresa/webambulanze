@@ -36,7 +36,7 @@ class BootStrap implements Cost {
 
     //--metodo invocato direttamente da Grails
     def init = { servletContext ->
-        iniezioneVariabili(servletContext)
+    //    iniezioneVariabili(servletContext)
 
         //--croci
         creazioneCroceInterna()

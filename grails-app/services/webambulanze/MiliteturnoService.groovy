@@ -10,23 +10,26 @@ class MiliteturnoService {
     // il service viene iniettato automaticamente
     def funzioneService
 
+    // utilizzo di un service con la businessLogic per l'elaborazione dei dati
+    // il service viene iniettato automaticamente
+    def logoService
+
     //--cancella tutti i records di Militeturno (dell'anno corrente)
     //--ricalcola tutti i turni
     //--crea i records di MiliteTurno
     //--cancella tutti i records di Militestatistiche (dell'anno corrente)
     //--crea i records di Militestatistiche
-    //--opera sulla croce indicata (se ha il flag abilitato)
+    //--opera sulla croce indicata
     def calcola(Croce croce) {
-        if (croce && croceService.isCalcoloNotturnoStatistiche(croce)) {
-            Date oggi = Lib.creaDataOggi()
-            Date primoGennaio = Lib.creaData1Gennaio()
+        Date oggi = Lib.creaDataOggi()
+        Date primoGennaio = Lib.creaData1Gennaio()
 
-            cancellaMiliteTurno(croce, primoGennaio)
-            ricalcolaMiliteTurno(croce, primoGennaio, oggi)
-            aggiornaMiliti(croce, primoGennaio)
-            cancellaMiliteStatistiche(croce)
-            ricalcolaMiliteStatistiche(croce)
-        }// fine del blocco if
+        cancellaMiliteTurno(croce, primoGennaio)
+        ricalcolaMiliteTurno(croce, primoGennaio, oggi)
+        aggiornaMiliti(croce, primoGennaio)
+        cancellaMiliteStatistiche(croce)
+        ricalcolaMiliteStatistiche(croce)
+        logoService.setInfo(croce,Evento.statistiche)
     }// fine del metodo
 
     //--cancella tutti i records di Militeturno (dell'anno corrente)
@@ -36,11 +39,15 @@ class MiliteturnoService {
     //--crea i records di Militestatistiche
     //--chiamato da CalcolaJob, opera su tutte le croci (col flag abilitato)
     def calcola() {
+        Croce croce
         def listaCroci = Croce.findAll()
 
         if (listaCroci) {
             listaCroci?.each {
-                calcola(it)
+                croce = (Croce) it
+                if (croceService.isCalcoloNotturnoStatistiche(croce)) {
+                    calcola(croce)
+                }// fine del blocco if
             } // fine del ciclo each
         }// fine del blocco if
     }// fine del metodo
@@ -52,7 +59,7 @@ class MiliteturnoService {
     //--crea i records di Militestatistiche
     //--opera sulla croce della sessione corrente (se ha il flag abilitato)
     def calcola(session) {
-        Croce croce = croceService.getCroceCorrente(session)
+        Croce croce = croceService.getCroce(session)
 
         if (croce) {
             calcola(croce)

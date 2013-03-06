@@ -28,7 +28,7 @@ class TipoTurnoController {
 
     def list(Integer max) {
         def lista
-        Croce croce = croceService.getCroceCorrente(session)
+        Croce croce = croceService.getCroce(session)
         def campiLista = [
                 'ordine',
                 'sigla',
@@ -83,7 +83,7 @@ class TipoTurnoController {
 
     @Secured([Cost.ROLE_PROG])
     def save() {
-        Croce croce = croceService.getCroceCorrente(session)
+        Croce croce = croceService.getCroce(session)
         def tipoTurnoInstance = new TipoTurno(params)
 
         if (croce) {

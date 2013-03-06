@@ -2,9 +2,6 @@ package webambulanze
 
 class TipoTurno {
 
-    // la property viene iniettata automaticamente
-    def grailsApplication
-
     //--croce di riferimento
     Croce croce
 

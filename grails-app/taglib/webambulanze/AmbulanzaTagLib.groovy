@@ -833,8 +833,8 @@ class AmbulanzaTagLib {
         String listaControlliTxt
         def lista
 
-        if (grailsApplication.mainContext.servletContext.controlli) {
-            listaControlliTxt = grailsApplication.mainContext.servletContext.controlli
+        if (params.siglaCroce) {
+            listaControlliTxt = croceService.getControlli((String) params.siglaCroce)
         }// fine del blocco if
 
         if (listaControlliTxt) {
@@ -846,6 +846,7 @@ class AmbulanzaTagLib {
             if (militeService.isLoggatoProgrammatore()) {
                 testoOut += Lib.tagController('Militestatistiche', 'Forza calcolo statistiche', 'calcola')
                 testoOut += Lib.tagController('Militefunzione', 'Tavola incrocio militi-funzioni')
+                testoOut += Lib.tagController('Turno', 'Lista turni (non tabellone)', 'list')
             }// fine del blocco if
             if (militeService.isLoggatoCustodeOrMore()) {
                 testoOut += Lib.tagController('Ruolo', 'Ruoli (accesso limitato ad una sola persona)')

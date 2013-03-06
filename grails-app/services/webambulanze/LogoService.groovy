@@ -5,23 +5,22 @@ import org.springframework.security.core.GrantedAuthority
 
 class LogoService {
 
-    // la variabile/proprietà viene iniettata automaticamente
-    def grailsApplication
-
     // utilizzo di un service con la businessLogic per l'elaborazione dei dati
     // il service viene iniettato automaticamente
     def springSecurityService
 
     // utilizzo di un service con la businessLogic per l'elaborazione dei dati
     // il service viene iniettato automaticamente
-    def postaService
+    def croceService
 
     //--registra un evento
     private String setEventoMilite(Livello livello, Evento evento, Milite milite, String dettaglio) {
-        String testoFlash
+        String testoFlash = ''
+        Croce croce
 
-        testoFlash = setBase(livello, evento, milite, null, null, null, dettaglio)
         if (milite) {
+            croce = milite.croce
+            testoFlash = setBase(croce, livello, evento, milite, null, null, null, dettaglio)
             testoFlash += ' milite ' + milite.nome + ' ' + milite.cognome
         }// fine del blocco if
 
@@ -55,7 +54,15 @@ class LogoService {
 
     //--registra un evento
     public String setWarn(Evento evento, TipoTurno tipoTurno, Date giorno) {
-        return setBase(Livello.warn, evento, null, null, tipoTurno, giorno, '')
+        Croce croce
+
+        if (tipoTurno) {
+            croce = tipoTurno.croce
+            return setBase(croce, Livello.warn, evento, null, null, tipoTurno, giorno, '')
+        } else {
+            return ''
+        }// fine del blocco if-else
+
     }// fine del metodo
 
     //--registra un evento
@@ -64,31 +71,33 @@ class LogoService {
     }// fine del metodo
 
     //--registra un evento generico (molto generico)
-    public String setInfo() {
-        return setInfo(Evento.generico)
+    public String setInfo(def session, Evento evento) {
+        return setBase(croceService.getCroce(session), Livello.info, evento)
     }// fine del metodo
 
     //--registra un evento generico (molto generico)
-    public String setInfo(Evento evento) {
-        return setBase(Livello.info, evento)
+    public String setInfo(Croce croce, Evento evento) {
+        return setBase(croce, Livello.info, evento)
     }// fine del metodo
 
     //--registra un evento generico (molto generico)
-    public String setBase(Livello livello, Evento evento) {
-        return setBase(Livello.info, evento, (Turno) null)
+    public String setBase(Croce croce, Livello livello, Evento evento) {
+        return setBase(croce, livello, evento, (Milite) null, (Turno) null, (TipoTurno) null, (Date) null, '')
     }// fine del metodo
 
     //--registra un evento generico (molto generico)
     public String setBase(Livello livello, Evento evento, Turno turno) {
         String testoFlash = ''
+        Croce croce
         TipoTurno tipoTurno
         Date giorno
 
         //--turno e tipoTurno e giorno
         if (turno) {
+            croce = turno.croce
             tipoTurno = turno.tipoTurno
             giorno = turno.giorno
-            testoFlash = setBase(livello, evento, null, turno, tipoTurno, giorno, '')
+            testoFlash = setBase(croce, livello, evento, null, turno, tipoTurno, giorno, '')
         }// fine del blocco if
 
         return testoFlash
@@ -96,6 +105,7 @@ class LogoService {
 
     //--registra un evento generico (molto generico)
     public String setBase(
+            Croce croce,
             Livello livello,
             Evento evento,
             Milite milite,
@@ -105,7 +115,6 @@ class LogoService {
             String dettaglio) {
         String testoFlash = evento.avviso
         Logo logo = new Logo()
-        Croce croce = null
         def logged
         GrailsUser user
         def currUser
@@ -114,11 +123,6 @@ class LogoService {
         String siglaRuolo
         Ruolo ruolo = null
         GrantedAuthority auth
-
-        //--variabile globale
-        if (grailsApplication.mainContext.servletContext.croce) {
-            croce = grailsApplication.mainContext.servletContext.croce
-        }// fine del blocco if
 
         //--user della classe mia
         currUser = springSecurityService.getCurrentUser()
