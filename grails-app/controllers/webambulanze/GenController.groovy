@@ -27,7 +27,7 @@ class GenController {
     } // fine del metodo
 
     //--selezione della croce su cui ritornare
-    def logoutselection() {
+    def logoutSelection() {
         String siglaCroce = GenController.SIGLA_CROCE
 
         if (siglaCroce.equals(Cost.CROCE_ALGOS)) {
@@ -47,7 +47,7 @@ class GenController {
         }// fine del blocco if
 
         if (siglaCroce.equals(Cost.CROCE_ROSSA_PONTETARO)) {
-            redirect(action: 'selezionaCroceRossaPonteTaro')
+            redirect(action: 'selezionaCroceRossaPonteTaroSecurity')
         }// fine del blocco if
     } // fine del metodo
 
@@ -200,11 +200,13 @@ class GenController {
     //--selezione iniziale della croce su cui operare
     //--seleziona la necessità del login
     //--regola la schermata iniziale
-    def selezionaCroceRossaPonteTaro() {
+    def selezionaCroceRossaPonteTaro(boolean autenticaOspite) {
         //--regolazioni generali
         selezionaCroceBase(Cost.CROCE_ROSSA_PONTETARO)
 
-        springSecurityService.reauthenticate(Cost.CRPT_OSPITE, Cost.CRPT_PASSWORD)
+        if (autenticaOspite) {
+       //     springSecurityService.reauthenticate(Cost.CRPT_OSPITE, Cost.CRPT_PASSWORD)
+        }// fine del blocco if
 
         params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
         String startController = croceService.getStartController((String) params.siglaCroce)
@@ -216,6 +218,22 @@ class GenController {
             //--va al menu base
             render(controller: 'gen', view: 'home', params: params)
         }// fine del blocco if-else
+    } // fine del metodo
+
+    //--chiamata da URL = croce rossa ponte taro
+    //--selezione iniziale della croce su cui operare
+    //--seleziona la necessità del login
+    //--regola la schermata iniziale
+    def selezionaCroceRossaPonteTaroSecurity() {
+     return selezionaCroceRossaPonteTaro(false)
+    } // fine del metodo
+
+    //--chiamata da URL = croce rossa ponte taro
+    //--selezione iniziale della croce su cui operare
+    //--seleziona la necessità del login
+    //--regola la schermata iniziale
+    def selezionaCroceRossaPonteTaroFree() {
+        return selezionaCroceRossaPonteTaro(true)
     } // fine del metodo
 
 } // fine della controller classe

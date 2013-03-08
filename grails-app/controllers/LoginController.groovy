@@ -29,6 +29,10 @@ class LoginController {
     // il service viene iniettato automaticamente
     def croceService
 
+    // utilizzo di un service con la businessLogic per l'elaborazione dei dati
+    // il service viene iniettato automaticamente
+    def utenteService
+
     /**
      * Default action; redirects to 'defaultTargetUrl' if logged in, /login/auth otherwise.
      */
@@ -72,18 +76,8 @@ class LoginController {
 
         //--sposta in fondo un eventuale nome del programmatore
         if (listaUtenti) {
-            if (listaUtenti[0].equals(Cost.PROG_NICK_CRF)) {
-                listaUtenti.remove(0)
-                listaUtenti.add(Cost.PROG_NICK_CRF)
-            }// fine del blocco if
-            if (listaUtenti[0].equals(Cost.PROG_NICK_CRPT)) {
-                listaUtenti.remove(0)
-                listaUtenti.add(Cost.PROG_NICK_CRPT)
-            }// fine del blocco if
-            if (listaUtenti[0].equals(Cost.PROG_NICK_DEMO)) {
-                listaUtenti.remove(0)
-                listaUtenti.add(Cost.PROG_NICK_DEMO)
-            }// fine del blocco if
+            listaUtenti = utenteService.spostaProgrammatoreInFondo(listaUtenti)
+            listaUtenti = utenteService.spostaOspiteInFondo(listaUtenti)
         }// fine del blocco if
 
 //        listaUtenti = Utente.executeQuery('select username from Utente order by username')

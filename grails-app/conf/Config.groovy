@@ -86,7 +86,7 @@ grails.mail.default.from="gac@algos.it"
 grails.views.default.codec="none" // none, html, base64
 grails.views.gsp.encoding="UTF-8"
 
-grails.plugins.springsecurity.logout.afterLogoutUrl = '/logoutselection'
+grails.plugins.springsecurity.logout.afterLogoutUrl = '/logoutSelection'
 
 // Added by the Spring Security Core plugin:
 grails.plugins.springsecurity.userLookup.userDomainClassName = 'webambulanze.Utente'

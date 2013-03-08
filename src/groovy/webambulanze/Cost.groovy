@@ -61,10 +61,12 @@ public interface Cost {
 
     //--sigla e password per accesso libero alla croce demo
     public static String DEMO_OSPITE = 'ospite'
+    public static String DEMO_PASSWORD_BOOT = '1' //non accetta valori vuoti nella creazione del record
     public static String DEMO_PASSWORD = ''
 
     //--sigla e password per accesso libero alla croce rossa ponte taro
     public static String CRPT_OSPITE = '.ospite.'
+    public static String CRPT_PASSWORD_BOOT = '2' //non accetta valori vuoti nella creazione del record
     public static String CRPT_PASSWORD = ''
 
     //--identificatore delle colonne per le statistiche

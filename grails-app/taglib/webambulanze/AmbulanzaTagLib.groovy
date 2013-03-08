@@ -864,6 +864,7 @@ class AmbulanzaTagLib {
             testoOut += Lib.tagController('Militestatistiche', 'Turni dei militi (statistiche)')
 //old            testoOut += Lib.tagController('Milite', 'Turni dei militi (statistiche)','statistiche')
             testoOut += Lib.tagController('Gen', 'Tabellone turni')
+
         }// fine del blocco if-else
 
         out << testoOut

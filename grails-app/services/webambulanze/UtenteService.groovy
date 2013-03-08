@@ -47,6 +47,7 @@ class UtenteService {
 
         lista = Utente.findAll(params)
         lista = eliminaProgrammatore(lista)
+        lista = spostaOspiteInFondo(lista)
 
         return lista
     }// fine del metodo
@@ -65,6 +66,9 @@ class UtenteService {
                 if (nick.equals(Cost.PROG_NICK_CRF)) {
                     objProg = utente
                 }// fine del blocco if
+                if (nick.equals(Cost.PROG_NICK_CRPT)) {
+                    objProg = utente
+                }// fine del blocco if
             } // fine del ciclo each
 
             if (objProg) {
@@ -73,6 +77,44 @@ class UtenteService {
         }// fine del blocco if
 
         return listaOut
+    }// fine del metodo
+
+    //--sposta in fondo un eventuale nome del programmatore
+    public ArrayList spostaProgrammatoreInFondo(ArrayList listaUtenti) {
+
+        if (listaUtenti) {
+            if (listaUtenti[0].equals(Cost.PROG_NICK_CRF)) {
+                listaUtenti.remove(0)
+                listaUtenti.add(Cost.PROG_NICK_CRF)
+            }// fine del blocco if
+            if (listaUtenti[0].equals(Cost.PROG_NICK_CRPT)) {
+                listaUtenti.remove(0)
+                listaUtenti.add(Cost.PROG_NICK_CRPT)
+            }// fine del blocco if
+            if (listaUtenti[0].equals(Cost.PROG_NICK_DEMO)) {
+                listaUtenti.remove(0)
+                listaUtenti.add(Cost.PROG_NICK_DEMO)
+            }// fine del blocco if
+        }// fine del blocco if
+
+        return listaUtenti
+    }// fine del metodo
+
+    //--sposta in fondo un eventuale ospite
+    public ArrayList spostaOspiteInFondo(ArrayList listaUtenti) {
+
+        if (listaUtenti) {
+            if (listaUtenti[0].equals(Cost.DEMO_OSPITE)) {
+                listaUtenti.remove(0)
+                listaUtenti.add(Cost.DEMO_OSPITE)
+            }// fine del blocco if
+            if (listaUtenti[0].equals(Cost.CRPT_OSPITE)) {
+                listaUtenti.remove(0)
+                listaUtenti.add(Cost.CRPT_OSPITE)
+            }// fine del blocco if
+        }// fine del blocco if
+
+        return listaUtenti
     }// fine del metodo
 
 } // end of Service Class

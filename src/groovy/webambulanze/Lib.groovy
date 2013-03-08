@@ -414,7 +414,7 @@ class Lib {
             primo = entrata.substring(0, 1)
             primo = primo.toUpperCase()
             rimanente = entrata.substring(1)
-            uscita = primo + rimanente
+            uscita = primo + rimanente.toLowerCase()
         }// fine del blocco if
 
         // valore di ritorno
@@ -1064,5 +1064,18 @@ class Lib {
         return turniNecessari
     } // fine del metodo statico
 
+    //--Costruisce il tag controller per il testo indicato
+    public static Map cloneMappa(Map mappa) {
+        HashMap mappaClonata = null
+
+        if (mappa) {
+            mappaClonata = new HashMap()
+            mappa.keySet().each {
+                mappaClonata.put(it, mappa.get(it))
+            } // fine del ciclo each
+        }// fine del blocco if
+
+        return mappaClonata
+    } // fine del metodo statico
 
 } // fine della classe

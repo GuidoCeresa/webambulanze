@@ -9,6 +9,7 @@
 /* flagOverwrite = false */
 
 package webambulanze
+
 import grails.plugins.springsecurity.Secured
 import org.springframework.dao.DataIntegrityViolationException
 
@@ -339,10 +340,17 @@ class TurnoController {
             }// fine del blocco if
         }// fine del blocco if
 
+        def oldParams = Lib.cloneMappa(turnoInstance.properties)
         turnoInstance.properties = params
 
         if (isEsistonoErrori(turnoInstance)) {
-            render(view: 'edit', model: [turnoInstance: turnoInstance], params: params)
+            if (true) {
+                turnoInstance.properties = oldParams
+                turnoInstance.save(flush: true)
+                redirect(action: 'tabCorrente')
+            } else {
+                render(view: 'edit', model: [turnoInstance: turnoInstance], params: oldParams)
+            }// fine del blocco if-else
             return
         }// fine del blocco if
 

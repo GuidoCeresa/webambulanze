@@ -32,6 +32,7 @@ class FunzioneController {
         def campiLista = [
                 'ordine',
                 'sigla',
+                'siglaVisibile',
                 'descrizione',
                 'funzioniDipendenti']
 
