@@ -45,6 +45,9 @@ class BootStrap implements Cost {
 
         iniezioneVariabili(servletContext)
 
+        //--ruoli
+        securitySetupRuoli()
+
         //--croce interna
         croceAlgos()
 
@@ -76,7 +79,7 @@ class BootStrap implements Cost {
     //--Croce interna virtuale
     private static void croceAlgos() {
         creazioneCroceInterna()
-        securitySetup()
+        securitySetupAlgos()
         configurazioneCroceInterna()
     }// fine del metodo
 
@@ -125,8 +128,8 @@ class BootStrap implements Cost {
         configurazioneCroceRossaPonteTaro()
         funzioniCroceRossaPonteTaro()
         tipiDiTurnoRossaPonteTaro()
-        militiRossaPonteTaro()
-        utentiRossaPonteTaro() //password
+        //militiRossaPonteTaro()
+        //utentiRossaPonteTaro() //password
     }// fine del metodo
 
     //--iniezione di alcune variabili generali visibili in tutto il programma
@@ -329,11 +332,21 @@ class BootStrap implements Cost {
     //--occorre SEMPRE un ruolo ROLE_PROG
     //--occorre SEMPRE un ruolo ROLE_ADMIN
     //--occorre SEMPRE un ruolo ROLE_MILITE
+    //--li crea SOLO se non esistono già
+    private static void securitySetupRuoli() {
+        Ruolo.findOrCreateByAuthority(ROLE_PROG).save(failOnError: true)
+        Ruolo.findOrCreateByAuthority(ROLE_CUSTODE).save(failOnError: true)
+        Ruolo.findOrCreateByAuthority(ROLE_ADMIN).save(failOnError: true)
+        Ruolo.findOrCreateByAuthority(ROLE_MILITE).save(failOnError: true)
+        Ruolo.findOrCreateByAuthority(ROLE_OSPITE).save(failOnError: true)
+    }// fine del metodo
+
+    //--creazione accessi per la croce demo
     //--occorre SEMPRE un accesso come programmatore
     //--occorre SEMPRE un accesso come admin
     //--occorre SEMPRE un accesso come milite
     //--li crea SOLO se non esistono già
-    private static void securitySetup() {
+    private static void securitySetupAlgos() {
         Utente utente
         String nick
         String pass
@@ -380,7 +393,7 @@ class BootStrap implements Cost {
 
     }// fine del metodo
 
-    //--creazione accessi per la croce
+    //--creazione accessi per la croce demo
     //--occorre SEMPRE un accesso come admin
     //--occorre SEMPRE un accesso come utente
     //--li crea SOLO se non esistono già
@@ -462,8 +475,8 @@ class BootStrap implements Cost {
         Ruolo adminRole
         Ruolo militeRole
 
-        // programmatore generale (sempre presente)
-        newUtente(CROCE_ROSSA_PONTETARO, ROLE_PROG, PROG_NICK_CRPT, PROG_PASS)
+        // programmatore generale (sempre presente)    @todo ?
+       // newUtente(CROCE_ROSSA_PONTETARO, ROLE_PROG, PROG_NICK_CRPT, PROG_PASS)
 
         if (SVILUPPO_CROCE_ROSSA_PONTE_TARO) {
             adminRole = Ruolo.findOrCreateByAuthority(ROLE_ADMIN).save(failOnError: true)
@@ -1462,7 +1475,7 @@ class BootStrap implements Cost {
             return
         }// fine del blocco if
 
-         listaUtenti = Utente.findAllByCroce(croce)
+        listaUtenti = Utente.findAllByCroce(croce)
         if (listaUtenti.size() > numUtentiRossaPonteTaro) {
             listaMiliti = Milite.findAllByCroce(croce)
             listaMiliti?.each {

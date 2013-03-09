@@ -1,5 +1,4 @@
 package webambulanze
-
 import grails.plugins.springsecurity.Secured
 import org.springframework.security.core.context.SecurityContextHolder
 
@@ -30,7 +29,7 @@ class GenController {
     def logoutSelection() {
         String siglaCroce = GenController.SIGLA_CROCE
 
-        if (siglaCroce.equals(Cost.CROCE_ALGOS)) {
+        if (siglaCroce.equals(Cost.CROCE_ALGOS)||siglaCroce.equals('nessuna')) {
             redirect(action: 'selezionaCroce')
         }// fine del blocco if
 
@@ -87,13 +86,12 @@ class GenController {
     //--regola la schermata iniziale
     def selezionaCroce() {
         //--regolazioni generali
-        selezionaCroceDemo()
+        selezionaCroceAlgos()
     } // fine del metodo
 
     //--chiamata da URL = algos
     //--selezione iniziale della croce interna su cui operare
     //--regola la schermata iniziale
-    @Secured([Cost.ROLE_ADMIN])
     def selezionaCroceAlgos() {
         //--regolazioni generali
         selezionaCroceBase(Cost.CROCE_ALGOS)
@@ -105,6 +103,7 @@ class GenController {
     //--selezione iniziale della croce interna su cui operare
     //--seleziona la necessità del login
     //--regola la schermata iniziale
+    @Secured([Cost.ROLE_ADMIN])
     def selezionaCroceAlgosSicura() {
         params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
         String startController = croceService.getStartController((String) params.siglaCroce)

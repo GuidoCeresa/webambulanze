@@ -77,7 +77,7 @@ class LoginController {
         //--sposta in fondo un eventuale nome del programmatore
         if (listaUtenti) {
             listaUtenti = utenteService.spostaProgrammatoreInFondo(listaUtenti)
-            listaUtenti = utenteService.spostaOspiteInFondo(listaUtenti)
+      //      listaUtenti = utenteService.spostaOspiteInFondo(listaUtenti)
         }// fine del blocco if
 
 //        listaUtenti = Utente.executeQuery('select username from Utente order by username')
@@ -104,6 +104,10 @@ class LoginController {
      * Show denied page.
      */
     def denied = {
+        def a = springSecurityService.isLoggedIn()
+        def b = SCH.context
+        def c = SCH.context?.authentication
+
         if (springSecurityService.isLoggedIn() &&
                 authenticationTrustResolver.isRememberMe(SCH.context?.authentication)) {
             // have cookie but the page is guarded with IS_AUTHENTICATED_FULLY
