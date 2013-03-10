@@ -16,13 +16,26 @@ class UtenteRuoloController {
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
+    // utilizzo di un service con la businessLogic per l'elaborazione dei dati
+    // il service viene iniettato automaticamente
+    def croceService
+
     def index() {
-        redirect(action: "list", params: params)
+        redirect(action: 'list', params: params)
     } // fine del metodo
 
     def list(Integer max) {
-        params.max = Math.min(max ?: 10, 100)
-        [utenteRuoloInstanceList: UtenteRuolo.list(params), utenteRuoloInstanceTotal: UtenteRuolo.count()]
+        def lista
+        def campiLista = [
+                'utente',
+                'ruolo']
+
+        if (!params.sort) {
+            params.sort = 'utente'
+        }// fine del blocco if-else
+        lista = UtenteRuolo.findAll(params)
+
+        render(view: 'list', model: [utenteRuoloInstanceList: lista, utenteRuoloInstanceTotal: 0, campiLista: campiLista], params: params)
     }
 
     def create() {

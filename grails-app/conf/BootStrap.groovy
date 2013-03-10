@@ -118,6 +118,7 @@ class BootStrap implements Cost {
             this.cancellaSingolaTavola(croce, 'Settings')
             this.cancellaLogo(croce)
             this.cancellaUtenteRuolo(croce)
+            sessionFactory.currentSession.flush()
             this.cancellaSingolaTavola(croce, 'Utente')
             this.cancellaSingolaTavola(croce, 'Turno')
             this.cancellaSingolaTavola(croce, 'TipoTurno')
@@ -562,6 +563,7 @@ class BootStrap implements Cost {
     private static void securitySetupRossaPonteTaro() {
         Utente utente
         String nick
+        String nickSuffix = '/' + CROCE_ROSSA_PONTETARO.toLowerCase()
         String pass
         Ruolo adminRole
         Ruolo militeRole
@@ -574,7 +576,9 @@ class BootStrap implements Cost {
             militeRole = Ruolo.findOrCreateByAuthority(ROLE_MILITE).save(failOnError: true)
 
             // custode
-            utente = newUtente(CROCE_ROSSA_PONTETARO, ROLE_CUSTODE, 'Michelini Mauro', 'michelini123')
+            nick = 'Michelini Mauro' + nickSuffix
+            pass = 'michelini123'
+            utente = newUtente(CROCE_ROSSA_PONTETARO, ROLE_CUSTODE, nick, pass)
             numUtentiRossaPonteTaro++
             if (adminRole && militeRole && utente) {
                 UtenteRuolo.findOrCreateByRuoloAndUtente(adminRole, utente).save(failOnError: true)
@@ -582,14 +586,18 @@ class BootStrap implements Cost {
             }// fine del blocco if
 
             // admin
-            utente = newUtente(CROCE_ROSSA_PONTETARO, ROLE_ADMIN, 'Gallo Gennaro', 'gallo123')
+            nick = 'Gallo Gennaro' + nickSuffix
+            pass = 'gallo123'
+            utente = newUtente(CROCE_ROSSA_PONTETARO, ROLE_ADMIN, nick, pass)
             numUtentiRossaPonteTaro++
             if (militeRole && utente) {
                 UtenteRuolo.findOrCreateByRuoloAndUtente(militeRole, utente).save(failOnError: true)
             }// fine del blocco if
 
             // admin
-            utente = newUtente(CROCE_ROSSA_PONTETARO, ROLE_ADMIN, 'Pessina Giovanni', 'pessina123')
+            nick = 'Pessina Giovanni' + nickSuffix
+            pass = 'pessina123'
+            utente = newUtente(CROCE_ROSSA_PONTETARO, ROLE_ADMIN, nick, pass)
             numUtentiRossaPonteTaro++
             if (militeRole && utente) {
                 UtenteRuolo.findOrCreateByRuoloAndUtente(militeRole, utente).save(failOnError: true)
@@ -1852,7 +1860,7 @@ class BootStrap implements Cost {
 
         nome = milite.nome.trim()
         cognome = milite.cognome.trim()
-        nick = cognome + ' ' + nome
+        nick = cognome + ' ' + nome + '/' + siglaCroce.toLowerCase()
         password = cognome.toLowerCase() + '123'
 
         newUtente(siglaCroce, ROLE_MILITE, nick, password, milite)

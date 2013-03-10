@@ -17,7 +17,7 @@ class UrlMappings {
             }
         }
         //      "/"(controller: 'Gen', action: 'selezionaCroce')
-        "/"(controller: 'Gen', action: 'selezionaCroceRossaPonteTaroFree')
+      //  "/"(controller: 'Gen', action: 'selezionaCroceRossaPonteTaroFree')
         "/algos"(controller: 'Gen', action: 'selezionaCroceAlgos')
         "/ALGOS"(controller: 'Gen', action: 'selezionaCroceAlgos')
         "/demo"(controller: 'Gen', action: 'selezionaCroceDemo')
