@@ -91,7 +91,6 @@ class Milite {
      * prima di cancellare un record
      */
     def beforeDelete = {
-        return false
     } // end of def beforeDelete
 
     /**

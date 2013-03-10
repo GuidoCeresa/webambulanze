@@ -13,7 +13,7 @@ import webambulanze.*
 class BootStrap implements Cost {
 
     //--cancella tutto il database
-    static boolean SONO_PROPRIO_SICURO_DI_CANCELLARE_TUTTO = true
+    static boolean SONO_PROPRIO_SICURO_DI_CANCELLARE_TUTTO = false
 
     //--controllo di funzioni da utilizzare SOLAMENTE in fase di sviluppo
     private static boolean SVILUPPO_CROCE_ROSSA_FIDENZA = false;
@@ -37,22 +37,25 @@ class BootStrap implements Cost {
     // private static String DIR_PATH = '/Users/Gac/Documents/IdeaProjects/webambulanze/grails-app/webambulanze/'
     private static String DIR_PATH = 'http://77.43.32.198:80/ambulanze/'
 
+    def grailsApplication
+    def sessionFactory
+
     //--metodo invocato direttamente da Grails
     def init = { servletContext ->
 
         //--cancella tutto il database
-        resetCompleto()
+//        resetCompleto()
 
         iniezioneVariabili(servletContext)
 
         //--ruoli
-        securitySetupRuoli()
+        //      securitySetupRuoli()
 
         //--croce interna
-        croceAlgos()
+        //      croceAlgos()
 
         //--croce demo
-        croceDemo()
+        //croceDemo()
 
         //--croce tidone
         //  croceTidone()
@@ -61,33 +64,146 @@ class BootStrap implements Cost {
         // croceRossaFidenza()
 
         //--croce rossa pontetaro
+        if (SVILUPPO_CROCE_ROSSA_PONTE_TARO) {
+            resetCroce(CROCE_ROSSA_PONTETARO)
+        }// fine del blocco if
         croceRossaPontetaro()
 
         //--creazione del collegamento tyra croce e settings
-        linkInternoAziende()
+        //linkInternoAziende()
     }// fine della closure
 
     //--cancella tutto il database
-    private static void resetCompleto() {
+    private void resetCompleto() {
+        def lista = null
 
+        //--dipendenza incrociata tra settings e croci
         if (SONO_PROPRIO_SICURO_DI_CANCELLARE_TUTTO) {
-
+            Croce croce
+            Settings setting
+            lista = Croce.findAll()
+            lista?.each {
+                croce = (Croce) it
+                croce.settings = null
+                croce.save(flush: true)
+            } // fine del ciclo each
         }// fine del blocco if
 
+        this.cancellaSingolaTavola('Settings')
+        this.cancellaSingolaTavola('Logo')
+        this.cancellaSingolaTavola('UtenteRuolo')
+        this.cancellaSingolaTavola('Utente')
+        this.cancellaSingolaTavola('Ruolo')
+        this.cancellaSingolaTavola('Turno')
+        this.cancellaSingolaTavola('TipoTurno')
+        this.cancellaSingolaTavola('Funzione')
+        this.cancellaSingolaTavola('Milite')
+        this.cancellaSingolaTavola('Militefunzione')
+        this.cancellaSingolaTavola('Militeturno')
+        this.cancellaSingolaTavola('Militestatistiche')
+
+        //--ultimo
+        this.cancellaSingolaTavola('Croce')
+
+        sessionFactory.currentSession.flush()
+    }// fine del metodo
+
+    //--cancella tutto il database
+    private void resetCroce(String siglaCroce) {
+        Croce croce = Croce.findBySigla(siglaCroce)
+
+        if (croce) {
+            croce.settings = null
+            croce.save(flush: true)
+            this.cancellaSingolaTavola(croce, 'Settings')
+            this.cancellaLogo(croce)
+            this.cancellaUtenteRuolo(croce)
+            this.cancellaSingolaTavola(croce, 'Utente')
+            this.cancellaSingolaTavola(croce, 'Turno')
+            this.cancellaSingolaTavola(croce, 'TipoTurno')
+            this.cancellaSingolaTavola(croce, 'Militefunzione')
+            this.cancellaSingolaTavola(croce, 'Militeturno')
+            this.cancellaSingolaTavola(croce, 'Funzione')
+            this.cancellaSingolaTavola(croce, 'Militestatistiche')
+            this.cancellaSingolaTavola(croce, 'Milite')
+
+            croce.delete()
+            sessionFactory.currentSession.flush()
+        }// fine del blocco if
+    }// fine del metodo
+
+    //--cancella la singola tavola
+    private static void cancellaLogo(Croce croce) {
+        def lista
+
+        if (croce) {
+            lista = Logo.findAllByCroceLogo(croce)
+            lista?.each {
+                it.delete()
+            } // fine del ciclo each
+        }// fine del blocco if
+    }// fine del metodo
+
+    //--cancella la singola tavola
+    private static void cancellaUtenteRuolo(Croce croce) {
+        def listaUtentiRuolo
+        def listaUtenti = Utente.findAllByCroce(croce)
+
+        if (croce && listaUtenti) {
+            listaUtenti?.each {
+                listaUtentiRuolo = UtenteRuolo.findAllByUtente(it)
+                listaUtentiRuolo?.each {
+                    it.delete()
+                } // fine del ciclo each
+            } // fine del ciclo each
+        }// fine del blocco if
+    }// fine del metodo
+
+    //--cancella la singola tavola
+    private void cancellaSingolaTavola(Croce croce, String nomeTavola) {
+        Object obj
+        Class clazz
+        def lista
+
+        if (croce && nomeTavola) {
+            obj = grailsApplication.domainClasses.find { it.clazz.simpleName == nomeTavola }
+            clazz = obj?.clazz
+            lista = clazz?.findAllByCroce(croce)
+            lista?.each {
+                it.delete()
+            } // fine del ciclo each
+        }// fine del blocco if
+
+    }// fine del metodo
+
+    //--cancella la singola tavola
+    private void cancellaSingolaTavola(String nomeTavola) {
+        Object obj
+        Class clazz
+        def lista
+
+        if (SONO_PROPRIO_SICURO_DI_CANCELLARE_TUTTO) {
+            obj = grailsApplication.domainClasses.find { it.clazz.simpleName == nomeTavola }
+            clazz = obj?.clazz
+            lista = clazz?.findAll()
+            lista?.each {
+                it.delete()
+            } // fine del ciclo each
+        }// fine del blocco if
     }// fine del metodo
 
     //--Croce interna virtuale
     private static void croceAlgos() {
         creazioneCroceInterna()
-        securitySetupAlgos()
         configurazioneCroceInterna()
+        securitySetupAlgos()
     }// fine del metodo
 
     //--Croce dimostrativa
     private static void croceDemo() {
         creazioneCroceDemo()
-        securitySetupDemo()
         configurazioneCroceDemo()
+        securitySetupDemo()
         funzioniCroceDemo()
         tipiDiTurnoDemo()
         turni2013Demo()
@@ -124,12 +240,12 @@ class BootStrap implements Cost {
     //--Croce rossa Pontetaro
     private static void croceRossaPontetaro() {
         creazioneCroceRossaPonteTaro()
-        securitySetupRossaPonteTaro()
         configurazioneCroceRossaPonteTaro()
+        securitySetupRossaPonteTaro()
         funzioniCroceRossaPonteTaro()
         tipiDiTurnoRossaPonteTaro()
-        //militiRossaPonteTaro()
-        //utentiRossaPonteTaro() //password
+        militiRossaPonteTaro()
+        utentiRossaPonteTaro() //password
     }// fine del metodo
 
     //--iniezione di alcune variabili generali visibili in tutto il programma
@@ -348,48 +464,23 @@ class BootStrap implements Cost {
     //--li crea SOLO se non esistono già
     private static void securitySetupAlgos() {
         Utente utente
-        String nick
-        String pass
-        Ruolo.findOrCreateByAuthority(ROLE_PROG).save(failOnError: true)
+
+        //--ruoli
         Ruolo custodeRole = Ruolo.findOrCreateByAuthority(ROLE_CUSTODE).save(failOnError: true)
         Ruolo adminRole = Ruolo.findOrCreateByAuthority(ROLE_ADMIN).save(failOnError: true)
         Ruolo militeRole = Ruolo.findOrCreateByAuthority(ROLE_MILITE).save(failOnError: true)
         Ruolo ospiteRole = Ruolo.findOrCreateByAuthority(ROLE_OSPITE).save(failOnError: true)
 
-        // programmatore generale
+        // ruolo di programmatore generale
         utente = newUtente(CROCE_ALGOS, ROLE_PROG, 'gac', 'fulvia')
+
+        // altri ruoli
         if (custodeRole && adminRole && militeRole && ospiteRole && utente) {
             UtenteRuolo.findOrCreateByRuoloAndUtente(custodeRole, utente).save(failOnError: true)
             UtenteRuolo.findOrCreateByRuoloAndUtente(adminRole, utente).save(failOnError: true)
             UtenteRuolo.findOrCreateByRuoloAndUtente(militeRole, utente).save(failOnError: true)
             UtenteRuolo.findOrCreateByRuoloAndUtente(ospiteRole, utente).save(failOnError: true)
         }// fine del blocco if
-
-        // altro programmatore generale (per mostrarlo nell'elenco)
-        utente = newUtente(CROCE_ALGOS, ROLE_PROG, '---', 'fulvia')
-        if (custodeRole && adminRole && militeRole && ospiteRole && utente) {
-            UtenteRuolo.findOrCreateByRuoloAndUtente(custodeRole, utente).save(failOnError: true)
-            UtenteRuolo.findOrCreateByRuoloAndUtente(adminRole, utente).save(failOnError: true)
-            UtenteRuolo.findOrCreateByRuoloAndUtente(militeRole, utente).save(failOnError: true)
-            UtenteRuolo.findOrCreateByRuoloAndUtente(ospiteRole, utente).save(failOnError: true)
-        }// fine del blocco if
-
-        // accesso anonimo (per mostrarlo nell'elenco)
-        //--non funziona !!!
-//        utente = newUtente(CROCE_ALGOS, ROLE_OSPITE, 'Ospite', 'ospite')
-//        if (custodeRole && adminRole && militeRole && ospiteRole && utente) {
-//            UtenteRuolo.findOrCreateByRuoloAndUtente(custodeRole, utente).save(failOnError: true)
-//            UtenteRuolo.findOrCreateByRuoloAndUtente(adminRole, utente).save(failOnError: true)
-//            UtenteRuolo.findOrCreateByRuoloAndUtente(militeRole, utente).save(failOnError: true)
-//            UtenteRuolo.findOrCreateByRuoloAndUtente(ospiteRole, utente).save(failOnError: true)
-//        }// fine del blocco if
-
-        // ruoli singoli per i test di funzionamento
-        newUtente(CROCE_ALGOS, ROLE_PROG, 'gacp', 'prog')
-        newUtente(CROCE_ALGOS, ROLE_CUSTODE, 'gacc', 'custode')
-        newUtente(CROCE_ALGOS, ROLE_ADMIN, 'gaca', 'admin')
-        newUtente(CROCE_ALGOS, ROLE_MILITE, 'gacm', 'milite')
-        newUtente(CROCE_ALGOS, ROLE_OSPITE, 'gaco', 'ospite')
 
     }// fine del metodo
 
@@ -476,7 +567,7 @@ class BootStrap implements Cost {
         Ruolo militeRole
 
         // programmatore generale (sempre presente)    @todo ?
-       // newUtente(CROCE_ROSSA_PONTETARO, ROLE_PROG, PROG_NICK_CRPT, PROG_PASS)
+        // newUtente(CROCE_ROSSA_PONTETARO, ROLE_PROG, PROG_NICK_CRPT, PROG_PASS)
 
         if (SVILUPPO_CROCE_ROSSA_PONTE_TARO) {
             adminRole = Ruolo.findOrCreateByAuthority(ROLE_ADMIN).save(failOnError: true)
@@ -671,12 +762,12 @@ class BootStrap implements Cost {
                 setting.militePuoInserireAltri = false
                 setting.militePuoModificareAltri = false
                 setting.militePuoCancellareAltri = false
-                setting.tipoControlloModifica = ControlloTemporale.tempoTrascorso
-                setting.maxMinutiTrascorsiModifica = 30
-                setting.minGiorniMancantiModifica = 0
-                setting.tipoControlloCancellazione = ControlloTemporale.tempoTrascorso
-                setting.maxMinutiTrascorsiCancellazione = 30
-                setting.minGiorniMancantiCancellazione = 0
+                setting.tipoControlloModifica = ControlloTemporale.tempoMancante
+                setting.maxMinutiTrascorsiModifica = 0
+                setting.minGiorniMancantiModifica = 7
+                setting.tipoControlloCancellazione = ControlloTemporale.tempoMancante
+                setting.maxMinutiTrascorsiCancellazione = 0
+                setting.minGiorniMancantiCancellazione = 7
                 setting.isOrarioTurnoModificabileForm = false
                 setting.isCalcoloNotturnoStatistiche = false
                 setting.fissaLimiteMassimoSingoloTurno = false
@@ -756,7 +847,7 @@ class BootStrap implements Cost {
             newFunzRossaPonteTaro('aut-ord', 'Aut-ord', 'Autista ordinario', 2, 'soc,bar')
             newFunzRossaPonteTaro('dae', 'DAE', 'Soccorritore DAE', 3, 'soc,bar')
             newFunzRossaPonteTaro('soc', 'Soc', 'Soccorritore normale', 4, 'bar')
-            newFunzRossaPonteTaro('bar', 'Bar', 'Barelliere', 5, '')
+            newFunzRossaPonteTaro('bar', 'Bar-Aff', 'Barelliere-Affiancamento', 5, '')
         }// fine del blocco if
     }// fine del metodo
 
@@ -826,16 +917,24 @@ class BootStrap implements Cost {
             String siglaVisibile,
             String descrizione,
             int ordine,
-            String funzioniAutomatiche) {
+            String funzioniDipendenti) {
         Funzione funzione = null
         Croce croce = Croce.findBySigla(siglaCroce)
 
         if (croce) {
             funzione = Funzione.findOrCreateByCroceAndSigla(croce, siglaInterna)
-            funzione.siglaVisibile = siglaVisibile
-            funzione.descrizione = descrizione
-            funzione.ordine = ordine
-            funzione.funzioniDipendenti = funzioniAutomatiche
+            if (!funzione.siglaVisibile) {
+                funzione.siglaVisibile = siglaVisibile
+            }// fine del blocco if
+            if (!funzione.descrizione) {
+                funzione.descrizione = descrizione
+            }// fine del blocco if
+            if (!funzione.ordine) {
+                funzione.ordine = ordine
+            }// fine del blocco if
+            if (!funzione.funzioniDipendenti) {
+                funzione.funzioniDipendenti = funzioniDipendenti
+            }// fine del blocco if
 
             funzione.save(failOnError: true)
         }// fine del blocco if
@@ -890,9 +989,14 @@ class BootStrap implements Cost {
     //--li crea SOLO se non esistono già
     private static void tipiDiTurnoRossaPonteTaro() {
         if (SVILUPPO_CROCE_ROSSA_PONTE_TARO) {
-            newTipoTurnoRossaPonteTaro('mat', 'ambulanza mattina', 1, 7, 14, false, true, true, false, 1)
-            newTipoTurnoRossaPonteTaro('pom', 'ambulanza pomeriggio', 2, 14, 21, false, true, true, false, 1)
-            newTipoTurnoRossaPonteTaro('notte', 'ambulanza notte', 3, 21, 7, true, true, true, false, 1)
+            newTipoTurnoCRPT('118-mat', 'ambulanza mattina', 1, 7, 14, false, true, true, false, 3, funzCRPT[0], funzCRPT[2], funzCRPT[3], funzCRPT[4])
+            newTipoTurnoCRPT('118-pom', 'ambulanza pomeriggio', 2, 14, 21, false, true, true, false, 3, funzCRPT[0], funzCRPT[2], funzCRPT[3], funzCRPT[4])
+            newTipoTurnoCRPT('118-notte', 'ambulanza notte', 3, 21, 7, true, true, true, false, 3, funzCRPT[0], funzCRPT[2], funzCRPT[3], funzCRPT[4])
+            newTipoTurnoCRPT('dia-1a', 'dialisi 1 andata', 4, 0, 0, false, true, false, false, 1, funzCRPT[1], funzCRPT[4], funzCRPT[4], null)
+            newTipoTurnoCRPT('dia-1r', 'dialisi 1 ritorno', 5, 0, 0, false, true, false, false, 1, funzCRPT[1], funzCRPT[4], funzCRPT[4], null)
+            newTipoTurnoCRPT('dia-2a', 'dialisi 2 andata', 6, 0, 0, false, true, false, false, 1, funzCRPT[1], funzCRPT[4], funzCRPT[4], null)
+            newTipoTurnoCRPT('dia-2r', 'dialisi 2 ritorno', 7, 0, 0, false, true, false, false, 1, funzCRPT[1], funzCRPT[4], funzCRPT[4], null)
+            newTipoTurnoCRPT('ord', 'ordinario', 8, 0, 0, false, true, false, true, 1, funzCRPT[1], funzCRPT[3], funzCRPT[4], null)
         }// fine del blocco if
     }// fine del metodo
 
@@ -1021,6 +1125,56 @@ class BootStrap implements Cost {
                     tipo."${funz}" = null
                 }// fine del blocco if-else
             } // fine del ciclo for
+
+            tipo.save(failOnError: true)
+        }// fine del blocco if
+    }// fine del metodo
+
+    //--regola il tipo di turno coi parametri indicati
+    //--registra il tipo di turno
+    //--lo crea SOLO se non esiste già
+    private static void newTipoTurnoCRPT(
+            String sigla,
+            String descrizione,
+            int ordine,
+            int oraInizio,
+            int oraFine,
+            boolean fineGiornoSuccessivo,
+            boolean visibile,
+            boolean orario,
+            boolean multiplo,
+            int funzioniObbligatorie,
+            Funzione funz1,
+            Funzione funz2,
+            Funzione funz3,
+            Funzione funz4) {
+        Croce croce = Croce.findBySigla(CROCE_ROSSA_PONTETARO)
+        TipoTurno tipo
+        String funz
+
+        if (croce) {
+            tipo = TipoTurno.findOrCreateByCroceAndSigla(croce, sigla).save(failOnError: true)
+            tipo.descrizione = descrizione
+            tipo.ordine = ordine
+            tipo.oraInizio = oraInizio
+            tipo.oraFine = oraFine
+            tipo.fineGiornoSuccessivo = fineGiornoSuccessivo
+            tipo.visibile = visibile
+            tipo.orario = orario
+            tipo.multiplo = multiplo
+            tipo.funzioniObbligatorie = funzioniObbligatorie
+            if (funz1) {
+                tipo.funzione1 = funz1
+            }// fine del blocco if
+            if (funz2) {
+                tipo.funzione2 = funz2
+            }// fine del blocco if
+            if (funz3) {
+                tipo.funzione3 = funz3
+            }// fine del blocco if
+            if (funz4) {
+                tipo.funzione4 = funz4
+            }// fine del blocco if
 
             tipo.save(failOnError: true)
         }// fine del blocco if
@@ -1265,19 +1419,17 @@ class BootStrap implements Cost {
         def righe
         String nome = ''
         String cognome = ''
-        String stringaNascita
-        Date dataNascita = null
+        String patente = ''
         Map mappa
         Milite milite
-        String cellulare = ''
-        String fisso = ''
-        String tagVero = 'x'
-        String blsTxt = ''
-        String alsTxt = ''
-        String autTxt = ''
-        boolean bls = false
-        boolean als = false
-        boolean aut = false
+        String daeTxt = ''
+        String barTxt = ''
+        String tagVero = 'SI'
+        boolean autEme = false
+        boolean autOrd = false
+        boolean dae = false
+        boolean soc = false
+        boolean bar = false
 
         if (!ESISTE_COLLEGAMENTO_INTERNET) {
             return
@@ -1301,14 +1453,14 @@ class BootStrap implements Cost {
         righe?.each {
             cognome = ''
             nome = ''
-            cellulare = ''
-            fisso = ''
-            blsTxt = ''
-            alsTxt = ''
-            autTxt = ''
-            bls = false
-            als = false
-            aut = false
+            patente = ''
+            daeTxt = ''
+            barTxt = ''
+            autEme = false
+            autOrd = false
+            dae = false
+            soc = false
+            bar = false
 
             mappa = (Map) it
 
@@ -1324,63 +1476,55 @@ class BootStrap implements Cost {
                 nome = Lib.primaMaiuscola(nome)
             }// fine del blocco if
 
-//            if (mappa.cellulare) {
-//                cellulare = mappa.cellulare
-//            }// fine del blocco if
-//            if (mappa.fisso) {
-//                fisso = mappa.fisso
-//            }// fine del blocco if
-//            if (mappa.bls) {
-//                blsTxt = mappa.bls
-//                if (blsTxt && blsTxt.equals(tagVero)) {
-//                    bls = true
-//                }// fine del blocco if
-//            }// fine del blocco if
-//            if (mappa.als) {
-//                alsTxt = mappa.als
-//                if (alsTxt && alsTxt.equals(tagVero)) {
-//                    als = true
-//                }// fine del blocco if
-//            }// fine del blocco if
-//            if (mappa.aut) {
-//                autTxt = mappa.aut
-//                if (autTxt && autTxt.equals(tagVero)) {
-//                    aut = true
-//                }// fine del blocco if
-//            }// fine del blocco if
+            if (mappa.patente) {
+                patente = mappa.patente
+                if (patente.equals('5')) {
+                    autEme = true
+                }// fine del blocco if
+                if (patente.equals('4')) {
+                    autOrd = true
+                }// fine del blocco if
+            }// fine del blocco if
+
+            if (mappa.dae) {
+                daeTxt = mappa.dae
+                if (daeTxt.equals(tagVero)) {
+                    dae = true
+                }// fine del blocco if
+            }// fine del blocco if
+
+            if (mappa.barelliere) {
+                barTxt = mappa.barelliere
+                if (barTxt.equals(tagVero)) {
+                    bar = true
+                }// fine del blocco if
+            }// fine del blocco if
 
             milite = Milite.findOrCreateByCroceAndNomeAndCognome(croce, nome, cognome)
             milite.save(flush: true)
-//            if (milite) {
-//                if (!milite.telefonoCellulare) {
-//                    milite.telefonoCellulare = cellulare
-//                }// fine del blocco if
-//                if (!milite.telefonoFisso) {
-//                    milite.telefonoFisso = fisso
-//                }// fine del blocco if
-//                milite.save(failOnError: true)
-//                if (aut) {
-//                    Militefunzione.findOrCreateByCroceAndMiliteAndFunzione(croce, milite, funzAutomedicaCRF[0]).save(flush: true)
-//                    Militefunzione.findOrCreateByCroceAndMiliteAndFunzione(croce, milite, funzAmbulanzaCRF[0]).save(flush: true)
-//                }// fine del blocco if
-//                if (als) {
-//                    Militefunzione.findOrCreateByCroceAndMiliteAndFunzione(croce, milite, funzAutomedicaCRF[1]).save(flush: true)
-//                    Militefunzione.findOrCreateByCroceAndMiliteAndFunzione(croce, milite, funzAutomedicaCRF[2]).save(flush: true)
-//                    Militefunzione.findOrCreateByCroceAndMiliteAndFunzione(croce, milite, funzAmbulanzaCRF[1]).save(flush: true)
-//                    Militefunzione.findOrCreateByCroceAndMiliteAndFunzione(croce, milite, funzAmbulanzaCRF[2]).save(flush: true)
-//                    Militefunzione.findOrCreateByCroceAndMiliteAndFunzione(croce, milite, funzAmbulanzaCRF[3]).save(flush: true)
-//                }// fine del blocco if
-//                if (bls) {
-//                    Militefunzione.findOrCreateByCroceAndMiliteAndFunzione(croce, milite, funzAmbulanzaCRF[1]).save(flush: true)
-//                    Militefunzione.findOrCreateByCroceAndMiliteAndFunzione(croce, milite, funzAmbulanzaCRF[2]).save(flush: true)
-//                    Militefunzione.findOrCreateByCroceAndMiliteAndFunzione(croce, milite, funzAmbulanzaCRF[3]).save(flush: true)
-//                }// fine del blocco if
-//
-//                //--di default almeno il livello più basso lo metto
-//                int numFunzAmb = funzAmbulanzaCRF.size() - 1
-//                Militefunzione.findOrCreateByCroceAndMiliteAndFunzione(croce, milite, funzAmbulanzaCRF[numFunzAmb]).save(flush: true)
-//            }// fine del blocco if
-            def stop
+            if (milite) {
+                if (autEme) {
+                    Militefunzione.findOrCreateByCroceAndMiliteAndFunzione(croce, milite, funzCRPT[0]).save(flush: true)
+                    Militefunzione.findOrCreateByCroceAndMiliteAndFunzione(croce, milite, funzCRPT[1]).save(flush: true)
+                    Militefunzione.findOrCreateByCroceAndMiliteAndFunzione(croce, milite, funzCRPT[3]).save(flush: true)
+                    Militefunzione.findOrCreateByCroceAndMiliteAndFunzione(croce, milite, funzCRPT[4]).save(flush: true)
+                }// fine del blocco if
+                if (autOrd) {
+                    Militefunzione.findOrCreateByCroceAndMiliteAndFunzione(croce, milite, funzCRPT[1]).save(flush: true)
+                    Militefunzione.findOrCreateByCroceAndMiliteAndFunzione(croce, milite, funzCRPT[3]).save(flush: true)
+                    Militefunzione.findOrCreateByCroceAndMiliteAndFunzione(croce, milite, funzCRPT[4]).save(flush: true)
+                }// fine del blocco if
+                if (dae) {
+                    Militefunzione.findOrCreateByCroceAndMiliteAndFunzione(croce, milite, funzCRPT[2]).save(flush: true)
+                    Militefunzione.findOrCreateByCroceAndMiliteAndFunzione(croce, milite, funzCRPT[3]).save(flush: true)
+                    Militefunzione.findOrCreateByCroceAndMiliteAndFunzione(croce, milite, funzCRPT[4]).save(flush: true)
+                }// fine del blocco if
+                if (bar) {
+                    Militefunzione.findOrCreateByCroceAndMiliteAndFunzione(croce, milite, funzCRPT[4]).save(flush: true)
+                }// fine del blocco if
+
+            }// fine del blocco if
+
         } // fine del ciclo each
     }// fine del metodo
 
