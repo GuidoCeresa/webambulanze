@@ -37,7 +37,7 @@ class LoginController {
      * Default action; redirects to 'defaultTargetUrl' if logged in, /login/auth otherwise.
      */
     def index = {
-        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+        params.siglaCroce = session[Cost.COOKIE_SIGLA_CROCE]
 
         if (springSecurityService.isLoggedIn()) {
             redirect uri: SpringSecurityUtils.securityConfig.successHandler.defaultTargetUrl
@@ -57,12 +57,13 @@ class LoginController {
         ArrayList<String> listaUtenti
         def config = SpringSecurityUtils.securityConfig
 
-        croce = croceService.getCroce(session)
+        croce = croceService.getCroce(request)
+
         if (croce) {
             params.siglaCroce = croce.sigla
             listaGrezza = Utente.findAllByCroce(croce, [sort: 'username'])
         } else {
-            listaGrezza = Utente.findAll([sort: 'username'])
+            //   listaGrezza = Utente.findAll([sort: 'username'])
         }// fine del blocco if-else
 
         if (listaGrezza) {
@@ -77,7 +78,7 @@ class LoginController {
         //--sposta in fondo un eventuale nome del programmatore
         if (listaUtenti) {
             listaUtenti = utenteService.spostaProgrammatoreInFondo(listaUtenti)
-      //      listaUtenti = utenteService.spostaOspiteInFondo(listaUtenti)
+            //      listaUtenti = utenteService.spostaOspiteInFondo(listaUtenti)
         }// fine del blocco if
 
 //        listaUtenti = Utente.executeQuery('select username from Utente order by username')
@@ -119,7 +120,7 @@ class LoginController {
      * Login page for users with a remember-me cookie but accessing a IS_AUTHENTICATED_FULLY page.
      */
     def full = {
-        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+        params.siglaCroce = croceService.getSiglaCroce(request)
         def config = SpringSecurityUtils.securityConfig
         render view: 'auth', params: params,
                 model: [hasCookie: authenticationTrustResolver.isRememberMe(SCH.context?.authentication),
@@ -130,7 +131,7 @@ class LoginController {
      * Callback after a failed login. Redirects to the auth page with a warning message.
      */
     def authfail = {
-        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+        params.siglaCroce = croceService.getSiglaCroce(request)
 
         def username = session[UsernamePasswordAuthenticationFilter.SPRING_SECURITY_LAST_USERNAME_KEY]
         String msg = ''

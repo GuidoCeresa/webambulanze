@@ -26,7 +26,12 @@ class CalcolaJob {
 
         if (USA_MAIL) {
             spedisceMailDiControllo('Ricalcolo effettuato')
-        }// fine del blocco if
+        } else {
+            //logoService.
+        }// fine del blocco if-else
+
+
+
     }// fine del metodo execute
 
     //--provvisorio all'inizio

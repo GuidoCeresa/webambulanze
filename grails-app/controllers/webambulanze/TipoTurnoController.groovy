@@ -28,7 +28,7 @@ class TipoTurnoController {
 
     def list(Integer max) {
         def lista
-        Croce croce = croceService.getCroce(session)
+        Croce croce = croceService.getCroce(request)
         def campiLista = [
                 'ordine',
                 'sigla',
@@ -76,14 +76,14 @@ class TipoTurnoController {
 
     @Secured([Cost.ROLE_PROG])
     def create() {
-        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+        params.siglaCroce = croceService.getSiglaCroce(request)
 
         render(view: 'create', model: [tipoTurnoInstance: new TipoTurno(params)], params: params)
     } // fine del metodo
 
     @Secured([Cost.ROLE_PROG])
     def save() {
-        Croce croce = croceService.getCroce(session)
+        Croce croce = croceService.getCroce(request)
         def tipoTurnoInstance = new TipoTurno(params)
 
         if (croce) {
@@ -111,7 +111,7 @@ class TipoTurnoController {
             return
         }// fine del blocco if
 
-        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+        params.siglaCroce = croceService.getSiglaCroce(request)
         render(view: 'show', model: [tipoTurnoInstance: tipoTurnoInstance], params: params)
     } // fine del metodo
 
@@ -125,7 +125,7 @@ class TipoTurnoController {
             return
         }// fine del blocco if
 
-        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+        params.siglaCroce = croceService.getSiglaCroce(request)
         render(view: 'edit', model: [tipoTurnoInstance: tipoTurnoInstance], params: params)
     } // fine del metodo
 
@@ -139,7 +139,7 @@ class TipoTurnoController {
             return
         }// fine del blocco if
 
-        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+        params.siglaCroce = croceService.getSiglaCroce(request)
         if (version != null) {
             if (tipoTurnoInstance.version > version) {
                 tipoTurnoInstance.errors.rejectValue("version", "default.optimistic.locking.failure",

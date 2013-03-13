@@ -28,7 +28,7 @@ class LogoController {
 
     def list(Integer max) {
         def lista
-        Croce croce = croceService.getCroce(session)
+        Croce croce = croceService.getCroce(request)
         def campiLista = [
                 'time',
                 'utente',
@@ -70,7 +70,7 @@ class LogoController {
 
     @Secured([Cost.ROLE_PROG])
     def create() {
-        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+        params.siglaCroce = croceService.getSiglaCroce(request)
         if (params.siglaCroce && !params.siglaCroce.equals(Cost.CROCE_ALGOS)) {
             render(view: 'create', model: [logoInstance: new Logo(params)], params: params)
         } else {
@@ -82,7 +82,7 @@ class LogoController {
     def save() {
         def logoInstance = new Logo(params)
 
-        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+        params.siglaCroce = croceService.getSiglaCroce(request)
         if (!logoInstance.save(flush: true)) {
             render(view: 'create', model: [logoInstance: logoInstance], params: params)
             return
@@ -101,7 +101,7 @@ class LogoController {
             return
         }// fine del blocco if
 
-        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+        params.siglaCroce = croceService.getSiglaCroce(request)
         render(view: 'show', model: [logoInstance: logoInstance], params: params)
     } // fine del metodo
 
@@ -115,7 +115,7 @@ class LogoController {
             return
         }// fine del blocco if
 
-        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+        params.siglaCroce = croceService.getSiglaCroce(request)
         render(view: 'edit', model: [logoInstance: logoInstance], params: params)
     } // fine del metodo
 
@@ -129,7 +129,7 @@ class LogoController {
             return
         }// fine del blocco if
 
-        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+        params.siglaCroce = croceService.getSiglaCroce(request)
         if (version != null) {
             if (logoInstance.version > version) {
                 logoInstance.errors.rejectValue("version", "default.optimistic.locking.failure",

@@ -40,7 +40,7 @@ class MilitestatisticheController {
 
     def list(int max) {
         def lista = null
-        Croce croce = croceService.getCroce(session)
+        Croce croce = croceService.getCroce(request)
         Milite milite
         HashMap mappa = new HashMap()
         mappa.put('titolo', 'nomignolo')
@@ -49,7 +49,8 @@ class MilitestatisticheController {
                 'milite',
                 'status',
                 'turni',
-                'ore']
+                'ore',
+                'oreExtra']
         def campiExtra
 
         if (params.order) {
@@ -102,20 +103,20 @@ class MilitestatisticheController {
     } // fine del metodo
 
     def calcola() {
-        militeturnoService.calcola(session)
+        militeturnoService.calcola(request)
         redirect(action: 'list', params: params)
     } // fine del metodo
 
     @Secured([Cost.ROLE_PROG])
     def create() {
-        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+        params.siglaCroce = croceService.getSiglaCroce(request)
 
         render(view: 'create', model: [militestatisticheInstance: new Militestatistiche(params)], params: params)
     } // fine del metodo
 
     @Secured([Cost.ROLE_PROG])
     def save() {
-        Croce croce = croceService.getCroce(session)
+        Croce croce = croceService.getCroce(request)
         def militestatisticheInstance = new Militestatistiche(params)
 
         if (croce) {
@@ -144,7 +145,7 @@ class MilitestatisticheController {
             return
         }// fine del blocco if
 
-        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+        params.siglaCroce = croceService.getSiglaCroce(request)
         render(view: 'show', model: [militestatisticheInstance: militestatisticheInstance], params: params)
     } // fine del metodo
 
@@ -158,7 +159,7 @@ class MilitestatisticheController {
             return
         }// fine del blocco if
 
-        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+        params.siglaCroce = croceService.getSiglaCroce(request)
         render(view: 'edit', model: [militestatisticheInstance: militestatisticheInstance], params: params)
     } // fine del metodo
 
@@ -172,7 +173,7 @@ class MilitestatisticheController {
             return
         }// fine del blocco if
 
-        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+        params.siglaCroce = croceService.getSiglaCroce(request)
         if (version != null) {
             if (militestatisticheInstance.version > version) {
                 militestatisticheInstance.errors.rejectValue("version", "default.optimistic.locking.failure",

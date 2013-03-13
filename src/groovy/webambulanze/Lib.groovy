@@ -914,6 +914,61 @@ class Lib {
         return giorno
     }// fine del metodo
 
+    /**
+     * Crea la data
+     *
+     * FORMAT: gg/mm/aaaa
+     *
+     * @return la data creata
+     */
+    public static Date creaData(String dataSottoFormaDiTesto) {
+        /* variabili e costanti locali di lavoro */
+        Date data = null
+        Calendar cal
+        String sep = '/'
+        int posPrimoSep
+        int posSecondoSep
+        String giornoTxt = ''
+        String meseTxt = ''
+        String annoTxt = ''
+        int giorno = 0
+        int mese = 0
+        int anno = 0
+
+        try { // prova ad eseguire il codice
+            posPrimoSep = dataSottoFormaDiTesto.indexOf(sep)
+            posSecondoSep = dataSottoFormaDiTesto.lastIndexOf(sep)
+            giornoTxt = dataSottoFormaDiTesto.substring(0, posPrimoSep)
+            meseTxt = dataSottoFormaDiTesto.substring(++posPrimoSep, posSecondoSep)
+            annoTxt = dataSottoFormaDiTesto.substring(++posSecondoSep)
+            giorno = Integer.decode(giornoTxt)
+            mese = Integer.decode(meseTxt)
+            if (mese > 0) {
+                mese--
+            }// fine del blocco if
+            anno = Integer.decode(annoTxt)
+
+            cal = Calendar.getInstance()
+
+            cal.set(Calendar.DAY_OF_MONTH, giorno)
+            cal.set(Calendar.MONTH, mese)
+            cal.set(Calendar.YEAR, anno)
+
+            cal.set(Calendar.HOUR_OF_DAY, 0)
+            cal.set(Calendar.MINUTE, 0)
+            cal.set(Calendar.SECOND, 0)
+            cal.set(Calendar.MILLISECOND, 0)
+
+            data = new java.util.Date(cal.getTime().getTime());
+
+        } catch (Exception unErrore) { // intercetta l'errore
+        }// fine del blocco try-catch
+
+        /* valore di ritorno */
+        return data
+    }// fine del metodo
+
+
     public static Date setOra(Date giornoIn, int ora) {
         Date giornoOut
         Calendar cal = Calendar.getInstance()

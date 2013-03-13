@@ -92,7 +92,9 @@ class MiliteController {
 
     def list(Integer max) {
         def lista
-        Croce croce = croceService.getCroce(session)
+        Croce croce = croceService.getCroce(request)
+        String name = g.cookie(name: 'siglaCroce')
+
         def campiLista = [
                 'cognome',
                 'nome',
@@ -142,15 +144,15 @@ class MiliteController {
 
     @Secured([Cost.ROLE_ADMIN])
     def create() {
-        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+        params.siglaCroce = croceService.getSiglaCroce(request)
 
-        def campiExtra = funzioneService.campiExtra(session)
+        def campiExtra = funzioneService.campiExtra(request)
         render(view: 'create', model: [militeInstance: new Milite(params), campiExtra: campiExtra], params: params)
     } // fine del metodo
 
     @Secured([Cost.ROLE_ADMIN])
     def save() {
-        Croce croce = croceService.getCroce(session)
+        Croce croce = croceService.getCroce(request)
         def militeInstance = new Milite(params)
 
         if (croce) {
@@ -181,7 +183,7 @@ class MiliteController {
 
     def show(Long id) {
         def militeInstance = Milite.get(id)
-        def campiExtra = funzioneService.campiExtra(session)
+        def campiExtra = funzioneService.campiExtra(request)
 
         if (!militeInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'milite.label', default: 'Milite'), id])
@@ -189,14 +191,14 @@ class MiliteController {
             return
         }// fine del blocco if
 
-        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+        params.siglaCroce = croceService.getSiglaCroce(request)
         render(view: 'show', model: [militeInstance: militeInstance, campiExtra: campiExtra], params: params)
     } // fine del metodo
 
     @Secured([Cost.ROLE_ADMIN])
     def edit(Long id) {
         def militeInstance = Milite.get(id)
-        def campiExtra = funzioneService.campiExtra(session)
+        def campiExtra = funzioneService.campiExtra(request)
 
         if (!militeInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'milite.label', default: 'Milite'), id])
@@ -204,7 +206,7 @@ class MiliteController {
             return
         }// fine del blocco if
 
-        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+        params.siglaCroce = croceService.getSiglaCroce(request)
         render(view: 'edit', model: [militeInstance: militeInstance, campiExtra: campiExtra], params: params)
     } // fine del metodo
 
@@ -218,7 +220,7 @@ class MiliteController {
             return
         }// fine del blocco if
 
-        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+        params.siglaCroce = croceService.getSiglaCroce(request)
         if (version != null) {
             if (militeInstance.version > version) {
                 militeInstance.errors.rejectValue("version", "default.optimistic.locking.failure",

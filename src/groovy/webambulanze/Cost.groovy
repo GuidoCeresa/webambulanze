@@ -9,7 +9,7 @@ package webambulanze
 public interface Cost {
 
     //--sigle dei livelli di authority per la security
-    public static String ROLE_PROG = 'ROLE_programmatore'
+    public static String ROLE_PROG = 'ROLE_prog'
     public static String ROLE_CUSTODE = 'ROLE_custode'
     public static String ROLE_ADMIN = 'ROLE_admin'
     public static String ROLE_MILITE = 'ROLE_milite'
@@ -22,12 +22,12 @@ public interface Cost {
     public static String CROCE_ROSSA_FIDENZA = 'CRF'
     public static String CROCE_ROSSA_PONTETARO = 'CRPT'
 
-    //--codifica degli attributi della sessione
-    public static String SESSIONE_SIGLA_CROCE = 'siglaCroce'
-    public static String SESSIONE_LOGIN = 'startLogin'
-    public static String SESSIONE_START_CONTROLLER = 'startController'
-    public static String SESSIONE_TUTTI_CONTROLLI = 'allControllers'
-    public static String SESSIONE_QUALI_CONTROLLI = 'controlli'
+    //--codifica degli attributi dei cookies
+    public static String COOKIE_SIGLA_CROCE = 'siglaCroce'
+ //   public static String SESSIONE_LOGIN = 'startLogin'
+ //   public static String SESSIONE_START_CONTROLLER = 'startController'
+ //   public static String SESSIONE_TUTTI_CONTROLLI = 'allControllers'
+ //   public static String SESSIONE_QUALI_CONTROLLI = 'controlli'
 
     //--codifica delle preferenze
     public static boolean PREF_startLogin = 'startLogin'

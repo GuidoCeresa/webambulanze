@@ -246,6 +246,24 @@
 <g:checkBox name="attivo" value="${militeInstance?.attivo}" />
 </div>
 
+<div class="fieldcontain ${hasErrors(bean: militeInstance, field: 'oreExtra', 'error')} required">
+	<label for="oreExtra">
+		<g:message code="milite.oreExtra.labelform" default="Ore Extra" />
+		<span class="required-indicator">*</span>
+	</label>
+	
+
+
+
+
+
+
+
+
+
+<g:field name="oreExtra" type="number" value="${militeInstance.oreExtra}" required=""/>
+</div>
+
 <g:if test="${campiExtra}">
     <amb:extraSchedaForm rec="${militeInstance}" campiExtra="${campiExtra}"></amb:extraSchedaForm>
 </g:if>

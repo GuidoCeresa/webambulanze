@@ -8,6 +8,7 @@ class Militestatistiche {
     String status
     int turni = 0
     int ore = 0
+    int oreExtra
     int funz1 = 0
     int funz2 = 0
     int funz3 = 0
@@ -40,6 +41,7 @@ class Militestatistiche {
         status(nullable: true, blank: true)
         turni(nullable: true)
         ore(nullable: true)
+        oreExtra(nullable: true)
         funz1(blank: true)
         funz2(blank: true)
         funz3(blank: true)

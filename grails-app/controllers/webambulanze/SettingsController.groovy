@@ -28,7 +28,7 @@ class SettingsController {
 
     def list(Integer max) {
         def lista
-        Croce croce = croceService.getCroce(session)
+        Croce croce = croceService.getCroce(request)
         def campiLista = [
                 'startLogin',
                 'startController',
@@ -74,7 +74,7 @@ class SettingsController {
 
     @Secured([Cost.ROLE_PROG])
     def create() {
-        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+        params.siglaCroce = croceService.getSiglaCroce(request)
         if (params.siglaCroce && params.siglaCroce.equals(Cost.CROCE_ALGOS)) {
             render(view: 'create', model: [settingsInstance: new Settings(params)], params: params)
         } else {
@@ -86,7 +86,7 @@ class SettingsController {
     def save() {
         def settingsInstance = new Settings(params)
 
-        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+        params.siglaCroce = croceService.getSiglaCroce(request)
         if (!settingsInstance.save(flush: true)) {
             render(view: 'create', model: [croceInstance: settingsInstance], params: params)
             return
@@ -105,7 +105,7 @@ class SettingsController {
             return
         }// fine del blocco if
 
-        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+        params.siglaCroce = croceService.getSiglaCroce(request)
         render(view: 'show', model: [settingsInstance: settingsInstance], params: params)
     } // fine del metodo
 
@@ -119,7 +119,7 @@ class SettingsController {
             return
         }// fine del blocco if
 
-        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+        params.siglaCroce = croceService.getSiglaCroce(request)
         render(view: 'edit', model: [settingsInstance: settingsInstance], params: params)
     } // fine del metodo
 
@@ -133,7 +133,7 @@ class SettingsController {
             return
         }// fine del blocco if
 
-        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+        params.siglaCroce = croceService.getSiglaCroce(request)
         if (version != null) {
             if (settingsInstance.version > version) {
                 settingsInstance.errors.rejectValue("version", "default.optimistic.locking.failure",

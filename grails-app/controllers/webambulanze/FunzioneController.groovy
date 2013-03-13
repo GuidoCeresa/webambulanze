@@ -28,7 +28,7 @@ class FunzioneController {
 
     def list(Integer max) {
         def lista
-        Croce croce = croceService.getCroce(session)
+        Croce croce = croceService.getCroce(request)
         def campiLista = [
                 'ordine',
                 'sigla',
@@ -66,14 +66,14 @@ class FunzioneController {
 
     @Secured([Cost.ROLE_PROG])
     def create() {
-        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+        params.siglaCroce = croceService.getSiglaCroce(request)
 
         render(view: 'create', model: [funzioneInstance: new Funzione(params)], params: params)
     } // fine del metodo
 
     @Secured([Cost.ROLE_PROG])
     def save() {
-        Croce croce = croceService.getCroce(session)
+        Croce croce = croceService.getCroce(request)
         def funzioneInstance = new Funzione(params)
 
         if (croce) {
@@ -101,7 +101,7 @@ class FunzioneController {
             return
         }// fine del blocco if
 
-        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+        params.siglaCroce = croceService.getSiglaCroce(request)
         render(view: 'show', model: [funzioneInstance: funzioneInstance], params: params)
     } // fine del metodo
 
@@ -115,7 +115,7 @@ class FunzioneController {
             return
         }// fine del blocco if
 
-        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+        params.siglaCroce = croceService.getSiglaCroce(request)
         render(view: 'edit', model: [funzioneInstance: funzioneInstance], params: params)
     } // fine del metodo
 
@@ -129,7 +129,7 @@ class FunzioneController {
             return
         }// fine del blocco if
 
-        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+        params.siglaCroce = croceService.getSiglaCroce(request)
         if (version != null) {
             if (funzioneInstance.version > version) {
                 funzioneInstance.errors.rejectValue("version", "default.optimistic.locking.failure",

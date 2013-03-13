@@ -1,6 +1,9 @@
 package webambulanze
+
 import grails.plugins.springsecurity.Secured
 import org.springframework.security.core.context.SecurityContextHolder
+
+import javax.servlet.http.Cookie
 
 class GenController {
 
@@ -25,11 +28,15 @@ class GenController {
         redirect(controller: 'turno', action: 'tabellone')
     } // fine del metodo
 
+    def help() {
+        render(view: '/help')
+    } // fine del metodo
+
     //--selezione della croce su cui ritornare
     def logoutSelection() {
         String siglaCroce = GenController.SIGLA_CROCE
 
-        if (siglaCroce.equals(Cost.CROCE_ALGOS)||siglaCroce.equals('nessuna')) {
+        if (siglaCroce.equals(Cost.CROCE_ALGOS) || siglaCroce.equals('nessuna')) {
             redirect(action: 'selezionaCroce')
         }// fine del blocco if
 
@@ -61,7 +68,7 @@ class GenController {
     //--chiamata dai menu delle liste e form
     //--va al menu base
     def home() {
-        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+        params.siglaCroce = croceService.getSiglaCroce(request)
 
         render(controller: 'gen', view: 'home', params: params)
     } // fine del metodo
@@ -76,8 +83,9 @@ class GenController {
         rememberMeServices.logout request, response, null
 
         //--selezione iniziale della croce su cui operare
-        session[Cost.SESSIONE_SIGLA_CROCE] = siglaCroce
-
+        Cookie cookie = new Cookie(Cost.COOKIE_SIGLA_CROCE,siglaCroce)
+        cookie.maxAge = 100000
+        response.addCookie(cookie)
     } // fine del metodo
 
     //--chiamata senza specificazione, parte la croce demo
@@ -105,7 +113,7 @@ class GenController {
     //--regola la schermata iniziale
     @Secured([Cost.ROLE_ADMIN])
     def selezionaCroceAlgosSicura() {
-        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+        params.siglaCroce = croceService.getSiglaCroce(request)
         String startController = croceService.getStartController((String) params.siglaCroce)
 
         if (startController) {
@@ -121,7 +129,7 @@ class GenController {
         //--regolazioni generali
         selezionaCroceBase(Cost.CROCE_DEMO)
 
-        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+        params.siglaCroce = croceService.getSiglaCroce(request)
         String startController = croceService.getStartController((String) params.siglaCroce)
 
         if (startController) {
@@ -143,7 +151,7 @@ class GenController {
 
         springSecurityService.reauthenticate(Cost.DEMO_OSPITE, Cost.DEMO_PASSWORD)
 
-        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+        params.siglaCroce = croceService.getSiglaCroce(request)
         String startController = croceService.getStartController((String) params.siglaCroce)
 
         if (startController) {
@@ -163,7 +171,7 @@ class GenController {
         //--regolazioni generali
         selezionaCroceBase(Cost.CROCE_PUBBLICA)
 
-        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+        params.siglaCroce = croceService.getSiglaCroce(request)
         String startController = croceService.getStartController((String) params.siglaCroce)
 
         if (startController) {
@@ -183,7 +191,7 @@ class GenController {
         //--regolazioni generali
         selezionaCroceBase(Cost.CROCE_ROSSA_FIDENZA)
 
-        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+        params.siglaCroce = croceService.getSiglaCroce(request)
         String startController = croceService.getStartController((String) params.siglaCroce)
 
         if (startController) {
@@ -204,10 +212,10 @@ class GenController {
         selezionaCroceBase(Cost.CROCE_ROSSA_PONTETARO)
 
         if (autenticaOspite) {
-       //     springSecurityService.reauthenticate(Cost.CRPT_OSPITE, Cost.CRPT_PASSWORD)
+            //     springSecurityService.reauthenticate(Cost.CRPT_OSPITE, Cost.CRPT_PASSWORD)
         }// fine del blocco if
 
-        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+        params.siglaCroce = croceService.getSiglaCroce(request)
         String startController = croceService.getStartController((String) params.siglaCroce)
 
         if (startController) {
@@ -224,7 +232,7 @@ class GenController {
     //--seleziona la necessità del login
     //--regola la schermata iniziale
     def selezionaCroceRossaPonteTaroSecurity() {
-     return selezionaCroceRossaPonteTaro(false)
+        return selezionaCroceRossaPonteTaro(false)
     } // fine del metodo
 
     //--chiamata da URL = croce rossa ponte taro

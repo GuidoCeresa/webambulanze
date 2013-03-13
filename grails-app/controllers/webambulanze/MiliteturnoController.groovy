@@ -28,7 +28,7 @@ class MiliteturnoController {
 
     def list(Integer max) {
         def lista
-        Croce croce = croceService.getCroce(session)
+        Croce croce = croceService.getCroce(request)
         def campiLista = [
                 'milite',
                 'giorno',
@@ -71,7 +71,7 @@ class MiliteturnoController {
     def dettagli(Integer recNumber) {
         def lista
         Milite milite
-        Croce croce = croceService.getCroce(session)
+        Croce croce = croceService.getCroce(request)
         def campiLista = [
                 'milite',
                 'giorno',
@@ -102,14 +102,14 @@ class MiliteturnoController {
 
     @Secured([Cost.ROLE_PROG])
     def create() {
-        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+        params.siglaCroce = croceService.getSiglaCroce(request)
 
         render(view: 'create', model: [militeturnoInstance: new Militeturno(params)], params: params)
     } // fine del metodo
 
     @Secured([Cost.ROLE_PROG])
     def save() {
-        Croce croce = croceService.getCroce(session)
+        Croce croce = croceService.getCroce(request)
         def militeturnoInstance = new Militeturno(params)
 
         if (croce) {
@@ -138,7 +138,7 @@ class MiliteturnoController {
             return
         }// fine del blocco if
 
-        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+        params.siglaCroce = croceService.getSiglaCroce(request)
         render(view: 'show', model: [militeturnoInstance: militeturnoInstance], params: params)
     } // fine del metodo
 
@@ -152,7 +152,7 @@ class MiliteturnoController {
             return
         }// fine del blocco if
 
-        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+        params.siglaCroce = croceService.getSiglaCroce(request)
         render(view: 'edit', model: [militeturnoInstance: militeturnoInstance], params: params)
     } // fine del metodo
 
@@ -166,7 +166,7 @@ class MiliteturnoController {
             return
         }// fine del blocco if
 
-        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+        params.siglaCroce = croceService.getSiglaCroce(request)
         if (version != null) {
             if (militeturnoInstance.version > version) {
                 militeturnoInstance.errors.rejectValue("version", "default.optimistic.locking.failure",

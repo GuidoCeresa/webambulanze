@@ -1,6 +1,12 @@
 package webambulanze
 
+import javax.servlet.http.Cookie
+
 class CroceService {
+
+    // utilizzo di un service con la businessLogic per l'elaborazione dei dati
+    // il service viene iniettato automaticamente
+    def springSecurityService
 
     //--controlla il valore mantenuto nei Settings associati alla croce indicata
     private static String getStr(Croce croce, codice) {
@@ -35,9 +41,9 @@ class CroceService {
     }// fine del metodo
 
     //--controlla il flag mantenuto nei Settings associati alla croce indicata
-    private boolean isFlag(session, codice) {
+    private boolean isFlag(request, codice) {
         boolean flag = false
-        Croce croce = getCroce(session)
+        Croce croce = getCroce(request)
         Settings settings
 
         if (croce) {
@@ -109,8 +115,8 @@ class CroceService {
     }// fine del metodo
 
     //--controlla il flag mantenuto nei Settings associati alla croce corrente
-    public boolean fissaLimiteMassimoSingoloTurno(def session) {
-        return fissaLimiteMassimoSingoloTurno(getCroce(session))
+    public boolean fissaLimiteMassimoSingoloTurno(def request) {
+        return fissaLimiteMassimoSingoloTurno(getCroce(request))
     }// fine del metodo
 
     //--controlla il flag mantenuto nei Settings associati alla croce corrente
@@ -119,19 +125,19 @@ class CroceService {
     }// fine del metodo
 
     //--controlla il flag mantenuto nei Settings associati alla croce corrente
-    public int oreMassimeSingoloTurno(def session) {
-        return oreMassimeSingoloTurno(getCroce(session))
+    public int oreMassimeSingoloTurno(def request) {
+        return oreMassimeSingoloTurno(getCroce(request))
     }// fine del metodo
 
     //--controlla il flag mantenuto nei Settings associati alla croce corrente
-    public int maxMinutiTrascorsiModifica(def session) {
-        return getInt(getCroce(session), Cost.PREF_maxMinutiTrascorsiModifica)
+    public int maxMinutiTrascorsiModifica(def request) {
+        return getInt(getCroce(request), Cost.PREF_maxMinutiTrascorsiModifica)
     }// fine del metodo
 
     //--controlla il parametro mantenuto nei Settings associati alla croce corrente
-    public ControlloTemporale getControlloModifica(def session) {
+    public ControlloTemporale getControlloModifica(def request) {
         ControlloTemporale tipoControlloModifica = null
-        Croce croce = getCroce(session)
+        Croce croce = getCroce(request)
         Settings settings
 
         if (croce) {
@@ -146,8 +152,8 @@ class CroceService {
     }// fine del metodo
 
     //--controlla il parametro mantenuto nei Settings associati alla croce corrente
-    public boolean isControlloModificaTempoTrascorso(def session) {
-        return (getControlloModifica(session) == ControlloTemporale.tempoTrascorso)
+    public boolean isControlloModificaTempoTrascorso(def request) {
+        return (getControlloModifica(request) == ControlloTemporale.tempoTrascorso)
     }// fine del metodo
 
     //--controlla il parametro mantenuto nei Settings associati alla croce
@@ -202,10 +208,33 @@ class CroceService {
 
     }// fine del metodo
 
+    //--restituisce la sigla della croce corrente
+    public String getSiglaCroce(def request) {
+        String siglaCroce = ''
+        def listaCookies
+        Cookie cookie
+
+        if (request) {
+            listaCookies = request.cookies
+            listaCookies?.each {
+                cookie = (Cookie) it
+                if (cookie.name.equals(Cost.COOKIE_SIGLA_CROCE)) {
+                    siglaCroce = cookie.value
+                }// fine del blocco if
+            } // fine del ciclo each
+        }// fine del blocco if
+
+        return siglaCroce
+    }// fine del metodo
+
     //--restituisce la croce corrente
-    public Croce getCroce(def session) {
+    public Croce getCroce(def request) {
         Croce croceCorrente = null
-        String siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+        String siglaCroce
+
+        if (request) {
+            siglaCroce = getSiglaCroce(request)
+        }// fine del blocco if
 
         if (siglaCroce) {
             croceCorrente = Croce.findBySigla(siglaCroce)
@@ -224,4 +253,33 @@ class CroceService {
 
         return croce
     }// fine del metodo
+
+    //--ruolo dell'utente al momento collegato
+    //--la scala dei ruoli si base sull'ordine dei records
+    //--per primo (record più basso) il ruolo più importante
+    public Ruolo getMaxRuolo() {
+        Ruolo ruolo = null
+        Ruolo ruoloTmp = null
+        def authentication = springSecurityService.authentication
+        def listaRuoli
+        def listaNumeri
+        long min
+
+        if (authentication) {
+            listaNumeri = new ArrayList()
+            listaRuoli = authentication.authorities
+            listaRuoli?.each {
+                ruoloTmp = Ruolo.findByAuthority((String) it)
+                if (ruoloTmp) {
+                    listaNumeri.add(ruoloTmp.id)
+                }// fine del blocco if
+            } // fine del ciclo each
+
+            min = (long) listaNumeri.min()
+            ruolo = Ruolo.get(min)
+        }// fine del blocco if
+
+        return ruolo
+    }// fine del metodo
+
 } // end of Service Class

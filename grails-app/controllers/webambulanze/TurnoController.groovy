@@ -43,7 +43,7 @@ class TurnoController {
 
     @Secured([Cost.ROLE_MILITE])
     def tabellone = {
-        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+        params.siglaCroce = croceService.getSiglaCroce(request)
         flash.message = ''
         dataInizio = AmbulanzaTagLib.creaDataOggi()
         dataFine = (dataInizio + delta).toTimestamp()
@@ -52,13 +52,13 @@ class TurnoController {
 
     @Secured([Cost.ROLE_MILITE])
     def tabCorrente = {
-        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+        params.siglaCroce = croceService.getSiglaCroce(request)
         render(view: 'tabellone', model: [dataInizio: dataInizio, dataFine: dataFine], params: params)
     }// fine della closure
 
     @Secured([Cost.ROLE_MILITE])
     def tabellonePrima = {
-        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+        params.siglaCroce = croceService.getSiglaCroce(request)
         flash.message = ''
         dataInizio -= giorniVisibili
         dataFine -= giorniVisibili
@@ -67,7 +67,7 @@ class TurnoController {
 
     @Secured([Cost.ROLE_MILITE])
     def tabelloneOggi = {
-        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+        params.siglaCroce = croceService.getSiglaCroce(request)
         flash.message = ''
         dataInizio = AmbulanzaTagLib.creaDataOggi()
         dataFine = (dataInizio + delta).toTimestamp()
@@ -76,7 +76,7 @@ class TurnoController {
 
     @Secured([Cost.ROLE_MILITE])
     def tabelloneLunedi = {
-        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+        params.siglaCroce = croceService.getSiglaCroce(request)
         flash.message = ''
         dataInizio = AmbulanzaTagLib.creaDataLunedi()
         dataFine = (dataInizio + delta).toTimestamp()
@@ -85,7 +85,7 @@ class TurnoController {
 
     @Secured([Cost.ROLE_MILITE])
     def tabelloneDopo = {
-        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+        params.siglaCroce = croceService.getSiglaCroce(request)
         flash.message = ''
         dataInizio += giorniVisibili
         dataFine += giorniVisibili
@@ -99,7 +99,7 @@ class TurnoController {
         String giornoNum
         Turno nuovoOppureEsistente = null
         TipoTurno tipoTurno = null
-        Croce croce = croceService.getCroce(session)
+        Croce croce = croceService.getCroce(request)
         Date giorno = Lib.creaData1Gennaio()
         int offSet
         String giornoTxt = ''
@@ -164,7 +164,7 @@ class TurnoController {
 
     @Secured([Cost.ROLE_MILITE])
     def newFillTurno(Turno turnoInstance, boolean nuovoTurno) {
-        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+        params.siglaCroce = croceService.getSiglaCroce(request)
 
         render(view: 'fillTurno', model: [turnoInstance: turnoInstance, nuovoTurno: nuovoTurno], params: params)
     }// fine del metodo
@@ -218,7 +218,7 @@ class TurnoController {
 
     def list(Integer max) {
         def lista
-        Croce croce = croceService.getCroce(session)
+        Croce croce = croceService.getCroce(request)
         def campiLista = [
                 'tipoTurno',
                 'giorno',
@@ -259,14 +259,14 @@ class TurnoController {
 
     @Secured([Cost.ROLE_ADMIN])
     def create() {
-        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+        params.siglaCroce = croceService.getSiglaCroce(request)
 
         render(view: 'create', model: [turnoInstance: new Turno(params)], params: params)
     } // fine del metodo
 
     @Secured([Cost.ROLE_ADMIN])
     def save() {
-        Croce croce = croceService.getCroce(session)
+        Croce croce = croceService.getCroce(request)
         def turnoInstance = new Turno(params)
 
         if (croce) {
@@ -294,7 +294,7 @@ class TurnoController {
             return
         }// fine del blocco if
 
-        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+        params.siglaCroce = croceService.getSiglaCroce(request)
         render(view: 'show', model: [turnoInstance: turnoInstance], params: params)
     } // fine del metodo
 
@@ -329,7 +329,7 @@ class TurnoController {
             return
         }// fine del blocco if
 
-        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+        params.siglaCroce = croceService.getSiglaCroce(request)
         if (version != null) {
             if (turnoInstance.version > version) {
                 turnoInstance.errors.rejectValue("version", "default.optimistic.locking.failure",
@@ -599,8 +599,8 @@ class TurnoController {
         ArrayList listaTmp = new ArrayList()
         HashMap mapTmp = new HashMap()
         boolean isAdmin = militeService.isLoggatoAdminOrMore()
-        boolean isControlloModificaTempoTrascorso = croceService.isControlloModificaTempoTrascorso(session)
-        int maxMinutiTrascorsiModifica = croceService.maxMinutiTrascorsiModifica(session)
+        boolean isControlloModificaTempoTrascorso = croceService.isControlloModificaTempoTrascorso(request)
+        int maxMinutiTrascorsiModifica = croceService.maxMinutiTrascorsiModifica(request)
         long oldTime
         long actualTime
         int minutiTrascorsi
@@ -673,12 +673,12 @@ class TurnoController {
         }// fine del blocco if
 
         //numero massimo di ore inseribili
-        if (croceService.fissaLimiteMassimoSingoloTurno(session)) {
+        if (croceService.fissaLimiteMassimoSingoloTurno(request)) {
             int ore1 = turno.oreMilite1
             int ore2 = turno.oreMilite2
             int ore3 = turno.oreMilite3
             int ore4 = turno.oreMilite4
-            int max = croceService.oreMassimeSingoloTurno(session)
+            int max = croceService.oreMassimeSingoloTurno(request)
             if (ore1 > max || ore2 > max || ore3 > max || ore4 > max) {
                 testoErrore = 'Non puoi inserire nel turno un numero di ore così elevato'
                 listaErrori.add(testoErrore)

@@ -26,7 +26,7 @@ class MilitefunzioneController {
 
     def list(Integer max) {
         def lista
-        Croce croce = croceService.getCroce(session)
+        Croce croce = croceService.getCroce(request)
         def campiLista = [
                 'milite',
                 'funzione']
@@ -60,13 +60,13 @@ class MilitefunzioneController {
     } // fine del metodo
 
     def create() {
-        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+        params.siglaCroce = croceService.getSiglaCroce(request)
 
         render(view: 'create', model: [militefunzioneInstance: new Militefunzione(params)], params: params)
     } // fine del metodo
 
     def save() {
-        Croce croce = croceService.getCroce(session)
+        Croce croce = croceService.getCroce(request)
         def militefunzioneInstance = new Militefunzione(params)
 
         if (croce) {
@@ -94,7 +94,7 @@ class MilitefunzioneController {
             return
         }// fine del blocco if
 
-        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+        params.siglaCroce = croceService.getSiglaCroce(request)
         render(view: 'show', model: [militefunzioneInstance: militefunzioneInstance], params: params)
     } // fine del metodo
 
@@ -107,7 +107,7 @@ class MilitefunzioneController {
             return
         }// fine del blocco if
 
-        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+        params.siglaCroce = croceService.getSiglaCroce(request)
         render(view: 'edit', model: [militefunzioneInstance: militefunzioneInstance], params: params)
     } // fine del metodo
 
@@ -120,7 +120,7 @@ class MilitefunzioneController {
             return
         }// fine del blocco if
 
-        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+        params.siglaCroce = croceService.getSiglaCroce(request)
         if (version != null) {
             if (militefunzioneInstance.version > version) {
                 militefunzioneInstance.errors.rejectValue("version", "default.optimistic.locking.failure",

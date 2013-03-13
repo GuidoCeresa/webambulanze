@@ -29,7 +29,7 @@ class MiliteturnoService {
         aggiornaMiliti(croce, primoGennaio)
         cancellaMiliteStatistiche(croce)
         ricalcolaMiliteStatistiche(croce)
-        logoService.setInfo(croce,Evento.statistiche)
+        logoService.setInfo(croce, Evento.statistiche)
     }// fine del metodo
 
     //--cancella tutti i records di Militeturno (dell'anno corrente)
@@ -58,8 +58,8 @@ class MiliteturnoService {
     //--cancella tutti i records di Militestatistiche (dell'anno corrente)
     //--crea i records di Militestatistiche
     //--opera sulla croce della sessione corrente (se ha il flag abilitato)
-    def calcola(session) {
-        Croce croce = croceService.getCroce(session)
+    def calcola(request) {
+        Croce croce = croceService.getCroce(request)
 
         if (croce) {
             calcola(croce)
@@ -253,6 +253,7 @@ class MiliteturnoService {
             militestatistiche = new Militestatistiche()
             militestatistiche.croce = croce
             militestatistiche.milite = milite
+            militestatistiche.oreExtra = milite.oreExtra
             militestatistiche.status = turni < Lib.turniNecessari() ? Cost.STATUS_ROSSO : Cost.STATUS_VERDE
             militestatistiche.turni = turni
             militestatistiche.ore = ore

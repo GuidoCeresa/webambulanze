@@ -35,6 +35,7 @@ class Milite {
 
     int oreAnno
     int turniAnno
+    int oreExtra
 
     /**
      * regolazione delle proprietà di ogni campo
@@ -57,6 +58,7 @@ class Milite {
         attivo(nullable: true)
         oreAnno(display: false)
         turniAnno(display: false)
+        oreExtra(nullable: true)
     } // end of static constraints
 
     static mapping = {

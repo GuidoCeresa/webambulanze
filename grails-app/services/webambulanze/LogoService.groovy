@@ -71,8 +71,8 @@ class LogoService {
     }// fine del metodo
 
     //--registra un evento generico (molto generico)
-    public String setInfo(def session, Evento evento) {
-        return setBase(croceService.getCroce(session), Livello.info, evento)
+    public String setInfo(def request, Evento evento) {
+        return setBase(croceService.getCroce(request), Livello.info, evento)
     }// fine del metodo
 
     //--registra un evento generico (molto generico)
@@ -130,22 +130,8 @@ class LogoService {
             utente = (Utente) currUser
         }// fine del blocco if
 
-        //--dal plagin
-        logged = springSecurityService.getPrincipal()
-
-        if (logged instanceof GrailsUser) {
-            user = (GrailsUser) logged
-        }// fine del blocco if
-
         //--ruolo principale
-        if (user) {
-            ruoli = user.authorities
-            if (ruoli) {
-                auth = (GrantedAuthority) ruoli.toArray().first()
-                siglaRuolo = auth.authority
-                ruolo = Ruolo.findByAuthority(siglaRuolo)
-            }// fine del blocco if
-        }// fine del blocco if
+        ruolo = croceService.getMaxRuolo()
 
         logo.croceLogo = croce
         logo.time = new Date().toTimestamp()

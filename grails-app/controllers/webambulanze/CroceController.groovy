@@ -27,7 +27,7 @@ class CroceController {
 
     def list(Integer max) {
         def lista
-        Croce croce = croceService.getCroce(session)
+        Croce croce = croceService.getCroce(request)
         def campiLista = [
                 'descrizione',
                 'presidente',
@@ -68,7 +68,7 @@ class CroceController {
 
     @Secured([Cost.ROLE_PROG])
     def create() {
-        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+        params.siglaCroce = croceService.getSiglaCroce(request)
         if (params.siglaCroce && params.siglaCroce.equals(Cost.CROCE_ALGOS)) {
             render(view: 'create', model: [croceInstance: new Croce(params)], params: params)
         } else {
@@ -80,7 +80,7 @@ class CroceController {
     def save() {
         def croceInstance = new Croce(params)
 
-        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+        params.siglaCroce = croceService.getSiglaCroce(request)
         if (!croceInstance.save(flush: true)) {
             render(view: 'create', model: [croceInstance: croceInstance], params: params)
             return
@@ -99,7 +99,7 @@ class CroceController {
             return
         }// fine del blocco if
 
-        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+        params.siglaCroce = croceService.getSiglaCroce(request)
         render(view: 'show', model: [croceInstance: croceInstance], params: params)
     } // fine del metodo
 
@@ -113,7 +113,7 @@ class CroceController {
             return
         }// fine del blocco if
 
-        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+        params.siglaCroce = croceService.getSiglaCroce(request)
         render(view: 'edit', model: [croceInstance: croceInstance], params: params)
     } // fine del metodo
 
@@ -127,7 +127,7 @@ class CroceController {
             return
         }// fine del blocco if
 
-        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+        params.siglaCroce = croceService.getSiglaCroce(request)
         if (version != null) {
             if (croceInstance.version > version) {
                 croceInstance.errors.rejectValue("version", "default.optimistic.locking.failure",

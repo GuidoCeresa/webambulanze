@@ -49,7 +49,7 @@ class BootStrap implements Cost {
         iniezioneVariabili(servletContext)
 
         //--ruoli
-        //      securitySetupRuoli()
+        securitySetupRuoli()
 
         //--croce interna
         //      croceAlgos()
@@ -61,7 +61,7 @@ class BootStrap implements Cost {
         //  croceTidone()
 
         //--croce rossa fidenza
-        // croceRossaFidenza()
+        //croceRossaFidenza()
 
         //--croce rossa pontetaro
         if (SVILUPPO_CROCE_ROSSA_PONTE_TARO) {
@@ -69,8 +69,8 @@ class BootStrap implements Cost {
         }// fine del blocco if
         croceRossaPontetaro()
 
-        //--creazione del collegamento tyra croce e settings
-        //linkInternoAziende()
+        //--creazione del collegamento tra croce e settings
+        linkInternoAziende()
     }// fine della closure
 
     //--cancella tutto il database
@@ -1428,16 +1428,27 @@ class BootStrap implements Cost {
         String nome = ''
         String cognome = ''
         String patente = ''
+        String telefono = ''
+        String fisso = ''
+        String mail = ''
+        String dataNascitaTxt = ''
+        Date dataNascita = null
         Map mappa
         Milite milite
         String daeTxt = ''
         String barTxt = ''
         String tagVero = 'SI'
+        String tagFalso = 'NO'
         boolean autEme = false
         boolean autOrd = false
         boolean dae = false
         boolean soc = false
         boolean bar = false
+        String tagPunto = '.'
+        int pos
+        String prima
+        String dopo
+        String tagSpazio = ' '
 
         if (!ESISTE_COLLEGAMENTO_INTERNET) {
             return
@@ -1462,6 +1473,10 @@ class BootStrap implements Cost {
             cognome = ''
             nome = ''
             patente = ''
+            telefono = ''
+            fisso = ''
+            mail = ''
+            dataNascitaTxt = ''
             daeTxt = ''
             barTxt = ''
             autEme = false
@@ -1472,20 +1487,40 @@ class BootStrap implements Cost {
 
             mappa = (Map) it
 
-            if (mappa.cognome) {
-                cognome = mappa.cognome
+            if (mappa.Cognome) {
+                cognome = mappa.Cognome
                 cognome = cognome.trim()
                 cognome = Lib.primaMaiuscola(cognome)
             }// fine del blocco if
 
-            if (mappa.nome) {
-                nome = mappa.nome
+            if (mappa.Nome) {
+                nome = mappa.Nome
                 nome = nome.trim()
                 nome = Lib.primaMaiuscola(nome)
             }// fine del blocco if
 
-            if (mappa.patente) {
-                patente = mappa.patente
+            if (mappa.Telefono) {
+                telefono = mappa.Telefono
+                if (telefono.contains(tagPunto)) {
+                    pos = telefono.indexOf(tagPunto)
+                    prima = telefono.substring(0, pos)
+                    dopo = telefono.substring(++pos)
+                    telefono = prima + tagSpazio + dopo
+                }// fine del blocco if
+            }// fine del blocco if
+
+            if (mappa.Fisso) {
+                fisso = mappa.Fisso
+                if (fisso.contains(tagPunto)) {
+                    pos = fisso.indexOf(tagPunto)
+                    prima = fisso.substring(0, pos)
+                    dopo = fisso.substring(++pos)
+                    fisso = prima + tagSpazio + dopo
+                }// fine del blocco if
+            }// fine del blocco if
+
+            if (mappa.Patente) {
+                patente = mappa.Patente
                 if (patente.equals('5')) {
                     autEme = true
                 }// fine del blocco if
@@ -1494,22 +1529,48 @@ class BootStrap implements Cost {
                 }// fine del blocco if
             }// fine del blocco if
 
-            if (mappa.dae) {
-                daeTxt = mappa.dae
+            if (mappa.Dae) {
+                daeTxt = mappa.Dae
                 if (daeTxt.equals(tagVero)) {
                     dae = true
                 }// fine del blocco if
             }// fine del blocco if
 
-            if (mappa.barelliere) {
-                barTxt = mappa.barelliere
+            if (mappa.Barelliere) {
+                barTxt = mappa.Barelliere
                 if (barTxt.equals(tagVero)) {
                     bar = true
                 }// fine del blocco if
             }// fine del blocco if
 
+            if (mappa.Mail) {
+                mail = mappa.Mail
+                if (mail.equals(tagFalso)) {
+                    mail = ''
+                }// fine del blocco if
+            }// fine del blocco if
+
+            if (mappa.dataNascita) {
+                dataNascitaTxt = mappa.dataNascita
+                if (dataNascitaTxt) {
+                    dataNascita = Lib.creaData(dataNascitaTxt)
+                }// fine del blocco if
+            }// fine del blocco if
+
             milite = Milite.findOrCreateByCroceAndNomeAndCognome(croce, nome, cognome)
-            milite.save(flush: true)
+            if (!milite.telefonoCellulare) {
+                milite.telefonoCellulare = telefono
+            }// fine del blocco if
+            if (!milite.telefonoFisso) {
+                milite.telefonoFisso = fisso
+            }// fine del blocco if
+            if (!milite.email) {
+                milite.email = mail
+            }// fine del blocco if
+            if (!milite.dataNascita) {
+                milite.dataNascita = dataNascita
+            }// fine del blocco if
+            milite.save(failOnError: true)
             if (milite) {
                 if (autEme) {
                     Militefunzione.findOrCreateByCroceAndMiliteAndFunzione(croce, milite, funzCRPT[0]).save(flush: true)

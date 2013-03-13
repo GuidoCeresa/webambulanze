@@ -33,6 +33,8 @@ class UrlMappings {
         "/logoutalgos"(controller: 'Gen', action: 'logoutalgos')
         "/logoutdemo"(controller: 'Gen', action: 'logoutdemo')
         "/demogac"(controller: 'Gen', action: 'logoutdemo')
+        "/help"(controller: 'Gen', action: 'help')
+
         "500"(view: '/error')
     }
 }

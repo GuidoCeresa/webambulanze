@@ -18,13 +18,17 @@ class RuoloController {
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
+    // utilizzo di un service con la businessLogic per l'elaborazione dei dati
+    // il service viene iniettato automaticamente
+    def croceService
+
     def index() {
         redirect(action: 'list', params: params)
     } // fine del metodo
 
     def list(Integer max) {
         def lista = Ruolo.list(params)
-        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+        params.siglaCroce = croceService.getSiglaCroce(request)
 
         if (!params.sort) {
             params.sort = 'id'
@@ -48,14 +52,14 @@ class RuoloController {
 
     @Secured([Cost.ROLE_PROG])
     def create() {
-        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+        params.siglaCroce = croceService.getSiglaCroce(request)
 
         render(view: 'create', model: [ruoloInstance: new Ruolo(params)], params: params)
     } // fine del metodo
 
     @Secured([Cost.ROLE_PROG])
     def save() {
-        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+        params.siglaCroce = croceService.getSiglaCroce(request)
 
         def ruoloInstance = new Ruolo(params)
 
@@ -69,7 +73,7 @@ class RuoloController {
     } // fine del metodo
 
     def show(Long id) {
-        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+        params.siglaCroce = croceService.getSiglaCroce(request)
 
         def ruoloInstance = Ruolo.get(id)
 
@@ -84,7 +88,7 @@ class RuoloController {
 
     @Secured([Cost.ROLE_PROG])
     def edit(Long id) {
-        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+        params.siglaCroce = croceService.getSiglaCroce(request)
 
         def ruoloInstance = Ruolo.get(id)
 
@@ -99,7 +103,7 @@ class RuoloController {
 
     @Secured([Cost.ROLE_PROG])
     def update(Long id, Long version) {
-        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+        params.siglaCroce = croceService.getSiglaCroce(request)
 
         def ruoloInstance = Ruolo.get(id)
 

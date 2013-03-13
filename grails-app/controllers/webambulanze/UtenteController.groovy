@@ -40,7 +40,7 @@ class UtenteController {
 
     def list(Integer max) {
         def lista
-        Croce croce = croceService.getCroce(session)
+        Croce croce = croceService.getCroce(request)
         def campiLista = [
                 'username',
                 'pass',
@@ -81,7 +81,7 @@ class UtenteController {
     //--mettendo from="${lista}" nel primo campo
     def create() {
         def lista = null
-        Croce croce = croceService.getCroce(session)
+        Croce croce = croceService.getCroce(request)
 
         if (!params.sort) {
             params.sort = 'username'
@@ -96,7 +96,7 @@ class UtenteController {
     } // fine del metodo
 
     def save() {
-        Croce croce = croceService.getCroce(session)
+        Croce croce = croceService.getCroce(request)
         def utenteInstance = new Utente(params)
 
         if (croce) {
@@ -121,7 +121,7 @@ class UtenteController {
     } // fine del metodo
 
     def show(Long id) {
-        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+        params.siglaCroce = croceService.getSiglaCroce(request)
 
         def utenteInstance = Utente.get(id)
 
@@ -137,7 +137,7 @@ class UtenteController {
     //--ATTENZIONE - se si ricreano le viste, occorre modificare  -form.gsp
     //--mettendo from="${lista}" nel primo campo
     def edit(Long id) {
-        Croce croce = croceService.getCroce(session)
+        Croce croce = croceService.getCroce(request)
         def lista = null
 
         def utenteInstance = Utente.get(id)
@@ -157,7 +157,7 @@ class UtenteController {
     } // fine del metodo
 
     def update(Long id, Long version) {
-        params.siglaCroce = session[Cost.SESSIONE_SIGLA_CROCE]
+        params.siglaCroce = croceService.getSiglaCroce(request)
 
         def utenteInstance = Utente.get(id)
 

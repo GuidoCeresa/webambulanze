@@ -195,6 +195,15 @@
             
         </li>
         
+        <li class="fieldcontain">
+            <span id="oreExtra-label" class="property-label"><g:message
+                    code="milite.oreExtra.labelform" default="Ore Extra"/></span>
+            
+            <span class="property-value" aria-labelledby="oreExtra-label"><g:fieldValue bean="${militeInstance}"
+                                                                                         field="oreExtra"/></span>
+            
+        </li>
+        
     </ol>
 
     <g:if test="${campiExtra}">

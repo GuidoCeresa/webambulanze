@@ -6,10 +6,10 @@ class FunzioneService {
     def croceService
 
     //--recupera tutte le funzioni della croce attiva
-    def campiExtra(session) {
+    def campiExtra(request) {
         def campiExtra = null
         String sigla
-        Croce croce = croceService.getCroce(session)
+        Croce croce = croceService.getCroce(request)
 
         if (croce) {
             sigla = croce.sigla

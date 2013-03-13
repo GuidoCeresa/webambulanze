@@ -1,6 +1,4 @@
 import org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils
-import webambulanze.Cost
-import webambulanze.GenController
 
 class LogoutController {
 
@@ -9,7 +7,7 @@ class LogoutController {
      */
     def index = {
         // TODO put any pre-logout code here
-        GenController.SIGLA_CROCE = session[Cost.SESSIONE_SIGLA_CROCE]
+//        GenController.SIGLA_CROCE = session[Cost.COOKIE_SIGLA_CROCE]
 
         redirect uri: SpringSecurityUtils.securityConfig.logout.filterProcessesUrl // '/j_spring_security_logout'
     }
