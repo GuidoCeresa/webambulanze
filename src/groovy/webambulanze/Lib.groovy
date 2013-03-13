@@ -1108,15 +1108,29 @@ class Lib {
     //--Normalmente 2 turni al mese
     //--Il mese corrente lo si considera ''in corso'' e il conteggio scatta alla fine del mese
     //--Così il 25 febbraio bastano 2 turni, il 30 marzo ne bastano 4 ma il 1° aprile ce ne vogliono 6
-    public static int turniNecessari() {
+    //--le oreExtra (se ci sono) valgono 6-7 ogni turno
+    public static int turniNecessari(int oreExtra) {
         int turniNecessari
         Date oggi = new Date()
         int turniMese = 2
         int numMeseCorrente = getNumMese(oggi)
+        int oreConvenzionaliPerTurno = 6
 
         turniNecessari = turniMese * (numMeseCorrente - 1)
 
+        if (oreExtra) {
+            turniNecessari -= (oreExtra / oreConvenzionaliPerTurno)
+        }// fine del blocco if
+
         return turniNecessari
+    } // fine del metodo statico
+
+    //--Turni odierni necessari
+    //--Normalmente 2 turni al mese
+    //--Il mese corrente lo si considera ''in corso'' e il conteggio scatta alla fine del mese
+    //--Così il 25 febbraio bastano 2 turni, il 30 marzo ne bastano 4 ma il 1° aprile ce ne vogliono 6
+    public static int turniNecessari() {
+        return turniNecessari(0)
     } // fine del metodo statico
 
     //--Costruisce il tag controller per il testo indicato

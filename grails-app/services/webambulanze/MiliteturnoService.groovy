@@ -254,7 +254,7 @@ class MiliteturnoService {
             militestatistiche.croce = croce
             militestatistiche.milite = milite
             militestatistiche.oreExtra = milite.oreExtra
-            militestatistiche.status = turni < Lib.turniNecessari() ? Cost.STATUS_ROSSO : Cost.STATUS_VERDE
+            militestatistiche.status = turni < Lib.turniNecessari(milite.oreExtra) ? Cost.STATUS_ROSSO : Cost.STATUS_VERDE
             militestatistiche.turni = turni
             militestatistiche.ore = ore
             cont = 0
