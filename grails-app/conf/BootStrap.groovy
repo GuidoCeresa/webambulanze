@@ -49,7 +49,7 @@ class BootStrap implements Cost {
         iniezioneVariabili(servletContext)
 
         //--ruoli
-        securitySetupRuoli()
+        //securitySetupRuoli()
 
         //--croce interna
         //      croceAlgos()

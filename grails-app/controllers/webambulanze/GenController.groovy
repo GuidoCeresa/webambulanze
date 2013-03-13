@@ -83,7 +83,7 @@ class GenController {
         rememberMeServices.logout request, response, null
 
         //--selezione iniziale della croce su cui operare
-        Cookie cookie = new Cookie(Cost.COOKIE_SIGLA_CROCE,siglaCroce)
+        Cookie cookie = new Cookie(Cost.COOKIE_SIGLA_CROCE, siglaCroce)
         cookie.maxAge = 100000
         response.addCookie(cookie)
     } // fine del metodo
@@ -207,13 +207,11 @@ class GenController {
     //--selezione iniziale della croce su cui operare
     //--seleziona la necessità del login
     //--regola la schermata iniziale
-    def selezionaCroceRossaPonteTaro(boolean autenticaOspite) {
+    def selezionaCroceRossaPonteTaro() {
         //--regolazioni generali
         selezionaCroceBase(Cost.CROCE_ROSSA_PONTETARO)
 
-        if (autenticaOspite) {
-            //     springSecurityService.reauthenticate(Cost.CRPT_OSPITE, Cost.CRPT_PASSWORD)
-        }// fine del blocco if
+        //     springSecurityService.reauthenticate(Cost.CRPT_OSPITE, Cost.CRPT_PASSWORD)
 
         params.siglaCroce = croceService.getSiglaCroce(request)
         String startController = croceService.getStartController((String) params.siglaCroce)
@@ -225,22 +223,6 @@ class GenController {
             //--va al menu base
             render(controller: 'gen', view: 'home', params: params)
         }// fine del blocco if-else
-    } // fine del metodo
-
-    //--chiamata da URL = croce rossa ponte taro
-    //--selezione iniziale della croce su cui operare
-    //--seleziona la necessità del login
-    //--regola la schermata iniziale
-    def selezionaCroceRossaPonteTaroSecurity() {
-        return selezionaCroceRossaPonteTaro(false)
-    } // fine del metodo
-
-    //--chiamata da URL = croce rossa ponte taro
-    //--selezione iniziale della croce su cui operare
-    //--seleziona la necessità del login
-    //--regola la schermata iniziale
-    def selezionaCroceRossaPonteTaroFree() {
-        return selezionaCroceRossaPonteTaro(true)
     } // fine del metodo
 
 } // fine della controller classe
