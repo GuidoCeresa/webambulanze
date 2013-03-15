@@ -98,7 +98,7 @@
 			<p>
 				<label for='username'><g:message code="springSecurity.login.username.label"/>:</label>
 				%{--<input type='text' class='text_' name='j_username' id='username'/>--}%
-                <g:select name="j_username" from="${listaUtenti}"/>
+                <g:select name="j_username" keys="${listaUtenti}" from="${listaUtentiNick}"/>
 			</p>
 
 			<p>

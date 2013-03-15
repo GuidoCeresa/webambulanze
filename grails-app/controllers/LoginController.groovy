@@ -55,7 +55,11 @@ class LoginController {
         Utente utente
         String username
         ArrayList<String> listaUtenti
+        ArrayList<String> listaUtentiNick = null
         def config = SpringSecurityUtils.securityConfig
+        String nick
+        int pos = 0
+        String tag = '/'
 
         croce = croceService.getCroce(request)
 
@@ -68,17 +72,26 @@ class LoginController {
 
         if (listaGrezza) {
             listaUtenti = new ArrayList<String>()
+            listaUtentiNick = new ArrayList<String>()
             listaGrezza?.each {
                 utente = (Utente) it
                 username = utente.username
                 listaUtenti.add(username)
+                if (username.contains(tag)) {
+                    pos = username.indexOf(tag)
+                    nick = username.substring(0, pos)
+                } else {
+                    nick = username
+                }// fine del blocco if-else
+                listaUtentiNick.add(nick)
             } // fine del ciclo each
         }// fine del blocco if
 
         //--sposta in fondo un eventuale nome del programmatore
         if (listaUtenti) {
             listaUtenti = utenteService.spostaProgrammatoreInFondo(listaUtenti)
-            //      listaUtenti = utenteService.spostaOspiteInFondo(listaUtenti)
+            listaUtentiNick = utenteService.spostaProgrammatoreInFondo(listaUtentiNick)
+//                  listaUtenti = utenteService.spostaOspiteInFondo(listaUtenti)
         }// fine del blocco if
 
 //        listaUtenti = Utente.executeQuery('select username from Utente order by username')
@@ -90,7 +103,7 @@ class LoginController {
         String view = 'auth'
         String postUrl = "${request.contextPath}${config.apf.filterProcessesUrl}"
         render view: view, model: [postUrl: postUrl,
-                rememberMeParameter: config.rememberMe.parameter, listaUtenti: listaUtenti]
+                rememberMeParameter: config.rememberMe.parameter, listaUtenti: listaUtenti, listaUtentiNick: listaUtentiNick]
     }
 
     /**

@@ -76,16 +76,27 @@ class GenController {
     //--selezione iniziale della croce su cui operare
     //--seleziona la necessità del login
     //--regola la schermata iniziale
-    def selezionaCroceBase(String siglaCroce) {
+    def boolean selezionaCroceBase(String siglaCroce) {
+        String oldCookie
 
         //--pulizia
         SecurityContextHolder.clearContext()
         rememberMeServices.logout request, response, null
 
+        //--eventuale cookie già esistente per la setssa croce
+        oldCookie = g.cookie(name: Cost.COOKIE_SIGLA_CROCE)
+
         //--selezione iniziale della croce su cui operare
-        Cookie cookie = new Cookie(Cost.COOKIE_SIGLA_CROCE, siglaCroce)
-        cookie.maxAge = 100000
-        response.addCookie(cookie)
+        if (oldCookie && oldCookie.equals(siglaCroce)) {
+            //non fa nulla
+            return false
+        } else {
+            Cookie cookie = new Cookie(Cost.COOKIE_SIGLA_CROCE, siglaCroce)
+            cookie.maxAge = 100000
+            response.addCookie(cookie)
+            return true
+        }// fine del blocco if-else
+
     } // fine del metodo
 
     //--chiamata senza specificazione, parte la croce demo
@@ -101,10 +112,12 @@ class GenController {
     //--selezione iniziale della croce interna su cui operare
     //--regola la schermata iniziale
     def selezionaCroceAlgos() {
-        //--regolazioni generali
-        selezionaCroceBase(Cost.CROCE_ALGOS)
+        boolean primaVolta
 
-        selezionaCroceAlgosSicura()
+        //--regolazioni generali
+        primaVolta = selezionaCroceBase(Cost.CROCE_ALGOS)
+
+        selezionaCroceAlgosSicura(primaVolta)
     } // fine del metodo
 
     //--chiamata da URL = algos
@@ -112,32 +125,40 @@ class GenController {
     //--seleziona la necessità del login
     //--regola la schermata iniziale
     @Secured([Cost.ROLE_ADMIN])
-    def selezionaCroceAlgosSicura() {
+    def selezionaCroceAlgosSicura(boolean primaVolta) {
         params.siglaCroce = croceService.getSiglaCroce(request)
         String startController = croceService.getStartController((String) params.siglaCroce)
 
-        if (startController) {
-            //--va alla schermata specifica
-            redirect(controller: startController, params: params)
+        if (primaVolta) {
+            redirect(url: '/' + Cost.CROCE_ALGOS)
         } else {
-            //--va al menu base
-            render(controller: 'gen', view: 'home', params: params)
+            if (startController) {
+                //--va alla schermata specifica
+                redirect(controller: startController, params: params)
+            } else {
+                //--va al menu base
+                render(controller: 'gen', view: 'home', params: params)
+            }// fine del blocco if-else
         }// fine del blocco if-else
     } // fine del metodo
 
     def logoutdemo() {
         //--regolazioni generali
-        selezionaCroceBase(Cost.CROCE_DEMO)
+        boolean primaVolta = selezionaCroceBase(Cost.CROCE_DEMO)
 
         params.siglaCroce = croceService.getSiglaCroce(request)
         String startController = croceService.getStartController((String) params.siglaCroce)
 
-        if (startController) {
-            //--va alla schermata specifica
-            redirect(controller: startController, params: params)
+        if (primaVolta) {
+            redirect(url: '/' + Cost.CROCE_DEMO)
         } else {
-            //--va al menu base
-            render(controller: 'gen', view: 'home', params: params)
+            if (startController) {
+                //--va alla schermata specifica
+                redirect(controller: startController, params: params)
+            } else {
+                //--va al menu base
+                render(controller: 'gen', view: 'home', params: params)
+            }// fine del blocco if-else
         }// fine del blocco if-else
     } // fine del metodo
 
@@ -147,19 +168,23 @@ class GenController {
     //--regola la schermata iniziale
     def selezionaCroceDemo() {
         //--regolazioni generali
-        selezionaCroceBase(Cost.CROCE_DEMO)
+        boolean primaVolta = selezionaCroceBase(Cost.CROCE_DEMO)
 
         springSecurityService.reauthenticate(Cost.DEMO_OSPITE, Cost.DEMO_PASSWORD)
 
         params.siglaCroce = croceService.getSiglaCroce(request)
         String startController = croceService.getStartController((String) params.siglaCroce)
 
-        if (startController) {
-            //--va alla schermata specifica
-            redirect(controller: startController, params: params)
+        if (primaVolta) {
+            redirect(url: '/' + Cost.CROCE_DEMO)
         } else {
-            //--va al menu base
-            render(controller: 'gen', view: 'home', params: params)
+            if (startController) {
+                //--va alla schermata specifica
+                redirect(controller: startController, params: params)
+            } else {
+                //--va al menu base
+                render(controller: 'gen', view: 'home', params: params)
+            }// fine del blocco if-else
         }// fine del blocco if-else
     } // fine del metodo
 
@@ -169,17 +194,21 @@ class GenController {
     //--regola la schermata iniziale
     def selezionaCrocePAVT() {
         //--regolazioni generali
-        selezionaCroceBase(Cost.CROCE_PUBBLICA)
+        boolean primaVolta = selezionaCroceBase(Cost.CROCE_PUBBLICA)
 
         params.siglaCroce = croceService.getSiglaCroce(request)
         String startController = croceService.getStartController((String) params.siglaCroce)
 
-        if (startController) {
-            //--va alla schermata specifica
-            redirect(controller: startController, params: params)
+        if (primaVolta) {
+            redirect(url: '/' + Cost.CROCE_PUBBLICA)
         } else {
-            //--va al menu base
-            render(controller: 'gen', view: 'home', params: params)
+            if (startController) {
+                //--va alla schermata specifica
+                redirect(controller: startController, params: params)
+            } else {
+                //--va al menu base
+                render(controller: 'gen', view: 'home', params: params)
+            }// fine del blocco if-else
         }// fine del blocco if-else
     } // fine del metodo
 
@@ -189,17 +218,21 @@ class GenController {
     //--regola la schermata iniziale
     def selezionaCroceRossaFidenza() {
         //--regolazioni generali
-        selezionaCroceBase(Cost.CROCE_ROSSA_FIDENZA)
+        boolean primaVolta = selezionaCroceBase(Cost.CROCE_ROSSA_FIDENZA)
 
         params.siglaCroce = croceService.getSiglaCroce(request)
         String startController = croceService.getStartController((String) params.siglaCroce)
 
-        if (startController) {
-            //--va alla schermata specifica
-            redirect(controller: startController, params: params)
+        if (primaVolta) {
+            redirect(url: '/' + Cost.CROCE_ROSSA_FIDENZA)
         } else {
-            //--va al menu base
-            render(controller: 'gen', view: 'home', params: params)
+            if (startController) {
+                //--va alla schermata specifica
+                redirect(controller: startController, params: params)
+            } else {
+                //--va al menu base
+                render(controller: 'gen', view: 'home', params: params)
+            }// fine del blocco if-else
         }// fine del blocco if-else
     } // fine del metodo
 
@@ -209,20 +242,25 @@ class GenController {
     //--regola la schermata iniziale
     def selezionaCroceRossaPonteTaro() {
         //--regolazioni generali
-        selezionaCroceBase(Cost.CROCE_ROSSA_PONTETARO)
+        boolean primaVolta = selezionaCroceBase(Cost.CROCE_ROSSA_PONTETARO)
 
         //     springSecurityService.reauthenticate(Cost.CRPT_OSPITE, Cost.CRPT_PASSWORD)
 
         params.siglaCroce = croceService.getSiglaCroce(request)
         String startController = croceService.getStartController((String) params.siglaCroce)
 
-        if (startController) {
-            //--va alla schermata specifica
-            redirect(controller: startController, params: params)
+        if (primaVolta) {
+            redirect(url: '/' + Cost.CROCE_ROSSA_PONTETARO)
         } else {
-            //--va al menu base
-            render(controller: 'gen', view: 'home', params: params)
+            if (startController) {
+                //--va alla schermata specifica
+                redirect(controller: startController, params: params)
+            } else {
+                //--va al menu base
+                render(controller: 'gen', view: 'home', params: params)
+            }// fine del blocco if-else
         }// fine del blocco if-else
+
     } // fine del metodo
 
 } // fine della controller classe

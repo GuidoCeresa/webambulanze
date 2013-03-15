@@ -205,10 +205,25 @@ class UtenteController {
         }
         catch (DataIntegrityViolationException e) {
             try { // prova ad eseguire il codice
-                //  String query = "delete from utente_ruolo where utente_id=" + utenteInstance.id
-                //  Ruolo ruolo = Ruolo.get(4)
-                //  UtenteRuolo.remove utenteInstance, ruolo
-                //  utenteInstance.delete()
+                Logo logo
+                def listaLogo = Logo.findAllByUtente(utenteInstance)
+                listaLogo?.each {
+                    logo = (Logo) it
+                    logo.utente = null
+                    logo.save(flush: true)
+                } // fine del ciclo each
+
+//                String query = "delete utente_ruolo where utente_id=" + utenteInstance.id
+//                UtenteRuolo.executeUpdate(query)
+
+                def listaUtenteRuoli = UtenteRuolo.findAllByUtente(utenteInstance)
+                listaUtenteRuoli?.each {
+                    it.delete(flush: true)
+                } // fine del ciclo each
+
+//                Ruolo ruolo = Ruolo.get(4)
+//                UtenteRuolo.remove utenteInstance, ruolo
+//                utenteInstance.delete()
             } catch (Exception unErrore) { // intercetta l'errore
                 log.error unErrore
             }// fine del blocco try-catch
