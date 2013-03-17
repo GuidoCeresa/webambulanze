@@ -41,7 +41,21 @@ class BootStrap implements Cost {
     def sessionFactory
 
     //--metodo invocato direttamente da Grails
+    //--tutte le aggiunte, modifiche, patch e nuove croci vengono inserite con una versione
+    //--l'ordine di inserimento è FONDAMENTALE
     def init = { servletContext ->
+
+        //--creazione della prima versione
+        //--esegue solo se NON esiste già una versione col numero indicato
+        if (installaVersione(1)) {
+            this.tavolaVersioni()
+        }// fine del blocco if
+
+        //--modifica di un turno in CRF
+        //--esegue solo se NON esiste già una versione col numero indicato
+        if (installaVersione(2)) {
+            this.modificaTurnoFidenza()
+        }// fine del blocco if
 
         //--cancella tutto il database
 //        resetCompleto()
@@ -65,13 +79,40 @@ class BootStrap implements Cost {
 
         //--croce rossa pontetaro
         if (SVILUPPO_CROCE_ROSSA_PONTE_TARO) {
-            resetCroce(CROCE_ROSSA_PONTETARO)
+            //  resetCroce(CROCE_ROSSA_PONTETARO)
         }// fine del blocco if
-        croceRossaPontetaro()
+        //    croceRossaPontetaro()
 
         //--creazione del collegamento tra croce e settings
-        linkInternoAziende()
+        //    linkInternoAziende()
     }// fine della closure
+
+    private static boolean installaVersione(int numeroVersioneDaInstallare) {
+        boolean installa = false
+        int numeroVersioneEsistente = getVersione()
+
+        if (numeroVersioneDaInstallare > numeroVersioneEsistente) {
+            installa = true
+        }// fine del blocco if
+
+        return installa
+    }// fine del metodo
+
+    private static int getVersione() {
+        int numero = 0
+        def lista = Versione.findAll("from Versione order by numero desc")
+
+        if (lista && lista.size() > 0) {
+            numero = lista[0].numero
+        }// fine del blocco if
+
+        return numero
+    }// fine del metodo
+
+    //--creazione della prima versione
+    private static tavolaVersioni() {
+        newVersione('Versione', 'Creazione ed inserimento di questa tavola')
+    }// fine del metodo
 
     //--cancella tutto il database
     private void resetCompleto() {
@@ -1925,6 +1966,87 @@ class BootStrap implements Cost {
         password = cognome.toLowerCase() + '123'
 
         newUtente(siglaCroce, ROLE_MILITE, nick, password, milite)
+    }// fine del metodo
+
+    //--crea una versione
+    //--lo crea SOLO se non esiste già
+    private static void newVersione(String siglaCroce, String titolo, String descrizione) {
+        Versione versione
+        int numero = getVersione() + 1
+        Date giorno = new Date()
+        Croce croce = Croce.findBySigla(siglaCroce)
+
+        versione = new Versione()
+        versione.numero = numero
+        versione.croce = croce
+        versione.giorno = giorno
+        versione.titolo = titolo
+        versione.descrizione = descrizione
+        versione.save(flush: true)
+
+    }// fine del metodo
+
+    //--crea una versione
+    //--lo crea SOLO se non esiste già
+    private static void newVersione(String titolo, String descrizione) {
+        newVersione(CROCE_ALGOS, titolo, descrizione)
+    }// fine del metodo
+
+    //--crea una versione
+    //--lo crea SOLO se non esiste già
+    private static void newVersione(String titolo) {
+        newVersione(titolo, '')
+    }// fine del metodo
+
+    //--modifica di un turno in CRF
+    //--richiesta di spostare dalle 7 alle 6 l'inizio turno ambulanza mattino a Fidenza
+    private static modificaTurnoFidenza() {
+        Croce croce = Croce.findBySigla(CROCE_ROSSA_FIDENZA)
+        String siglaTurnoMattino = 'amb-mat'
+        String siglaTurnoNotte = 'amb-notte'
+        TipoTurno turnoMattino
+        TipoTurno turnoNotte
+        def listaTurniMattina
+        def listaTurniNotte
+        Date inizio
+        Date fine
+
+        turnoMattino = TipoTurno.findByCroceAndSigla(croce, siglaTurnoMattino)
+        turnoNotte = TipoTurno.findByCroceAndSigla(croce, siglaTurnoNotte)
+
+        if (turnoMattino && turnoNotte) {
+            //--modifico il turno richiesto
+            turnoMattino.oraInizio = 6
+            turnoMattino.oraFine = 13
+            turnoMattino.durata = 7
+            turnoMattino.save(flush: true)
+
+            //--modifico il turno correlato
+            turnoNotte.oraInizio = 20
+            turnoNotte.oraFine = 6
+            turnoNotte.durata = 10
+            turnoNotte.save(flush: true)
+
+            //--modifico tutti i turni già esistenti che NON hanno ancora militi segnati
+            listaTurniMattina = Turno.findAllByTipoTurnoAndMiliteFunzione1AndMiliteFunzione2AndMiliteFunzione3AndMiliteFunzione4(turnoMattino, null, null, null, null)
+            listaTurniMattina?.each {
+                inizio = it.inizio
+                fine = it.fine
+                it.inizio = Lib.setOra(inizio, turnoMattino.oraInizio)
+                it.fine = Lib.setOra(fine, turnoMattino.oraFine)
+                it.save(flush: true)
+            } // fine del ciclo each
+            listaTurniNotte = Turno.findAllByTipoTurnoAndMiliteFunzione1AndMiliteFunzione2AndMiliteFunzione3AndMiliteFunzione4(turnoNotte, null, null, null, null)
+            listaTurniNotte?.each {
+                inizio = it.inizio
+                fine = it.fine
+                it.inizio = Lib.setOra(inizio, turnoNotte.oraInizio)
+                it.fine = Lib.setOra(fine, turnoNotte.oraFine)
+                it.save(flush: true)
+            } // fine del ciclo each
+
+            newVersione(CROCE_ROSSA_FIDENZA, 'Turno mattino', 'Modifica inizio turno ambulanza mattino: dalle ore 7 alle 6. Cambio del tipoTurno per tutti i turni non ancora effettuati.')
+        }// fine del blocco if
     }// fine del metodo
 
     def destroy = {

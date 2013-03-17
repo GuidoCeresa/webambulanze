@@ -844,6 +844,7 @@ class AmbulanzaTagLib {
             } // fine del ciclo each
         } else {
             if (militeService.isLoggatoProgrammatore()) {
+                testoOut += Lib.tagController('Versione', 'Lista versioni installate')
                 testoOut += Lib.tagController('Militestatistiche', 'Forza calcolo statistiche', 'calcola')
                 testoOut += Lib.tagController('UtenteRuolo', 'Tavola incrocio utenti-ruolo', 'list')
                 testoOut += Lib.tagController('Militefunzione', 'Tavola incrocio militi-funzioni')
@@ -1348,7 +1349,7 @@ class AmbulanzaTagLib {
         String testoOut
         String testo
 
-        testo = 'Algos© 2013 - v1.2 del 10 marzo 2013'
+        testo = 'Algos© 2013 - v1.3 del 17 marzo 2013'
         testo = Lib.tagCella(testo, Aspetto.copyright)
         testoOut = Lib.tagTable(testo)
         return testoOut

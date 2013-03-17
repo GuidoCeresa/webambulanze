@@ -11,6 +11,7 @@ class Utente {
     Milite milite
 
     String username
+ //   String nickname
     String password
     String pass
     boolean enabled = true
@@ -23,6 +24,7 @@ class Utente {
         milite(nullable: true, blank: true)
         username blank: false, unique: true
         password blank: false
+   //     nickname()
         pass()
         enabled()
         accountExpired()
