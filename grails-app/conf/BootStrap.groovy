@@ -57,6 +57,12 @@ class BootStrap implements Cost {
             this.modificaTurnoFidenza()
         }// fine del blocco if
 
+        //--croce rossa pontetaro
+        if (installaVersione(3)) {
+            resetCroce(CROCE_ROSSA_PONTETARO)
+            this.croceRossaPontetaro()
+        }// fine del blocco if
+
         //--cancella tutto il database
 //        resetCompleto()
 
@@ -77,11 +83,6 @@ class BootStrap implements Cost {
         //--croce rossa fidenza
         //croceRossaFidenza()
 
-        //--croce rossa pontetaro
-        if (SVILUPPO_CROCE_ROSSA_PONTE_TARO) {
-            //  resetCroce(CROCE_ROSSA_PONTETARO)
-        }// fine del blocco if
-        //    croceRossaPontetaro()
 
         //--creazione del collegamento tra croce e settings
         //    linkInternoAziende()
@@ -288,6 +289,7 @@ class BootStrap implements Cost {
         tipiDiTurnoRossaPonteTaro()
         militiRossaPonteTaro()
         utentiRossaPonteTaro() //password
+        newVersione(CROCE_ROSSA_PONTETARO, 'Creazione croce', 'Funzioni, tipiTurni, militi, utenti.')
     }// fine del metodo
 
     //--iniezione di alcune variabili generali visibili in tutto il programma
@@ -823,7 +825,10 @@ class BootStrap implements Cost {
                 setting.oreMassimeSingoloTurno = 0
                 setting.save(failOnError: true)
             }// fine del blocco if
+            croce.settings = setting
+            croce.save(failOnError: true)
         }// fine del blocco if
+
     }// fine del metodo
 
     //--creazione link interno ad ogni croce per riferirsi al proprio setting
@@ -1478,6 +1483,7 @@ class BootStrap implements Cost {
         Milite milite
         String daeTxt = ''
         String barTxt = ''
+        String socTxt = ''
         String tagVero = 'SI'
         String tagFalso = 'NO'
         boolean autEme = false
@@ -1501,10 +1507,6 @@ class BootStrap implements Cost {
 
         //--prosegue solo se il database è vuoto
         if (Milite.findAllByCroce(croce).size() > 0) {
-            return
-        }// fine del blocco if
-
-        if (!SVILUPPO_CROCE_ROSSA_PONTE_TARO) {
             return
         }// fine del blocco if
 
@@ -1577,6 +1579,13 @@ class BootStrap implements Cost {
                 }// fine del blocco if
             }// fine del blocco if
 
+            if (mappa.soccoritore) {
+                socTxt = mappa.soccoritore
+                if (socTxt.equals(tagVero)) {
+                    soc = true
+                }// fine del blocco if
+            }// fine del blocco if
+
             if (mappa.Barelliere) {
                 barTxt = mappa.Barelliere
                 if (barTxt.equals(tagVero)) {
@@ -1629,10 +1638,13 @@ class BootStrap implements Cost {
                     Militefunzione.findOrCreateByCroceAndMiliteAndFunzione(croce, milite, funzCRPT[3]).save(flush: true)
                     Militefunzione.findOrCreateByCroceAndMiliteAndFunzione(croce, milite, funzCRPT[4]).save(flush: true)
                 }// fine del blocco if
+                if (soc) {
+                    Militefunzione.findOrCreateByCroceAndMiliteAndFunzione(croce, milite, funzCRPT[3]).save(flush: true)
+                    Militefunzione.findOrCreateByCroceAndMiliteAndFunzione(croce, milite, funzCRPT[4]).save(flush: true)
+                }// fine del blocco if
                 if (bar) {
                     Militefunzione.findOrCreateByCroceAndMiliteAndFunzione(croce, milite, funzCRPT[4]).save(flush: true)
                 }// fine del blocco if
-
             }// fine del blocco if
 
         } // fine del ciclo each
