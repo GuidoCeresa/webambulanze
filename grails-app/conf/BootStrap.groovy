@@ -57,8 +57,18 @@ class BootStrap implements Cost {
             this.modificaTurnoFidenza()
         }// fine del blocco if
 
-        //--croce rossa pontetaro
+        //--aggiunta campo (visibile) nickname alla tavola Utente
         if (installaVersione(3)) {
+            this.nickUtenteRossaFidenza()
+        }// fine del blocco if
+
+        //--elimina alcuni accessi e regola il nick
+        if (installaVersione(4)) {
+            this.fixSecurityAlgos()
+        }// fine del blocco if
+
+        //--croce rossa pontetaro
+        if (installaVersione(5)) {
             resetCroce(CROCE_ROSSA_PONTETARO)
             this.croceRossaPontetaro()
         }// fine del blocco if
@@ -82,7 +92,6 @@ class BootStrap implements Cost {
 
         //--croce rossa fidenza
         //croceRossaFidenza()
-
 
         //--creazione del collegamento tra croce e settings
         //    linkInternoAziende()
@@ -214,9 +223,12 @@ class BootStrap implements Cost {
             lista = clazz?.findAllByCroce(croce)
             lista?.each {
                 it.delete()
+                def stop
             } // fine del ciclo each
         }// fine del blocco if
+        sessionFactory.currentSession.flush()
 
+        def stoppet
     }// fine del metodo
 
     //--cancella la singola tavola
@@ -362,7 +374,6 @@ class BootStrap implements Cost {
         if (!croce) {
             croce = new Croce(sigla: CROCE_DEMO)
         }// fine del blocco if
-
         if (croce) {
             if (!croce.descrizione) {
                 croce.descrizione = 'Croce dimostrativa'
@@ -606,7 +617,6 @@ class BootStrap implements Cost {
     private static void securitySetupRossaPonteTaro() {
         Utente utente
         String nick
-        String nickSuffix = '/' + CROCE_ROSSA_PONTETARO.toLowerCase()
         String pass
         Ruolo adminRole
         Ruolo militeRole
@@ -619,7 +629,7 @@ class BootStrap implements Cost {
             militeRole = Ruolo.findOrCreateByAuthority(ROLE_MILITE).save(failOnError: true)
 
             // custode
-            nick = 'Michelini Mauro' + nickSuffix
+            nick = 'Michelini Mauro'
             pass = 'michelini123'
             utente = newUtente(CROCE_ROSSA_PONTETARO, ROLE_CUSTODE, nick, pass)
             numUtentiRossaPonteTaro++
@@ -629,7 +639,7 @@ class BootStrap implements Cost {
             }// fine del blocco if
 
             // admin
-            nick = 'Gallo Gennaro' + nickSuffix
+            nick = 'Gallo Gennaro'
             pass = 'gallo123'
             utente = newUtente(CROCE_ROSSA_PONTETARO, ROLE_ADMIN, nick, pass)
             numUtentiRossaPonteTaro++
@@ -638,7 +648,7 @@ class BootStrap implements Cost {
             }// fine del blocco if
 
             // admin
-            nick = 'Pessina Giovanni' + nickSuffix
+            nick = 'Pessina Giovanni'
             pass = 'pessina123'
             utente = newUtente(CROCE_ROSSA_PONTETARO, ROLE_ADMIN, nick, pass)
             numUtentiRossaPonteTaro++
@@ -1732,6 +1742,7 @@ class BootStrap implements Cost {
         ArrayList listaUtenti
         ArrayList listaMiliti
         Milite milite
+        String nickname
 
         if (!croce) {
             return
@@ -1747,6 +1758,10 @@ class BootStrap implements Cost {
             listaMiliti?.each {
                 milite = (Milite) it
                 newUtenteMilite(CROCE_ROSSA_PONTETARO, milite)
+//                nickname = milite.cognome + ' ' + milite.nome
+//                if (!Utente.findByNickname(nickname)) {
+//                    newUtenteMilite(CROCE_ROSSA_PONTETARO, milite)
+//                }// fine del blocco if
             } // fine del ciclo each
         }// fine del blocco if
     }// fine del metodo
@@ -1945,8 +1960,9 @@ class BootStrap implements Cost {
         Ruolo ruolo = Ruolo.findByAuthority(siglaRuolo)
 
         if (nick && croce && ruolo) {
-            utente = Utente.findOrCreateByUsername(nick)
+            utente = Utente.findOrCreateByNickname(nick)
             utente.croce = croce
+            utente.username = nick + '/' + croce.sigla.toLowerCase()
             utente.password = password
             utente.pass = password
             utente.enabled = true
@@ -1974,9 +1990,8 @@ class BootStrap implements Cost {
 
         nome = milite.nome.trim()
         cognome = milite.cognome.trim()
-        nick = cognome + ' ' + nome + '/' + siglaCroce.toLowerCase()
+        nick = cognome + ' ' + nome
         password = cognome.toLowerCase() + '123'
-
         newUtente(siglaCroce, ROLE_MILITE, nick, password, milite)
     }// fine del metodo
 
@@ -2059,6 +2074,63 @@ class BootStrap implements Cost {
 
             newVersione(CROCE_ROSSA_FIDENZA, 'Turno mattino', 'Modifica inizio turno ambulanza mattino: dalle ore 7 alle 6. Cambio del tipoTurno per tutti i turni non ancora effettuati.')
         }// fine del blocco if
+    }// fine del metodo
+
+    //--aggiunta campo (visibile) nickname alla tavola Utente
+    //--lo crea SOLO se non esiste già
+    private static void nickUtenteRossaFidenza() {
+        Utente utente
+        Croce croce = Croce.findBySigla(CROCE_ROSSA_FIDENZA)
+        def lista = Utente.findAllByCroce(croce)
+        String tagAggiuntivo = '/crf'
+        String username
+        String nick
+
+        lista?.each {
+            utente = (Utente) it
+            username = utente.username
+            nick = username
+            if (!username.endsWith(tagAggiuntivo)) {
+                username += tagAggiuntivo
+            }// fine del blocco if
+            utente.username = username
+            utente.nickname = nick
+            utente.save(flush: true)
+        } // fine del ciclo each
+
+        newVersione(CROCE_ROSSA_FIDENZA, 'Nickname', 'Aggiunto il suffisso /crf')
+    }// fine del metodo
+
+    //--elimina alcuni utenti e regola il nick
+    private static void fixSecurityAlgos() {
+        Croce croce = Croce.findBySigla(CROCE_ALGOS)
+        def listaUtenti = Utente.findAllByCroce(croce)
+        Utente utente
+        String tagProg = 'gac'
+        String tagAlgos = tagProg + '/' + croce.sigla.toLowerCase()
+        def lista
+
+        //--cancella tutti meno uno
+        listaUtenti.each {
+            utente = (Utente) it
+            if (!utente.username.equals(tagProg)) {
+                lista = UtenteRuolo.findAllByUtente(utente)
+                lista?.each {
+                    it.delete(flush: true)
+                } // fine del ciclo each
+                utente.delete(flush: true)
+            }// fine del blocco if
+        } // fine del ciclo each
+
+        //--regola il nick dell'unico accesso rimasto
+        utente = Utente.findByUsername(tagProg)
+        if (utente) {
+            utente.username = tagAlgos
+            utente.nickname = tagProg
+            utente.save(flush: true)
+        }// fine del blocco if
+
+        newVersione(CROCE_ALGOS, 'Security algos', 'Elimina alcuni utenti e regola il nick')
     }// fine del metodo
 
     def destroy = {

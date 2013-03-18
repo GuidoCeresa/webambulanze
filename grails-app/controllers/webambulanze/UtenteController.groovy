@@ -42,7 +42,7 @@ class UtenteController {
         def lista
         Croce croce = croceService.getCroce(request)
         def campiLista = [
-                'username',
+                'nickname',
                 'pass',
                 'enabled',
                 'accountExpired',
@@ -103,6 +103,8 @@ class UtenteController {
             params.siglaCroce = croce.sigla
             utenteInstance.croce = croce
         }// fine del blocco if
+
+        utenteInstance.username = utenteInstance.nickname + '/' + croce.sigla.toLowerCase()
 
         if (!utenteInstance.save(flush: true)) {
             render(view: 'create', model: [utenteInstance: utenteInstance], params: params)

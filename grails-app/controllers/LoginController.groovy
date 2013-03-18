@@ -75,15 +75,8 @@ class LoginController {
             listaUtentiNick = new ArrayList<String>()
             listaGrezza?.each {
                 utente = (Utente) it
-                username = utente.username
-                listaUtenti.add(username)
-                if (username.contains(tag)) {
-                    pos = username.indexOf(tag)
-                    nick = username.substring(0, pos)
-                } else {
-                    nick = username
-                }// fine del blocco if-else
-                listaUtentiNick.add(nick)
+                listaUtenti.add(utente.username)
+                listaUtentiNick.add(utente.nickname)
             } // fine del ciclo each
         }// fine del blocco if
 
@@ -93,8 +86,6 @@ class LoginController {
             listaUtentiNick = utenteService.spostaProgrammatoreInFondo(listaUtentiNick)
 //                  listaUtenti = utenteService.spostaOspiteInFondo(listaUtenti)
         }// fine del blocco if
-
-//        listaUtenti = Utente.executeQuery('select username from Utente order by username')
 
         if (springSecurityService.isLoggedIn()) {
             redirect uri: config.successHandler.defaultTargetUrl

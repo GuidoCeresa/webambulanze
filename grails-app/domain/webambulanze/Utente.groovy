@@ -11,7 +11,7 @@ class Utente {
     Milite milite
 
     String username
- //   String nickname
+    String nickname
     String password
     String pass
     boolean enabled = true
@@ -22,9 +22,9 @@ class Utente {
     static constraints = {
         croce(nullable: false, blank: false, display: false)
         milite(nullable: true, blank: true)
-        username blank: false, unique: true
+        username blank: false, unique: true, display: false
+        nickname()
         password blank: false
-   //     nickname()
         pass()
         enabled()
         accountExpired()
@@ -40,7 +40,7 @@ class Utente {
      * valore di testo restituito per una istanza della classe
      */
     String toString() {
-        username
+        nickname
     } // end of toString
 
     Set<Ruolo> getAuthorities() {
@@ -53,6 +53,9 @@ class Utente {
     }
 
     def beforeUpdate() {
+        if (isDirty('nickname')) {
+            username = nickname + '/' + croce.sigla.toLowerCase()
+        }
         if (isDirty('password')) {
             encodePassword()
         }

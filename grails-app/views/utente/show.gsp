@@ -89,6 +89,15 @@
         </li>
         
         <li class="fieldcontain">
+            <span id="nickname-label" class="property-label"><g:message
+                    code="utente.nickname.labelform" default="Nickname"/></span>
+            
+            <span class="property-value" aria-labelledby="nickname-label"><g:fieldValue bean="${utenteInstance}"
+                                                                                         field="nickname"/></span>
+            
+        </li>
+        
+        <li class="fieldcontain">
             <span id="password-label" class="property-label"><g:message
                     code="utente.password.labelform" default="Password"/></span>
             

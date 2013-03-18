@@ -6,6 +6,10 @@ class UtenteService {
     // il service viene iniettato automaticamente
     def logoService
 
+    // utilizzo di un service con la businessLogic per l'elaborazione dei dati
+    // il service viene iniettato automaticamente
+    def militeService
+
     //--avviso conseguente alle modifiche effettuate
     def avvisoModifiche = { mappa, Utente utente ->
         ArrayList listaMessaggi = new ArrayList()
@@ -81,21 +85,37 @@ class UtenteService {
 
     //--sposta in fondo un eventuale nome del programmatore
     public ArrayList spostaProgrammatoreInFondo(ArrayList listaUtenti) {
+        String sigla
+        Utente utente
 
-        if (listaUtenti) {
-            if (listaUtenti[0].equals(Cost.PROG_NICK_CRF)) {
-                listaUtenti.remove(0)
-                listaUtenti.add(Cost.PROG_NICK_CRF)
-            }// fine del blocco if
-            if (listaUtenti[0].equals(Cost.PROG_NICK_CRPT)) {
-                listaUtenti.remove(0)
-                listaUtenti.add(Cost.PROG_NICK_CRPT)
-            }// fine del blocco if
-            if (listaUtenti[0].equals(Cost.PROG_NICK_DEMO)) {
-                listaUtenti.remove(0)
-                listaUtenti.add(Cost.PROG_NICK_DEMO)
-            }// fine del blocco if
+        sigla = listaUtenti[0]
+
+        utente = Utente.findByUsername(sigla)
+        if (isProgrammatore(utente)) {
+            listaUtenti.remove(0)
+            listaUtenti.add(sigla)
         }// fine del blocco if
+
+        utente = Utente.findByNickname(sigla)
+        if (isProgrammatore(utente)) {
+            listaUtenti.remove(0)
+            listaUtenti.add(sigla)
+        }// fine del blocco if
+
+//        if (listaUtenti) {
+//            if (listaUtenti[0].equals(Cost.PROG_NICK_CRF)) {
+//                listaUtenti.remove(0)
+//                listaUtenti.add(Cost.PROG_NICK_CRF)
+//            }// fine del blocco if
+//            if (listaUtenti[0].equals(Cost.PROG_NICK_CRPT)) {
+//                listaUtenti.remove(0)
+//                listaUtenti.add(Cost.PROG_NICK_CRPT)
+//            }// fine del blocco if
+//            if (listaUtenti[0].equals(Cost.PROG_NICK_DEMO)) {
+//                listaUtenti.remove(0)
+//                listaUtenti.add(Cost.PROG_NICK_DEMO)
+//            }// fine del blocco if
+//        }// fine del blocco if
 
         return listaUtenti
     }// fine del metodo
@@ -115,6 +135,23 @@ class UtenteService {
         }// fine del blocco if
 
         return listaUtenti
+    }// fine del metodo
+
+    //--controlla il ruolo
+    public boolean isProgrammatore(Utente utente) {
+        boolean programmatore = false
+        Ruolo ruoloProg = Ruolo.findByAuthority(Cost.ROLE_PROG)
+        def ruoli
+
+        if (utente && ruoloProg) {
+            ruoli = UtenteRuolo.findAllByUtenteAndRuolo(utente, ruoloProg)
+        }// fine del blocco if
+
+        if (ruoli && ruoli.size() > 0) {
+            programmatore = true
+        }// fine del blocco if
+
+        return programmatore
     }// fine del metodo
 
 

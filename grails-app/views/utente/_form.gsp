@@ -27,13 +27,12 @@
 
 
 
-    <g:select id="milite" name="milite.id" from="${lista}" optionKey="id" value="${utenteInstance?.milite?.id}" class="many-to-one" />
-</div>
+    <g:select id="milite" name="milite.id" from="${lista}" optionKey="id" value="${utenteInstance?.milite?.id}" class="many-to-one" /></div>
 
-<div class="fieldcontain ${hasErrors(bean: utenteInstance, field: 'username', 'error')} required">
-	<label for="username">
-		<g:message code="utente.username.labelform" default="Username" />
-		<span class="required-indicator">*</span>
+<div class="fieldcontain ${hasErrors(bean: utenteInstance, field: 'nickname', 'error')} ">
+	<label for="nickname">
+		<g:message code="utente.nickname.labelform" default="Nickname" />
+		
 	</label>
 	
 
@@ -45,7 +44,7 @@
 
 
 
-<g:textField name="username" required="" value="${utenteInstance?.username}"/>
+<g:textField name="nickname" value="${utenteInstance?.nickname}"/>
 </div>
 
 <div class="fieldcontain ${hasErrors(bean: utenteInstance, field: 'password', 'error')} required">
