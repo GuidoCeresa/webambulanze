@@ -53,6 +53,7 @@ class BootStrap implements Cost {
 
         //--modifica di un turno in CRF
         //--esegue solo se NON esiste già una versione col numero indicato
+        //--esegue la modifica SOLO per i turni NON effettuati
         if (installaVersione(2)) {
             this.modificaTurnoFidenza()
         }// fine del blocco if
@@ -77,6 +78,13 @@ class BootStrap implements Cost {
         //--il flag serve per separare visivamente i vari turni all'interno del tabellone
         if (installaVersione(6)) {
             this.fixUltimoTipoTurno()
+        }// fine del blocco if
+
+        //--modifica di un turno in CRF
+        //--esegue solo se NON esiste già una versione col numero indicato
+        //--completa la modifica ANCHE per i turni effettuati
+        if (installaVersione(7)) {
+            this.modificaTurnoFidenzaEffettuati()
         }// fine del blocco if
 
         //--cancella tutto il database
@@ -2033,6 +2041,7 @@ class BootStrap implements Cost {
 
     //--modifica di un turno in CRF
     //--richiesta di spostare dalle 7 alle 6 l'inizio turno ambulanza mattino a Fidenza
+    //--esegue la modifica SOLO per i turni NON effettuati
     private static modificaTurnoFidenza() {
         Croce croce = Croce.findBySigla(CROCE_ROSSA_FIDENZA)
         String siglaTurnoMattino = 'amb-mat'
@@ -2190,6 +2199,46 @@ class BootStrap implements Cost {
         if (tipoTurno) {
             tipoTurno.ultimo = true
             tipoTurno.save(flush: true)
+        }// fine del blocco if
+    }// fine del metodo
+
+    //--modifica di un turno in CRF
+    //--richiesta di spostare dalle 7 alle 6 l'inizio turno ambulanza mattino a Fidenza
+    //--completa la modifica ANCHE per i turni effettuati
+    private static modificaTurnoFidenzaEffettuati() {
+        Croce croce = Croce.findBySigla(CROCE_ROSSA_FIDENZA)
+        String siglaTurnoMattino = 'amb-mat'
+        String siglaTurnoNotte = 'amb-notte'
+        TipoTurno turnoMattino
+        TipoTurno turnoNotte
+        def listaTurniMattina
+        def listaTurniNotte
+        Date inizio
+        Date fine
+
+        turnoMattino = TipoTurno.findByCroceAndSigla(croce, siglaTurnoMattino)
+        turnoNotte = TipoTurno.findByCroceAndSigla(croce, siglaTurnoNotte)
+
+        if (turnoMattino && turnoNotte) {
+            //--modifico tutti i turni già esistenti che NON hanno ancora militi segnati
+            listaTurniMattina = Turno.findAllByTipoTurno(turnoMattino)
+            listaTurniMattina?.each {
+                inizio = it.inizio
+                fine = it.fine
+                it.inizio = Lib.setOra(inizio, turnoMattino.oraInizio)
+                it.fine = Lib.setOra(fine, turnoMattino.oraFine)
+                it.save(flush: true)
+            } // fine del ciclo each
+            listaTurniNotte = Turno.findAllByTipoTurno(turnoNotte)
+            listaTurniNotte?.each {
+                inizio = it.inizio
+                fine = it.fine
+                it.inizio = Lib.setOra(inizio, turnoNotte.oraInizio)
+                it.fine = Lib.setOra(fine, turnoNotte.oraFine)
+                it.save(flush: true)
+            } // fine del ciclo each
+
+            newVersione(CROCE_ROSSA_FIDENZA, 'Turno mattino', 'Ulteriore cambio del tipoTurno per tutti i turni già ancora effettuati.')
         }// fine del blocco if
     }// fine del metodo
 
