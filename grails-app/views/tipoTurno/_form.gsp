@@ -120,6 +120,24 @@
 <g:field name="oraFine" type="number" value="${tipoTurnoInstance.oraFine}" required=""/>
 </div>
 
+<div class="fieldcontain ${hasErrors(bean: tipoTurnoInstance, field: 'ultimo', 'error')} ">
+	<label for="ultimo">
+		<g:message code="tipoTurno.ultimo.labelform" default="Ultimo" />
+		
+	</label>
+	
+
+
+
+
+
+
+
+
+
+<g:checkBox name="ultimo" value="${tipoTurnoInstance?.ultimo}" />
+</div>
+
 <div class="fieldcontain ${hasErrors(bean: tipoTurnoInstance, field: 'fineGiornoSuccessivo', 'error')} ">
 	<label for="fineGiornoSuccessivo">
 		<g:message code="tipoTurno.fineGiornoSuccessivo.labelform" default="Fine Giorno Successivo" />

@@ -752,7 +752,7 @@ td.legendatipoodd {
 
 td.legendatipooddbordo {
     background: #f7f7f7;
-    border-width: 4px 0 0 0;
+    border-width: 0 0 4px 0;
     padding: 4px;
     border-style: solid;
     border-color: blue;
@@ -764,7 +764,7 @@ td.legendatipoeven {
 
 td.legendatipoevenbordo {
     background: #ffffff;
-    border-width: 4px 0 0 0;
+    border-width: 0 0 4px 0;
     padding: 4px;
     border-style: solid;
     border-color: blue;
@@ -783,7 +783,7 @@ td.legendaorario {
 td.legendaorariobordo {
     text-align: left;
     background: #ffdddd;
-    border-width: 4px 0 0 0;
+    border-width: 0 0 4px 0;
     padding: 4px;
     border-style: solid;
     border-color: blue;
@@ -796,7 +796,7 @@ td.turnoorario {
 
 td.turnoorariobordo {
     background: #ffeeee;
-    border-width: 4px 0 0 0;
+    border-width: 0 0 4px 0;
     padding: 4px;
     border-style: solid;
     border-color: blue;
@@ -806,8 +806,7 @@ td.turnovuoto, td.turnoprevisto, td.turnoassegnato, td.turnolibero,
 td.turnocritico, td.turnobloccato, td.turnoeffettuato {
     border-width: 1px;
     border-style: solid;
-    border-color: gray;
-    border-collapse: collapse;
+    border-color: blue;    border-collapse: collapse;
 }
 
 td.turnovuoto {
@@ -835,6 +834,44 @@ td.turnobloccato {
 }
 
 td.turnoeffettuato {
+    background: #aaaaaa;
+}
+
+td.turnovuotobordo, td.turnoprevistobordo, td.turnoassegnatobordo, td.turnoliberobordo,
+td.turnocriticobordo, td.turnobloccatobordo, td.turnoeffettuatobordo {
+    border-style: solid;
+    border-collapse: collapse;
+    border-width: 0 1px 4px 1px;
+    padding: 4px;
+    border-style: solid;
+    border-color: blue;
+}
+
+td.turnovuotobordo {
+    background: #eeeeee;
+}
+
+td.turnoprevistobordo {
+    background: #e1f2b6;
+}
+
+td.turnoassegnatobordo {
+    background: #44ff44;
+}
+
+td.turnoliberobordo {
+    background: #fcefa1;
+}
+
+td.turnocriticobordo {
+    background: #ff4444;
+}
+
+td.turnobloccatobordo {
+    background: #4444ff;
+}
+
+td.turnoeffettuatobordo {
     background: #aaaaaa;
 }
 

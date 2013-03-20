@@ -142,6 +142,15 @@
         </li>
         
         <li class="fieldcontain">
+            <span id="ultimo-label" class="property-label"><g:message
+                    code="tipoTurno.ultimo.labelform" default="Ultimo"/></span>
+            
+            <span class="property-value" aria-labelledby="ultimo-label"><g:formatBoolean
+                    boolean="${tipoTurnoInstance?.ultimo}"/></span>
+            
+        </li>
+        
+        <li class="fieldcontain">
             <span id="fineGiornoSuccessivo-label" class="property-label"><g:message
                     code="tipoTurno.fineGiornoSuccessivo.labelform" default="Fine Giorno Successivo"/></span>
             

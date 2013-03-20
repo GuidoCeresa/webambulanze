@@ -99,7 +99,7 @@
 
 
 
-<g:textField name="descrizione" value="${versioneInstance?.descrizione}"/>
+<g:textArea name="descrizione" cols="40" rows="5" value="${versioneInstance?.descrizione}"/>
 </div>
 
 <g:if test="${campiExtra}">

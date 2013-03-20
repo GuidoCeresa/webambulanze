@@ -31,7 +31,10 @@ class TipoTurno {
     //--nella GUI la scelta viene bloccata ai quarti d'ora
     int minutiFine = 0
 
-    //--visibilità nel tabellone
+    //--ultimo turno di un eventuale raggruppamento a video (nel tabellone)
+    boolean ultimo    =false
+
+    //--turno a cavallo della mezzanotte - termina il giorno successivo
     boolean fineGiornoSuccessivo = false
 
     //--visibilità nel tabellone
@@ -67,6 +70,7 @@ class TipoTurno {
         minutiInizio(display: false)
         oraFine()
         minutiFine(display: false)
+        ultimo()
         fineGiornoSuccessivo()
         visibile()
         orario()

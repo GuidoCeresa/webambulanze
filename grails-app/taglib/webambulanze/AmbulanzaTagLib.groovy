@@ -197,7 +197,6 @@ class AmbulanzaTagLib {
         int pariDispari = 0
         int numTipoTurno = 0
         int numExtra = 1
-        def turniBordati = [4, 7]
 
         if (croce && inizio && fine) {
             tipiTurno = TipoTurno.findAllByCroceAndVisibile(croce, true, [sort: 'ordine', order: 'asc'])
@@ -208,7 +207,7 @@ class AmbulanzaTagLib {
             tipiTurno?.each {
                 numTipoTurno++
                 pariDispari++
-                if (numTipoTurno in turniBordati) {
+                if (it.ultimo) {
                     testoBody += this.righeDiUnTurno(it, inizio, fine, pariDispari, numExtra, true)
                 } else {
                     testoBody += this.righeDiUnTurno(it, inizio, fine, pariDispari, numExtra, false)
@@ -258,9 +257,27 @@ class AmbulanzaTagLib {
             //--per ogni funzione prevista, crea una riga
             //--la prima cella è il nome della funzione
             //--seguono sette celle di turno
+            int pos = funzioni.size()
             funzioni?.each {
-                testoRiga += this.rigaTurno(mappaTurniDiUnTipo, (Funzione) it, tipoTurno)
+                pos--
+                if (bordo && pos == 0) {
+                    testoRiga += this.rigaTurno(mappaTurniDiUnTipo, (Funzione) it, tipoTurno, true)
+                } else {
+                    testoRiga += this.rigaTurno(mappaTurniDiUnTipo, (Funzione) it, tipoTurno, false)
+                }// fine del blocco if-else
             } // fine del ciclo each
+
+//            for (int k = 0; k < max; k++) {
+//                if (bordo && (k = max - 1)) {
+//                    testoRiga += this.rigaTurno(mappaTurniDiUnTipo, funzioni[k], tipoTurno, true)
+//                } else {
+//                    testoRiga += this.rigaTurno(mappaTurniDiUnTipo, funzioni[k], tipoTurno, false)
+//                }// fine del blocco if-else
+//            } // fine del ciclo for
+
+//            funzioni?.each {
+//                testoRiga += this.rigaTurno(mappaTurniDiUnTipo, (Funzione) it, tipoTurno, bordo)
+//            } // fine del ciclo each
         }// fine del blocco if
 
         return testoRiga
@@ -1024,7 +1041,7 @@ class AmbulanzaTagLib {
     //--per ogni funzione prevista, crea una riga
     //--la prima cella è il nome della funzione
     //--seguono sette celle di turno
-    private static String rigaTurno(LinkedHashMap<Date, Turno> mappaTurni, Funzione funzione, TipoTurno tipoTurno) {
+    private static String rigaTurno(LinkedHashMap<Date, Turno> mappaTurni, Funzione funzione, TipoTurno tipoTurno, boolean bordo) {
         String testoOut
         String testoRiga = ''
         Turno turno
@@ -1038,7 +1055,7 @@ class AmbulanzaTagLib {
             mappaTurni.keySet().each {
                 giorno = it
                 turno = mappaTurni.get(it)
-                testoRiga += this.cellaTurno(giorno, turno, funzione, tipoTurno)
+                testoRiga += this.cellaTurno(giorno, turno, funzione, tipoTurno, bordo)
             }// end of each
         }// fine del blocco if
 
@@ -1047,7 +1064,7 @@ class AmbulanzaTagLib {
     }// fine del metodo
 
     //--singola cella del turno, vuoto o pieno
-    private static String cellaTurno(Date giorno, Turno turno, Funzione funzioneDellaRiga, TipoTurno tipoTurno) {
+    private static String cellaTurno(Date giorno, Turno turno, Funzione funzioneDellaRiga, TipoTurno tipoTurno, boolean bordo) {
         String testoOut = ''
         String htmlPrefix = '/webambulanze/turno/'
         String htmlNew = htmlPrefix + 'newTurno'
@@ -1076,22 +1093,34 @@ class AmbulanzaTagLib {
 
         if (turno == null) {
             html = htmlNew
-            cella = Aspetto.turnovuoto
+            if (bordo) {
+                cella = Aspetto.turnovuotobordo
+            } else {
+                cella = Aspetto.turnovuoto
+            }// fine del blocco if-else
             nomeMilite = testoVuoto
         } else {
             numFunzioni = turno.tipoTurno.numFunzioni()
             html = htmlFill
             turnoId = turno.id
             if (turno.assegnato) {
-                cella = Aspetto.turnoassegnato
+                if (bordo) {
+                    cella = Aspetto.turnoassegnatobordo
+                } else {
+                    cella = Aspetto.turnoassegnato
+                }// fine del blocco if-else
                 nomeMilite = testoVuoto
             } else {
-                cella = Aspetto.turnoprevisto
+                if (bordo) {
+                    cella = Aspetto.turnoprevistobordo
+                } else {
+                    cella = Aspetto.turnoprevisto
+                }// fine del blocco if-else
                 nomeMilite = testoVuoto
             }// fine del blocco if-else
         }// fine del blocco if-else
 
-        aspetto = calcolaAspetto(turno)
+        aspetto = calcolaAspetto(turno, bordo)
 
         if (numFunzioni) {
             for (int k = 1; k <= numFunzioni; k++) {
@@ -1118,11 +1147,17 @@ class AmbulanzaTagLib {
         return testoOut
     }// fine del metodo
 
-    private static Aspetto calcolaAspetto(Turno turno) {
-        Aspetto aspetto = Aspetto.turnovuoto
+    private static Aspetto calcolaAspetto(Turno turno, boolean bordo) {
+        Aspetto aspetto
         Date giornoCorrente = Lib.creaDataOggi()
         Date giornoTurno
         int delta
+
+        if (bordo) {
+            aspetto = Aspetto.turnovuotobordo
+        } else {
+            aspetto = Aspetto.turnovuoto
+        }// fine del blocco if-else
 
         if (turno) {
             giornoTurno = turno.giorno
@@ -1132,26 +1167,46 @@ class AmbulanzaTagLib {
             delta = giornoTurno - giornoCorrente
 
             if (delta < 1) {
-                aspetto = Aspetto.turnoeffettuato
+                if (bordo) {
+                    aspetto = Aspetto.turnoeffettuatobordo
+                } else {
+                    aspetto = Aspetto.turnoeffettuato
+                }// fine del blocco if-else
                 return aspetto
             }// fine del blocco if
 
             if (turno.assegnato) {
-                aspetto = Aspetto.turnoassegnato
+                if (bordo) {
+                    aspetto = Aspetto.turnoassegnatobordo
+                } else {
+                    aspetto = Aspetto.turnoassegnato
+                }// fine del blocco if-else
                 return aspetto
             }// fine del blocco if
 
             switch (delta) {
                 case 1:
-                    aspetto = Aspetto.turnocritico
+                    if (bordo) {
+                        aspetto = Aspetto.turnocriticobordo
+                    } else {
+                        aspetto = Aspetto.turnocritico
+                    }// fine del blocco if-else
                     break
                 case 2:
                 case 3:
                 case 4:
-                    aspetto = Aspetto.turnolibero
+                    if (bordo) {
+                        aspetto = Aspetto.turnoliberobordo
+                    } else {
+                        aspetto = Aspetto.turnolibero
+                    }// fine del blocco if-else
                     break
                 default: // caso non definito
-                    aspetto = Aspetto.turnoprevisto
+                    if (bordo) {
+                        aspetto = Aspetto.turnoprevistobordo
+                    } else {
+                        aspetto = Aspetto.turnoprevisto
+                    }// fine del blocco if-else
                     break
             } // fine del blocco switch
         }// fine del blocco if
@@ -1220,15 +1275,11 @@ class AmbulanzaTagLib {
         Turno turno
 
         testoRiga += this.cellaTipoTurno(tipoTurno, span, pariDispari, bordo)
-        testoRiga += this.cellaOrario(tipoTurno, bordo)
+        testoRiga += this.cellaOrario(tipoTurno)
 
         //--celle dei giorni (7)
         for (int k = 0; k < giorni; k++) {
-            if (bordo) {
-                testoRiga += Lib.tagCella('', Aspetto.turnoorariobordo)
-            } else {
-                testoRiga += Lib.tagCella('', Aspetto.turnoorario)
-            }// fine del blocco if-else
+            testoRiga += Lib.tagCella('', Aspetto.turnoorario)
         } // fine del ciclo for
         testoOut = Lib.tagRiga(testoRiga)
 
@@ -1265,7 +1316,7 @@ class AmbulanzaTagLib {
     /**
      * Seconda colonna <br>
      */
-    private static String cellaOrario(TipoTurno tipoTurno, boolean bordo) {
+    private static String cellaOrario(TipoTurno tipoTurno) {
         String testoOut
         String testo = 'Manca'
         boolean mostraOrario = true
@@ -1280,11 +1331,7 @@ class AmbulanzaTagLib {
             testo = '(località)'
         }// fine del blocco if-else
 
-        if (bordo) {
-            testoOut = Lib.tagCella(testo, Aspetto.legendaorariobordo)
-        } else {
-            testoOut = Lib.tagCella(testo, Aspetto.legendaorario)
-        }// fine del blocco if-else
+        testoOut = Lib.tagCella(testo, Aspetto.legendaorario)
 
         return testoOut
     }// fine del metodo
@@ -1349,7 +1396,7 @@ class AmbulanzaTagLib {
         String testoOut
         String testo
 
-        testo = 'Algos© 2013 - v1.4 del 18 marzo 2013'
+        testo = 'Algos© - v1.5 del 20 marzo 2013'
         testo = Lib.tagCella(testo, Aspetto.copyright)
         testoOut = Lib.tagTable(testo)
         return testoOut

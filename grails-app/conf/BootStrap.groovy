@@ -73,6 +73,12 @@ class BootStrap implements Cost {
             this.croceRossaPontetaro()
         }// fine del blocco if
 
+        //--aggiunge un flag a tutti i tipi di turno esistenti
+        //--il flag serve per separare visivamente i vari turni all'interno del tabellone
+        if (installaVersione(6)) {
+            this.fixUltimoTipoTurno()
+        }// fine del blocco if
+
         //--cancella tutto il database
 //        resetCompleto()
 
@@ -2098,7 +2104,7 @@ class BootStrap implements Cost {
             utente.save(flush: true)
         } // fine del ciclo each
 
-        newVersione(CROCE_ROSSA_FIDENZA, 'Nickname', 'Aggiunto il suffisso /crf')
+        newVersione(CROCE_ROSSA_FIDENZA, 'Username', 'Aggiunto il suffisso /crf')
     }// fine del metodo
 
     //--elimina alcuni utenti e regola il nick
@@ -2131,6 +2137,60 @@ class BootStrap implements Cost {
         }// fine del blocco if
 
         newVersione(CROCE_ALGOS, 'Security algos', 'Elimina alcuni utenti e regola il nick')
+    }// fine del metodo
+
+    //--aggiunge un flag a tutti i tipi di turno esistenti
+    //--il flag serve per separare visivamente i vari turni all'interno del tabellone
+    private static void fixUltimoTipoTurno() {
+        Croce croce
+        def lista
+        TipoTurno tipoTurno
+
+        //--demo
+        resetUltimoTipoTurno(CROCE_DEMO)
+
+        //--tidone
+        resetUltimoTipoTurno(CROCE_PUBBLICA)
+
+        //--fidenza
+        resetUltimoTipoTurno(CROCE_ROSSA_FIDENZA)
+        ultimoTipoTurno('msa-notte')
+        ultimoTipoTurno('amb-notte')
+
+        //--pontetaro
+        resetUltimoTipoTurno(CROCE_ROSSA_PONTETARO)
+        ultimoTipoTurno('118-notte')
+        ultimoTipoTurno('dia-2r')
+
+        newVersione(CROCE_ALGOS, 'TipoTurno', 'Aggiunge un flag a tutti i tipi di turni esistenti. Serve per separare visivamente i vari turni nel tabellone.')
+    }// fine del metodo
+
+    //--aggiunge un flag a tutti i tipi di turno esistenti
+    //--il flag serve per separare visivamente i vari turni all'interno del tabellone
+    private static void resetUltimoTipoTurno(String siglaCroce) {
+        Croce croce = Croce.findBySigla(siglaCroce)
+        def lista
+        TipoTurno tipoTurno
+
+        if (croce) {
+            lista = TipoTurno.findAllByCroce(croce)
+            lista?.each {
+                tipoTurno = (TipoTurno) it
+                tipoTurno.ultimo = false
+                tipoTurno.save(flush: true)
+            } // fine del ciclo each
+        }// fine del blocco if
+    }// fine del metodo
+
+    //--aggiunge un flag a tutti i tipi di turno esistenti
+    //--il flag serve per separare visivamente i vari turni all'interno del tabellone
+    private static void ultimoTipoTurno(String siglaTipoTurno) {
+        TipoTurno tipoTurno = TipoTurno.findBySigla(siglaTipoTurno)
+
+        if (tipoTurno) {
+            tipoTurno.ultimo = true
+            tipoTurno.save(flush: true)
+        }// fine del blocco if
     }// fine del metodo
 
     def destroy = {
