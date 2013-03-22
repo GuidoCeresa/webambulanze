@@ -123,11 +123,12 @@ class MiliteController {
                 if (!params.sort) {
                     params.sort = 'cognome'
                 }// fine del blocco if-else
-                if (militeService.isLoggatoAdminOrMore()) {
-                    lista = Milite.findAllByCroce(croce, params)
-                } else {
-                    lista = militeService.militeLoggato
-                }// fine del blocco if-else
+                lista = Milite.findAllByCroce(croce, params)
+//                if (militeService.isLoggatoAdminOrMore()) {
+//                    lista = Milite.findAllByCroce(croce, params)
+//                } else {
+//                    lista = militeService.militeLoggato
+//                }// fine del blocco if-else
                 campiExtra = funzioneService.campiExtraPerCroce(croce)
             }// fine del blocco if-else
         } else {
@@ -182,6 +183,20 @@ class MiliteController {
     } // fine del metodo
 
     def show(Long id) {
+        boolean militeSeStesso
+        def militeInstance = Milite.get(id)
+        militeSeStesso = militeInstance.id == militeService.militeLoggato.id
+
+        if (militeSeStesso || militeService.isLoggatoAdminOrMore()) {
+            redirect(action: 'showEffectively', id: militeInstance.id)
+        } else {
+            flash.message = 'Sorry, non puoi vedere la pagina di un altro Milite'
+            redirect(action: 'list')
+        }// fine del blocco if-else
+
+    } // fine del metodo
+
+    def showEffectively(Long id) {
         def militeInstance = Milite.get(id)
         def campiExtra = funzioneService.campiExtra(request)
 
@@ -194,6 +209,7 @@ class MiliteController {
         params.siglaCroce = croceService.getSiglaCroce(request)
         render(view: 'show', model: [militeInstance: militeInstance, campiExtra: campiExtra], params: params)
     } // fine del metodo
+
 
     @Secured([Cost.ROLE_ADMIN])
     def edit(Long id) {

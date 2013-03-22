@@ -45,6 +45,8 @@ class TurnoController {
     def tabellone = {
         params.siglaCroce = croceService.getSiglaCroce(request)
         flash.message = ''
+        flash.errors = null
+        flash.listaErrori = null
         dataInizio = AmbulanzaTagLib.creaDataOggi()
         dataFine = (dataInizio + delta).toTimestamp()
         render(view: 'tabellone', model: [dataInizio: dataInizio, dataFine: dataFine], params: params)
@@ -53,6 +55,8 @@ class TurnoController {
     @Secured([Cost.ROLE_MILITE])
     def tabCorrente = {
         params.siglaCroce = croceService.getSiglaCroce(request)
+        flash.errors = null
+        flash.listaErrori = null
         render(view: 'tabellone', model: [dataInizio: dataInizio, dataFine: dataFine], params: params)
     }// fine della closure
 
@@ -343,14 +347,13 @@ class TurnoController {
         def oldParams = Lib.cloneMappa(turnoInstance.properties)
         turnoInstance.properties = params
 
+        flash.message = ''
+        flash.errors = null
+        flash.listaErrori = null
+
         if (isEsistonoErrori(turnoInstance)) {
-            if (true) {
-                turnoInstance.properties = oldParams
-                turnoInstance.save(flush: true)
-                redirect(action: 'tabCorrente')
-            } else {
-                render(view: 'edit', model: [turnoInstance: turnoInstance], params: oldParams)
-            }// fine del blocco if-else
+            turnoInstance.properties = oldParams
+            render(view: 'fillTurno', model: [turnoInstance: turnoInstance, nuovoTurno: nuovoTurno], params: params)
             return
         }// fine del blocco if
 
