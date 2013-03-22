@@ -183,9 +183,13 @@ class MiliteController {
     } // fine del metodo
 
     def show(Long id) {
-        boolean militeSeStesso
+        boolean militeSeStesso = false
         def militeInstance = Milite.get(id)
-        militeSeStesso = militeInstance.id == militeService.militeLoggato.id
+        Milite milite = militeService.militeLoggato
+
+        if (milite) {
+            militeSeStesso = militeInstance.id == milite.id
+        }// fine del blocco if
 
         if (militeSeStesso || militeService.isLoggatoAdminOrMore()) {
             redirect(action: 'showEffectively', id: militeInstance.id)
