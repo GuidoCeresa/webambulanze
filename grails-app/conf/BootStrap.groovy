@@ -87,6 +87,15 @@ class BootStrap implements Cost {
             this.modificaTurnoFidenzaEffettuati()
         }// fine del blocco if
 
+        //--modifica dei tipi di turno in CRPT
+        //--esegue solo se NON esiste già una versione col numero indicato
+        //--modifica il numero di funzioniObbligatorie per i turni di dialisi
+        //--aggiunge un nuovo tipo di turno ''Ordinario'' e modifica in parte quello esistente
+        //--aggiunge un tipo di turno ''TurnoExtra'' per spezzare i turni di ambulanza
+        if (installaVersione(8)) {
+            this.modificaTurniPontetaro()
+        }// fine del blocco if
+
         //--cancella tutto il database
 //        resetCompleto()
 
@@ -2240,6 +2249,70 @@ class BootStrap implements Cost {
 
             newVersione(CROCE_ROSSA_FIDENZA, 'Turno mattino', 'Ulteriore cambio del tipoTurno per tutti i turni già ancora effettuati.')
         }// fine del blocco if
+    }// fine del metodo
+
+    //--modifica dei tipi di turno in CRPT
+    //--modifica il numero di funzioniObbligatorie per i turni di dialisi
+    //--aggiunge un nuovo tipo di turno ''Ordinario'' e modifica in parte quello esistente
+    //--aggiunge un tipo di turno ''TurnoExtra'' per spezzare i turni di ambulanza
+    private static void modificaTurniPontetaro() {
+        Croce croce = Croce.findBySigla(CROCE_ROSSA_PONTETARO)
+        TipoTurno dialisiUnoAndata
+        TipoTurno dialisiUnoRitorno
+        TipoTurno dialisiDueAndata
+        TipoTurno dialisiDueRitorno
+        TipoTurno ordinario
+        TipoTurno nuovoOrdinarioDoppio
+
+        //--modifica il numero di funzioniObbligatorie per i turni di dialisi
+        //--dialisi 1, andata e ritorno, hanno solo 1 Milite obbligatorio
+        dialisiUnoAndata = TipoTurno.findByCroceAndSigla(croce, TIPO_TURNO_DIALISI_UNO_ANDATA)
+        if (dialisiUnoAndata) {
+            dialisiUnoAndata.funzioniObbligatorie = 1
+            dialisiUnoAndata.save(flush: true)
+        }// fine del blocco if
+        dialisiUnoRitorno = TipoTurno.findByCroceAndSigla(croce, TIPO_TURNO_DIALISI_UNO_RITORNO)
+        if (dialisiUnoRitorno) {
+            dialisiUnoRitorno.funzioniObbligatorie = 1
+            dialisiUnoRitorno.save(flush: true)
+        }// fine del blocco if
+
+        //--modifica il numero di funzioniObbligatorie per i turni di dialisi
+        //--dialisi 2, andata e ritorno, hanno 2 Militi obbligatori
+        dialisiDueAndata = TipoTurno.findByCroceAndSigla(croce, TIPO_TURNO_DIALISI_DUE_ANDATA)
+        if (dialisiDueAndata) {
+            dialisiDueAndata.funzioniObbligatorie = 2
+            dialisiDueAndata.save(flush: true)
+        }// fine del blocco if
+        dialisiDueRitorno = TipoTurno.findByCroceAndSigla(croce, TIPO_TURNO_DIALISI_DUE_RITORNO)
+        if (dialisiDueRitorno) {
+            dialisiDueRitorno.funzioniObbligatorie = 2
+            dialisiDueRitorno.save(flush: true)
+        }// fine del blocco if
+
+        //--modifica il numero di funzioniObbligatorie per il tipo di turno ordinario
+        //--ordinario ha solo 1 Milite obbligatorio
+        ordinario = TipoTurno.findByCroceAndSigla(croce, TIPO_TURNO_ORDINARIO_OLD)
+        if (ordinario) {
+            ordinario.funzioniObbligatorie = 1
+            ordinario.save(flush: true)
+        }// fine del blocco if
+
+        //--modifica la sigla e la descrizione per il tipo di turno ordinario
+        ordinario = TipoTurno.findByCroceAndSigla(croce, TIPO_TURNO_ORDINARIO_OLD)
+        if (ordinario) {
+            ordinario.sigla = TIPO_TURNO_ORDINARIO_SINGOLO
+            ordinario.descrizione = 'Ordinario singolo'
+            ordinario.save(flush: true)
+        }// fine del blocco if
+
+        //--crea un nuovo tipo di turno ordinario
+        newTipoTurnoCRPT(TIPO_TURNO_ORDINARIO_DOPPIO, 'Ordinario doppio', 9, 0, 0, false, true, false, true, 2, funzCRPT[1], funzCRPT[3], funzCRPT[4], null)
+
+        //--crea un nuovo tipo di turno extra per spezzare i turni di ambulanza se necessario
+        newTipoTurnoCRPT(TIPO_TURNO_EXTRA, 'Extra ambulanza', 10, 0, 0, false, true, true, true, 3, funzCRPT[0], funzCRPT[2], funzCRPT[3], funzCRPT[4])
+
+        newVersione(CROCE_ROSSA_PONTETARO, 'Tipi turni', 'Funzioni obbligatorie dialisi, raddoppio turni ordinari e nuyovi turni extra per spezzare i turni Ambulanza.')
     }// fine del metodo
 
     def destroy = {

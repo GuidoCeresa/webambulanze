@@ -76,4 +76,18 @@ public interface Cost {
     //--identificatore delle numero di turni valido o meno per le statistiche
     public static String STATUS_VERDE = 'ok'
     public static String STATUS_ROSSO = 'rosso'
+
+    //--sigle dei tipi di turno in croce rossa pontetaro
+    public static String TIPO_TURNO_AMBULANZA_MATTINO = '118-mat'
+    public static String TIPO_TURNO_AMBULANZA_POMERIGGIO = '118-pom'
+    public static String TIPO_TURNO_AMBULANZA_NOTTE = '118-notte'
+    public static String TIPO_TURNO_DIALISI_UNO_ANDATA = 'dia-1a'
+    public static String TIPO_TURNO_DIALISI_UNO_RITORNO = 'dia-1r'
+    public static String TIPO_TURNO_DIALISI_DUE_ANDATA = 'dia-2a'
+    public static String TIPO_TURNO_DIALISI_DUE_RITORNO = 'dia-2r'
+    public static String TIPO_TURNO_ORDINARIO_OLD = 'ord'
+    public static String TIPO_TURNO_ORDINARIO_SINGOLO = 'ord-uno'
+    public static String TIPO_TURNO_ORDINARIO_DOPPIO = 'ord-due'
+    public static String TIPO_TURNO_EXTRA = 'extra'
+
 } // fine della interfaccia
