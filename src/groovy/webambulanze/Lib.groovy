@@ -475,6 +475,19 @@ class Lib {
         return testoOut
     } // fine del metodo statico
 
+    //--Inserisce il testo nel tag div
+    public static tagDiv(String testoIn) {
+        String testoOut = ''
+
+        if (testoIn) {
+            testoOut += '<div>'
+            testoOut += testoIn
+            testoOut += '</div>'
+        }// fine del blocco if
+
+        return testoOut
+    } // fine del metodo statico
+
     //--Inserisce il testo nel tag div, formattato a destra
     public static tagDivDex(String testoIn) {
         String testoOut = ''

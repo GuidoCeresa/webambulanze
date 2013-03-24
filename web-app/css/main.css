@@ -468,7 +468,7 @@ table {
     border-top: 1px solid #DFDFDF;
     border-collapse: collapse;
     width: 100%;
-    margin-bottom: 1em;
+    margin-bottom: 0em;
 }
 
 tr {
@@ -698,12 +698,13 @@ th.titoloimmagine, th.titolocroce, th.titolologin {
 }
 
 th.titoloimmagine {
+    width: 20px;
     font-size: 1.2em;
     text-align: left;
 }
 
 th.titolocroce {
-    font-size: 1.3em;
+    font-size: 1.4em;
     text-align: left;
 }
 
@@ -878,6 +879,43 @@ td.turnoeffettuatobordo {
     background: #aaaaaa;
 }
 
+td.turnovuotobordosup, td.turnoprevistobordosup, td.turnoassegnatobordosup, td.turnoliberobordosup,
+td.turnocriticobordosup, td.turnobloccatobordosup, td.turnoeffettuatobordosup {
+    border-style: solid;
+    border-collapse: collapse;
+    border-width: 4px 0 0 0;
+    border-style: solid;
+    border-color: blue;
+}
+
+td.turnovuotobordosup {
+    background: #eeeeee;
+}
+
+td.turnoprevistobordosup {
+    background: #e1f2b6;
+}
+
+td.turnoassegnatobordosup {
+    background: #44ff44;
+}
+
+td.turnoliberobordosup {
+    background: #fcefa1;
+}
+
+td.turnocriticobordosup {
+    background: #ff4444;
+}
+
+td.turnobloccatobordosup {
+    background: #4444ff;
+}
+
+td.turnoeffettuatobordosup {
+    background: #aaaaaa;
+}
+
 td.tab {
     line-height: 0.5em;
     background-color: #0000ff;
@@ -891,16 +929,22 @@ td.tab {
     background: #4444ff;
 }
 
-th.footerlegenda {
-    background: #339966;
-    color: #ffffff;
-    font-size: 1.2em;
-    font-weight: bold;
-    vertical-align: middle;
-    border-width: 2px 0 0 0;
-    padding: 2px;
+td.footerlegenda {
+    border-style: solid;
+    border-collapse: collapse;
+    border-width: 4px 0 0 0;
     border-style: solid;
     border-color: blue;
+    vertical-align: middle;
+}
+
+td.footercella {
+    border-style: solid;
+    border-collapse: collapse;
+    border-width: 4px 0 0 0;
+    border-style: solid;
+    border-color: blue;
+    vertical-align: middle;
 }
 
 table.formtable {

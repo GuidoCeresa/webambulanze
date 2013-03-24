@@ -90,28 +90,59 @@ class AmbulanzaTagLib {
      */
     def titoloPagina = {
         String testoOut = ''
-        String titolo = ''
-        String nome
-        Utente utente
-        long utenteId
-        Milite milite
-        String tagAnonimo = 'anonymousUser'
-        String nomeAnonimo = "Sei collegato come 'anonimo'"
-        Croce croce
-        def user = springSecurityService.principal
+        String testo = ''
+        String siglaCroce = ''
 
         if (params.siglaCroce) {
-            croce = Croce.findBySigla((String) params.siglaCroce)
+            siglaCroce = params.siglaCroce
+        }// fine del blocco if
+
+        testo += cellaTitoloImmagine()
+        if (siglaCroce) {
+            testo += cellaTitoloCroce(siglaCroce)
+            testo += cellaTitoloLogin()
+        }// fine del blocco if
+        testoOut += Lib.tagTable(testo)
+
+        out << testoOut
+    }// fine della closure
+
+    private String cellaTitoloImmagine() {
+        String testo = ''
+
+        testo += '<a href="http://it.wikipedia.org/wiki/Croce_Rossa_Italiana">'
+        testo += "<img src=\"${resource(dir: 'images', file: 'CRI_8.png')}\"/>"
+        testo += '</a>'
+
+        return Lib.tagCellaTitolo(testo, Aspetto.titoloimmagine)
+    }// fine del metodo
+
+    private static String cellaTitoloCroce(String siglaCroce) {
+        String testo = ''
+        Croce croce
+
+        if (siglaCroce) {
+            croce = Croce.findBySigla(siglaCroce)
         }// fine del blocco if
 
         if (croce) {
-            titolo = croce.descrizione
+            testo = croce.descrizione
         }// fine del blocco if
 
+        return Lib.tagCellaTitolo(testo, Aspetto.titolocroce)
+    }// fine del metodo
+
+    private String cellaTitoloLogin() {
+        String testo = ''
+        String tagAnonimo = 'anonymousUser'
+        String nomeAnonimo = "Sei collegato come 'anonimo'"
+        Utente utente
+        long utenteId
+        Milite milite
+        def user = springSecurityService.principal
+
         if (user && user instanceof String && user.equals(tagAnonimo)) {
-            testoOut += Lib.tagCellaTitolo(titolo, Aspetto.titolocroce)
-            testoOut += Lib.tagCellaTitolo(nomeAnonimo, Aspetto.titolologin)
-            testoOut = Lib.tagRiga(testoOut)
+            testo = nomeAnonimo
         } else {
             if (user instanceof GrailsUser) {
                 if (user.id) {
@@ -125,30 +156,15 @@ class AmbulanzaTagLib {
                 }// fine del blocco if
 
                 if (milite) {
-                    nome = 'Ciao, ' + milite.nome + ' ' + milite.cognome
+                    testo = 'Ciao, ' + milite.nome + ' ' + milite.cognome
                 } else {
-                    nome = 'Ciao, ' + user.username
+                    testo = 'Ciao, ' + user.username
                 }// fine del blocco if-else
-
-                testoOut += Lib.tagCellaTitolo(titolo, Aspetto.titolocroce)
-                testoOut += Lib.tagCellaTitolo(nome, Aspetto.titolologin)
-                testoOut = Lib.tagRiga(testoOut)
             }// fine del blocco if
         }// fine del blocco if-else
 
-        testoOut = Lib.tagHead(testoOut)
-        testoOut = Lib.tagTable(testoOut)
-
-        if (true) {
-            testoOut = '<div id="grailsLogo" role="banner">'
-            testoOut += '<a href="http://it.wikipedia.org/wiki/Croce_Rossa_Italiana">'
-            testoOut += "<img src=\"${resource(dir: 'images', file: 'CRI_8.png')}\"/>"
-            testoOut += "</a>${titolo}</div>"
-        }// fine del blocco if
-
-        out << testoOut
-//        out << Lib.getTitoloPagina(titolo)
-    }// fine della closure
+        return Lib.tagCellaTitolo(testo, Aspetto.titolologin)
+    }// fine del metodo
 
     /**
      * Tabella dei turni <br>
@@ -1374,20 +1390,20 @@ class AmbulanzaTagLib {
         String testo = ''
 
         testo += Lib.tagCella('Legenda', Aspetto.footerlegenda)
-        testo += Lib.tagCella('', Aspetto.turnoeffettuato)
-        testo += Lib.tagCella('Turno già effettuato')
+        testo += Lib.tagCella('', Aspetto.turnoeffettuatobordosup)
+        testo += Lib.tagCella('Turno già effettuato', Aspetto.footercella)
 //        testo += Lib.tagCella('', Aspetto.turnobloccato)
 //        testo += Lib.tagCella('Turno assegnato bloccato e non più modificabile')
-        testo += Lib.tagCella('', Aspetto.turnocritico)
-        testo += Lib.tagCella('Turno critico da assegnare subito')
-        testo += Lib.tagCella('', Aspetto.turnolibero)
-        testo += Lib.tagCella('Turno da assegnare nei prossimi giorni')
-        testo += Lib.tagCella('', Aspetto.turnoassegnato)
-        testo += Lib.tagCella('Turno assegnato normale (funzioni obbligatorie coperte)')
-        testo += Lib.tagCella('', Aspetto.turnoprevisto)
-        testo += Lib.tagCella('Turno previsto e non ancora completamente assegnato')
-        testo += Lib.tagCella('', Aspetto.turnovuoto)
-        testo += Lib.tagCella('Turno non previsto')
+        testo += Lib.tagCella('', Aspetto.turnocriticobordosup)
+        testo += Lib.tagCella('Turno critico da assegnare subito', Aspetto.footercella)
+        testo += Lib.tagCella('', Aspetto.turnoliberobordosup)
+        testo += Lib.tagCella('Turno da assegnare nei prossimi giorni', Aspetto.footercella)
+        testo += Lib.tagCella('', Aspetto.turnoassegnatobordosup)
+        testo += Lib.tagCella('Turno assegnato normale (funzioni obbligatorie coperte)', Aspetto.footercella)
+        testo += Lib.tagCella('', Aspetto.turnoprevistobordosup)
+        testo += Lib.tagCella('Turno previsto e non ancora completamente assegnato', Aspetto.footercella)
+        testo += Lib.tagCella('', Aspetto.turnovuotobordosup)
+        testo += Lib.tagCella('Turno non previsto', Aspetto.footercella)
 
         testo = Lib.tagRiga(testo)
         testo = Lib.tagTable(testo)
