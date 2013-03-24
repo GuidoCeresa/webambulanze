@@ -72,12 +72,13 @@ grails.project.dependency.resolution = {
 
 }
 
-// This closure is passed the command line arguments used to start the
-// war process.
+// This closure is passed the command line arguments
+// used to start the war process.
 grails.war.copyToWebApp = { args ->
     fileset(dir: "web-app") {
-        include(name: "js/**")
         include(name: "css/**")
+        include(name: "images/**")
+        include(name: "js/**")
         include(name: "WEB-INF/**")
     }
 }

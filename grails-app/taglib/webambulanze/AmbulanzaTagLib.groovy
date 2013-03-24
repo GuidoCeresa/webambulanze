@@ -139,6 +139,13 @@ class AmbulanzaTagLib {
         testoOut = Lib.tagHead(testoOut)
         testoOut = Lib.tagTable(testoOut)
 
+        if (true) {
+            testoOut = '<div id="grailsLogo" role="banner">'
+            testoOut += '<a href="http://it.wikipedia.org/wiki/Croce_Rossa_Italiana">'
+            testoOut += "<img src=\"${resource(dir: 'images', file: 'CRI_8.png')}\"/>"
+            testoOut += "</a>${titolo}</div>"
+        }// fine del blocco if
+
         out << testoOut
 //        out << Lib.getTitoloPagina(titolo)
     }// fine della closure
