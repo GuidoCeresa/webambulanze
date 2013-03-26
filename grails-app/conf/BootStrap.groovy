@@ -96,6 +96,12 @@ class BootStrap implements Cost {
             this.modificaTurniPontetaro()
         }// fine del blocco if
 
+        //--elimina tutti gli utenti programmatori eccetto uno
+        //--ce ne dovrebbero essere 3. Uno lo mantiene (il primo) e cancella gli altri due
+        if (installaVersione(9)) {
+            this.fixProgrammatori()
+        }// fine del blocco if
+
         //--cancella tutto il database
 //        resetCompleto()
 
@@ -2313,6 +2319,61 @@ class BootStrap implements Cost {
         newTipoTurnoCRPT(TIPO_TURNO_EXTRA, 'Extra ambulanza', 10, 0, 0, false, true, true, true, 3, funzCRPT[0], funzCRPT[2], funzCRPT[3], funzCRPT[4])
 
         newVersione(CROCE_ROSSA_PONTETARO, 'Tipi turni', 'Funzioni obbligatorie dialisi, raddoppio turni ordinari e nuyovi turni extra per spezzare i turni Ambulanza.')
+    }// fine del metodo
+
+    //--elimina tutti gli utenti programmatori eccetto uno
+    //--ce ne dovrebbero essere 3. Uno lo mantiene (il primo) e cancella gli altri due
+    private static void fixProgrammatori() {
+        Utente utenteProg
+        Utente utente
+        long utenteProgId = 0
+        long utenteId = 0
+        String oldTag = 'gac'
+        Ruolo ruoloProg = Ruolo.findByAuthority(ROLE_PROG)
+        UtenteRuolo uteRole
+        def listaUtenteRuolo
+        def listaProg
+        def lista
+
+        //--primo che rimane
+        //--fix username
+        //--fix nickname
+        utenteProg = Utente.findByNickname(oldTag)
+        if (utenteProg) {
+            utenteProgId = utenteProg.id
+            utenteProg.nickname = PROG_NICK
+            utenteProg.save(flush: true)
+            utenteProg.username = PROG_USERNAME
+            utenteProg.save(flush: true)
+        }// fine del blocco if
+
+        //--recupera la lista dei programmatori e li elimina tutti tranne uno
+        //--recupera la lista dell'incrocio utente/ruolo e li elimina tutti tranne uno
+        listaProg = Utente.findAllByPass(PROG_PASS)
+        listaProg?.each {
+            utente = (Utente) it
+            utenteId = utente.id
+            if (utenteId != utenteProgId) {
+
+                //--elimina i records di incrocio
+                listaUtenteRuolo = UtenteRuolo.findAllByUtente(utente)
+                listaUtenteRuolo?.each {
+                    it.delete(flush: true)
+                } // fine del ciclo each
+
+                //--elimina eventuali riferimenti all'utente prima di poterlo cancellare
+                lista = Logo.findAllByUtente(utente)
+                lista?.each {
+                    it.utente = null
+                    it.save(flush: true)
+                } // fine del ciclo each
+
+                //--camncella l'utente
+                utente.delete(flush: true)
+            }// fine del blocco if
+        } // fine del ciclo each
+
+        newVersione(CROCE_ALGOS, 'Security prog', 'Regola username e nick di un programmatore ed eelimina tutti gli altri.')
     }// fine del metodo
 
     def destroy = {

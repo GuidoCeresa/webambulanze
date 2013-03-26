@@ -57,6 +57,8 @@ public interface Cost {
     public static String PROG_NICK_CRF = '---'
     public static String PROG_NICK_CRPT = '--' //--i nick sono unici
     public static String PROG_NICK_DEMO = '----' //--i nick sono unici
+    public static String PROG_USERNAME = 'gac'
+    public static String PROG_NICK = '---'
     public static String PROG_PASS = 'fulvia'
 
     //--sigla e password per accesso libero alla croce demo

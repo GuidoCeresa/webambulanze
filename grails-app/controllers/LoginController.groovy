@@ -54,7 +54,7 @@ class LoginController {
         def listaGrezza
         Utente utente
         String username
-        ArrayList<String> listaUtenti
+        ArrayList<String> listaUtenti = null
         ArrayList<String> listaUtentiNick = null
         def config = SpringSecurityUtils.securityConfig
         String nick
@@ -78,14 +78,19 @@ class LoginController {
                 listaUtenti.add(utente.username)
                 listaUtentiNick.add(utente.nickname)
             } // fine del ciclo each
+            utente = Utente.findByNickname('gac')
+            if (utente) {
+                listaUtenti.add(utente.username)
+                listaUtentiNick.add(utente.nickname)
+            }// fine del blocco if
+
         }// fine del blocco if
 
-        //--sposta in fondo un eventuale nome del programmatore
-        if (listaUtenti) {
-            listaUtenti = utenteService.spostaProgrammatoreInFondo(listaUtenti)
-            listaUtentiNick = utenteService.spostaProgrammatoreInFondo(listaUtentiNick)
-//                  listaUtenti = utenteService.spostaOspiteInFondo(listaUtenti)
-        }// fine del blocco if
+        //--aggiunge in fondo l'username del programmatore
+        listaUtenti = utenteService.addUsernameProg(listaUtenti)
+
+        //--aggiunge in fondo il nickname del programmatore
+        listaUtentiNick = utenteService.addNicknameProg(listaUtentiNick)
 
         if (springSecurityService.isLoggedIn()) {
             redirect uri: config.successHandler.defaultTargetUrl

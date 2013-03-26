@@ -56,6 +56,30 @@ class UtenteService {
         return lista
     }// fine del metodo
 
+    //--aggiunge in fondo l'username del programmatore
+    public ArrayList addUsernameProg(ArrayList listaUtenti) {
+        Utente utente
+
+        utente = Utente.findByUsername(Cost.PROG_USERNAME)
+        if (utente) {
+            listaUtenti.add(utente.username)
+        }// fine del blocco if
+
+        return listaUtenti
+    }// fine del metodo
+
+    //--aggiunge in fondo l'username del programmatore
+    public ArrayList addNicknameProg(ArrayList listaUtenti) {
+        Utente utente
+
+        utente = Utente.findByUsername(Cost.PROG_USERNAME)
+        if (utente) {
+            listaUtenti.add(utente.nickname)
+        }// fine del blocco if
+
+        return listaUtenti
+    }// fine del metodo
+
     //--elimina il programatore
     private static ArrayList eliminaProgrammatore(ArrayList listaIn) {
         ArrayList listaOut = listaIn
@@ -101,21 +125,6 @@ class UtenteService {
             listaUtenti.remove(0)
             listaUtenti.add(sigla)
         }// fine del blocco if
-
-//        if (listaUtenti) {
-//            if (listaUtenti[0].equals(Cost.PROG_NICK_CRF)) {
-//                listaUtenti.remove(0)
-//                listaUtenti.add(Cost.PROG_NICK_CRF)
-//            }// fine del blocco if
-//            if (listaUtenti[0].equals(Cost.PROG_NICK_CRPT)) {
-//                listaUtenti.remove(0)
-//                listaUtenti.add(Cost.PROG_NICK_CRPT)
-//            }// fine del blocco if
-//            if (listaUtenti[0].equals(Cost.PROG_NICK_DEMO)) {
-//                listaUtenti.remove(0)
-//                listaUtenti.add(Cost.PROG_NICK_DEMO)
-//            }// fine del blocco if
-//        }// fine del blocco if
 
         return listaUtenti
     }// fine del metodo
