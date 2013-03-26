@@ -102,6 +102,11 @@ class BootStrap implements Cost {
             this.fixProgrammatori()
         }// fine del blocco if
 
+        //--patch ai tipi di turno in CRPT
+        if (installaVersione(10)) {
+            this.fixTurniPontetaro()
+        }// fine del blocco if
+
         //--cancella tutto il database
 //        resetCompleto()
 
@@ -2272,12 +2277,12 @@ class BootStrap implements Cost {
 
         //--modifica il numero di funzioniObbligatorie per i turni di dialisi
         //--dialisi 1, andata e ritorno, hanno solo 1 Milite obbligatorio
-        dialisiUnoAndata = TipoTurno.findByCroceAndSigla(croce, TIPO_TURNO_DIALISI_UNO_ANDATA)
+        dialisiUnoAndata = TipoTurno.findByCroceAndSigla(croce, CRPT_TIPO_TURNO_DIALISI_UNO_ANDATA)
         if (dialisiUnoAndata) {
             dialisiUnoAndata.funzioniObbligatorie = 1
             dialisiUnoAndata.save(flush: true)
         }// fine del blocco if
-        dialisiUnoRitorno = TipoTurno.findByCroceAndSigla(croce, TIPO_TURNO_DIALISI_UNO_RITORNO)
+        dialisiUnoRitorno = TipoTurno.findByCroceAndSigla(croce, CRPT_TIPO_TURNO_DIALISI_UNO_RITORNO)
         if (dialisiUnoRitorno) {
             dialisiUnoRitorno.funzioniObbligatorie = 1
             dialisiUnoRitorno.save(flush: true)
@@ -2285,12 +2290,12 @@ class BootStrap implements Cost {
 
         //--modifica il numero di funzioniObbligatorie per i turni di dialisi
         //--dialisi 2, andata e ritorno, hanno 2 Militi obbligatori
-        dialisiDueAndata = TipoTurno.findByCroceAndSigla(croce, TIPO_TURNO_DIALISI_DUE_ANDATA)
+        dialisiDueAndata = TipoTurno.findByCroceAndSigla(croce, CRPT_TIPO_TURNO_DIALISI_DUE_ANDATA)
         if (dialisiDueAndata) {
             dialisiDueAndata.funzioniObbligatorie = 2
             dialisiDueAndata.save(flush: true)
         }// fine del blocco if
-        dialisiDueRitorno = TipoTurno.findByCroceAndSigla(croce, TIPO_TURNO_DIALISI_DUE_RITORNO)
+        dialisiDueRitorno = TipoTurno.findByCroceAndSigla(croce, CRPT_TIPO_TURNO_DIALISI_DUE_RITORNO)
         if (dialisiDueRitorno) {
             dialisiDueRitorno.funzioniObbligatorie = 2
             dialisiDueRitorno.save(flush: true)
@@ -2298,27 +2303,85 @@ class BootStrap implements Cost {
 
         //--modifica il numero di funzioniObbligatorie per il tipo di turno ordinario
         //--ordinario ha solo 1 Milite obbligatorio
-        ordinario = TipoTurno.findByCroceAndSigla(croce, TIPO_TURNO_ORDINARIO_OLD)
+        ordinario = TipoTurno.findByCroceAndSigla(croce, CRPT_TIPO_TURNO_ORDINARIO_OLD)
         if (ordinario) {
             ordinario.funzioniObbligatorie = 1
             ordinario.save(flush: true)
         }// fine del blocco if
 
         //--modifica la sigla e la descrizione per il tipo di turno ordinario
-        ordinario = TipoTurno.findByCroceAndSigla(croce, TIPO_TURNO_ORDINARIO_OLD)
+        ordinario = TipoTurno.findByCroceAndSigla(croce, CRPT_TIPO_TURNO_ORDINARIO_OLD)
         if (ordinario) {
-            ordinario.sigla = TIPO_TURNO_ORDINARIO_SINGOLO
+            ordinario.sigla = CRPT_TIPO_TURNO_ORDINARIO_SINGOLO
             ordinario.descrizione = 'Ordinario singolo'
             ordinario.save(flush: true)
         }// fine del blocco if
 
         //--crea un nuovo tipo di turno ordinario
-        newTipoTurnoCRPT(TIPO_TURNO_ORDINARIO_DOPPIO, 'Ordinario doppio', 9, 0, 0, false, true, false, true, 2, funzCRPT[1], funzCRPT[3], funzCRPT[4], null)
+        newTipoTurnoCRPT(CRPT_TIPO_TURNO_ORDINARIO_DOPPIO, 'Ordinario doppio', 9, 0, 0, false, true, false, true, 2, funzCRPT[1], funzCRPT[3], funzCRPT[4], null)
 
         //--crea un nuovo tipo di turno extra per spezzare i turni di ambulanza se necessario
-        newTipoTurnoCRPT(TIPO_TURNO_EXTRA, 'Extra ambulanza', 10, 0, 0, false, true, true, true, 3, funzCRPT[0], funzCRPT[2], funzCRPT[3], funzCRPT[4])
+        newTipoTurnoCRPT(CRPT_TIPO_TURNO_EXTRA, 'Extra ambulanza', 10, 0, 0, false, true, true, true, 3, funzCRPT[0], funzCRPT[2], funzCRPT[3], funzCRPT[4])
 
         newVersione(CROCE_ROSSA_PONTETARO, 'Tipi turni', 'Funzioni obbligatorie dialisi, raddoppio turni ordinari e nuyovi turni extra per spezzare i turni Ambulanza.')
+    }// fine del metodo
+
+    //--patch ai tipi di turno in CRPT
+    //-- sostituzione nei turni dia-2a e dia-2r della 2° funzione bar in soc
+    private static void fixTurniPontetaro() {
+        Croce croce = Croce.findBySigla(CROCE_ROSSA_PONTETARO)
+        TipoTurno dialisiDueAndata
+        TipoTurno dialisiDueRitorno
+        Funzione aut118 = Funzione.findByCroceAndSigla(croce, Cost.CRPT_FUNZIONE_AUT_118)
+        Funzione autOrd = Funzione.findByCroceAndSigla(croce, Cost.CRPT_FUNZIONE_AUT_ORD)
+        Funzione dae = Funzione.findByCroceAndSigla(croce, Cost.CRPT_FUNZIONE_DAE)
+        Funzione soccorritore = Funzione.findByCroceAndSigla(croce, Cost.CRPT_FUNZIONE_SOC)
+        Funzione barelliere = Funzione.findByCroceAndSigla(croce, Cost.CRPT_FUNZIONE_BAR)
+        TipoTurno ordinarioSingolo
+        TipoTurno ordinarioDoppio
+        TipoTurno extraAmbulanza
+
+        //-- sostituzione nei turni dia-2a e dia-2r della 2° funzione bar in soc
+        dialisiDueAndata = TipoTurno.findByCroceAndSigla(croce, CRPT_TIPO_TURNO_DIALISI_DUE_ANDATA)
+        if (dialisiDueAndata && soccorritore) {
+            dialisiDueAndata.funzione2 = soccorritore
+            dialisiDueAndata.save(flush: true)
+        }// fine del blocco if
+        dialisiDueRitorno = TipoTurno.findByCroceAndSigla(croce, CRPT_TIPO_TURNO_DIALISI_DUE_RITORNO)
+        if (dialisiDueRitorno && soccorritore) {
+            dialisiDueRitorno.funzione2 = soccorritore
+            dialisiDueRitorno.save(flush: true)
+        }// fine del blocco if
+
+        //-- sostituzione nel turno ordinario singolo della 2° funzione soc in bar
+        ordinarioSingolo = TipoTurno.findByCroceAndSigla(croce, CRPT_TIPO_TURNO_ORDINARIO_SINGOLO)
+        if (ordinarioSingolo && barelliere) {
+            ordinarioSingolo.funzione2 = barelliere
+            ordinarioSingolo.save(flush: true)
+        }// fine del blocco if
+
+        //-- aggiunta delle funzioni nel turno ordinario doppio (mancavano)
+        ordinarioDoppio = TipoTurno.findByCroceAndSigla(croce, CRPT_TIPO_TURNO_ORDINARIO_DOPPIO)
+        if (ordinarioDoppio && autOrd && soccorritore && barelliere) {
+            ordinarioDoppio.funzione1 = autOrd
+            ordinarioDoppio.funzione2 = soccorritore
+            ordinarioDoppio.funzione3 = barelliere
+            ordinarioDoppio.save(flush: true)
+        }// fine del blocco if
+
+        //-- aggiunta delle funzioni nel turno extra ambulanza (mancavano)
+        //-- modifica del flag orario
+        extraAmbulanza = TipoTurno.findByCroceAndSigla(croce, CRPT_TIPO_TURNO_EXTRA)
+        if (ordinarioDoppio && aut118 && dae && soccorritore && barelliere) {
+            extraAmbulanza.funzione1 = aut118
+            extraAmbulanza.funzione2 = dae
+            extraAmbulanza.funzione3 = soccorritore
+            extraAmbulanza.funzione4 = barelliere
+            extraAmbulanza.orario = false
+            extraAmbulanza.save(flush: true)
+        }// fine del blocco if
+
+        newVersione(CROCE_ROSSA_PONTETARO, 'Patch tipi turni', 'Modificata seconda funzione dia-2a e dia-2r.')
     }// fine del metodo
 
     //--elimina tutti gli utenti programmatori eccetto uno

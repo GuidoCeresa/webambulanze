@@ -24,10 +24,10 @@ public interface Cost {
 
     //--codifica degli attributi dei cookies
     public static String COOKIE_SIGLA_CROCE = 'siglaCroce'
- //   public static String SESSIONE_LOGIN = 'startLogin'
- //   public static String SESSIONE_START_CONTROLLER = 'startController'
- //   public static String SESSIONE_TUTTI_CONTROLLI = 'allControllers'
- //   public static String SESSIONE_QUALI_CONTROLLI = 'controlli'
+    //   public static String SESSIONE_LOGIN = 'startLogin'
+    //   public static String SESSIONE_START_CONTROLLER = 'startController'
+    //   public static String SESSIONE_TUTTI_CONTROLLI = 'allControllers'
+    //   public static String SESSIONE_QUALI_CONTROLLI = 'controlli'
 
     //--codifica delle preferenze
     public static boolean PREF_startLogin = 'startLogin'
@@ -79,17 +79,24 @@ public interface Cost {
     public static String STATUS_VERDE = 'ok'
     public static String STATUS_ROSSO = 'rosso'
 
+    //--funzioni in croce rossa pontetaro
+    public static String CRPT_FUNZIONE_AUT_118 = 'aut-118'
+    public static String CRPT_FUNZIONE_AUT_ORD = 'aut-ord'
+    public static String CRPT_FUNZIONE_DAE = 'dae'
+    public static String CRPT_FUNZIONE_SOC = 'soc'
+    public static String CRPT_FUNZIONE_BAR = 'bar'
+
     //--sigle dei tipi di turno in croce rossa pontetaro
-    public static String TIPO_TURNO_AMBULANZA_MATTINO = '118-mat'
-    public static String TIPO_TURNO_AMBULANZA_POMERIGGIO = '118-pom'
-    public static String TIPO_TURNO_AMBULANZA_NOTTE = '118-notte'
-    public static String TIPO_TURNO_DIALISI_UNO_ANDATA = 'dia-1a'
-    public static String TIPO_TURNO_DIALISI_UNO_RITORNO = 'dia-1r'
-    public static String TIPO_TURNO_DIALISI_DUE_ANDATA = 'dia-2a'
-    public static String TIPO_TURNO_DIALISI_DUE_RITORNO = 'dia-2r'
-    public static String TIPO_TURNO_ORDINARIO_OLD = 'ord'
-    public static String TIPO_TURNO_ORDINARIO_SINGOLO = 'ord-uno'
-    public static String TIPO_TURNO_ORDINARIO_DOPPIO = 'ord-due'
-    public static String TIPO_TURNO_EXTRA = 'extra'
+    public static String CRPT_TIPO_TURNO_AMBULANZA_MATTINO = '118-mat'
+    public static String CRPT_TIPO_TURNO_AMBULANZA_POMERIGGIO = '118-pom'
+    public static String CRPT_TIPO_TURNO_AMBULANZA_NOTTE = '118-notte'
+    public static String CRPT_TIPO_TURNO_DIALISI_UNO_ANDATA = 'dia-1a'
+    public static String CRPT_TIPO_TURNO_DIALISI_UNO_RITORNO = 'dia-1r'
+    public static String CRPT_TIPO_TURNO_DIALISI_DUE_ANDATA = 'dia-2a'
+    public static String CRPT_TIPO_TURNO_DIALISI_DUE_RITORNO = 'dia-2r'
+    public static String CRPT_TIPO_TURNO_ORDINARIO_OLD = 'ord'
+    public static String CRPT_TIPO_TURNO_ORDINARIO_SINGOLO = 'ord-uno'
+    public static String CRPT_TIPO_TURNO_ORDINARIO_DOPPIO = 'ord-due'
+    public static String CRPT_TIPO_TURNO_EXTRA = 'extra'
 
 } // fine della interfaccia
