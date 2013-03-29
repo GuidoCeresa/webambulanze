@@ -83,6 +83,13 @@ class GenController {
         SecurityContextHolder.clearContext()
         rememberMeServices.logout request, response, null
 
+        //--cancella il cookie di Security
+        if (false) {
+            Cookie cookie = new Cookie('JSESSIONID', '')
+            cookie.maxAge = 10
+            response.addCookie(cookie)
+        }// fine del blocco if
+
         //--eventuale cookie già esistente per la setssa croce
         oldCookie = g.cookie(name: Cost.COOKIE_SIGLA_CROCE)
 
@@ -244,7 +251,9 @@ class GenController {
         //--regolazioni generali
         boolean primaVolta = selezionaCroceBase(Cost.CROCE_ROSSA_PONTETARO)
 
-        //     springSecurityService.reauthenticate(Cost.CRPT_OSPITE, Cost.CRPT_PASSWORD)
+        //--levato peché dava problemi con Explorer8 (non capisco la differenza con altri brwser, ma pazienza)
+        //--non sembra indispensabile, visto che comunque chiede un login
+        //      springSecurityService.reauthenticate(Cost.CRPT_OSPITE, Cost.CRPT_PASSWORD)
 
         params.siglaCroce = croceService.getSiglaCroce(request)
         String startController = croceService.getStartController((String) params.siglaCroce)

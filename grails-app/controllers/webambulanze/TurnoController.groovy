@@ -122,7 +122,7 @@ class TurnoController {
         if (croce && giorno && tipoTurno) {
             nuovoOppureEsistente = Turno.findByCroceAndTipoTurnoAndGiorno(croce, tipoTurno, giorno)
             if (nuovoOppureEsistente) {
-                if (nuovoOppureEsistente.tipoTurno.sigla.equals(Cost.EXTRA)) {
+                if (tipoTurno.multiplo) {
                     nuovoOppureEsistente = Lib.creaTurno(croce, tipoTurno, giorno)
                     flash.message = logoService.setWarn(Evento.turnoCreandoExtra, nuovoOppureEsistente)
                     nuovoTurno = true

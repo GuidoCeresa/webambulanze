@@ -85,6 +85,9 @@ public interface Cost {
     public static String CRPT_FUNZIONE_DAE = 'dae'
     public static String CRPT_FUNZIONE_SOC = 'soc'
     public static String CRPT_FUNZIONE_BAR = 'bar'
+    public static String CRPT_FUNZIONE_CENTRALINO = 'cent'
+    public static String CRPT_FUNZIONE_PULIZIE = 'pul'
+    public static String CRPT_FUNZIONE_UFFICIO = 'uff'
 
     //--sigle dei tipi di turno in croce rossa pontetaro
     public static String CRPT_TIPO_TURNO_AMBULANZA_MATTINO = '118-mat'
@@ -98,5 +101,6 @@ public interface Cost {
     public static String CRPT_TIPO_TURNO_ORDINARIO_SINGOLO = 'ord-uno'
     public static String CRPT_TIPO_TURNO_ORDINARIO_DOPPIO = 'ord-due'
     public static String CRPT_TIPO_TURNO_EXTRA = 'extra'
+    public static String CRPT_TIPO_TURNO_SERVIZI = 'servizi'
 
 } // fine della interfaccia

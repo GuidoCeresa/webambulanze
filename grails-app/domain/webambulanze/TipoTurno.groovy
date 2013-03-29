@@ -32,7 +32,7 @@ class TipoTurno {
     int minutiFine = 0
 
     //--ultimo turno di un eventuale raggruppamento a video (nel tabellone)
-    boolean ultimo    =false
+    boolean ultimo = false
 
     //--turno a cavallo della mezzanotte - termina il giorno successivo
     boolean fineGiornoSuccessivo = false

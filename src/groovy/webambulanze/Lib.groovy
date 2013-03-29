@@ -632,7 +632,7 @@ class Lib {
         }// fine del blocco if
 
         //turno = Turno.findOrCreateByCroceAndTipoTurnoAndGiornoAndInizioAndFine(croce, tipoTurno, giorno, inizio, fine)
-        if (tipoTurno.sigla.equals(Cost.EXTRA)) {
+        if (tipoTurno.multiplo) {
             turno = new Turno(croce: croce, tipoTurno: tipoTurno, giorno: giorno)
         } else {
             turno = Turno.findOrCreateByCroceAndTipoTurnoAndGiorno(croce, tipoTurno, giorno)

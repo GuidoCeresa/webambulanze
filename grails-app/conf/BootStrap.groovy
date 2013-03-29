@@ -107,6 +107,33 @@ class BootStrap implements Cost {
             this.fixTurniPontetaro()
         }// fine del blocco if
 
+        //--ulteriore patch ai tipi di turno in CRPT
+        if (installaVersione(11)) {
+            fixTurniPontetaroUlteriore()
+        }// fine del blocco if
+
+        //--spostamento in alto (dopo i 3 turni di ambulanza) del turno extra in CRPT
+        if (installaVersione(12)) {
+            fixExtraPontetaro()
+        }// fine del blocco if
+
+        //--aggiunge 3 funzioni per4 i servizi di sede a CRPT
+        if (installaVersione(13)) {
+            addFunzioniSedeCRPT()
+        }// fine del blocco if
+
+        //--aggiunge un tipo di turno a CRPT
+        if (installaVersione(14)) {
+            addServiziSedeCRPT()
+        }// fine del blocco if
+
+        //--flag ai militi dei servizi ufficio nella CRPT
+        if (installaVersione(15)) {
+            flagMilitiServiziCRPT()
+        }// fine del blocco if
+
+        // resetTurniPontetaro()
+
         //--cancella tutto il database
 //        resetCompleto()
 
@@ -2326,64 +2353,6 @@ class BootStrap implements Cost {
         newVersione(CROCE_ROSSA_PONTETARO, 'Tipi turni', 'Funzioni obbligatorie dialisi, raddoppio turni ordinari e nuyovi turni extra per spezzare i turni Ambulanza.')
     }// fine del metodo
 
-    //--patch ai tipi di turno in CRPT
-    //-- sostituzione nei turni dia-2a e dia-2r della 2° funzione bar in soc
-    private static void fixTurniPontetaro() {
-        Croce croce = Croce.findBySigla(CROCE_ROSSA_PONTETARO)
-        TipoTurno dialisiDueAndata
-        TipoTurno dialisiDueRitorno
-        Funzione aut118 = Funzione.findByCroceAndSigla(croce, Cost.CRPT_FUNZIONE_AUT_118)
-        Funzione autOrd = Funzione.findByCroceAndSigla(croce, Cost.CRPT_FUNZIONE_AUT_ORD)
-        Funzione dae = Funzione.findByCroceAndSigla(croce, Cost.CRPT_FUNZIONE_DAE)
-        Funzione soccorritore = Funzione.findByCroceAndSigla(croce, Cost.CRPT_FUNZIONE_SOC)
-        Funzione barelliere = Funzione.findByCroceAndSigla(croce, Cost.CRPT_FUNZIONE_BAR)
-        TipoTurno ordinarioSingolo
-        TipoTurno ordinarioDoppio
-        TipoTurno extraAmbulanza
-
-        //-- sostituzione nei turni dia-2a e dia-2r della 2° funzione bar in soc
-        dialisiDueAndata = TipoTurno.findByCroceAndSigla(croce, CRPT_TIPO_TURNO_DIALISI_DUE_ANDATA)
-        if (dialisiDueAndata && soccorritore) {
-            dialisiDueAndata.funzione2 = soccorritore
-            dialisiDueAndata.save(flush: true)
-        }// fine del blocco if
-        dialisiDueRitorno = TipoTurno.findByCroceAndSigla(croce, CRPT_TIPO_TURNO_DIALISI_DUE_RITORNO)
-        if (dialisiDueRitorno && soccorritore) {
-            dialisiDueRitorno.funzione2 = soccorritore
-            dialisiDueRitorno.save(flush: true)
-        }// fine del blocco if
-
-        //-- sostituzione nel turno ordinario singolo della 2° funzione soc in bar
-        ordinarioSingolo = TipoTurno.findByCroceAndSigla(croce, CRPT_TIPO_TURNO_ORDINARIO_SINGOLO)
-        if (ordinarioSingolo && barelliere) {
-            ordinarioSingolo.funzione2 = barelliere
-            ordinarioSingolo.save(flush: true)
-        }// fine del blocco if
-
-        //-- aggiunta delle funzioni nel turno ordinario doppio (mancavano)
-        ordinarioDoppio = TipoTurno.findByCroceAndSigla(croce, CRPT_TIPO_TURNO_ORDINARIO_DOPPIO)
-        if (ordinarioDoppio && autOrd && soccorritore && barelliere) {
-            ordinarioDoppio.funzione1 = autOrd
-            ordinarioDoppio.funzione2 = soccorritore
-            ordinarioDoppio.funzione3 = barelliere
-            ordinarioDoppio.save(flush: true)
-        }// fine del blocco if
-
-        //-- aggiunta delle funzioni nel turno extra ambulanza (mancavano)
-        //-- modifica del flag orario
-        extraAmbulanza = TipoTurno.findByCroceAndSigla(croce, CRPT_TIPO_TURNO_EXTRA)
-        if (ordinarioDoppio && aut118 && dae && soccorritore && barelliere) {
-            extraAmbulanza.funzione1 = aut118
-            extraAmbulanza.funzione2 = dae
-            extraAmbulanza.funzione3 = soccorritore
-            extraAmbulanza.funzione4 = barelliere
-            extraAmbulanza.orario = false
-            extraAmbulanza.save(flush: true)
-        }// fine del blocco if
-
-        newVersione(CROCE_ROSSA_PONTETARO, 'Patch tipi turni', 'Modificata seconda funzione dia-2a e dia-2r.')
-    }// fine del metodo
-
     //--elimina tutti gli utenti programmatori eccetto uno
     //--ce ne dovrebbero essere 3. Uno lo mantiene (il primo) e cancella gli altri due
     private static void fixProgrammatori() {
@@ -2436,7 +2405,223 @@ class BootStrap implements Cost {
             }// fine del blocco if
         } // fine del ciclo each
 
-        newVersione(CROCE_ALGOS, 'Security prog', 'Regola username e nick di un programmatore ed eelimina tutti gli altri.')
+        newVersione(CROCE_ALGOS, 'Security prog', 'Regola username e nick di un programmatore ed elimina tutti gli altri.')
+    }// fine del metodo
+
+    //--patch ai tipi di turno in CRPT
+    //-- sostituzione nei turni dia-2a e dia-2r della 2° funzione bar in soc
+    private static void fixTurniPontetaro() {
+        Croce croce = Croce.findBySigla(CROCE_ROSSA_PONTETARO)
+        TipoTurno dialisiDueAndata
+        TipoTurno dialisiDueRitorno
+        TipoTurno ordinarioSingolo
+        TipoTurno ordinarioDoppio
+        TipoTurno extraAmbulanza
+        Funzione aut118 = Funzione.findByCroceAndSigla(croce, Cost.CRPT_FUNZIONE_AUT_118)
+        Funzione autOrd = Funzione.findByCroceAndSigla(croce, Cost.CRPT_FUNZIONE_AUT_ORD)
+        Funzione dae = Funzione.findByCroceAndSigla(croce, Cost.CRPT_FUNZIONE_DAE)
+        Funzione soccorritore = Funzione.findByCroceAndSigla(croce, Cost.CRPT_FUNZIONE_SOC)
+        Funzione barelliere = Funzione.findByCroceAndSigla(croce, Cost.CRPT_FUNZIONE_BAR)
+
+        //-- sostituzione nei turni dia-2a e dia-2r della 2° funzione bar in soc
+        dialisiDueAndata = TipoTurno.findByCroceAndSigla(croce, CRPT_TIPO_TURNO_DIALISI_DUE_ANDATA)
+        if (dialisiDueAndata && soccorritore) {
+            dialisiDueAndata.funzione2 = soccorritore
+            dialisiDueAndata.save(flush: true)
+        }// fine del blocco if
+        dialisiDueRitorno = TipoTurno.findByCroceAndSigla(croce, CRPT_TIPO_TURNO_DIALISI_DUE_RITORNO)
+        if (dialisiDueRitorno && soccorritore) {
+            dialisiDueRitorno.funzione2 = soccorritore
+            dialisiDueRitorno.save(flush: true)
+        }// fine del blocco if
+
+        //-- sostituzione nel turno ordinario singolo della 2° funzione soc in bar
+        ordinarioSingolo = TipoTurno.findByCroceAndSigla(croce, CRPT_TIPO_TURNO_ORDINARIO_SINGOLO)
+        if (ordinarioSingolo && barelliere) {
+            ordinarioSingolo.funzione2 = barelliere
+            ordinarioSingolo.save(flush: true)
+        }// fine del blocco if
+
+        //-- aggiunta delle funzioni nel turno ordinario doppio (mancavano)
+        ordinarioDoppio = TipoTurno.findByCroceAndSigla(croce, CRPT_TIPO_TURNO_ORDINARIO_DOPPIO)
+        if (ordinarioDoppio && autOrd && soccorritore && barelliere) {
+            ordinarioDoppio.funzione1 = autOrd
+            ordinarioDoppio.funzione2 = soccorritore
+            ordinarioDoppio.funzione3 = barelliere
+            ordinarioDoppio.save(flush: true)
+        }// fine del blocco if
+
+        //-- aggiunta delle funzioni nel turno extra ambulanza (mancavano)
+        //-- modifica del flag orario
+        extraAmbulanza = TipoTurno.findByCroceAndSigla(croce, CRPT_TIPO_TURNO_EXTRA)
+        if (ordinarioDoppio && aut118 && dae && soccorritore && barelliere) {
+            extraAmbulanza.funzione1 = aut118
+            extraAmbulanza.funzione2 = dae
+            extraAmbulanza.funzione3 = soccorritore
+            extraAmbulanza.funzione4 = barelliere
+            extraAmbulanza.orario = false
+            extraAmbulanza.save(flush: true)
+        }// fine del blocco if
+
+        newVersione(CROCE_ROSSA_PONTETARO, 'Patch tipi turni', 'Modificata seconda funzione e orario in alcuni tipi di turno.')
+    }// fine del metodo
+
+    //--ulteriore patch ai tipi di turno in CRPT
+    //--sostituzione nei turni dia-1a e dia-1r  e ordinario singolo della 2° funzione bar in soc
+    private static void fixTurniPontetaroUlteriore() {
+        Croce croce = Croce.findBySigla(CROCE_ROSSA_PONTETARO)
+        TipoTurno dialisiUnoAndata
+        TipoTurno dialisiUnoRitorno
+        TipoTurno ordinarioSingolo
+        Funzione soccorritore = Funzione.findByCroceAndSigla(croce, Cost.CRPT_FUNZIONE_SOC)
+
+        //-- sostituzione nei turni dia-1a e dia-1r della 2° funzione bar in soc
+        dialisiUnoAndata = TipoTurno.findByCroceAndSigla(croce, CRPT_TIPO_TURNO_DIALISI_UNO_ANDATA)
+        if (dialisiUnoAndata && soccorritore) {
+            dialisiUnoAndata.funzione2 = soccorritore
+            dialisiUnoAndata.save(flush: true)
+        }// fine del blocco if
+        dialisiUnoRitorno = TipoTurno.findByCroceAndSigla(croce, CRPT_TIPO_TURNO_DIALISI_UNO_RITORNO)
+        if (dialisiUnoRitorno && soccorritore) {
+            dialisiUnoRitorno.funzione2 = soccorritore
+            dialisiUnoRitorno.save(flush: true)
+        }// fine del blocco if
+
+        //-- sostituzione nel turno ordinario singolo della 2° funzione bar in soc
+        ordinarioSingolo = TipoTurno.findByCroceAndSigla(croce, CRPT_TIPO_TURNO_ORDINARIO_SINGOLO)
+        if (ordinarioSingolo && ordinarioSingolo) {
+            ordinarioSingolo.funzione2 = soccorritore
+            ordinarioSingolo.save(flush: true)
+        }// fine del blocco if
+
+        newVersione(CROCE_ROSSA_PONTETARO, 'Patch tipi turni', 'Modificata seconda funzione in alcuni tipi di turno.')
+    }// fine del metodo
+
+    //--spostamento in alto (dopo i 3 turni di ambulanza) del turno extra in CRPT
+    //--modifica l'ordine di apparizione di tutti i turni
+    private static void fixExtraPontetaro() {
+        Croce croce = Croce.findBySigla(CROCE_ROSSA_PONTETARO)
+        TipoTurno tipoTurno
+        TipoTurno ambulanzaNotte
+        TipoTurno extra
+
+        //--modifica l'ordine di apparizione di tutti i turni
+        ordineTurnoCRPT(CRPT_TIPO_TURNO_AMBULANZA_MATTINO, 1)
+        ordineTurnoCRPT(CRPT_TIPO_TURNO_AMBULANZA_POMERIGGIO, 2)
+        ordineTurnoCRPT(CRPT_TIPO_TURNO_AMBULANZA_NOTTE, 3)
+        ordineTurnoCRPT(CRPT_TIPO_TURNO_EXTRA, 4)
+        ordineTurnoCRPT(CRPT_TIPO_TURNO_DIALISI_UNO_ANDATA, 5)
+        ordineTurnoCRPT(CRPT_TIPO_TURNO_DIALISI_UNO_RITORNO, 6)
+        ordineTurnoCRPT(CRPT_TIPO_TURNO_DIALISI_DUE_ANDATA, 7)
+        ordineTurnoCRPT(CRPT_TIPO_TURNO_DIALISI_DUE_RITORNO, 8)
+        ordineTurnoCRPT(CRPT_TIPO_TURNO_ORDINARIO_SINGOLO, 9)
+        ordineTurnoCRPT(CRPT_TIPO_TURNO_ORDINARIO_DOPPIO, 10)
+
+        //--sposta la barra blu sotto l'extra
+        ambulanzaNotte = TipoTurno.findByCroceAndSigla(croce, CRPT_TIPO_TURNO_AMBULANZA_NOTTE)
+        if (ambulanzaNotte) {
+            ambulanzaNotte.ultimo = false
+            ambulanzaNotte.save(flush: true)
+        }// fine del blocco if
+        extra = TipoTurno.findByCroceAndSigla(croce, CRPT_TIPO_TURNO_EXTRA)
+        if (extra) {
+            extra.ultimo = true
+            extra.save(flush: true)
+        }// fine del blocco if
+
+        newVersione(CROCE_ROSSA_PONTETARO, 'Posizione extra', 'Spostato in alto il turno extra, dopo i 3 turni di ambulnza.')
+    }// fine del metodo
+
+    //--aggiunge 3 funzioni per4 i servizi di sede a CRPT
+    private static void addFunzioniSedeCRPT() {
+        newFunzRossaPonteTaro(CRPT_FUNZIONE_CENTRALINO, 'Cent', 'Centralino', 6, '')
+        newFunzRossaPonteTaro(CRPT_FUNZIONE_PULIZIE, 'Pul', 'Pulizie', 7, '')
+        newFunzRossaPonteTaro(CRPT_FUNZIONE_UFFICIO, 'Uff', 'Ufficio', 8, '')
+
+        newVersione(CROCE_ROSSA_PONTETARO, 'Funzioni sede', 'Aggiunta di 3 funzioni per la sede.')
+    }// fine del metodo
+
+    //--aggiunge un tipo di turno a CRPT
+    private static void addServiziSedeCRPT() {
+        Croce croce = Croce.findBySigla(CROCE_ROSSA_PONTETARO)
+        Funzione centralino = Funzione.findByCroceAndSigla(croce, CRPT_FUNZIONE_CENTRALINO)
+        Funzione pulizie = Funzione.findByCroceAndSigla(croce, CRPT_FUNZIONE_PULIZIE)
+        Funzione ufficio = Funzione.findByCroceAndSigla(croce, CRPT_FUNZIONE_UFFICIO)
+
+        newTipoTurnoCRPT(CRPT_TIPO_TURNO_SERVIZI, 'Servizi sede', 11, 0, 0, false, true, false, false, 1, centralino, pulizie, ufficio, null)
+
+        newVersione(CROCE_ROSSA_PONTETARO, 'Servizi sede', 'Aggiunta di un tipo di turno per le funzioni della sede.')
+    }// fine del metodo
+
+    //--flag ai militi dei servizi ufficio nella CRPT
+    private static void flagMilitiServiziCRPT() {
+        Croce croce = Croce.findBySigla(CROCE_ROSSA_PONTETARO)
+        Funzione centralino = Funzione.findByCroceAndSigla(croce, CRPT_FUNZIONE_CENTRALINO)
+        Funzione pulizie = Funzione.findByCroceAndSigla(croce, CRPT_FUNZIONE_PULIZIE)
+        Funzione ufficio = Funzione.findByCroceAndSigla(croce, CRPT_FUNZIONE_UFFICIO)
+        Milite milite
+
+        //--centralino
+        milite = Milite.findByCroceAndCognome(croce, 'Scafaro')
+        if (milite && centralino) {
+            Militefunzione.findOrCreateByCroceAndMiliteAndFunzione(croce, milite, centralino).save(flush: true)
+        }// fine del blocco if
+        milite = Milite.findByCroceAndCognome(croce, 'Bravi')
+        if (milite && centralino) {
+            Militefunzione.findOrCreateByCroceAndMiliteAndFunzione(croce, milite, centralino).save(flush: true)
+        }// fine del blocco if
+        milite = Milite.findByCroceAndCognome(croce, 'Ricci')
+        if (milite && centralino) {
+            Militefunzione.findOrCreateByCroceAndMiliteAndFunzione(croce, milite, centralino).save(flush: true)
+        }// fine del blocco if
+        milite = Milite.findByCroceAndCognome(croce, 'Beatrizzotti')
+        if (milite && centralino) {
+            Militefunzione.findOrCreateByCroceAndMiliteAndFunzione(croce, milite, centralino).save(flush: true)
+        }// fine del blocco if
+
+        //--pulizie
+        milite = Milite.findByCroceAndCognome(croce, 'Fornia')
+        if (milite && pulizie) {
+            Militefunzione.findOrCreateByCroceAndMiliteAndFunzione(croce, milite, pulizie).save(flush: true)
+        }// fine del blocco if
+        milite = Milite.findByCroceAndCognome(croce, 'Pettenati')
+        if (milite && pulizie) {
+            Militefunzione.findOrCreateByCroceAndMiliteAndFunzione(croce, milite, pulizie).save(flush: true)
+        }// fine del blocco if
+
+        //--ufficio
+        milite = Milite.findByCroceAndCognome(croce, 'Carraglia')
+        if (milite && ufficio) {
+            Militefunzione.findOrCreateByCroceAndMiliteAndFunzione(croce, milite, ufficio).save(flush: true)
+        }// fine del blocco if
+        milite = Milite.findByCroceAndCognome(croce, 'Betti')
+        if (milite && ufficio) {
+            Militefunzione.findOrCreateByCroceAndMiliteAndFunzione(croce, milite, ufficio).save(flush: true)
+        }// fine del blocco if
+
+        newVersione(CROCE_ROSSA_PONTETARO, 'Servizi sede', 'Flag per i militi abilitati ai servizi di sede.')
+    }// fine del metodo
+
+    //--modifica l'ordine di apparizione del turno
+    private static void ordineTurnoCRPT(String siglaTurno, int ordine) {
+        Croce croce = Croce.findBySigla(CROCE_ROSSA_PONTETARO)
+        TipoTurno tipoTurno
+
+        tipoTurno = TipoTurno.findByCroceAndSigla(croce, siglaTurno)
+        if (tipoTurno) {
+            tipoTurno.ordine = ordine
+            tipoTurno.save(flush: true)
+        }// fine del blocco if
+    }// fine del metodo
+
+    private void resetTurniPontetaro() {
+        Croce croce = Croce.findBySigla(CROCE_ROSSA_PONTETARO)
+        this.cancellaSingolaTavola('Logo')
+        def turni = Turno.findAllByCroce(croce)
+        turni?.each {
+            it.delete(flush: true)
+        } // fine del ciclo each
+
     }// fine del metodo
 
     def destroy = {

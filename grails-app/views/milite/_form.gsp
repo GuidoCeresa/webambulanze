@@ -12,24 +12,6 @@
 
 
 
-<div class="fieldcontain ${hasErrors(bean: militeInstance, field: 'croce', 'error')} required">
-	<label for="croce">
-		<g:message code="milite.croce.labelform" default="Croce" />
-		<span class="required-indicator">*</span>
-	</label>
-	
-
-
-
-
-
-
-
-
-
-<g:select id="croce" name="croce.id" from="${webambulanze.Croce.list()}" optionKey="id" required="" value="${militeInstance?.croce?.id}" class="many-to-one"/>
-</div>
-
 <div class="fieldcontain ${hasErrors(bean: militeInstance, field: 'cognome', 'error')} required">
 	<label for="cognome">
 		<g:message code="milite.cognome.labelform" default="Cognome" />

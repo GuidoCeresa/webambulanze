@@ -1,5 +1,4 @@
 package webambulanze
-
 import org.apache.commons.lang.time.FastDateFormat
 import org.codehaus.groovy.grails.plugins.springsecurity.GrailsUser
 import org.springframework.context.NoSuchMessageException
@@ -219,7 +218,7 @@ class AmbulanzaTagLib {
         def tipiTurno = null
         int pariDispari = 0
         int numTipoTurno = 0
-        int numExtra = 1
+        int numExtra
 
         if (croce && inizio && fine) {
             tipiTurno = TipoTurno.findAllByCroceAndVisibile(croce, true, [sort: 'ordine', order: 'asc'])
@@ -230,6 +229,7 @@ class AmbulanzaTagLib {
             tipiTurno?.each {
                 numTipoTurno++
                 pariDispari++
+                numExtra = 1
                 if (it.ultimo) {
                     testoBody += this.righeDiUnTurno(it, inizio, fine, pariDispari, numExtra, true)
                 } else {
@@ -1419,7 +1419,7 @@ class AmbulanzaTagLib {
         String testoOut
         String testo
 
-        testo = 'Algos© - v1.9 del 26 marzo 2013'
+        testo = 'Algos© - v2.0 del 29 marzo 2013'
         testo = Lib.tagCella(testo, Aspetto.copyright)
         testoOut = Lib.tagTable(testo)
         return testoOut
