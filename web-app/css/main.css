@@ -241,28 +241,35 @@ img {
     background-position: 0.7em center;
     background-repeat: no-repeat;
     text-indent: 25px;
-    background-image: url(../images/skin/arrow_left.png);
+    background-image: url(../images/skin/date_previous.png);
 }
 
 .nav a.tabelloneLunedi {
     background-position: 0.7em center;
     background-repeat: no-repeat;
     text-indent: 25px;
-    background-image: url(../images/skin/arrow_branch.png);
+    background-image: url(../images/skin/date_go.png);
 }
 
 .nav a.tabelloneOggi {
     background-position: 0.7em center;
     background-repeat: no-repeat;
     text-indent: 25px;
-    background-image: url(../images/skin/arrow_down.png);
+    background-image: url(../images/skin/date.png);
 }
 
 .nav a.tabelloneDopo {
     background-position: 0.7em center;
     background-repeat: no-repeat;
     text-indent: 25px;
-    background-image: url(../images/skin/arrow_right.png);
+    background-image: url(../images/skin/date_next.png);
+}
+
+.nav a.viaggio {
+    background-position: 0.7em center;
+    background-repeat: no-repeat;
+    text-indent: 25px;
+    background-image: url(../images/skin/car.png);
 }
 
 /* CREATE/EDIT FORMS AND SHOW PAGES */

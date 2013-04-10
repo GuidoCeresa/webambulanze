@@ -17,13 +17,13 @@ class UrlMappings {
             }
         }
         //      "/"(controller: 'Gen', action: 'selezionaCroce')
-      //  "/"(controller: 'Gen', action: 'selezionaCroceRossaPonteTaroFree')
+        //  "/"(controller: 'Gen', action: 'selezionaCroceRossaPonteTaroFree')
         "/algos"(controller: 'Gen', action: 'selezionaCroceAlgos')
         "/ALGOS"(controller: 'Gen', action: 'selezionaCroceAlgos')
         "/demo"(controller: 'Gen', action: 'selezionaCroceDemo')
         "/DEMO"(controller: 'Gen', action: 'selezionaCroceDemo')
-        //       "/pavt"(controller: 'Gen', action: 'selezionaCrocePAVT')
-//        "/PAVT"(controller: 'Gen', action: 'selezionaCrocePAVT')
+        "/pavt"(controller: 'Gen', action: 'selezionaCrocePubblicaCastello')
+        "/PAVT"(controller: 'Gen', action: 'selezionaCrocePubblicaCastello')
         "/crf"(controller: 'Gen', action: 'selezionaCroceRossaFidenza')
         "/CRF"(controller: 'Gen', action: 'selezionaCroceRossaFidenza')
         "/crpt"(controller: 'Gen', action: 'selezionaCroceRossaPonteTaro')

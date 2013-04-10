@@ -60,9 +60,11 @@ class UtenteService {
     public ArrayList addUsernameProg(ArrayList listaUtenti) {
         Utente utente
 
-        utente = Utente.findByUsername(Cost.PROG_USERNAME)
-        if (utente) {
-            listaUtenti.add(utente.username)
+        if (listaUtenti) {
+            utente = Utente.findByUsername(Cost.PROG_USERNAME)
+            if (utente) {
+                listaUtenti.add(utente.username)
+            }// fine del blocco if
         }// fine del blocco if
 
         return listaUtenti
@@ -72,9 +74,11 @@ class UtenteService {
     public ArrayList addNicknameProg(ArrayList listaUtenti) {
         Utente utente
 
-        utente = Utente.findByUsername(Cost.PROG_USERNAME)
-        if (utente) {
-            listaUtenti.add(utente.nickname)
+        if (listaUtenti) {
+            utente = Utente.findByUsername(Cost.PROG_USERNAME)
+            if (utente) {
+                listaUtenti.add(utente.nickname)
+            }// fine del blocco if
         }// fine del blocco if
 
         return listaUtenti

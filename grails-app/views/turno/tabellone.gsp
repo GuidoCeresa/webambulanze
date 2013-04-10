@@ -51,6 +51,9 @@
                 <g:message code="tabellone.successiva.label" default="Set Succ"/>
             </g:link>
         </li>
+        <amb:ifModuloViaggi>
+            <li><g:link class="viaggio" controller="viaggio">Viaggi</g:link></li>
+        </amb:ifModuloViaggi>
         <sec:ifNotLoggedIn>
             <li><g:link class="login" controller="login">Login</g:link></li>
         </sec:ifNotLoggedIn>

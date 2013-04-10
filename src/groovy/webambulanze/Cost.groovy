@@ -18,7 +18,7 @@ public interface Cost {
     //--alcune sigle di croci per operazioni selettive
     public static String CROCE_ALGOS = 'ALGOS'
     public static String CROCE_DEMO = 'DEMO'
-    public static String CROCE_PUBBLICA = 'PAVT'
+    public static String CROCE_PUBBLICA_CASTELLO = 'PAVT'
     public static String CROCE_ROSSA_FIDENZA = 'CRF'
     public static String CROCE_ROSSA_PONTETARO = 'CRPT'
 

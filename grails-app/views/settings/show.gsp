@@ -240,6 +240,15 @@
             
         </li>
         
+        <li class="fieldcontain">
+            <span id="usaModuloViaggi-label" class="property-label"><g:message
+                    code="settings.usaModuloViaggi.labelform" default="Usa Modulo Viaggi"/></span>
+            
+            <span class="property-value" aria-labelledby="usaModuloViaggi-label"><g:formatBoolean
+                    boolean="${settingsInstance?.usaModuloViaggi}"/></span>
+            
+        </li>
+        
     </ol>
 
     <g:if test="${campiExtra}">

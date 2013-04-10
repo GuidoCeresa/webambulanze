@@ -87,6 +87,9 @@ class Settings {
     //--ha senso solo se fissaLimiteMassimoSingoloTurno è true
     int oreMassimeSingoloTurno = 0
 
+    //--abilitazione al modulo
+    boolean usaModuloViaggi = false
+
     /**
      * regolazione delle proprietà di ogni campo
      * l'ordine con cui vengono elencati qui, viene rispettato nella lista e nella scheda standard
@@ -113,6 +116,7 @@ class Settings {
         isCalcoloNotturnoStatistiche()
         fissaLimiteMassimoSingoloTurno()
         oreMassimeSingoloTurno()
+        usaModuloViaggi()
     } // end of static constraints
 
     /*+

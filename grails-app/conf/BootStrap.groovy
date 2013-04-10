@@ -48,43 +48,43 @@ class BootStrap implements Cost {
         //--creazione della prima versione
         //--esegue solo se NON esiste già una versione col numero indicato
         if (installaVersione(1)) {
-            this.tavolaVersioni()
+            tavolaVersioni()
         }// fine del blocco if
 
         //--modifica di un turno in CRF
         //--esegue solo se NON esiste già una versione col numero indicato
         //--esegue la modifica SOLO per i turni NON effettuati
         if (installaVersione(2)) {
-            this.modificaTurnoFidenza()
+            modificaTurnoFidenza()
         }// fine del blocco if
 
         //--aggiunta campo (visibile) nickname alla tavola Utente
         if (installaVersione(3)) {
-            this.nickUtenteRossaFidenza()
+            nickUtenteRossaFidenza()
         }// fine del blocco if
 
         //--elimina alcuni accessi e regola il nick
         if (installaVersione(4)) {
-            this.fixSecurityAlgos()
+            fixSecurityAlgos()
         }// fine del blocco if
 
         //--croce rossa pontetaro
         if (installaVersione(5)) {
             resetCroce(CROCE_ROSSA_PONTETARO)
-            this.croceRossaPontetaro()
+            croceRossaPontetaro()
         }// fine del blocco if
 
         //--aggiunge un flag a tutti i tipi di turno esistenti
         //--il flag serve per separare visivamente i vari turni all'interno del tabellone
         if (installaVersione(6)) {
-            this.fixUltimoTipoTurno()
+            fixUltimoTipoTurno()
         }// fine del blocco if
 
         //--modifica di un turno in CRF
         //--esegue solo se NON esiste già una versione col numero indicato
         //--completa la modifica ANCHE per i turni effettuati
         if (installaVersione(7)) {
-            this.modificaTurnoFidenzaEffettuati()
+            modificaTurnoFidenzaEffettuati()
         }// fine del blocco if
 
         //--modifica dei tipi di turno in CRPT
@@ -93,18 +93,18 @@ class BootStrap implements Cost {
         //--aggiunge un nuovo tipo di turno ''Ordinario'' e modifica in parte quello esistente
         //--aggiunge un tipo di turno ''TurnoExtra'' per spezzare i turni di ambulanza
         if (installaVersione(8)) {
-            this.modificaTurniPontetaro()
+            modificaTurniPontetaro()
         }// fine del blocco if
 
         //--elimina tutti gli utenti programmatori eccetto uno
         //--ce ne dovrebbero essere 3. Uno lo mantiene (il primo) e cancella gli altri due
         if (installaVersione(9)) {
-            this.fixProgrammatori()
+            fixProgrammatori()
         }// fine del blocco if
 
         //--patch ai tipi di turno in CRPT
         if (installaVersione(10)) {
-            this.fixTurniPontetaro()
+            fixTurniPontetaro()
         }// fine del blocco if
 
         //--ulteriore patch ai tipi di turno in CRPT
@@ -130,6 +130,16 @@ class BootStrap implements Cost {
         //--flag ai militi dei servizi ufficio nella CRPT
         if (installaVersione(15)) {
             flagMilitiServiziCRPT()
+        }// fine del blocco if
+
+        //--aggiunge il controller iniziale che mancava
+        if (installaVersione(16)) {
+            fixControllerInizialePubblicaCastello()
+        }// fine del blocco if
+
+        //--creazione dei record utenti per la pubblica castello
+        if (installaVersione(17)) {
+//            utentiPubblicacastello()
         }// fine del blocco if
 
         // resetTurniPontetaro()
@@ -350,7 +360,7 @@ class BootStrap implements Cost {
         if (ESISTE_COLLEGAMENTO_INTERNET) {
             militiRossaFidenza()
         }// fine del blocco if
-        utentiRossa() //password
+        utentiRossaFidenza() //password
     }// fine del metodo
 
     //--Croce rossa Pontetaro
@@ -463,10 +473,10 @@ class BootStrap implements Cost {
     //--controlla SEMPRE
     //--modifica le proprietà coi valori di default se sono stati vuotati
     private static void creazioneCroceTidone() {
-        Croce croce = Croce.findBySigla(CROCE_PUBBLICA)
+        Croce croce = Croce.findBySigla(CROCE_PUBBLICA_CASTELLO)
 
         if (!croce) {
-            croce = new Croce(sigla: CROCE_PUBBLICA)
+            croce = new Croce(sigla: CROCE_PUBBLICA_CASTELLO)
         }// fine del blocco if
 
         if (croce) {
@@ -798,7 +808,7 @@ class BootStrap implements Cost {
     //--creazione record di configurazione (settings)
     //--lo crea SOLO se non esiste già
     private static void configurazioneCroceTidone() {
-        Croce croce = Croce.findBySigla(CROCE_PUBBLICA)
+        Croce croce = Croce.findBySigla(CROCE_PUBBLICA_CASTELLO)
         Settings setting
 
         if (croce) {
@@ -984,7 +994,7 @@ class BootStrap implements Cost {
             String descrizione,
             int ordine,
             String funzioniAutomatiche) {
-        funzOrdinarioPAVT.add(newFunzione(CROCE_PUBBLICA, siglaInterna, siglaVisibile, descrizione, ordine, funzioniAutomatiche))
+        funzOrdinarioPAVT.add(newFunzione(CROCE_PUBBLICA_CASTELLO, siglaInterna, siglaVisibile, descrizione, ordine, funzioniAutomatiche))
     }// fine del metodo
 
     //--crea una funzione funzione per la croce
@@ -995,7 +1005,7 @@ class BootStrap implements Cost {
             String descrizione,
             int ordine,
             String funzioniAutomatiche) {
-        funz118PAVT.add(newFunzione(CROCE_PUBBLICA, siglaInterna, siglaVisibile, descrizione, ordine, funzioniAutomatiche))
+        funz118PAVT.add(newFunzione(CROCE_PUBBLICA_CASTELLO, siglaInterna, siglaVisibile, descrizione, ordine, funzioniAutomatiche))
     }// fine del metodo
 
     //--crea una funzione funzione per la croce
@@ -1139,7 +1149,7 @@ class BootStrap implements Cost {
             boolean orario,
             boolean mult,
             int funzObb) {
-        newTipoTurno(CROCE_PUBBLICA, sigla, desc, ord, oraIni, oraFine, next, vis, orario, mult, funzObb, funzOrdinarioPAVT)
+        newTipoTurno(CROCE_PUBBLICA_CASTELLO, sigla, desc, ord, oraIni, oraFine, next, vis, orario, mult, funzObb, funzOrdinarioPAVT)
     }// fine del metodo
 
     //--regola il tipo di turno coi parametri indicati
@@ -1156,7 +1166,7 @@ class BootStrap implements Cost {
             boolean orario,
             boolean mult,
             int funzObb) {
-        newTipoTurno(CROCE_PUBBLICA, sigla, desc, ord, oraIni, oraFine, next, vis, orario, mult, funzObb, funz118PAVT)
+        newTipoTurno(CROCE_PUBBLICA_CASTELLO, sigla, desc, ord, oraIni, oraFine, next, vis, orario, mult, funzObb, funz118PAVT)
     }// fine del metodo
 
     //--regola il tipo di turno coi parametri indicati
@@ -1370,7 +1380,7 @@ class BootStrap implements Cost {
     //--elenco disponibile in csv
     //--li crea SOLO se non esistono già
     private static void militiPubblica() {
-        Croce croce = Croce.findBySigla(CROCE_PUBBLICA)
+        Croce croce = Croce.findBySigla(CROCE_PUBBLICA_CASTELLO)
         String nomeFile = 'pavt'
         Milite milite
         def righe
@@ -1726,7 +1736,7 @@ class BootStrap implements Cost {
     //--la aggiunge SOLO per la pubblica
     private static void militiNascita() {
         ArrayList lista = null
-        Croce croce = Croce.findBySigla(CROCE_PUBBLICA)
+        Croce croce = Croce.findBySigla(CROCE_PUBBLICA_CASTELLO)
         if (croce) {
             lista = Milite.findAllByCroce(croce)
         }
@@ -1769,7 +1779,7 @@ class BootStrap implements Cost {
     //--nickname=cognomeNome
     //--password=cognome(minuscolo) + 3 cifre numeriche random
     //--li crea SOLO se non esistono già
-    private static void utentiRossa() {
+    private static void utentiRossaFidenza() {
         Croce croce = Croce.findBySigla(CROCE_ROSSA_FIDENZA)
         ArrayList listaUtenti
         ArrayList listaMiliti
@@ -2206,7 +2216,7 @@ class BootStrap implements Cost {
         resetUltimoTipoTurno(CROCE_DEMO)
 
         //--tidone
-        resetUltimoTipoTurno(CROCE_PUBBLICA)
+        resetUltimoTipoTurno(CROCE_PUBBLICA_CASTELLO)
 
         //--fidenza
         resetUltimoTipoTurno(CROCE_ROSSA_FIDENZA)
@@ -2616,12 +2626,57 @@ class BootStrap implements Cost {
 
     private void resetTurniPontetaro() {
         Croce croce = Croce.findBySigla(CROCE_ROSSA_PONTETARO)
+
         this.cancellaSingolaTavola('Logo')
         def turni = Turno.findAllByCroce(croce)
         turni?.each {
             it.delete(flush: true)
         } // fine del ciclo each
 
+    }// fine del metodo
+
+    //--aggiunge il controller iniziale che mancava
+    private static void fixControllerInizialePubblicaCastello() {
+        Croce croce = Croce.findBySigla(CROCE_PUBBLICA_CASTELLO)
+        Settings setting
+
+        if (croce) {
+            setting = croce.settings
+        }// fine del blocco if
+
+        if (setting) {
+            if (setting.startController == '') {
+                setting.startController = 'turno'
+                setting.save(flush: true)
+            }// fine del blocco if
+        }// fine del blocco if
+
+        newVersione(CROCE_PUBBLICA_CASTELLO, 'Inizio', 'Fix controller iniziale mancante.')
+    }// fine del metodo
+
+    //--creazione dei record utenti per la pubblica castello
+    //--uno per ogni milite
+    //--nickname=cognomeNome
+    //--password=cognome(minuscolo) + 3 cifre numeriche
+    //--li crea SOLO se non esistono già
+    private static void utentiPubblicacastello() {
+        Croce croce = Croce.findBySigla(CROCE_PUBBLICA_CASTELLO)
+        ArrayList listaUtenti
+        ArrayList listaMiliti
+        Milite milite
+
+        if (!croce) {
+            return
+        }// fine del blocco if
+
+        listaUtenti = Utente.findAllByCroce(croce)
+        if (listaUtenti && listaUtenti.size() < 1) {
+            listaMiliti = Milite.findAllByCroce(croce)
+            listaMiliti?.each {
+                milite = (Milite) it
+                newUtenteMilite(CROCE_ROSSA_FIDENZA, milite)
+            } // fine del ciclo each
+        }// fine del blocco if
     }// fine del metodo
 
     def destroy = {

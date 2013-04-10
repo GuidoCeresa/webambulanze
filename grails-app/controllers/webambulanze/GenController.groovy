@@ -44,7 +44,7 @@ class GenController {
             redirect(action: 'selezionaCroceDemo')
         }// fine del blocco if
 
-        if (siglaCroce.equals(Cost.CROCE_PUBBLICA)) {
+        if (siglaCroce.equals(Cost.CROCE_PUBBLICA_CASTELLO)) {
             redirect(action: 'selezionaCrocePAVT')
         }// fine del blocco if
 
@@ -199,15 +199,15 @@ class GenController {
     //--selezione iniziale della croce su cui operare
     //--seleziona la necessità del login
     //--regola la schermata iniziale
-    def selezionaCrocePAVT() {
+    def selezionaCrocePubblicaCastello() {
         //--regolazioni generali
-        boolean primaVolta = selezionaCroceBase(Cost.CROCE_PUBBLICA)
+        boolean primaVolta = selezionaCroceBase(Cost.CROCE_PUBBLICA_CASTELLO)
 
         params.siglaCroce = croceService.getSiglaCroce(request)
         String startController = croceService.getStartController((String) params.siglaCroce)
 
         if (primaVolta) {
-            redirect(url: '/' + Cost.CROCE_PUBBLICA)
+            redirect(url: '/' + Cost.CROCE_PUBBLICA_CASTELLO)
         } else {
             if (startController) {
                 //--va alla schermata specifica

@@ -82,6 +82,12 @@ class AmbulanzaTagLib {
         out << titoloPagina()
     }// fine della closure
 
+    def  ifModuloViaggi = { attrs, body ->
+
+
+        out << body()
+    }// fine della closure
+
     /**
      * Titolo della pagina <br>
      *

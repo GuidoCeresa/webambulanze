@@ -372,6 +372,24 @@
 <g:field name="oreMassimeSingoloTurno" type="number" value="${settingsInstance.oreMassimeSingoloTurno}" required=""/>
 </div>
 
+<div class="fieldcontain ${hasErrors(bean: settingsInstance, field: 'usaModuloViaggi', 'error')} ">
+	<label for="usaModuloViaggi">
+		<g:message code="settings.usaModuloViaggi.labelform" default="Usa Modulo Viaggi" />
+		
+	</label>
+	
+
+
+
+
+
+
+
+
+
+<g:checkBox name="usaModuloViaggi" value="${settingsInstance?.usaModuloViaggi}" />
+</div>
+
 <g:if test="${campiExtra}">
     <amb:extraSchedaForm rec="${settingsInstance}" campiExtra="${campiExtra}"></amb:extraSchedaForm>
 </g:if>
