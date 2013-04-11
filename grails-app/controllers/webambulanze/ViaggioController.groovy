@@ -16,14 +16,50 @@ class ViaggioController {
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
+    // utilizzo di un service con la businessLogic per l'elaborazione dei dati
+    // il service viene iniettato automaticamente
+    def croceService
+
     def index() {
         redirect(action: "list", params: params)
     } // fine del metodo
 
     def list(Integer max) {
-        params.max = Math.min(max ?: 10, 100)
-        [viaggioInstanceList: Viaggio.list(params), viaggioInstanceTotal: Viaggio.count()]
-    }
+        def lista
+        Croce croce = croceService.getCroce(request)
+        def campiLista = [
+                'giorno',
+                'inizio',
+                'fine',
+        ]
+
+        if (params.order) {
+            if (params.order == 'asc') {
+                params.order = 'desc'
+            } else {
+                params.order = 'asc'
+            }// fine del blocco if-else
+        } else {
+            params.order = 'asc'
+        }// fine del blocco if-else
+
+        if (croce) {
+            params.siglaCroce = croce.sigla
+            if (params.siglaCroce.equals(Cost.CROCE_ALGOS)) {
+                lista = Viaggio.findAll("from Viaggio order by croce_id,giorno")
+                campiLista = ['id', 'croce'] + campiLista
+            } else {
+                if (!params.sort) {
+                    params.sort = 'giorno'
+                }// fine del blocco if-else
+                lista = Viaggio.findAllByCroce(croce, params)
+            }// fine del blocco if-else
+        } else {
+            lista = Viaggio.findAll(params)
+        }// fine del blocco if-else
+
+        render(view: 'list', model: [viaggioInstanceList: lista, viaggioInstanceTotal: 0, campiLista: campiLista], params: params)
+    } // fine del metodo
 
     def create() {
         [viaggioInstance: new Viaggio(params)]

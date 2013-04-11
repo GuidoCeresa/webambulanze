@@ -12,6 +12,21 @@ class Viaggio {
     //--giorno, ora e minuto di fine viaggio
     Date fine
 
+    LuogoEvento luogoEvento
+    Patologia patologia
+
+    String nomePaziente
+    String indirizzoPaziente
+    String cittaPaziente
+    String etaPaziente
+
+    String prelievo
+    String ricovero
+
+    String numeroCartellino
+    int numeroServizio
+    int numeroBolla
+
     /**
      * regolazione delle proprietà di ogni campo
      * l'ordine con cui vengono elencati qui, viene rispettato nella lista e nella scheda standard

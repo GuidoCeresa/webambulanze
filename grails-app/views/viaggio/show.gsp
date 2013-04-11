@@ -96,6 +96,105 @@
             
         </li>
         
+        <li class="fieldcontain">
+            <span id="cittaPaziente-label" class="property-label"><g:message
+                    code="viaggio.cittaPaziente.labelform" default="Citta Paziente"/></span>
+            
+            <span class="property-value" aria-labelledby="cittaPaziente-label"><g:fieldValue bean="${viaggioInstance}"
+                                                                                         field="cittaPaziente"/></span>
+            
+        </li>
+        
+        <li class="fieldcontain">
+            <span id="etaPaziente-label" class="property-label"><g:message
+                    code="viaggio.etaPaziente.labelform" default="Eta Paziente"/></span>
+            
+            <span class="property-value" aria-labelledby="etaPaziente-label"><g:fieldValue bean="${viaggioInstance}"
+                                                                                         field="etaPaziente"/></span>
+            
+        </li>
+        
+        <li class="fieldcontain">
+            <span id="indirizzoPaziente-label" class="property-label"><g:message
+                    code="viaggio.indirizzoPaziente.labelform" default="Indirizzo Paziente"/></span>
+            
+            <span class="property-value" aria-labelledby="indirizzoPaziente-label"><g:fieldValue bean="${viaggioInstance}"
+                                                                                         field="indirizzoPaziente"/></span>
+            
+        </li>
+        
+        <li class="fieldcontain">
+            <span id="luogoEvento-label" class="property-label"><g:message
+                    code="viaggio.luogoEvento.labelform" default="Luogo Evento"/></span>
+            
+            <span class="property-value" aria-labelledby="luogoEvento-label"><g:fieldValue bean="${viaggioInstance}"
+                                                                                         field="luogoEvento"/></span>
+            
+        </li>
+        
+        <li class="fieldcontain">
+            <span id="nomePaziente-label" class="property-label"><g:message
+                    code="viaggio.nomePaziente.labelform" default="Nome Paziente"/></span>
+            
+            <span class="property-value" aria-labelledby="nomePaziente-label"><g:fieldValue bean="${viaggioInstance}"
+                                                                                         field="nomePaziente"/></span>
+            
+        </li>
+        
+        <li class="fieldcontain">
+            <span id="numeroBolla-label" class="property-label"><g:message
+                    code="viaggio.numeroBolla.labelform" default="Numero Bolla"/></span>
+            
+            <span class="property-value" aria-labelledby="numeroBolla-label"><g:fieldValue bean="${viaggioInstance}"
+                                                                                         field="numeroBolla"/></span>
+            
+        </li>
+        
+        <li class="fieldcontain">
+            <span id="numeroCartellino-label" class="property-label"><g:message
+                    code="viaggio.numeroCartellino.labelform" default="Numero Cartellino"/></span>
+            
+            <span class="property-value" aria-labelledby="numeroCartellino-label"><g:fieldValue bean="${viaggioInstance}"
+                                                                                         field="numeroCartellino"/></span>
+            
+        </li>
+        
+        <li class="fieldcontain">
+            <span id="numeroServizio-label" class="property-label"><g:message
+                    code="viaggio.numeroServizio.labelform" default="Numero Servizio"/></span>
+            
+            <span class="property-value" aria-labelledby="numeroServizio-label"><g:fieldValue bean="${viaggioInstance}"
+                                                                                         field="numeroServizio"/></span>
+            
+        </li>
+        
+        <li class="fieldcontain">
+            <span id="patologia-label" class="property-label"><g:message
+                    code="viaggio.patologia.labelform" default="Patologia"/></span>
+            
+            <span class="property-value" aria-labelledby="patologia-label"><g:fieldValue bean="${viaggioInstance}"
+                                                                                         field="patologia"/></span>
+            
+        </li>
+        
+        <li class="fieldcontain">
+            <span id="prelievo-label" class="property-label"><g:message
+                    code="viaggio.prelievo.labelform" default="Prelievo"/></span>
+            
+            <span class="property-value" aria-labelledby="prelievo-label"><g:fieldValue bean="${viaggioInstance}"
+                                                                                         field="prelievo"/></span>
+            
+        </li>
+        
+        <li class="fieldcontain">
+            <span id="ricovero-label" class="property-label"><g:message
+                    code="viaggio.ricovero.labelform" default="Ricovero"/></span>
+            
+            <span class="property-value" aria-labelledby="ricovero-label"><g:fieldValue bean="${viaggioInstance}"
+                                                                                         field="ricovero"/></span>
+            
+        </li>
+        
     </ol>
 
     <g:if test="${campiExtra}">
