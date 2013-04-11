@@ -12,25 +12,6 @@
 
 
 
-<div class="fieldcontain ${hasErrors(bean: viaggioInstance, field: 'croce', 'error')} required">
-    <label for="croce">
-        <g:message code="viaggio.croce.labelform" default="Croce"/>
-        <span class="required-indicator">*</span>
-    </label>
-
-
-
-
-
-
-
-
-
-
-    <g:select id="croce" name="croce.id" from="${webambulanze.Croce.list()}" optionKey="id" required=""
-              value="${viaggioInstance?.croce?.id}" class="many-to-one"/>
-</div>
-
 <div class="fieldcontain ${hasErrors(bean: viaggioInstance, field: 'giorno', 'error')} required">
     <label for="giorno">
         <g:message code="viaggio.giorno.labelform" default="Giorno"/>
@@ -85,6 +66,15 @@
     <g:datePicker name="fine" precision="day" value="${viaggioInstance?.fine}"/>
 </div>
 
+<div class="fieldcontain ${hasErrors(bean: viaggioInstance, field: 'automezzo', 'error')} required">
+    <label for="automezzo">
+        <g:message code="viaggio.automezzo.labelform" default="Automezzo"/>
+        <span class="required-indicator">*</span>
+    </label>
+    <g:select id="automezzo" name="automezzo.id" from="${webambulanze.Automezzo.list()}" optionKey="id" required=""
+              value="${viaggioInstance?.automezzo?.id}" class="many-to-one"/>
+</div>
+
 <div class="fieldcontain ${hasErrors(bean: viaggioInstance, field: 'cittaPaziente', 'error')} ">
     <label for="cittaPaziente">
         <g:message code="viaggio.cittaPaziente.labelform" default="Citta Paziente"/>
@@ -103,12 +93,21 @@
     <g:textField name="cittaPaziente" value="${viaggioInstance?.cittaPaziente}"/>
 </div>
 
-
 <div class="fieldcontain ${hasErrors(bean: viaggioInstance, field: 'codiceInvio', 'error')} required">
     <label for="codiceInvio">
         <g:message code="viaggio.codiceInvio.labelform" default="Codice Invio"/>
         <span class="required-indicator">*</span>
     </label>
+
+
+
+
+
+
+
+
+
+
     <g:select name="codiceInvio" from="${webambulanze.CodiceInvio?.values()}"
               keys="${webambulanze.CodiceInvio.values()*.name()}" required=""
               value="${viaggioInstance?.codiceInvio?.name()}"/>
@@ -119,6 +118,16 @@
         <g:message code="viaggio.codiceRicovero.labelform" default="Codice Ricovero"/>
         <span class="required-indicator">*</span>
     </label>
+
+
+
+
+
+
+
+
+
+
     <g:select name="codiceRicovero" from="${webambulanze.CodiceRicovero?.values()}"
               keys="${webambulanze.CodiceRicovero.values()*.name()}" required=""
               value="${viaggioInstance?.codiceRicovero?.name()}"/>

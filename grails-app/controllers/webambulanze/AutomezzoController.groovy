@@ -10,8 +10,10 @@
 
 package webambulanze
 
+import grails.plugins.springsecurity.Secured
 import org.springframework.dao.DataIntegrityViolationException
 
+@Secured([Cost.ROLE_MILITE])
 class AutomezzoController {
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
@@ -62,12 +64,23 @@ class AutomezzoController {
         render(view: 'list', model: [automezzoInstanceList: lista, automezzoInstanceTotal: 0, campiLista: campiLista], params: params)
     } // fine del metodo
 
+    @Secured([Cost.ROLE_ADMIN])
     def create() {
         [automezzoInstance: new Automezzo(params)]
     } // fine del metodo
 
+    @Secured([Cost.ROLE_ADMIN])
     def save() {
         def automezzoInstance = new Automezzo(params)
+        Croce croce = croceService.getCroce(request)
+
+        if (croce) {
+            params.siglaCroce = croce.sigla
+            if (!automezzoInstance.croce) {
+                automezzoInstance.croce = croce
+            }// fine del blocco if
+        }// fine del blocco if
+
         if (!automezzoInstance.save(flush: true)) {
             render(view: "create", model: [automezzoInstance: automezzoInstance])
             return
@@ -88,6 +101,7 @@ class AutomezzoController {
         [automezzoInstance: automezzoInstance]
     } // fine del metodo
 
+    @Secured([Cost.ROLE_ADMIN])
     def edit(Long id) {
         def automezzoInstance = Automezzo.get(id)
         if (!automezzoInstance) {
@@ -99,6 +113,7 @@ class AutomezzoController {
         [automezzoInstance: automezzoInstance]
     } // fine del metodo
 
+    @Secured([Cost.ROLE_ADMIN])
     def update(Long id, Long version) {
         def automezzoInstance = Automezzo.get(id)
         if (!automezzoInstance) {
@@ -128,6 +143,7 @@ class AutomezzoController {
         redirect(action: "show", id: automezzoInstance.id)
     } // fine del metodo
 
+    @Secured([Cost.ROLE_PROG])
     def delete(Long id) {
         def automezzoInstance = Automezzo.get(id)
         if (!automezzoInstance) {

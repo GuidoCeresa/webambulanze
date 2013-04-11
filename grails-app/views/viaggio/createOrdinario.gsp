@@ -38,13 +38,13 @@
     <g:form action="save" >
         <fieldset class="form">
 
-            <div class="fieldcontain ${hasErrors(bean: viaggioInstance, field: 'croce', 'error')} required">
-                <label for="croce">
-                    <g:message code="viaggio.croce.labelform" default="Croce"/>
+            <div class="fieldcontain ${hasErrors(bean: viaggioInstance, field: 'automezzo', 'error')} required">
+                <label for="automezzo">
+                    <g:message code="viaggio.automezzo.labelform" default="Automezzo"/>
                     <span class="required-indicator">*</span>
                 </label>
-                <g:select id="croce" name="croce.id" from="${webambulanze.Croce.list()}" optionKey="id" required=""
-                          value="${viaggioInstance?.croce?.id}" class="many-to-one"/>
+                <g:select id="automezzo" name="automezzo.id" from="${webambulanze.Automezzo.list()}" optionKey="id" required=""
+                          value="${viaggioInstance?.automezzo?.id}" class="many-to-one"/>
             </div>
 
             <div class="fieldcontain ${hasErrors(bean: viaggioInstance, field: 'giorno', 'error')} required">

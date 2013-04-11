@@ -4,6 +4,9 @@ class Viaggio {
     //--croce di riferimento
     Croce croce
 
+    //--automezzo utilizzato
+    Automezzo automezzo
+
     //--giorno di svolgimento del viaggio (giorno iniziale se termina il mattino dopo)
     //--ore e minuti sono sempre a zero
     Date giorno
@@ -35,7 +38,7 @@ class Viaggio {
      * la possibilità di avere valori nulli, di default è false
      */
     static constraints = {
-        croce()
+        croce(nullable: false, blank: false, display: false)
         giorno()
         inizio()
         fine()

@@ -12,24 +12,6 @@
 
 
 
-<div class="fieldcontain ${hasErrors(bean: automezzoInstance, field: 'croce', 'error')} required">
-	<label for="croce">
-		<g:message code="automezzo.croce.labelform" default="Croce" />
-		<span class="required-indicator">*</span>
-	</label>
-	
-
-
-
-
-
-
-
-
-
-<g:select id="croce" name="croce.id" from="${webambulanze.Croce.list()}" optionKey="id" required="" value="${automezzoInstance?.croce?.id}" class="many-to-one"/>
-</div>
-
 <div class="fieldcontain ${hasErrors(bean: automezzoInstance, field: 'tipo', 'error')} required">
 	<label for="tipo">
 		<g:message code="automezzo.tipo.labelform" default="Tipo" />
@@ -117,7 +99,7 @@
 
 
 
-<g:textField name="descrizione" value="${automezzoInstance?.descrizione}"/>
+<g:textArea name="descrizione" cols="40" rows="5" value="${automezzoInstance?.descrizione}"/>
 </div>
 
 <div class="fieldcontain ${hasErrors(bean: automezzoInstance, field: 'donazione', 'error')} ">
@@ -135,7 +117,7 @@
 
 
 
-<g:textField name="donazione" value="${automezzoInstance?.donazione}"/>
+<g:textArea name="donazione" cols="40" rows="5" value="${automezzoInstance?.donazione}"/>
 </div>
 
 <div class="fieldcontain ${hasErrors(bean: automezzoInstance, field: 'contakilometri', 'error')} required">

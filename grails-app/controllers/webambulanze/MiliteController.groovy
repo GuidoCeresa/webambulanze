@@ -153,8 +153,8 @@ class MiliteController {
 
     @Secured([Cost.ROLE_ADMIN])
     def save() {
-        Croce croce = croceService.getCroce(request)
         def militeInstance = new Milite(params)
+        Croce croce = croceService.getCroce(request)
 
         if (croce) {
             params.siglaCroce = croce.sigla

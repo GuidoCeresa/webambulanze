@@ -97,6 +97,16 @@
         </li>
         
         <li class="fieldcontain">
+            <span id="automezzo-label" class="property-label"><g:message
+                    code="viaggio.automezzo.labelform" default="Automezzo"/></span>
+            
+            <span class="property-value" aria-labelledby="automezzo-label"><g:link
+                    controller="automezzo" action="show"
+                    id="${viaggioInstance?.automezzo?.id}">${viaggioInstance?.automezzo?.encodeAsHTML()}</g:link></span>
+            
+        </li>
+        
+        <li class="fieldcontain">
             <span id="cittaPaziente-label" class="property-label"><g:message
                     code="viaggio.cittaPaziente.labelform" default="Citta Paziente"/></span>
             

@@ -2,9 +2,17 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2bee2297-4103-4d78-b423-f3f184afbabb" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/grails-app/taglib/webambulanze/AmbulanzaTagLib.groovy" afterPath="$PROJECT_DIR$/grails-app/taglib/webambulanze/AmbulanzaTagLib.groovy" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/grails-app/domain/webambulanze/Automezzo.groovy" afterPath="$PROJECT_DIR$/grails-app/domain/webambulanze/Automezzo.groovy" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/grails-app/controllers/webambulanze/AutomezzoController.groovy" afterPath="$PROJECT_DIR$/grails-app/controllers/webambulanze/AutomezzoController.groovy" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/grails-app/controllers/webambulanze/MiliteController.groovy" afterPath="$PROJECT_DIR$/grails-app/controllers/webambulanze/MiliteController.groovy" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/grails-app/domain/webambulanze/Viaggio.groovy" afterPath="$PROJECT_DIR$/grails-app/domain/webambulanze/Viaggio.groovy" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/grails-app/controllers/webambulanze/ViaggioController.groovy" afterPath="$PROJECT_DIR$/grails-app/controllers/webambulanze/ViaggioController.groovy" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/grails-app/i18n/messages_it.properties" afterPath="$PROJECT_DIR$/grails-app/i18n/messages_it.properties" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/grails-app/views/automezzo/_form.gsp" afterPath="$PROJECT_DIR$/grails-app/views/automezzo/_form.gsp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/grails-app/views/viaggio/_form.gsp" afterPath="$PROJECT_DIR$/grails-app/views/viaggio/_form.gsp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/grails-app/views/viaggio/create118.gsp" afterPath="$PROJECT_DIR$/grails-app/views/viaggio/create118.gsp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/grails-app/views/viaggio/createDializzato.gsp" afterPath="$PROJECT_DIR$/grails-app/views/viaggio/createDializzato.gsp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/grails-app/views/viaggio/createOrdinario.gsp" afterPath="$PROJECT_DIR$/grails-app/views/viaggio/createOrdinario.gsp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/grails-app/views/viaggio/show.gsp" afterPath="$PROJECT_DIR$/grails-app/views/viaggio/show.gsp" />
     </list>
     <ignored path="webambulanze.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -12,7 +20,7 @@
     <ignored path="out/" />
     <ignored path="lib/" />
     <ignored path="target/" />
-    <file path="/Dummy.txt" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1365684198811" ignored="false" />
+    <file path="/Dummy.txt" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1365688559870" ignored="false" />
     <file path="$PROJECT_DIR$/../webpubblica/grails-app/conf/BuildConfig.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1356086546461" ignored="false" />
     <file path="/*.regexp" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1365330990794" ignored="false" />
     <file path="/a.dummy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1365684146595" ignored="false" />
@@ -327,8 +335,8 @@
     <file path="$PROJECT_DIR$/../myvitaback/grails-app/jobs/myvitaback/RefreshJob.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1365425509469" ignored="false" />
     <file path="$PROJECT_DIR$/../myvitaback/grails-app/conf/Config.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1365425363222" ignored="false" />
     <file path="$PROJECT_DIR$/test/unit/webambulanze/ViaggioTests.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1365569301944" ignored="false" />
-    <file path="/Viaggio.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1365683383710" ignored="false" />
-    <file path="/ViaggioController.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1365676529236" ignored="false" />
+    <file path="/Viaggio.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1365689658462" ignored="false" />
+    <file path="/ViaggioController.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1365690662459" ignored="false" />
     <file path="$PROJECT_DIR$/test/unit/webambulanze/ViaggioControllerTests.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1365657530780" ignored="false" />
     <file path="/Patologia.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1365660996668" ignored="false" />
     <file path="/LuogoEvento.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1365665288355" ignored="false" />
@@ -341,6 +349,8 @@
     <file path="$PROJECT_DIR$/test/unit/webambulanze/AutomezzoTests.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1365684870265" ignored="false" />
     <file path="/Automezzo.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1365687044744" ignored="false" />
     <file path="/AutomezzoController.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1365686359319" ignored="false" />
+    <file path="$PROJECT_DIR$/grails-app/views/automezzo/show.gsp" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1365688753129" ignored="false" />
+    <file path="/create118.gsp" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1365689869539" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="true" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -360,24 +370,6 @@
     <disable_hints />
   </component>
   <component name="DebuggerManager">
-    <ui_properties default_suspend_policy="SuspendAll" default_condition_enabled="true" />
-    <line_breakpoints default_suspend_policy="SuspendAll" default_condition_enabled="true">
-      <breakpoint url="file://$PROJECT_DIR$/grails-app/controllers/webambulanze/MiliteController.groovy" line="159" class="webambulanze.MiliteController" package="webambulanze">
-        <option name="ENABLED" value="true" />
-        <option name="LOG_ENABLED" value="false" />
-        <option name="LOG_EXPRESSION_ENABLED" value="false" />
-        <option name="REMOVE_AFTER_HIT" value="false" />
-        <option name="SUSPEND_POLICY" value="SuspendAll" />
-        <option name="SUSPEND" value="true" />
-        <option name="COUNT_FILTER_ENABLED" value="false" />
-        <option name="COUNT_FILTER" value="0" />
-        <option name="CONDITION_ENABLED" value="true" />
-        <option name="CLASS_FILTERS_ENABLED" value="false" />
-        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
-        <option name="CONDITION" value="" />
-        <option name="LOG_MESSAGE" value="" />
-      </breakpoint>
-    </line_breakpoints>
     <breakpoint_any default_suspend_policy="SuspendAll" default_condition_enabled="true">
       <breakpoint>
         <option name="NOTIFY_CAUGHT" value="true" />
@@ -414,6 +406,8 @@
         <option name="LOG_MESSAGE" value="" />
       </breakpoint>
     </breakpoint_any>
+    <line_breakpoints default_suspend_policy="SuspendAll" default_condition_enabled="true" />
+    <ui_properties default_suspend_policy="SuspendAll" default_condition_enabled="true" />
     <breakpoint_rules />
     <ui_properties />
   </component>
@@ -426,55 +420,87 @@
       <file leaf-file-name="AutomezzoController.groovy" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/grails-app/controllers/webambulanze/AutomezzoController.groovy">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="53" column="47" selection-start="1845" selection-end="1845" vertical-scroll-proportion="-12.391304">
-              <folding />
+            <state line="78" column="61" selection-start="2723" selection-end="2723" vertical-scroll-proportion="-9.782609">
+              <folding>
+                <element signature="e#493#537#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Funzione.groovy" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/grails-app/domain/webambulanze/Funzione.groovy">
-          <provider editor-type-id="org.jetbrains.plugins.grails.perspectives.DomainClassesRelationsEditorProvider">
-            <state />
-          </provider>
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="18" column="0" selection-start="40" selection-end="343" vertical-scroll-proportion="-5.4">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="messages_it.properties" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/grails-app/i18n/messages_it.properties">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="386" column="59" selection-start="14550" selection-end="14550" vertical-scroll-proportion="-15.481482">
-              <folding />
-            </state>
-          </provider>
-          <provider editor-type-id="ResourceBundle">
-            <state />
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Turno.groovy" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/grails-app/domain/webambulanze/Turno.groovy">
-          <provider editor-type-id="org.jetbrains.plugins.grails.perspectives.DomainClassesRelationsEditorProvider">
-            <state />
-          </provider>
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="97" column="0" selection-start="3214" selection-end="3277" vertical-scroll-proportion="-6.6">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Automezzo.groovy" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="Automezzo.groovy" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/grails-app/domain/webambulanze/Automezzo.groovy">
           <provider editor-type-id="org.jetbrains.plugins.grails.perspectives.DomainClassesRelationsEditorProvider">
             <state />
           </provider>
           <provider selected="true" editor-type-id="text-editor">
-            <state line="40" column="0" selection-start="1070" selection-end="1070" vertical-scroll-proportion="0.4368932">
+            <state line="33" column="43" selection-start="748" selection-end="809" vertical-scroll-proportion="-2.58">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="MiliteController.groovy" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/grails-app/controllers/webambulanze/MiliteController.groovy">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="274" column="23" selection-start="10189" selection-end="10220" vertical-scroll-proportion="-29.347826">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ViaggioController.groovy" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/grails-app/controllers/webambulanze/ViaggioController.groovy">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="94" column="47" selection-start="3294" selection-end="3294" vertical-scroll-proportion="0.27332243">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Viaggio.groovy" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/grails-app/domain/webambulanze/Viaggio.groovy">
+          <provider editor-type-id="org.jetbrains.plugins.grails.perspectives.DomainClassesRelationsEditorProvider">
+            <state />
+          </provider>
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="7" column="23" selection-start="136" selection-end="136" vertical-scroll-proportion="-1.8">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="_form.gsp" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/grails-app/views/viaggio/_form.gsp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="76" column="0" selection-start="1590" selection-end="2059" vertical-scroll-proportion="-10.276596">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="create118.gsp" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/grails-app/views/viaggio/create118.gsp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="112" column="0" selection-start="5836" selection-end="5836" vertical-scroll-proportion="-7.0425534">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="createDializzato.gsp" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/grails-app/views/viaggio/createDializzato.gsp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="72" column="0" selection-start="3003" selection-end="3423" vertical-scroll-proportion="-7.0425534">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="createOrdinario.gsp" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/grails-app/views/viaggio/createOrdinario.gsp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="49" column="0" selection-start="2129" selection-end="2129" vertical-scroll-proportion="-7.9787235">
               <folding />
             </state>
           </provider>
@@ -498,22 +524,22 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/grails-app/views/viaggio/selezione.gsp" />
         <option value="$PROJECT_DIR$/grails-app/views/viaggio/list.gsp" />
-        <option value="$PROJECT_DIR$/grails-app/views/viaggio/createOrdinario.gsp" />
-        <option value="$PROJECT_DIR$/grails-app/views/viaggio/createDializzato.gsp" />
         <option value="$PROJECT_DIR$/src/groovy/webambulanze/Colore.groovy" />
         <option value="$PROJECT_DIR$/src/groovy/webambulanze/CodiceInvio.groovy" />
         <option value="$PROJECT_DIR$/src/groovy/webambulanze/CodiceRicovero.groovy" />
-        <option value="$PROJECT_DIR$/grails-app/domain/webambulanze/Viaggio.groovy" />
-        <option value="$PROJECT_DIR$/grails-app/views/viaggio/_form.gsp" />
-        <option value="$PROJECT_DIR$/grails-app/views/viaggio/create118.gsp" />
         <option value="$PROJECT_DIR$/src/groovy/webambulanze/TipoAutomezzo.groovy" />
         <option value="$PROJECT_DIR$/grails-app/taglib/webambulanze/AmbulanzaTagLib.groovy" />
-        <option value="$PROJECT_DIR$/grails-app/controllers/webambulanze/ViaggioController.groovy" />
-        <option value="$PROJECT_DIR$/grails-app/controllers/webambulanze/AutomezzoController.groovy" />
         <option value="$PROJECT_DIR$/grails-app/i18n/messages_it.properties" />
         <option value="$PROJECT_DIR$/grails-app/domain/webambulanze/Automezzo.groovy" />
+        <option value="$PROJECT_DIR$/grails-app/controllers/webambulanze/MiliteController.groovy" />
+        <option value="$PROJECT_DIR$/grails-app/controllers/webambulanze/AutomezzoController.groovy" />
+        <option value="$PROJECT_DIR$/grails-app/domain/webambulanze/Viaggio.groovy" />
+        <option value="$PROJECT_DIR$/grails-app/views/viaggio/_form.gsp" />
+        <option value="$PROJECT_DIR$/grails-app/views/viaggio/createDializzato.gsp" />
+        <option value="$PROJECT_DIR$/grails-app/views/viaggio/createOrdinario.gsp" />
+        <option value="$PROJECT_DIR$/grails-app/views/viaggio/create118.gsp" />
+        <option value="$PROJECT_DIR$/grails-app/controllers/webambulanze/ViaggioController.groovy" />
       </list>
     </option>
   </component>
@@ -552,8 +578,8 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="PackagesPane" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -676,6 +702,28 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="views" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="funzione" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="webambulanze" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="webambulanze" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="grails-app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="i18n" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -764,12 +812,12 @@
     <property name="MemberChooser.copyJavadoc" value="false" />
     <property name="GoToClass.toSaveIncludeLibraries" value="false" />
     <property name="restartRequiresConfirmation" value="true" />
-    <property name="MemberChooser.showClasses" value="true" />
     <property name="FullScreen" value="false" />
+    <property name="MemberChooser.showClasses" value="true" />
     <property name="GoToClass.includeLibraries" value="false" />
-    <property name="options.searchVisible" value="true" />
-    <property name="options.splitter.details.proportions" value="0.2" />
     <property name="dynamic.classpath" value="false" />
+    <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="options.searchVisible" value="true" />
   </component>
   <component name="RecentsManager">
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
@@ -782,6 +830,15 @@
     </key>
   </component>
   <component name="RunManager" selected="Grails.webambulanze">
+    <configuration default="true" type="GroovyScriptRunConfiguration" factoryName="Groovy">
+      <module name="" />
+      <setting name="path" value="" />
+      <setting name="vmparams" value="" />
+      <setting name="params" value="" />
+      <setting name="workDir" value="file://$PROJECT_DIR$" />
+      <setting name="debug" value="false" />
+      <method />
+    </configuration>
     <configuration default="true" type="GrailsRunConfigurationType" factoryName="Grails">
       <module name="" />
       <setting name="vmparams" value="" />
@@ -792,21 +849,25 @@
       <setting name="launchBrowser" value="true" />
       <method />
     </configuration>
-    <configuration default="true" type="GroovyScriptRunConfiguration" factoryName="Groovy">
-      <module name="" />
-      <setting name="path" value="" />
-      <setting name="vmparams" value="" />
-      <setting name="params" value="" />
-      <setting name="workDir" value="file://$PROJECT_DIR$" />
-      <setting name="debug" value="false" />
-      <method />
-    </configuration>
     <configuration default="true" type="Remote" factoryName="Remote">
       <option name="USE_SOCKET_TRANSPORT" value="true" />
       <option name="SERVER_MODE" value="false" />
       <option name="SHMEM_ADDRESS" value="javadebug" />
       <option name="HOST" value="localhost" />
       <option name="PORT" value="5005" />
+      <method />
+    </configuration>
+    <configuration default="true" type="Applet" factoryName="Applet">
+      <module name="" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="HTML_FILE_NAME" />
+      <option name="HTML_USED" value="false" />
+      <option name="WIDTH" value="400" />
+      <option name="HEIGHT" value="300" />
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <option name="VM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
       <method />
     </configuration>
     <configuration default="true" type="TestNG" factoryName="TestNG">
@@ -835,19 +896,6 @@
       <envs />
       <properties />
       <listeners />
-      <method />
-    </configuration>
-    <configuration default="true" type="Applet" factoryName="Applet">
-      <module name="" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="HTML_FILE_NAME" />
-      <option name="HTML_USED" value="false" />
-      <option name="WIDTH" value="400" />
-      <option name="HEIGHT" value="300" />
-      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
-      <option name="VM_PARAMETERS" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
       <method />
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
@@ -998,10 +1046,10 @@
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24939856" sideWeight="0.71503955" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32471263" sideWeight="0.99924755" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.5444126" sideWeight="0.99924755" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.45264623" sideWeight="0.35346216" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.30094582" sideWeight="0.28109854" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32471263" sideWeight="0.47423512" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32378224" sideWeight="0.47423512" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Grails View" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3287891" sideWeight="0.4656992" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3298153" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="CDI" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -1011,7 +1059,7 @@
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32930756" sideWeight="0.5460894" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.29642248" sideWeight="0.67528737" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.29642248" sideWeight="0.4555874" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2801724" sideWeight="0.7600644" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -1088,89 +1136,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/groovy/webambulanze/Evento.groovy">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="8" column="12" selection-start="118" selection-end="118" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/groovy/webambulanze/LuogoEvento.groovy">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="31" column="0" selection-start="132" selection-end="607" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/groovy/webambulanze/CodiceRicovero.groovy">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="11" column="61" selection-start="196" selection-end="196" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/grails-app/domain/webambulanze/Viaggio.groovy">
-      <provider editor-type-id="org.jetbrains.plugins.grails.perspectives.DomainClassesRelationsEditorProvider">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="18" column="33" selection-start="464" selection-end="464" vertical-scroll-proportion="-1.5">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/grails-app/views/viaggio/_form.gsp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="125" column="0" selection-start="2367" selection-end="3400" vertical-scroll-proportion="0.76480263">
-          <folding>
-            <marker date="1365683509000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1365683509000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1365683509000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1365683509000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1365683509000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1365683509000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1365683509000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1365683509000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1365683509000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1365683509000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1365683509000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1365683509000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1365683509000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1365683509000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1365683509000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1365683509000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1365683509000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1365683509000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1365683509000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1365683509000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1365683509000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1365683509000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1365683509000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1365683509000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1365683509000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1365683509000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1365683509000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1365683509000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1365683509000" expanded="true" signature="-1:-1" placeholder="..." />
-            <marker date="1365683509000" expanded="true" signature="-1:-1" placeholder="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/grails-app/views/viaggio/create118.gsp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="113" column="92" selection-start="5834" selection-end="5834" vertical-scroll-proportion="-0.9574468">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/groovy/webambulanze/CodiceInvio.groovy">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="28" column="0" selection-start="132" selection-end="499" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/groovy/webambulanze/TipoAutomezzo.groovy">
       <provider selected="true" editor-type-id="text-editor">
         <state line="10" column="51" selection-start="169" selection-end="169" vertical-scroll-proportion="0.0">
@@ -1185,13 +1150,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/grails-app/controllers/webambulanze/ViaggioController.groovy">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="24" column="0" selection-start="878" selection-end="878" vertical-scroll-proportion="0.56962025">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/grails-app/controllers/webambulanze/FunzioneController.groovy">
       <provider selected="true" editor-type-id="text-editor">
         <state line="25" column="34" selection-start="904" selection-end="953" vertical-scroll-proportion="-0.36945814">
@@ -1199,9 +1157,32 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/grails-app/controllers/webambulanze/AutomezzoController.groovy">
+    <entry file="file://$PROJECT_DIR$/grails-app/i18n/messages_it.properties">
+      <provider editor-type-id="ResourceBundle">
+        <state />
+      </provider>
       <provider selected="true" editor-type-id="text-editor">
-        <state line="53" column="47" selection-start="1845" selection-end="1845" vertical-scroll-proportion="-12.391304">
+        <state line="386" column="59" selection-start="14550" selection-end="14550" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/grails-app/domain/webambulanze/Turno.groovy">
+      <provider editor-type-id="org.jetbrains.plugins.grails.perspectives.DomainClassesRelationsEditorProvider">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="97" column="0" selection-start="3214" selection-end="3277" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/grails-app/domain/webambulanze/Milite.groovy">
+      <provider editor-type-id="org.jetbrains.plugins.grails.perspectives.DomainClassesRelationsEditorProvider">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="46" column="0" selection-start="1311" selection-end="1372" vertical-scroll-proportion="-6.0">
           <folding />
         </state>
       </provider>
@@ -1211,28 +1192,24 @@
         <state />
       </provider>
       <provider selected="true" editor-type-id="text-editor">
-        <state line="18" column="0" selection-start="40" selection-end="343" vertical-scroll-proportion="-5.4">
+        <state line="18" column="0" selection-start="40" selection-end="343" vertical-scroll-proportion="0.024038462">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/grails-app/i18n/messages_it.properties">
+    <entry file="file://$PROJECT_DIR$/grails-app/controllers/webambulanze/MiliteController.groovy">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="386" column="59" selection-start="14550" selection-end="14550" vertical-scroll-proportion="-15.481482">
+        <state line="274" column="23" selection-start="10189" selection-end="10220" vertical-scroll-proportion="-29.347826">
           <folding />
         </state>
       </provider>
-      <provider editor-type-id="ResourceBundle">
-        <state />
-      </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/grails-app/domain/webambulanze/Turno.groovy">
-      <provider editor-type-id="org.jetbrains.plugins.grails.perspectives.DomainClassesRelationsEditorProvider">
-        <state />
-      </provider>
+    <entry file="file://$PROJECT_DIR$/grails-app/controllers/webambulanze/AutomezzoController.groovy">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="97" column="0" selection-start="3214" selection-end="3277" vertical-scroll-proportion="-6.6">
-          <folding />
+        <state line="78" column="61" selection-start="2723" selection-end="2723" vertical-scroll-proportion="-9.782609">
+          <folding>
+            <element signature="e#493#537#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1241,7 +1218,52 @@
         <state />
       </provider>
       <provider selected="true" editor-type-id="text-editor">
-        <state line="40" column="0" selection-start="1070" selection-end="1070" vertical-scroll-proportion="0.4368932">
+        <state line="33" column="43" selection-start="748" selection-end="809" vertical-scroll-proportion="-2.58">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/grails-app/domain/webambulanze/Viaggio.groovy">
+      <provider editor-type-id="org.jetbrains.plugins.grails.perspectives.DomainClassesRelationsEditorProvider">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="7" column="23" selection-start="136" selection-end="136" vertical-scroll-proportion="-1.8">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/grails-app/views/viaggio/_form.gsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="76" column="0" selection-start="1590" selection-end="2059" vertical-scroll-proportion="-10.276596">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/grails-app/views/viaggio/createOrdinario.gsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="49" column="0" selection-start="2129" selection-end="2129" vertical-scroll-proportion="-7.9787235">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/grails-app/views/viaggio/createDializzato.gsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="72" column="0" selection-start="3003" selection-end="3423" vertical-scroll-proportion="-7.0425534">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/grails-app/views/viaggio/create118.gsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="112" column="0" selection-start="5836" selection-end="5836" vertical-scroll-proportion="-7.0425534">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/grails-app/controllers/webambulanze/ViaggioController.groovy">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="94" column="47" selection-start="3294" selection-end="3294" vertical-scroll-proportion="0.27332243">
           <folding />
         </state>
       </provider>

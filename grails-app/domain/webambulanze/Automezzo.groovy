@@ -31,7 +31,7 @@ class Automezzo {
      * la possibilità di avere valori nulli, di default è false
      */
     static constraints = {
-        croce(nullable: false)
+        croce(nullable: false, blank: false, display: false)
         tipo(nullable: false)
         dataAcquisto(nullable: true)
         targa(nullable: false, blank: false)

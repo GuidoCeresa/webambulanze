@@ -82,10 +82,23 @@ class ViaggioController {
 
     def save() {
         def viaggioInstance = new Viaggio(params)
+        Croce croce = croceService.getCroce(request)
+
+        if (croce) {
+            params.siglaCroce = croce.sigla
+            if (!viaggioInstance.croce) {
+                viaggioInstance.croce = croce
+            }// fine del blocco if
+        }// fine del blocco if
+
+        if (!viaggioInstance.giorno) {
+            viaggioInstance.giorno = new Date()
+        }// fine del blocco if
+
         if (!viaggioInstance.save(flush: true)) {
             render(view: "create", model: [viaggioInstance: viaggioInstance])
             return
-        }
+        }// fine del blocco if
 
         flash.message = message(code: 'default.created.message', args: [message(code: 'viaggio.label', default: 'Viaggio'), viaggioInstance.id])
         redirect(action: "show", id: viaggioInstance.id)
