@@ -106,6 +106,24 @@
         </li>
         
         <li class="fieldcontain">
+            <span id="codiceInvio-label" class="property-label"><g:message
+                    code="viaggio.codiceInvio.labelform" default="Codice Invio"/></span>
+            
+            <span class="property-value" aria-labelledby="codiceInvio-label"><g:fieldValue bean="${viaggioInstance}"
+                                                                                         field="codiceInvio"/></span>
+            
+        </li>
+        
+        <li class="fieldcontain">
+            <span id="codiceRicovero-label" class="property-label"><g:message
+                    code="viaggio.codiceRicovero.labelform" default="Codice Ricovero"/></span>
+            
+            <span class="property-value" aria-labelledby="codiceRicovero-label"><g:fieldValue bean="${viaggioInstance}"
+                                                                                         field="codiceRicovero"/></span>
+            
+        </li>
+        
+        <li class="fieldcontain">
             <span id="etaPaziente-label" class="property-label"><g:message
                     code="viaggio.etaPaziente.labelform" default="Eta Paziente"/></span>
             

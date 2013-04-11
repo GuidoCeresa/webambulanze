@@ -14,6 +14,8 @@ class Viaggio {
 
     LuogoEvento luogoEvento
     Patologia patologia
+    CodiceInvio codiceInvio
+    CodiceRicovero codiceRicovero
 
     String nomePaziente
     String indirizzoPaziente

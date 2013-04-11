@@ -63,7 +63,6 @@
     </ul>
 </div>
 
-
 <amb:tabella dataInizio="${dataInizio}" dataFine="${dataFine}"></amb:tabella>
 
 </body>

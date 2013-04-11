@@ -62,7 +62,22 @@ class ViaggioController {
     } // fine del metodo
 
     def create() {
-        [viaggioInstance: new Viaggio(params)]
+        params.siglaCroce = croceService.getSiglaCroce(request)
+        render(view: 'selezione', params: params)
+
+//        [viaggioInstance: new Viaggio(params)]
+    } // fine del metodo
+
+    def nuovoServizio118() {
+        render(view: 'create118', model: [viaggioInstance: new Viaggio(params)], params: params)
+    } // fine del metodo
+
+    def nuovoServizioOrdinario() {
+        render(view: 'createOrdinario', model: [viaggioInstance: new Viaggio(params)], params: params)
+    } // fine del metodo
+
+    def nuovoServizioDializzati() {
+        render(view: 'createDializzato', model: [viaggioInstance: new Viaggio(params)], params: params)
     } // fine del metodo
 
     def save() {

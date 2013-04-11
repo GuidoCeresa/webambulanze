@@ -1431,6 +1431,21 @@ class AmbulanzaTagLib {
     }// fine del metodo
 
     /**
+     * Pagina di selezione del tipo di viaggio<br>
+     *
+     * @return testo del tag
+     */
+    def selezioneViaggio = {
+        String testoOut = ''
+
+        testoOut += Lib.tagController('Viaggio', 'Servizio automedica del 118', 'nuovoServizio118')
+        testoOut += Lib.tagController('Viaggio', 'Servizio ambulanza ordinario', 'nuovoServizioOrdinario')
+        testoOut += Lib.tagController('Viaggio', 'Servizio trasporto dializzati', 'nuovoServizioDializzati')
+
+        out << testoOut
+    }// fine della closure
+
+    /**
      * Copyright e/o versione in fondo <br>
      *
      * @return testo del tag
