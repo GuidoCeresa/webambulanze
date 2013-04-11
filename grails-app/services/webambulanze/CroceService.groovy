@@ -58,7 +58,6 @@ class CroceService {
     }// fine del metodo
 
     //--controlla il flag mantenuto nei Settings associati alla croce indicata
-    //--recupera la croce corrente
     private static boolean isFlag(Croce croce, codice) {
         boolean flag = false
         Settings settings
@@ -69,6 +68,23 @@ class CroceService {
 
         if (settings) {
             flag = settings."${codice}"
+        }// fine del blocco if
+
+        return flag
+    }// fine del metodo
+
+    //--controlla il flag mantenuto nei Settings associati alla croce indicata
+    //--recupera la croce
+    private static boolean isFlag(String siglaCroce, codice) {
+        boolean flag = false
+        Croce croce
+
+        if (siglaCroce) {
+            croce = getCroce(siglaCroce)
+        }// fine del blocco if
+
+        if (croce) {
+            flag = isFlag(croce, codice)
         }// fine del blocco if
 
         return flag
@@ -244,7 +260,7 @@ class CroceService {
     }// fine del metodo
 
     //--restituisce la croce corrente
-    public Croce getCroce(String siglaCroce) {
+    public static Croce getCroce(String siglaCroce) {
         Croce croce = null
 
         if (siglaCroce) {
@@ -280,6 +296,21 @@ class CroceService {
         }// fine del blocco if
 
         return ruolo
+    }// fine del metodo
+
+    //--controlla il flag mantenuto nei Settings associati alla croce
+    public boolean usaModuloTurni(Croce croce) {
+        return isFlag(croce, Cost.PREF_usaModuloTurni)
+    }// fine del metodo
+
+    //--controlla il flag mantenuto nei Settings associati alla croce
+    public boolean usaModuloViaggi(Croce croce) {
+        return isFlag(croce, Cost.PREF_usaModuloViaggi)
+    }// fine del metodo
+
+    //--controlla il flag mantenuto nei Settings associati alla croce
+    public boolean usaModuloViaggi(String siglaCroce) {
+        return isFlag(siglaCroce, Cost.PREF_usaModuloViaggi)
     }// fine del metodo
 
 } // end of Service Class

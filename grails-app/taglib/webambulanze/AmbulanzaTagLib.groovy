@@ -1,4 +1,5 @@
 package webambulanze
+
 import org.apache.commons.lang.time.FastDateFormat
 import org.codehaus.groovy.grails.plugins.springsecurity.GrailsUser
 import org.springframework.context.NoSuchMessageException
@@ -82,10 +83,21 @@ class AmbulanzaTagLib {
         out << titoloPagina()
     }// fine della closure
 
-    def  ifModuloViaggi = { attrs, body ->
+    def ifModuloViaggi = { attrs, body ->
+        String siglaCroce
+        Croce croce
 
-
-        out << body()
+        if (params.siglaCroce) {
+            siglaCroce = params.siglaCroce
+            if (siglaCroce) {
+                croce = Croce.findBySigla(siglaCroce)
+                if (croce) {
+                    if (croceService.usaModuloViaggi(croce)) {
+                        out << body()
+                    }// fine del blocco if
+                }// fine del blocco if
+            }// fine del blocco if
+        }// fine del blocco if
     }// fine della closure
 
     /**
@@ -910,8 +922,10 @@ class AmbulanzaTagLib {
             testoOut += Lib.tagController('TipoTurno', 'Tipologia turni')
             testoOut += Lib.tagController('Milite', 'Militi')
             testoOut += Lib.tagController('Militestatistiche', 'Turni dei militi (statistiche)')
-//old            testoOut += Lib.tagController('Milite', 'Turni dei militi (statistiche)','statistiche')
             testoOut += Lib.tagController('Gen', 'Tabellone turni')
+            if (croceService.usaModuloViaggi((String) params.siglaCroce)) {
+                testoOut += Lib.tagController('Viaggio', 'Viaggi effettuati')
+            }// fine del blocco if
 
         }// fine del blocco if-else
 

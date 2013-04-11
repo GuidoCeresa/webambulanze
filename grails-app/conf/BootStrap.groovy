@@ -137,8 +137,13 @@ class BootStrap implements Cost {
             fixControllerInizialePubblicaCastello()
         }// fine del blocco if
 
+        //--regola il (nuovo) flag per tutte le croci
+         if (installaVersione(17)) {
+            flagModuloViaggi()
+        }// fine del blocco if
+
         //--creazione dei record utenti per la pubblica castello
-        if (installaVersione(17)) {
+        if (installaVersione(18)) {
 //            utentiPubblicacastello()
         }// fine del blocco if
 
@@ -2676,6 +2681,33 @@ class BootStrap implements Cost {
                 milite = (Milite) it
                 newUtenteMilite(CROCE_ROSSA_FIDENZA, milite)
             } // fine del ciclo each
+        }// fine del blocco if
+    }// fine del metodo
+
+    //--regola il (nuovo) flag per tutte le croci
+    private static void flagModuloViaggi() {
+
+        regolaFlagModuloViaggiSingolaCroce(CROCE_ALGOS,true)
+        regolaFlagModuloViaggiSingolaCroce(CROCE_DEMO,false)
+        regolaFlagModuloViaggiSingolaCroce(CROCE_PUBBLICA_CASTELLO,false)
+        regolaFlagModuloViaggiSingolaCroce(CROCE_ROSSA_FIDENZA,false)
+        regolaFlagModuloViaggiSingolaCroce(CROCE_ROSSA_PONTETARO,true)
+
+        newVersione(CROCE_ALGOS, 'Moduli', 'Moidulo viaggi per le varie croci.')
+    }// fine del metodo
+
+    //--regola il (nuovo) flag per tutte le croci
+    private static void regolaFlagModuloViaggiSingolaCroce(String siglaCroce, boolean usaModuloViaggi) {
+        Croce croce
+        Settings setting
+
+        croce = Croce.findBySigla(siglaCroce)
+        if (croce) {
+            setting = croce.settings
+            if (setting) {
+                setting.usaModuloViaggi = usaModuloViaggi
+                setting.save(flush: true)
+            }// fine del blocco if
         }// fine del blocco if
     }// fine del metodo
 
