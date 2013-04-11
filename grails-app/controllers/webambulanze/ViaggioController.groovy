@@ -21,7 +21,7 @@ class ViaggioController {
     def croceService
 
     def index() {
-        redirect(action: "list", params: params)
+        redirect(action: 'list', params: params)
     } // fine del metodo
 
     def list(Integer max) {

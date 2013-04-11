@@ -918,6 +918,9 @@ class AmbulanzaTagLib {
                 testoOut += Lib.tagController('Logo', 'Logs (accesso in sola visione limitato agli admin)')
                 testoOut += Lib.tagController('Militeturno', 'Statistiche dettagliate')
             }// fine del blocco if
+            if (croceService.usaModuloViaggi((String) params.siglaCroce)) {
+                testoOut += Lib.tagController('Automezzo', 'Automezzi')
+            }// fine del blocco if
             testoOut += Lib.tagController('Funzione', 'Funzioni')
             testoOut += Lib.tagController('TipoTurno', 'Tipologia turni')
             testoOut += Lib.tagController('Milite', 'Militi')
