@@ -30,6 +30,24 @@
 <g:textField name="sigla" required="" value="${croceInstance?.sigla}"/>
 </div>
 
+<div class="fieldcontain ${hasErrors(bean: croceInstance, field: 'organizzazione', 'error')} ">
+	<label for="organizzazione">
+		<g:message code="croce.organizzazione.labelform" default="Organizzazione" />
+		
+	</label>
+	
+
+
+
+
+
+
+
+
+
+<g:select name="organizzazione" from="${webambulanze.Organizzazione?.values()}" keys="${webambulanze.Organizzazione.values()*.name()}" value="${croceInstance?.organizzazione?.name()}" noSelection="['': '']"/>
+</div>
+
 <div class="fieldcontain ${hasErrors(bean: croceInstance, field: 'descrizione', 'error')} required">
 	<label for="descrizione">
 		<g:message code="croce.descrizione.labelform" default="Descrizione" />

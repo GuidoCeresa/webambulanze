@@ -5,6 +5,9 @@ class Croce {
     //--sigla di riferimento interna
     String sigla = ''
 
+    //--associazione di riferimento/appartenenza
+    Organizzazione organizzazione = null
+
     //--descrizione completa
     String descrizione = ''
 
@@ -42,6 +45,7 @@ class Croce {
      */
     static constraints = {
         sigla(nullable: false, blank: false, unique: true)
+        organizzazione(nullable: true, blank: true)
         descrizione(nullable: false, blank: false)
         presidente(nullable: true, blank: true)
         riferimento(nullable: true, blank: true)

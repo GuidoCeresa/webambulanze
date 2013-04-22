@@ -108,39 +108,56 @@ class AmbulanzaTagLib {
     def titoloPagina = {
         String testoOut = ''
         String testo = ''
-        String siglaCroce = ''
+        String siglaCroce
+        Croce croce
 
         if (params.siglaCroce) {
             siglaCroce = params.siglaCroce
+            if (siglaCroce) {
+                croce = Croce.findBySigla(siglaCroce)
+            }// fine del blocco if
         }// fine del blocco if
 
-        testo += cellaTitoloImmagine()
-        if (siglaCroce) {
-            testo += cellaTitoloCroce(siglaCroce)
+        if (croce) {
+            testo += cellaTitoloImmagine(croce)
+            testo += cellaTitoloCroce(croce)
             testo += cellaTitoloLogin()
+            testoOut += Lib.tagTable(testo)
         }// fine del blocco if
-        testoOut += Lib.tagTable(testo)
 
         out << testoOut
     }// fine della closure
 
-    private String cellaTitoloImmagine() {
+    private String cellaTitoloImmagine(Croce croce) {
         String testo = ''
+        String nomeLink=''
+        String fileImmagine = ''
+        String testoImmagine = ''
+        String testoLink=''
 
-        testo += '<a href="http://it.wikipedia.org/wiki/Croce_Rossa_Italiana">'
-        testo += "<img src=\"${resource(dir: 'images', file: 'CRI_8.png')}\"/>"
+        if (croce) {
+            nomeLink = croce.organizzazione.wiki
+            fileImmagine = croce.organizzazione.fileLogo
+        }// fine del blocco if
+
+        testoLink += '<a href="'
+        testoLink += nomeLink
+        testoLink += '">'
+
+        testoImmagine += '<img src="/webambulanze/images/'
+        testoImmagine += fileImmagine
+        testoImmagine += '"/>'
+
+        testo += testoLink
+        testo += testoImmagine
         testo += '</a>'
+
 
         return Lib.tagCellaTitolo(testo, Aspetto.titoloimmagine)
     }// fine del metodo
 
-    private static String cellaTitoloCroce(String siglaCroce) {
+    private static String cellaTitoloCroce(Croce croce) {
         String testo = ''
-        Croce croce
-
-        if (siglaCroce) {
-            croce = Croce.findBySigla(siglaCroce)
-        }// fine del blocco if
 
         if (croce) {
             testo = croce.descrizione
@@ -1457,7 +1474,7 @@ class AmbulanzaTagLib {
         String testoOut
         String testo
 
-        testo = 'Algos© - v2.1 del 11 aprile 2013'
+        testo = 'Algos© - v2.2 del 22 aprile 2013'
         testo = Lib.tagCella(testo, Aspetto.copyright)
         testoOut = Lib.tagTable(testo)
         return testoOut

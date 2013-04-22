@@ -138,12 +138,32 @@ class BootStrap implements Cost {
         }// fine del blocco if
 
         //--regola il (nuovo) flag per tutte le croci
-         if (installaVersione(17)) {
+        if (installaVersione(17)) {
             flagModuloViaggi()
         }// fine del blocco if
 
-        //--creazione dei record utenti per la pubblica castello
+        //--aggiunge (nuovo) flag per tutte le croci
         if (installaVersione(18)) {
+            fixOrganizzazione()
+        }// fine del blocco if
+
+        //--fix descrizione croci dopo aggiunta organizzazione
+        if (installaVersione(19)) {
+            fixDescrizione()
+        }// fine del blocco if
+
+        //--fix nome presidente, custode ed amministratore
+        if (installaVersione(20)) {
+            fixCaricheFidenza()
+        }// fine del blocco if
+
+        //--fix nome presidente, custode ed amministratore
+        if (installaVersione(21)) {
+            fixCarichePonteTaro()
+        }// fine del blocco if
+
+        //--creazione dei record utenti per la pubblica castello
+        if (installaVersione(22)) {
 //            utentiPubblicacastello()
         }// fine del blocco if
 
@@ -2687,13 +2707,13 @@ class BootStrap implements Cost {
     //--regola il (nuovo) flag per tutte le croci
     private static void flagModuloViaggi() {
 
-        regolaFlagModuloViaggiSingolaCroce(CROCE_ALGOS,true)
-        regolaFlagModuloViaggiSingolaCroce(CROCE_DEMO,false)
-        regolaFlagModuloViaggiSingolaCroce(CROCE_PUBBLICA_CASTELLO,false)
-        regolaFlagModuloViaggiSingolaCroce(CROCE_ROSSA_FIDENZA,false)
-        regolaFlagModuloViaggiSingolaCroce(CROCE_ROSSA_PONTETARO,true)
+        regolaFlagModuloViaggiSingolaCroce(CROCE_ALGOS, true)
+        regolaFlagModuloViaggiSingolaCroce(CROCE_DEMO, false)
+        regolaFlagModuloViaggiSingolaCroce(CROCE_PUBBLICA_CASTELLO, false)
+        regolaFlagModuloViaggiSingolaCroce(CROCE_ROSSA_FIDENZA, false)
+        regolaFlagModuloViaggiSingolaCroce(CROCE_ROSSA_PONTETARO, true)
 
-        newVersione(CROCE_ALGOS, 'Moduli', 'Moidulo viaggi per le varie croci.')
+        newVersione(CROCE_ALGOS, 'Moduli', 'Modulo viaggi per le varie croci.')
     }// fine del metodo
 
     //--regola il (nuovo) flag per tutte le croci
@@ -2709,6 +2729,95 @@ class BootStrap implements Cost {
                 setting.save(flush: true)
             }// fine del blocco if
         }// fine del blocco if
+    }// fine del metodo
+
+    //--aggiunge (nuovo) flag per tutte le croci
+    private static void fixOrganizzazione() {
+        Croce croce
+
+        croce = Croce.findBySigla(CROCE_ALGOS)
+        if (croce) {
+            croce.organizzazione = Organizzazione.nessuna
+        }// fine del blocco if
+
+        croce = Croce.findBySigla(CROCE_DEMO)
+        if (croce) {
+            croce.organizzazione = Organizzazione.nessuna
+        }// fine del blocco if
+
+        croce = Croce.findBySigla(CROCE_PUBBLICA_CASTELLO)
+        if (croce) {
+            croce.organizzazione = Organizzazione.anpas
+        }// fine del blocco if
+
+        croce = Croce.findBySigla(CROCE_ROSSA_FIDENZA)
+        if (croce) {
+            croce.organizzazione = Organizzazione.cri
+        }// fine del blocco if
+
+        croce = Croce.findBySigla(CROCE_ROSSA_PONTETARO)
+        if (croce) {
+            croce.organizzazione = Organizzazione.cri
+        }// fine del blocco if
+
+        newVersione(CROCE_ALGOS, 'Organizzazione', "Aggiunge l'organizzazione per tutte croci.")
+    }// fine del metodo
+
+    //--fix descrizione croci dopo aggiunta organizzazione
+    private static void fixDescrizione() {
+        Croce croce
+
+        croce = Croce.findBySigla(CROCE_PUBBLICA_CASTELLO)
+        if (croce) {
+            croce.descrizione = 'Val Tidone'
+            croce.save(flush: true)
+        }// fine del blocco if
+
+        croce = Croce.findBySigla(CROCE_ROSSA_FIDENZA)
+        if (croce) {
+            croce.descrizione = 'Comitato Locale di Fidenza'
+            croce.save(flush: true)
+        }// fine del blocco if
+
+        croce = Croce.findBySigla(CROCE_ROSSA_PONTETARO)
+        if (croce) {
+            croce.descrizione = 'Comitato Locale di Ponte Taro'
+            croce.save(flush: true)
+        }// fine del blocco if
+
+        newVersione(CROCE_ALGOS, 'Organizzazione', "Aggiunge l'organizzazione per tutte croci.")
+    }// fine del metodo
+
+    //--fix nome presidente, custode ed amministratore
+    private static void fixCaricheFidenza() {
+        Croce croce
+
+        croce = Croce.findBySigla(CROCE_ROSSA_FIDENZA)
+        if (croce) {
+            croce.presidente = 'Rita Tanzi'
+            croce.riferimento = 'Paolo Biazzi'
+            croce.custode = 'Paolo Biazzi'
+            croce.amministratori = 'Paolo Biazzi, Rita Tanzi, Massimiliano Abati'
+            croce.save(flush: true)
+        }// fine del blocco if
+
+        newVersione(CROCE_ROSSA_FIDENZA, 'Profilo', "Fix nome presidente, custode ed amministratore")
+    }// fine del metodo
+
+    //--fix nome presidente, custode ed amministratore
+    private static void fixCarichePonteTaro() {
+        Croce croce
+
+        croce = Croce.findBySigla(CROCE_ROSSA_PONTETARO)
+        if (croce) {
+            croce.presidente = 'Mauro Michelini'
+            croce.riferimento = 'Mauro Michelini'
+            croce.custode = 'Mauro Michelini'
+            croce.amministratori = 'Mauro Michelini'
+            croce.save(flush: true)
+        }// fine del blocco if
+
+        newVersione(CROCE_ROSSA_PONTETARO, 'Profilo', "Fix nome presidente, custode ed amministratore")
     }// fine del metodo
 
     def destroy = {

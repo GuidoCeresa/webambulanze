@@ -69,6 +69,15 @@
         </li>
         
         <li class="fieldcontain">
+            <span id="organizzazione-label" class="property-label"><g:message
+                    code="croce.organizzazione.labelform" default="Organizzazione"/></span>
+            
+            <span class="property-value" aria-labelledby="organizzazione-label"><g:fieldValue bean="${croceInstance}"
+                                                                                         field="organizzazione"/></span>
+            
+        </li>
+        
+        <li class="fieldcontain">
             <span id="descrizione-label" class="property-label"><g:message
                     code="croce.descrizione.labelform" default="Descrizione"/></span>
             

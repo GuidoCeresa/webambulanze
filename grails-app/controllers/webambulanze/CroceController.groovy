@@ -29,6 +29,7 @@ class CroceController {
         def lista
         Croce croce = croceService.getCroce(request)
         def campiLista = [
+                'organizzazione',
                 'descrizione',
                 'presidente',
                 'riferimento',

@@ -28,9 +28,12 @@ class ViaggioController {
         def lista
         Croce croce = croceService.getCroce(request)
         def campiLista = [
+                'numeroServizio',
                 'giorno',
-                'inizio',
-                'fine',
+                'automezzo',
+                'prelievo',
+                'codiceInvio',
+                'codiceRicovero'
         ]
 
         if (params.order) {
