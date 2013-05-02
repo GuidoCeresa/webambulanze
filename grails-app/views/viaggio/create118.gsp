@@ -43,7 +43,8 @@
                     <g:message code="viaggio.automezzo.labelform" default="Automezzo"/>
                     <span class="required-indicator">*</span>
                 </label>
-                <g:select id="automezzo" name="automezzo.id" from="${webambulanze.Automezzo.list()}" optionKey="id" required=""
+                <g:select id="automezzo" name="automezzo.id" from="${webambulanze.Automezzo.list()}" optionKey="id"
+                          required=""
                           value="${viaggioInstance?.automezzo?.id}" class="many-to-one"/>
             </div>
 
@@ -166,6 +167,33 @@
                     <g:message code="viaggio.ricovero.labelform" default="Ricovero"/>
                 </label>
                 <g:textField name="ricovero" value="${viaggioInstance?.ricovero}"/>
+            </div>
+
+            <div class="fieldcontain ${hasErrors(bean: viaggioInstance, field: 'autista', 'error')} required">
+                <label for="autista">
+                    <g:message code="viaggio.autista.labelform" default="Autista"/>
+                    <span class="required-indicator">*</span>
+                </label>
+                <g:select id="autista" name="autista.id" from="${webambulanze.Milite.list()}" optionKey="id" required=""
+                          value="${viaggioInstance?.autista?.id}" class="many-to-one"/>
+            </div>
+
+            <div class="fieldcontain ${hasErrors(bean: viaggioInstance, field: 'soccorritore', 'error')} required">
+                <label for="soccorritore">
+                    <g:message code="viaggio.soccorritore.labelform" default="Soccorritore"/>
+                    <span class="required-indicator">*</span>
+                </label>
+                <g:select id="soccorritore" name="soccorritore.id" from="${webambulanze.Milite.list()}" optionKey="id"
+                          required="" value="${viaggioInstance?.soccorritore?.id}" class="many-to-one"/>
+            </div>
+
+            <div class="fieldcontain ${hasErrors(bean: viaggioInstance, field: 'barelliere', 'error')} required">
+                <label for="barelliere">
+                    <g:message code="viaggio.barelliere.labelform" default="Barelliere"/>
+                    <span class="required-indicator">*</span>
+                </label>
+                <g:select id="barelliere" name="barelliere.id" from="${webambulanze.Milite.list()}" optionKey="id"
+                          required="" value="${viaggioInstance?.barelliere?.id}" class="many-to-one"/>
             </div>
 
         </fieldset>

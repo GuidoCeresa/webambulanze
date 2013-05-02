@@ -117,7 +117,7 @@ class BootStrap implements Cost {
             fixExtraPontetaro()
         }// fine del blocco if
 
-        //--aggiunge 3 funzioni per4 i servizi di sede a CRPT
+        //--aggiunge 3 funzioni per i servizi di sede a CRPT
         if (installaVersione(13)) {
             addFunzioniSedeCRPT()
         }// fine del blocco if
@@ -162,8 +162,23 @@ class BootStrap implements Cost {
             fixCarichePonteTaro()
         }// fine del blocco if
 
-        //--creazione dei record utenti per la pubblica castello
+        //--eliminato dalle liste popup del form del tabellone il milite NON attivo
         if (installaVersione(22)) {
+            fixLevaMiliteNonAttivoDalleListePopup()
+        }// fine del blocco if
+
+        //--cancellazione del milite 'Don Alessandro' a Fidenza
+        if (installaVersione(23)) {
+            cancellaMiliteDonAlessandro()
+        }// fine del blocco if
+
+        //--creazione nuova authority per un custode a Fidenza
+        if (installaVersione(24)) {
+            fixPermessiFidenza()
+        }// fine del blocco if
+
+        //--creazione dei record utenti per la pubblica castello
+        if (installaVersione(25)) {
 //            utentiPubblicacastello()
         }// fine del blocco if
 
@@ -2567,7 +2582,7 @@ class BootStrap implements Cost {
         newVersione(CROCE_ROSSA_PONTETARO, 'Posizione extra', 'Spostato in alto il turno extra, dopo i 3 turni di ambulnza.')
     }// fine del metodo
 
-    //--aggiunge 3 funzioni per4 i servizi di sede a CRPT
+    //--aggiunge 3 funzioni per i servizi di sede a CRPT
     private static void addFunzioniSedeCRPT() {
         newFunzRossaPonteTaro(CRPT_FUNZIONE_CENTRALINO, 'Cent', 'Centralino', 6, '')
         newFunzRossaPonteTaro(CRPT_FUNZIONE_PULIZIE, 'Pul', 'Pulizie', 7, '')
@@ -2818,6 +2833,44 @@ class BootStrap implements Cost {
         }// fine del blocco if
 
         newVersione(CROCE_ROSSA_PONTETARO, 'Profilo', "Fix nome presidente, custode ed amministratore")
+    }// fine del metodo
+
+    //--eliminato dalle liste popup del form del tabellone il milite NON attivo
+    private static void fixLevaMiliteNonAttivoDalleListePopup() {
+        newVersione(CROCE_ALGOS, 'Tabellone', "Eliminato dalle liste popup del form del tabellone il milite NON attivo")
+    }// fine del metodo
+
+    //--cancellazione del milite 'Don Alessandro' a Fidenza
+    private static void cancellaMiliteDonAlessandro() {
+        Croce croce
+        Milite milite
+
+        croce = Croce.findBySigla(CROCE_ROSSA_FIDENZA)
+        if (croce) {
+            milite = Milite.findByCognomeAndNome('Don', 'Alessandro')
+            if (milite) {
+                MiliteService.cancellaMilite(milite)
+            }// fine del blocco if
+        }// fine del blocco if
+
+        newVersione(CROCE_ROSSA_FIDENZA, 'Milite', "Cancellato Don Alessandro")
+    }// fine del metodo
+
+    //--creazione nuova authority per un custode a Fidenza
+    private static void fixPermessiFidenza() {
+        Croce croce = Croce.findBySigla(CROCE_ROSSA_FIDENZA)
+        Ruolo ruoloCustode = Ruolo.findByAuthority(ROLE_CUSTODE)
+        String nickName = 'Tanzi Annarita'
+        Utente utente
+
+        if (croce && ruoloCustode) {
+            utente = Utente.findOrCreateByCroceAndNickname(croce, nickName)
+            if (utente) {
+                UtenteRuolo.findOrCreateByRuoloAndUtente(ruoloCustode, utente).save(failOnError: true)
+            }// fine del blocco if
+        }// fine del blocco if
+
+        newVersione(CROCE_ROSSA_FIDENZA, 'Custode', "Abilitazione come custode di Tanzi Annarita ")
     }// fine del metodo
 
     def destroy = {

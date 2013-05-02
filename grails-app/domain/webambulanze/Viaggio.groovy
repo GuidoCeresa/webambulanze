@@ -32,6 +32,10 @@ class Viaggio {
     int numeroServizio
     int numeroBolla
 
+    Milite autista
+    Milite soccorritore
+    Milite barelliere
+
     /**
      * regolazione delle proprietà di ogni campo
      * l'ordine con cui vengono elencati qui, viene rispettato nella lista e nella scheda standard
@@ -42,6 +46,10 @@ class Viaggio {
         giorno()
         inizio()
         fine()
+        autista()
+        soccorritore()
+        barelliere()
+
     } // end of static constraints
 
     static mapping = {

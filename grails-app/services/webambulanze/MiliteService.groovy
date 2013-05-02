@@ -249,7 +249,7 @@ class MiliteService {
         Milite milite
 
         if (croce) {
-            listaAllMiliti = Milite.findAllByCroce(croce, [sort: 'cognome', order: 'asc'])
+            listaAllMiliti = Milite.findAllByCroceAndAttivo(croce, true, [sort: 'cognome', order: 'asc'])
         }// fine del blocco if
 
         if (funzione && listaAllMiliti) {
@@ -274,7 +274,7 @@ class MiliteService {
         Milite milite
 
         if (croce) {
-            listaAllMiliti = Milite.findAllByCroce(croce, [sort: 'cognome', order: 'asc'])
+            listaAllMiliti = Milite.findAllByCroceAndAttivo(croce, true, [sort: 'cognome', order: 'asc'])
         }// fine del blocco if
 
         if (funzione && listaAllMiliti) {
@@ -427,12 +427,72 @@ class MiliteService {
             listaMiliti?.each {
                 listaNomiMiliti.add(it.toString())
             } // fine del ciclo each
-            listaMiliti.add(0,'')
+            listaMiliti.add(0, '')
         }// fine del blocco if
 
         return listaNomiMiliti
     }// fine del metodo
 
+    public static cancellaMilite(Milite milite) {
+        def listaRecords
+        Logo logo
+        Utente utente
+        Turno turno
+        Militestatistiche militeStatistiche
+        Militeturno militeTurno
+
+        if (milite) {
+            listaRecords = Logo.findAllByMilite(milite)
+            listaRecords?.each {
+                logo = (Logo) it
+                logo.milite = null
+                logo.save(flush: true)
+            } // fine del ciclo each
+
+            listaRecords = Utente.findAllByMilite(milite)
+            listaRecords?.each {
+                utente = (Utente) it
+                utente.milite = null
+                utente.save(flush: true)
+            } // fine del ciclo each
+
+            listaRecords = Militestatistiche.findAllByMilite(milite)
+            listaRecords?.each {
+                militeStatistiche = (Militestatistiche) it
+                militeStatistiche.delete(flush: true)
+            } // fine del ciclo each
+
+            listaRecords = Militeturno.findAllByMilite(milite)
+            listaRecords?.each {
+                militeTurno = (Militeturno) it
+                militeTurno.delete(flush: true)
+            } // fine del ciclo each
+
+            listaRecords = Turno.findAllByMiliteFunzione1OrMiliteFunzione2OrMiliteFunzione3OrMiliteFunzione4(milite, milite, milite, milite)
+            listaRecords?.each {
+                turno = (Turno) it
+                if (turno.militeFunzione1 == milite) {
+                    turno.militeFunzione1 = null
+                }// fine del blocco if
+                if (turno.militeFunzione2 == milite) {
+                    turno.militeFunzione2 = null
+                }// fine del blocco if
+                if (turno.militeFunzione3 == milite) {
+                    turno.militeFunzione3 = null
+                }// fine del blocco if
+                if (turno.militeFunzione4 == milite) {
+                    turno.militeFunzione4 = null
+                }// fine del blocco if
+                turno.save(flush: true)
+            } // fine del ciclo each
+
+            try { // prova ad eseguire il codice
+                milite.delete(flush: true)
+            } catch (Exception unErrore) { // intercetta l'errore
+                def errore
+            }// fine del blocco try-catch
+        }// fine del blocco if
+    }// fine del metodo
 
 } // end of Service Class
 

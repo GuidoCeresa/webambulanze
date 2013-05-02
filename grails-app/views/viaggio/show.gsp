@@ -97,6 +97,36 @@
         </li>
         
         <li class="fieldcontain">
+            <span id="autista-label" class="property-label"><g:message
+                    code="viaggio.autista.labelform" default="Autista"/></span>
+            
+            <span class="property-value" aria-labelledby="autista-label"><g:link
+                    controller="milite" action="show"
+                    id="${viaggioInstance?.autista?.id}">${viaggioInstance?.autista?.encodeAsHTML()}</g:link></span>
+            
+        </li>
+        
+        <li class="fieldcontain">
+            <span id="soccorritore-label" class="property-label"><g:message
+                    code="viaggio.soccorritore.labelform" default="Soccorritore"/></span>
+            
+            <span class="property-value" aria-labelledby="soccorritore-label"><g:link
+                    controller="milite" action="show"
+                    id="${viaggioInstance?.soccorritore?.id}">${viaggioInstance?.soccorritore?.encodeAsHTML()}</g:link></span>
+            
+        </li>
+        
+        <li class="fieldcontain">
+            <span id="barelliere-label" class="property-label"><g:message
+                    code="viaggio.barelliere.labelform" default="Barelliere"/></span>
+            
+            <span class="property-value" aria-labelledby="barelliere-label"><g:link
+                    controller="milite" action="show"
+                    id="${viaggioInstance?.barelliere?.id}">${viaggioInstance?.barelliere?.encodeAsHTML()}</g:link></span>
+            
+        </li>
+        
+        <li class="fieldcontain">
             <span id="automezzo-label" class="property-label"><g:message
                     code="viaggio.automezzo.labelform" default="Automezzo"/></span>
             

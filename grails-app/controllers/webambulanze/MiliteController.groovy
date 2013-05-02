@@ -289,7 +289,8 @@ class MiliteController {
         }
         catch (DataIntegrityViolationException e) {
             flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'milite.label', default: 'Milite'), id])
-            redirect(action: 'show', id: id)
+            redirect(action: 'list')
+//            redirect(action: 'show', id: id)
         }
     } // fine del metodo
 
