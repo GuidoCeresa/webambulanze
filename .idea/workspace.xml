@@ -2,13 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2bee2297-4103-4d78-b423-f3f184afbabb" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/grails-app/conf/BootStrap.groovy" afterPath="$PROJECT_DIR$/grails-app/conf/BootStrap.groovy" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/grails-app/controllers/webambulanze/MiliteController.groovy" afterPath="$PROJECT_DIR$/grails-app/controllers/webambulanze/MiliteController.groovy" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/grails-app/services/webambulanze/MiliteService.groovy" afterPath="$PROJECT_DIR$/grails-app/services/webambulanze/MiliteService.groovy" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/grails-app/domain/webambulanze/Viaggio.groovy" afterPath="$PROJECT_DIR$/grails-app/domain/webambulanze/Viaggio.groovy" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/grails-app/views/viaggio/_form.gsp" afterPath="$PROJECT_DIR$/grails-app/views/viaggio/_form.gsp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/grails-app/views/viaggio/create118.gsp" afterPath="$PROJECT_DIR$/grails-app/views/viaggio/create118.gsp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/grails-app/views/viaggio/show.gsp" afterPath="$PROJECT_DIR$/grails-app/views/viaggio/show.gsp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/grails-app/taglib/webambulanze/AmbulanzaTagLib.groovy" afterPath="$PROJECT_DIR$/grails-app/taglib/webambulanze/AmbulanzaTagLib.groovy" />
     </list>
     <ignored path="webambulanze.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -425,10 +419,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="BootStrap.groovy" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="BootStrap.groovy" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/grails-app/conf/BootStrap.groovy">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="2861" column="87" selection-start="116833" selection-end="116833" vertical-scroll-proportion="3.6107595">
+            <state line="2715" column="87" selection-start="111426" selection-end="111426" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -455,10 +449,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="AmbulanzaTagLib.groovy" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="AmbulanzaTagLib.groovy" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/grails-app/taglib/webambulanze/AmbulanzaTagLib.groovy">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="1807" column="50" selection-start="65712" selection-end="65712" vertical-scroll-proportion="0.0">
+            <state line="1468" column="80" selection-start="53498" selection-end="53498" vertical-scroll-proportion="0.23734178">
               <folding />
             </state>
           </provider>
@@ -537,12 +531,12 @@
         <option value="$PROJECT_DIR$/src/groovy/webambulanze/Organizzazione.groovy" />
         <option value="$PROJECT_DIR$/grails-app/controllers/webambulanze/ViaggioController.groovy" />
         <option value="$PROJECT_DIR$/grails-app/i18n/messages_it.properties" />
-        <option value="$PROJECT_DIR$/grails-app/taglib/webambulanze/AmbulanzaTagLib.groovy" />
         <option value="$PROJECT_DIR$/grails-app/domain/webambulanze/Viaggio.groovy" />
         <option value="$PROJECT_DIR$/grails-app/views/viaggio/create118.gsp" />
         <option value="$PROJECT_DIR$/grails-app/controllers/webambulanze/MiliteController.groovy" />
         <option value="$PROJECT_DIR$/grails-app/services/webambulanze/MiliteService.groovy" />
         <option value="$PROJECT_DIR$/grails-app/conf/BootStrap.groovy" />
+        <option value="$PROJECT_DIR$/grails-app/taglib/webambulanze/AmbulanzaTagLib.groovy" />
       </list>
     </option>
   </component>
@@ -1025,13 +1019,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/grails-app/taglib/webambulanze/AmbulanzaTagLib.groovy">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="1807" column="50" selection-start="65712" selection-end="65712" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/grails-app/domain/webambulanze/Settings.groovy">
       <provider editor-type-id="org.jetbrains.plugins.grails.perspectives.DomainClassesRelationsEditorProvider">
         <state />
@@ -1158,7 +1145,14 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/grails-app/conf/BootStrap.groovy">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="2861" column="87" selection-start="116833" selection-end="116833" vertical-scroll-proportion="3.6107595">
+        <state line="2715" column="87" selection-start="111426" selection-end="111426" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/grails-app/taglib/webambulanze/AmbulanzaTagLib.groovy">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="1468" column="80" selection-start="53498" selection-end="53498" vertical-scroll-proportion="0.23734178">
           <folding />
         </state>
       </provider>
