@@ -177,8 +177,13 @@ class BootStrap implements Cost {
             fixPermessiFidenza()
         }// fine del blocco if
 
-        //--creazione dei record utenti per la pubblica castello
+        //--Ridisegnata lista moduli disponibili per i vari ruoli
         if (installaVersione(25)) {
+            listaControllers()
+        }// fine del blocco if
+
+        //--creazione dei record utenti per la pubblica castello
+        if (installaVersione(26)) {
 //            utentiPubblicacastello()
         }// fine del blocco if
 
@@ -2871,6 +2876,11 @@ class BootStrap implements Cost {
         }// fine del blocco if
 
         newVersione(CROCE_ROSSA_FIDENZA, 'Custode', "Abilitazione come custode di Tanzi Annarita ")
+    }// fine del metodo
+
+    //--Ridisegnata lista moduli disponibili per i vari ruoli
+    private static void listaControllers() {
+        newVersione(CROCE_ALGOS, 'Moduli', 'Ridisegnata lista moduli disponibili per i vari ruoli')
     }// fine del metodo
 
     def destroy = {
