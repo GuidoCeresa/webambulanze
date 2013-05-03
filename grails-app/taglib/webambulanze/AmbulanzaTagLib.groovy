@@ -900,6 +900,7 @@ class AmbulanzaTagLib {
 
     /**
      * Lista dei controllers per la videata Home <br>
+     * Presento i controller in ordine da quelli disponibili al programmatore in giù
      *
      * @return testo del tag
      */
@@ -919,29 +920,33 @@ class AmbulanzaTagLib {
             } // fine del ciclo each
         } else {
             if (militeService.isLoggatoProgrammatore()) {
+                testoOut+='<h2>Moduli disponibili al programmatore:</h2>'
                 testoOut += Lib.tagController('Versione', 'Lista versioni installate')
                 testoOut += Lib.tagController('Militestatistiche', 'Forza calcolo statistiche', 'calcola')
-                testoOut += Lib.tagController('UtenteRuolo', 'Tavola incrocio utenti-ruolo', 'list')
-                testoOut += Lib.tagController('Militefunzione', 'Tavola incrocio militi-funzioni')
                 testoOut += Lib.tagController('Turno', 'Lista turni (non tabellone)', 'list')
             }// fine del blocco if
             if (militeService.isLoggatoCustodeOrMore()) {
-                testoOut += Lib.tagController('Ruolo', 'Ruoli (accesso limitato ad una sola persona)')
-                testoOut += Lib.tagController('Utente', 'Password militi (accesso limitato ad una sola persona)')
+                testoOut+='<h2>Moduli disponibili al custode:</h2>'
+                testoOut += Lib.tagController('Utente', 'Password militi')
             }// fine del blocco if
             if (militeService.isLoggatoAdminOrMore()) {
-                testoOut += Lib.tagController('Croce', 'Croci (accesso in sola visione limitato agli admin)')
-                testoOut += Lib.tagController('Settings', 'Preferenze (accesso in sola visione limitato agli admin)')
-                testoOut += Lib.tagController('Logo', 'Logs (accesso in sola visione limitato agli admin)')
+                testoOut+='<h2>Moduli disponibili agli admin:</h2>'
+                testoOut += Lib.tagController('Ruolo', 'Ruoli')
+                testoOut += Lib.tagController('UtenteRuolo', 'Tavola incrocio utenti-ruolo', 'list')
+                testoOut += Lib.tagController('Militefunzione', 'Tavola incrocio militi-funzioni')
+                testoOut += Lib.tagController('Croce', 'Croci')
+                testoOut += Lib.tagController('Settings', 'Preferenze')
+                testoOut += Lib.tagController('Logo', 'Logs')
                 testoOut += Lib.tagController('Militeturno', 'Statistiche dettagliate')
             }// fine del blocco if
             if (croceService.usaModuloViaggi((String) params.siglaCroce)) {
                 testoOut += Lib.tagController('Automezzo', 'Automezzi')
             }// fine del blocco if
+            testoOut+='<h2>Moduli disponibili ai militi:</h2>'
             testoOut += Lib.tagController('Funzione', 'Funzioni')
             testoOut += Lib.tagController('TipoTurno', 'Tipologia turni')
             testoOut += Lib.tagController('Milite', 'Militi')
-            testoOut += Lib.tagController('Militestatistiche', 'Turni dei militi (statistiche)')
+            testoOut += Lib.tagController('Militestatistiche', 'Statistiche')
             testoOut += Lib.tagController('Gen', 'Tabellone turni')
             if (croceService.usaModuloViaggi((String) params.siglaCroce)) {
                 testoOut += Lib.tagController('Viaggio', 'Viaggi effettuati')
@@ -1474,7 +1479,7 @@ class AmbulanzaTagLib {
         String testoOut
         String testo
 
-        testo = 'Algos© - v2.3 del 2 maggio 2013'
+        testo = 'Algos© - v2.4 del 3 maggio 2013'
         testo = Lib.tagCella(testo, Aspetto.copyright)
         testoOut = Lib.tagTable(testo)
         return testoOut

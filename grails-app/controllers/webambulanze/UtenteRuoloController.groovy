@@ -18,6 +18,10 @@ class UtenteRuoloController {
 
     // utilizzo di un service con la businessLogic per l'elaborazione dei dati
     // il service viene iniettato automaticamente
+    def utenteService
+
+    // utilizzo di un service con la businessLogic per l'elaborazione dei dati
+    // il service viene iniettato automaticamente
     def croceService
 
     def index() {
@@ -26,6 +30,7 @@ class UtenteRuoloController {
 
     def list(Integer max) {
         def lista
+        Croce croce = croceService.getCroce(request)
         def campiLista = [
                 'utente',
                 'ruolo']
@@ -33,10 +38,23 @@ class UtenteRuoloController {
         if (!params.sort) {
             params.sort = 'utente'
         }// fine del blocco if-else
-        lista = UtenteRuolo.findAll(params)
+
+        if (croce) {
+            params.siglaCroce = croce.sigla
+            if (params.siglaCroce.equals(Cost.CROCE_ALGOS)) {
+                lista = UtenteRuolo.findAll("from UtenteRuolo order by ruolo,utente")
+            } else {
+                if (!params.sort) {
+                    params.sort = 'utente'
+                }// fine del blocco if-else
+                lista = utenteService.tuttiUtentiRuoloDellaCroceSenzaProgrammatore(croce)
+            }// fine del blocco if-else
+        } else {
+            lista = utenteService.tuttiSenzaProgrammatore(params)
+        }// fine del blocco if-else
 
         render(view: 'list', model: [utenteRuoloInstanceList: lista, utenteRuoloInstanceTotal: 0, campiLista: campiLista], params: params)
-    }
+    } // fine del metodo
 
     def create() {
         [utenteRuoloInstance: new UtenteRuolo(params)]

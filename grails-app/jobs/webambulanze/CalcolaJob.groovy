@@ -15,7 +15,7 @@ class CalcolaJob {
     // il service viene iniettato automaticamente
     def logoService
 
-    static boolean USA_MAIL = false
+    static boolean USA_MAIL = true
 
     static triggers = {
         cron name: 'myTrigger', cronExpression: "0 0 3 * * ?"     // alle 3 di notte di ogni giorno
@@ -27,10 +27,8 @@ class CalcolaJob {
         if (USA_MAIL) {
             spedisceMailDiControllo('Ricalcolo effettuato')
         } else {
-            //logoService.
+//            logoService.
         }// fine del blocco if-else
-
-
 
     }// fine del metodo execute
 

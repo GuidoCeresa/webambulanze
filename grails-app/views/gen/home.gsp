@@ -111,7 +111,6 @@
 
 <div id="page-body" role="main">
     <div id="controller-list" role="navigation">
-        <h2>Moduli disponibili:</h2>
         <amb:listaControllers></amb:listaControllers>
     </div>
 </div>

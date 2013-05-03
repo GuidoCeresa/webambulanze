@@ -46,6 +46,33 @@ class UtenteService {
     }// fine del metodo
 
     //--recupera i nomi di tutti gli utenti ESCLUSO il programatore
+    public ArrayList tuttiUtentiRuoloDellaCroceSenzaProgrammatore(Croce croce) {
+        ArrayList listaCompletaTutteLeCroci = null
+        ArrayList lista = null
+        Ruolo ruoloProg = Ruolo.findByAuthority(Cost.ROLE_PROG)
+        UtenteRuolo utenteRuolo
+        Utente utente
+        Croce croceUtente
+
+        if (ruoloProg) {
+            listaCompletaTutteLeCroci = UtenteRuolo.findAllByRuoloNotEqual(ruoloProg)
+            if (listaCompletaTutteLeCroci) {
+                lista = new ArrayList()
+                listaCompletaTutteLeCroci.each {
+                    utenteRuolo = (UtenteRuolo) it
+                    utente = utenteRuolo.utente
+                    croceUtente = utente.croce
+                    if (croceUtente == croce) {
+                        lista.add(utenteRuolo)
+                    }// fine del blocco if
+                } // fine del ciclo each
+            }// fine del blocco if
+        }// fine del blocco if
+
+        return lista
+    }// fine del metodo
+
+    //--recupera i nomi di tutti gli utenti ESCLUSO il programatore
     public ArrayList tuttiSenzaProgrammatore(def params) {
         ArrayList lista = new ArrayList()
 
