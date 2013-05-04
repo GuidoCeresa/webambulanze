@@ -34,6 +34,9 @@ class TipoTurno {
     //--ultimo turno di un eventuale raggruppamento a video (nel tabellone)
     boolean ultimo = false
 
+    //--Primo turno di un eventuale raggruppamento a video (nel tabellone)
+    boolean primo = false
+
     //--turno a cavallo della mezzanotte - termina il giorno successivo
     boolean fineGiornoSuccessivo = false
 
@@ -71,6 +74,7 @@ class TipoTurno {
         oraFine()
         minutiFine(display: false)
         ultimo()
+        primo()
         fineGiornoSuccessivo()
         visibile()
         orario()

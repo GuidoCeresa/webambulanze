@@ -81,6 +81,15 @@ public interface Cost {
     public static String STATUS_VERDE = 'ok'
     public static String STATUS_ROSSO = 'rosso'
 
+    //--sigle dei tipi di turno in croce rossa fidenza
+    public static String CRF_TIPO_TURNO_AUTOMEDICA_MATTINO = 'msa-mat'
+    public static String CRF_TIPO_TURNO_AUTOMEDICA_POMERIGGIO = 'msa-pom'
+    public static String CRF_TIPO_TURNO_AUTOMEDICA_NOTTE = 'msa-notte'
+    public static String CRF_TIPO_TURNO_AMBULANZA_MATTINO = 'amb-mat'
+    public static String CRF_TIPO_TURNO_AMBULANZA_POMERIGGIO = 'amb-pom'
+    public static String CRF_TIPO_TURNO_AMBULANZA_NOTTE = 'amb-notte'
+    public static String CRF_TIPO_TURNO_EXTRA = 'extra'
+
     //--funzioni in croce rossa pontetaro
     public static String CRPT_FUNZIONE_AUT_118 = 'aut-118'
     public static String CRPT_FUNZIONE_AUT_ORD = 'aut-ord'

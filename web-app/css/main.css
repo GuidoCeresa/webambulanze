@@ -886,6 +886,13 @@ td.turnoeffettuatobordo {
     background: #aaaaaa;
 }
 
+td.bordo {
+    margin: 0 0 0 0;
+    padding: 0 0 0 0;
+    height: 4px;
+    background: #0000ff;
+}
+
 td.turnovuotobordosup, td.turnoprevistobordosup, td.turnoassegnatobordosup, td.turnoliberobordosup,
 td.turnocriticobordosup, td.turnobloccatobordosup, td.turnoeffettuatobordosup {
     border-style: solid;

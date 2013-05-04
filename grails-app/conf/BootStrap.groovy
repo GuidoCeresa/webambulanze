@@ -177,15 +177,25 @@ class BootStrap implements Cost {
             fixPermessiFidenza()
         }// fine del blocco if
 
-        //--Ridisegnata lista moduli disponibili per i vari ruoli
+        //--ridisegnata lista moduli disponibili per i vari ruoli
         if (installaVersione(25)) {
             listaControllers()
         }// fine del blocco if
 
-        //--creazione dei record utenti per la pubblica castello
+        //--aggiunto flag per disegnare bordo sopra i gruppi di turni
         if (installaVersione(26)) {
-//            utentiPubblicacastello()
+            fixFlagPrimoFidenza()
         }// fine del blocco if
+
+        //--aggiunto flag per disegnare bordo sopra i gruppi di turni
+        if (installaVersione(27)) {
+            fixFlagPrimoPontetaro()
+        }// fine del blocco if
+
+        //--creazione dei record utenti per la pubblica castello
+//        if (installaVersione(99)) {
+//            utentiPubblicacastello()
+//        }// fine del blocco if
 
         // resetTurniPontetaro()
 
@@ -2881,6 +2891,50 @@ class BootStrap implements Cost {
     //--Ridisegnata lista moduli disponibili per i vari ruoli
     private static void listaControllers() {
         newVersione(CROCE_ALGOS, 'Moduli', 'Ridisegnata lista moduli disponibili per i vari ruoli')
+    }// fine del metodo
+
+    //--aggiunto flag per disegnare bordo sopra i gruppi di turni di Fidenza
+    private static void fixFlagPrimoFidenza() {
+        Croce croce = Croce.findBySigla(CROCE_ROSSA_FIDENZA)
+        TipoTurno tipoTurno
+
+        if (croce) {
+            tipoTurno = TipoTurno.findByCroceAndSigla(croce, CRF_TIPO_TURNO_AMBULANZA_MATTINO)
+            if (tipoTurno) {
+                tipoTurno.primo = true
+                tipoTurno.save(flush: true)
+            }// fine del blocco if
+
+            tipoTurno = TipoTurno.findByCroceAndSigla(croce, CRPT_TIPO_TURNO_EXTRA)
+            if (tipoTurno) {
+                tipoTurno.primo = true
+                tipoTurno.save(flush: true)
+            }// fine del blocco if
+        }// fine del blocco if
+
+        newVersione(CROCE_ROSSA_FIDENZA, 'Tipi turni', 'Aggiunto flag per disegnare bordo blu sopra i gruppi di turni')
+    }// fine del metodo
+
+    //--aggiunto flag per disegnare bordo sopra i gruppi di turni di Pontetaro
+    private static void fixFlagPrimoPontetaro() {
+        Croce croce = Croce.findBySigla(CROCE_ROSSA_PONTETARO)
+        TipoTurno tipoTurno
+
+        if (croce) {
+            tipoTurno = TipoTurno.findByCroceAndSigla(croce, CRPT_TIPO_TURNO_DIALISI_UNO_ANDATA)
+            if (tipoTurno) {
+                tipoTurno.primo = true
+                tipoTurno.save(flush: true)
+            }// fine del blocco if
+
+            tipoTurno = TipoTurno.findByCroceAndSigla(croce, CRPT_TIPO_TURNO_ORDINARIO_SINGOLO)
+            if (tipoTurno) {
+                tipoTurno.primo = true
+                tipoTurno.save(flush: true)
+            }// fine del blocco if
+        }// fine del blocco if
+
+        newVersione(CROCE_ROSSA_PONTETARO, 'Tipi turni', 'Aggiunto flag per disegnare bordo blu sopra i gruppi di turni')
     }// fine del metodo
 
     def destroy = {

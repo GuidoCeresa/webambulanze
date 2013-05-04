@@ -128,12 +128,12 @@ class AmbulanzaTagLib {
         out << testoOut
     }// fine della closure
 
-    private String cellaTitoloImmagine(Croce croce) {
+    private static String cellaTitoloImmagine(Croce croce) {
         String testo = ''
-        String nomeLink=''
+        String nomeLink = ''
         String fileImmagine = ''
         String testoImmagine = ''
-        String testoLink=''
+        String testoLink = ''
 
         if (croce) {
             nomeLink = croce.organizzazione.wiki
@@ -229,9 +229,9 @@ class AmbulanzaTagLib {
         }// fine del blocco if
 
 //        testo += this.captionTabella(params)
-        testo += this.titoliTabella(inizio, fine)
-        testo += this.corpoTabella(croce, inizio, fine)
-        testo += this.legenda()
+        testo += titoliTabella(inizio, fine)
+        testo += corpoTabella(croce, inizio, fine)
+        testo += legenda()
         testo += copyright()
 
         testoOut = Lib.tagTable(testo)
@@ -265,11 +265,18 @@ class AmbulanzaTagLib {
                 numTipoTurno++
                 pariDispari++
                 numExtra = 1
-                if (it.ultimo) {
-                    testoBody += this.righeDiUnTurno(it, inizio, fine, pariDispari, numExtra, true)
-                } else {
+
+                if (it.primo) {
+                    testoBody += rigaBordo()
+                }// fine del blocco if
+
+//                if (it.ultimo) {
+//                    testoBody += this.righeDiUnTurno(it, inizio, fine, pariDispari, numExtra, true)
+//                } else {
+//                    testoBody += this.righeDiUnTurno(it, inizio, fine, pariDispari, numExtra, false)
+//                }// fine del blocco if-else
                     testoBody += this.righeDiUnTurno(it, inizio, fine, pariDispari, numExtra, false)
-                }// fine del blocco if-else
+
 
                 if (it.multiplo) {
                     while (this.esisteUnTurnoNellaUltimaRiga(it, inizio, fine, numExtra)) {
@@ -339,6 +346,19 @@ class AmbulanzaTagLib {
         }// fine del blocco if
 
         return testoRiga
+    }// fine del metodo
+
+    //--disegna una riga di separazione per tutte le celle (1+7)
+    private static String rigaBordo() {
+        String testo = ''
+        int giorni = 7
+        giorni++
+
+        for (int k = 0; k <= giorni; k++) {
+            testo += Lib.tagCella('', Aspetto.bordo, 1)
+        } // fine del ciclo for
+
+        return testo
     }// fine del metodo
 
     //--disegna i titoli delle colonne della tavola/lista
@@ -920,17 +940,17 @@ class AmbulanzaTagLib {
             } // fine del ciclo each
         } else {
             if (militeService.isLoggatoProgrammatore()) {
-                testoOut+='<h2>Moduli disponibili al programmatore:</h2>'
+                testoOut += '<h2>Moduli disponibili al programmatore:</h2>'
                 testoOut += Lib.tagController('Versione', 'Lista versioni installate')
                 testoOut += Lib.tagController('Militestatistiche', 'Forza calcolo statistiche', 'calcola')
                 testoOut += Lib.tagController('Turno', 'Lista turni (non tabellone)', 'list')
             }// fine del blocco if
             if (militeService.isLoggatoCustodeOrMore()) {
-                testoOut+='<h2>Moduli disponibili al custode:</h2>'
+                testoOut += '<h2>Moduli disponibili al custode:</h2>'
                 testoOut += Lib.tagController('Utente', 'Password militi')
             }// fine del blocco if
             if (militeService.isLoggatoAdminOrMore()) {
-                testoOut+='<h2>Moduli disponibili agli admin:</h2>'
+                testoOut += '<h2>Moduli disponibili agli admin:</h2>'
                 testoOut += Lib.tagController('Ruolo', 'Ruoli')
                 testoOut += Lib.tagController('UtenteRuolo', 'Tavola incrocio utenti-ruolo', 'list')
                 testoOut += Lib.tagController('Militefunzione', 'Tavola incrocio militi-funzioni')
@@ -939,10 +959,10 @@ class AmbulanzaTagLib {
                 testoOut += Lib.tagController('Logo', 'Logs')
                 testoOut += Lib.tagController('Militeturno', 'Statistiche dettagliate')
             }// fine del blocco if
+            testoOut += '<h2>Moduli disponibili ai militi:</h2>'
             if (croceService.usaModuloViaggi((String) params.siglaCroce)) {
                 testoOut += Lib.tagController('Automezzo', 'Automezzi')
             }// fine del blocco if
-            testoOut+='<h2>Moduli disponibili ai militi:</h2>'
             testoOut += Lib.tagController('Funzione', 'Funzioni')
             testoOut += Lib.tagController('TipoTurno', 'Tipologia turni')
             testoOut += Lib.tagController('Milite', 'Militi')
@@ -1479,7 +1499,7 @@ class AmbulanzaTagLib {
         String testoOut
         String testo
 
-        testo = 'Algos© - v2.4 del 3 maggio 2013'
+        testo = 'Algos© - v2.45 del 4 maggio 2013'
         testo = Lib.tagCella(testo, Aspetto.copyright)
         testoOut = Lib.tagTable(testo)
         return testoOut

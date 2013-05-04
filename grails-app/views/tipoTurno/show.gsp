@@ -151,6 +151,15 @@
         </li>
         
         <li class="fieldcontain">
+            <span id="primo-label" class="property-label"><g:message
+                    code="tipoTurno.primo.labelform" default="Primo"/></span>
+            
+            <span class="property-value" aria-labelledby="primo-label"><g:formatBoolean
+                    boolean="${tipoTurnoInstance?.primo}"/></span>
+            
+        </li>
+        
+        <li class="fieldcontain">
             <span id="fineGiornoSuccessivo-label" class="property-label"><g:message
                     code="tipoTurno.fineGiornoSuccessivo.labelform" default="Fine Giorno Successivo"/></span>
             

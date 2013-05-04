@@ -55,5 +55,6 @@ public enum Aspetto {
     amb,
     copyright,
     rosso,
-    verde
+    verde,
+    bordo
 }// fine della classe Enumeration

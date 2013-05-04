@@ -138,6 +138,24 @@
 <g:checkBox name="ultimo" value="${tipoTurnoInstance?.ultimo}" />
 </div>
 
+<div class="fieldcontain ${hasErrors(bean: tipoTurnoInstance, field: 'primo', 'error')} ">
+	<label for="primo">
+		<g:message code="tipoTurno.primo.labelform" default="Primo" />
+		
+	</label>
+	
+
+
+
+
+
+
+
+
+
+<g:checkBox name="primo" value="${tipoTurnoInstance?.primo}" />
+</div>
+
 <div class="fieldcontain ${hasErrors(bean: tipoTurnoInstance, field: 'fineGiornoSuccessivo', 'error')} ">
 	<label for="fineGiornoSuccessivo">
 		<g:message code="tipoTurno.fineGiornoSuccessivo.labelform" default="Fine Giorno Successivo" />
