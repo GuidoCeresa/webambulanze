@@ -739,15 +739,15 @@ th.titoligiorni {
 }
 
 /* Corpo */
-td.legendatipo, td.legendatipoodd, td.legendatipooddbordo, td.legendatipoeven,
-td.legendatipoevenbordo, td.legendafunzione, td.legendaorario, td.turnoorario,
+td.legendatipo, td.legendatipoodd, td.legendatipoeven,
+td.legendafunzione, td.legendaorario, td.turnoorario,
 td.turnovuoto, td.turnoprevisto, td.turnoassegnato, td.turnolibero,
 td.turnocritico, td.turnobloccato, td.turnoeffettuato {
     line-height: 0.3em;
 }
 
 /* Legenda (a sinistra) */
-td.legendatipo, td.legendatipoodd, td.legendatipooddbordo, td.legendatipoeven, td.legendatipoevenbordo {
+td.legendatipo, td.legendatipoodd, td.legendatipoeven, {
     line-height: 1em;
     font-weight: bold;
     vertical-align: middle;
@@ -773,14 +773,6 @@ td.legendatipoeven {
     background: #ffffff;
 }
 
-td.legendatipoevenbordo {
-    background: #ffffff;
-    border-width: 0 0 4px 0;
-    padding: 4px;
-    border-style: solid;
-    border-color: blue;
-}
-
 td.legendafunzione {
     text-align: left;
     background: #cccccc;
@@ -791,26 +783,9 @@ td.legendaorario {
     background: #ffdddd;
 }
 
-td.legendaorariobordo {
-    text-align: left;
-    background: #ffdddd;
-    border-width: 0 0 4px 0;
-    padding: 4px;
-    border-style: solid;
-    border-color: blue;
-}
-
 /* Turni (a destra) */
 td.turnoorario {
     background: #ffeeee;
-}
-
-td.turnoorariobordo {
-    background: #ffeeee;
-    border-width: 0 0 4px 0;
-    padding: 4px;
-    border-style: solid;
-    border-color: blue;
 }
 
 td.turnovuoto, td.turnoprevisto, td.turnoassegnato, td.turnolibero,
@@ -848,44 +823,6 @@ td.turnoeffettuato {
     background: #aaaaaa;
 }
 
-td.turnovuotobordo, td.turnoprevistobordo, td.turnoassegnatobordo, td.turnoliberobordo,
-td.turnocriticobordo, td.turnobloccatobordo, td.turnoeffettuatobordo {
-    border-style: solid;
-    border-collapse: collapse;
-    border-width: 0 1px 4px 1px;
-    padding: 4px;
-    border-style: solid;
-    border-color: blue;
-}
-
-td.turnovuotobordo {
-    background: #eeeeee;
-}
-
-td.turnoprevistobordo {
-    background: #e1f2b6;
-}
-
-td.turnoassegnatobordo {
-    background: #44ff44;
-}
-
-td.turnoliberobordo {
-    background: #fcefa1;
-}
-
-td.turnocriticobordo {
-    background: #ff4444;
-}
-
-td.turnobloccatobordo {
-    background: #4444ff;
-}
-
-td.turnoeffettuatobordo {
-    background: #aaaaaa;
-}
-
 td.bordo {
     margin: 0 0 0 0;
     padding: 0 0 0 0;
@@ -893,42 +830,6 @@ td.bordo {
     background: #0000ff;
 }
 
-td.turnovuotobordosup, td.turnoprevistobordosup, td.turnoassegnatobordosup, td.turnoliberobordosup,
-td.turnocriticobordosup, td.turnobloccatobordosup, td.turnoeffettuatobordosup {
-    border-style: solid;
-    border-collapse: collapse;
-    border-width: 4px 0 0 0;
-    border-style: solid;
-    border-color: blue;
-}
-
-td.turnovuotobordosup {
-    background: #eeeeee;
-}
-
-td.turnoprevistobordosup {
-    background: #e1f2b6;
-}
-
-td.turnoassegnatobordosup {
-    background: #44ff44;
-}
-
-td.turnoliberobordosup {
-    background: #fcefa1;
-}
-
-td.turnocriticobordosup {
-    background: #ff4444;
-}
-
-td.turnobloccatobordosup {
-    background: #4444ff;
-}
-
-td.turnoeffettuatobordosup {
-    background: #aaaaaa;
-}
 
 td.tab {
     line-height: 0.5em;
@@ -944,11 +845,6 @@ td.tab {
 }
 
 td.footerlegenda {
-    border-style: solid;
-    border-collapse: collapse;
-    border-width: 4px 0 0 0;
-    border-style: solid;
-    border-color: blue;
     vertical-align: middle;
 }
 
@@ -1036,3 +932,4 @@ td.rosso {
     color: red;
     font-weight: bold;
 }
+
