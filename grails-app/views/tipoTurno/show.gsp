@@ -142,15 +142,6 @@
         </li>
         
         <li class="fieldcontain">
-            <span id="ultimo-label" class="property-label"><g:message
-                    code="tipoTurno.ultimo.labelform" default="Ultimo"/></span>
-            
-            <span class="property-value" aria-labelledby="ultimo-label"><g:formatBoolean
-                    boolean="${tipoTurnoInstance?.ultimo}"/></span>
-            
-        </li>
-        
-        <li class="fieldcontain">
             <span id="primo-label" class="property-label"><g:message
                     code="tipoTurno.primo.labelform" default="Primo"/></span>
             

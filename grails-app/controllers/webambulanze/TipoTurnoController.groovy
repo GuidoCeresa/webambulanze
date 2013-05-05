@@ -37,7 +37,6 @@ class TipoTurnoController {
                 'oraInizio',
                 'oraFine',
                 'primo',
-                'ultimo',
                 'fineGiornoSuccessivo',
                 'visibile',
                 'orario',

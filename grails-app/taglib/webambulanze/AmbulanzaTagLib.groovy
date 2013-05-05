@@ -231,6 +231,7 @@ class AmbulanzaTagLib {
 //        testo += this.captionTabella(params)
         testo += titoliTabella(inizio, fine)
         testo += corpoTabella(croce, inizio, fine)
+        testo += rigaBordo()
         testo += legenda()
         testo += copyright()
 
@@ -1455,15 +1456,15 @@ class AmbulanzaTagLib {
         String testo = ''
 
         testo += Lib.tagCella('Legenda', Aspetto.footerlegenda)
-        testo += Lib.tagCella('', Aspetto.turnoeffettuatobordosup)
+        testo += Lib.tagCella('', Aspetto.turnoeffettuato)
         testo += Lib.tagCella('Turno già effettuato', Aspetto.footercella)
 //        testo += Lib.tagCella('', Aspetto.turnobloccato)
 //        testo += Lib.tagCella('Turno assegnato bloccato e non più modificabile')
-        testo += Lib.tagCella('', Aspetto.turnocriticobordosup)
+        testo += Lib.tagCella('', Aspetto.turnocritico)
         testo += Lib.tagCella('Turno critico da assegnare subito', Aspetto.footercella)
-        testo += Lib.tagCella('', Aspetto.turnoliberobordosup)
+        testo += Lib.tagCella('', Aspetto.turnolibero)
         testo += Lib.tagCella('Turno da assegnare nei prossimi giorni', Aspetto.footercella)
-        testo += Lib.tagCella('', Aspetto.turnoassegnatobordosup)
+        testo += Lib.tagCella('', Aspetto.turnoassegnato)
         testo += Lib.tagCella('Turno assegnato normale (funzioni obbligatorie coperte)', Aspetto.footercella)
         testo += Lib.tagCella('', Aspetto.turnoprevistobordosup)
         testo += Lib.tagCella('Turno previsto e non ancora completamente assegnato', Aspetto.footercella)
@@ -1499,7 +1500,7 @@ class AmbulanzaTagLib {
         String testoOut
         String testo
 
-        testo = 'Algos© - v2.45 del 4 maggio 2013'
+        testo = 'Algos© - v2.5 del 4 maggio 2013'
         testo = Lib.tagCella(testo, Aspetto.copyright)
         testoOut = Lib.tagTable(testo)
         return testoOut

@@ -32,7 +32,7 @@ class TipoTurno {
     int minutiFine = 0
 
     //--ultimo turno di un eventuale raggruppamento a video (nel tabellone)
-    boolean ultimo = false
+    //boolean ultimo = false
 
     //--Primo turno di un eventuale raggruppamento a video (nel tabellone)
     boolean primo = false
@@ -73,7 +73,6 @@ class TipoTurno {
         minutiInizio(display: false)
         oraFine()
         minutiFine(display: false)
-        ultimo()
         primo()
         fineGiornoSuccessivo()
         visibile()

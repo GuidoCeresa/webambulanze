@@ -192,6 +192,12 @@ class BootStrap implements Cost {
             fixFlagPrimoPontetaro()
         }// fine del blocco if
 
+        //--cancella un campo
+        //--elimina il campo 'ultimo' della tavola 'TipoTurno'
+        if (installaVersione(28)) {
+            cancellaUltimo()
+        }// fine del blocco if
+
         //--creazione dei record utenti per la pubblica castello
 //        if (installaVersione(99)) {
 //            utentiPubblicacastello()
@@ -2935,6 +2941,15 @@ class BootStrap implements Cost {
         }// fine del blocco if
 
         newVersione(CROCE_ROSSA_PONTETARO, 'Tipi turni', 'Aggiunto flag per disegnare bordo blu sopra i gruppi di turni')
+    }// fine del metodo
+
+    //--cancella un campo
+    //--elimina il campo 'ultimo' della tavola 'TipoTurno'
+    //--il campo era eliminato dalla Domain Class, ma occorre cancellarlo anche dal DB
+    //--altrimenti non si riesce a creare un nuovo record
+    private static void cancellaUltimo() {
+        //@todo devi eliminarlo con MSQLQueryBrowser
+        newVersione(CROCE_ALGOS, 'DB', "Eliminato il campo 'ultimo' della tavola 'TipoTurno'")
     }// fine del metodo
 
     def destroy = {

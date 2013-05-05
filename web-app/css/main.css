@@ -955,7 +955,7 @@ td.footerlegenda {
 td.footercella {
     border-style: solid;
     border-collapse: collapse;
-    border-width: 4px 0 0 0;
+    border-width: 0 0 0 0;
     border-style: solid;
     border-color: blue;
     vertical-align: middle;
