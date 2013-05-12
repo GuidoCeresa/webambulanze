@@ -198,6 +198,15 @@ class BootStrap implements Cost {
             cancellaUltimo()
         }// fine del blocco if
 
+        //--aggiunge altri militi alla croce 'demo'
+        if (installaVersione(29)) {
+            addMilitiDemo()
+        }// fine del blocco if
+
+        //--aggiunge 4 turni per la demo
+        if (installaVersione(30)) {
+            addTurniDemo()
+        }// fine del blocco if
         //--creazione dei record utenti per la pubblica castello
 //        if (installaVersione(99)) {
 //            utentiPubblicacastello()
@@ -2950,6 +2959,149 @@ class BootStrap implements Cost {
     private static void cancellaUltimo() {
         //@todo devi eliminarlo con MSQLQueryBrowser
         newVersione(CROCE_ALGOS, 'DB', "Eliminato il campo 'ultimo' della tavola 'TipoTurno'")
+    }// fine del metodo
+
+    //--aggiunge altri militi alla croce 'demo'
+    private static void addMilitiDemo() {
+        Croce croce = Croce.findBySigla(CROCE_DEMO)
+        Milite milite
+        Funzione autista = Funzione.findByCroceAndSigla(croce, DEMO_FUNZIONE_AUT)
+        Funzione secondo = Funzione.findByCroceAndSigla(croce, DEMO_FUNZIONE_SEC)
+        Funzione terzo = Funzione.findByCroceAndSigla(croce, DEMO_FUNZIONE_TER)
+
+        if (croce && autista && secondo && terzo) {
+            milite = Milite.findOrCreateByCroceAndNomeAndCognome(croce, 'Marcello', 'Aguzzini').save(failOnError: true)
+            Militefunzione.findOrCreateByCroceAndMiliteAndFunzione(croce, milite, autista).save(failOnError: true)
+            Militefunzione.findOrCreateByCroceAndMiliteAndFunzione(croce, milite, secondo).save(failOnError: true)
+            Militefunzione.findOrCreateByCroceAndMiliteAndFunzione(croce, milite, terzo).save(failOnError: true)
+
+            milite = Milite.findOrCreateByCroceAndNomeAndCognome(croce, 'Lucia', 'Beretta').save(failOnError: true)
+            Militefunzione.findOrCreateByCroceAndMiliteAndFunzione(croce, milite, autista).save(failOnError: true)
+            Militefunzione.findOrCreateByCroceAndMiliteAndFunzione(croce, milite, secondo).save(failOnError: true)
+            Militefunzione.findOrCreateByCroceAndMiliteAndFunzione(croce, milite, terzo).save(failOnError: true)
+
+            milite = Milite.findOrCreateByCroceAndNomeAndCognome(croce, 'Paolo', 'Rubino').save(failOnError: true)
+            Militefunzione.findOrCreateByCroceAndMiliteAndFunzione(croce, milite, autista).save(failOnError: true)
+            Militefunzione.findOrCreateByCroceAndMiliteAndFunzione(croce, milite, secondo).save(failOnError: true)
+            Militefunzione.findOrCreateByCroceAndMiliteAndFunzione(croce, milite, terzo).save(failOnError: true)
+
+            milite = Milite.findOrCreateByCroceAndNomeAndCognome(croce, 'Adriano', 'Scotti').save(failOnError: true)
+            Militefunzione.findOrCreateByCroceAndMiliteAndFunzione(croce, milite, secondo).save(failOnError: true)
+            Militefunzione.findOrCreateByCroceAndMiliteAndFunzione(croce, milite, terzo).save(failOnError: true)
+
+            milite = Milite.findOrCreateByCroceAndNomeAndCognome(croce, 'Rosaria', 'Esposito').save(failOnError: true)
+            Militefunzione.findOrCreateByCroceAndMiliteAndFunzione(croce, milite, secondo).save(failOnError: true)
+            Militefunzione.findOrCreateByCroceAndMiliteAndFunzione(croce, milite, terzo).save(failOnError: true)
+
+            milite = Milite.findOrCreateByCroceAndNomeAndCognome(croce, 'Alfonso', 'Cazzaniga').save(failOnError: true)
+            Militefunzione.findOrCreateByCroceAndMiliteAndFunzione(croce, milite, secondo).save(failOnError: true)
+            Militefunzione.findOrCreateByCroceAndMiliteAndFunzione(croce, milite, terzo).save(failOnError: true)
+
+            milite = Milite.findOrCreateByCroceAndNomeAndCognome(croce, 'Sergio', 'Dallora').save(failOnError: true)
+            Militefunzione.findOrCreateByCroceAndMiliteAndFunzione(croce, milite, terzo).save(failOnError: true)
+
+            milite = Milite.findOrCreateByCroceAndNomeAndCognome(croce, 'Flavia', 'Milanesi').save(failOnError: true)
+            Militefunzione.findOrCreateByCroceAndMiliteAndFunzione(croce, milite, terzo).save(failOnError: true)
+
+            milite = Milite.findOrCreateByCroceAndNomeAndCognome(croce, 'Giulio', 'Sartori').save(failOnError: true)
+            Militefunzione.findOrCreateByCroceAndMiliteAndFunzione(croce, milite, terzo).save(failOnError: true)
+
+            milite = Milite.findOrCreateByCroceAndNomeAndCognome(croce, 'Umberto', 'Terzino').save(failOnError: true)
+            Militefunzione.findOrCreateByCroceAndMiliteAndFunzione(croce, milite, terzo).save(failOnError: true)
+
+            milite = Milite.findOrCreateByCroceAndNomeAndCognome(croce, 'Lorenzo', 'Brambilla').save(failOnError: true)
+            Militefunzione.findOrCreateByCroceAndMiliteAndFunzione(croce, milite, terzo).save(failOnError: true)
+
+            milite = Milite.findOrCreateByCroceAndNomeAndCognome(croce, 'Daniela', 'Rubicondi').save(failOnError: true)
+            Militefunzione.findOrCreateByCroceAndMiliteAndFunzione(croce, milite, terzo).save(failOnError: true)
+        }// fine del blocco if
+
+        newVersione(CROCE_DEMO, 'Militi', 'Aggiunti alcuni militi immaginari')
+    }// fine del metodo
+
+    //--aggiunge 4 turni per la demo
+    //--modifica la sigla dei 3 turni esistenti
+    private static void addTurniDemo() {
+        Croce croce = Croce.findBySigla(CROCE_DEMO)
+        TipoTurno automedicaMattino = TipoTurno.findByCroceAndSigla(croce, DEMO_TIPO_TURNO_AUTOMEDICA_MATTINO_OLD)
+        TipoTurno automedicaPomeriggio = TipoTurno.findByCroceAndSigla(croce, DEMO_TIPO_TURNO_AUTOMEDICA_POMERIGGIO_OLD)
+        TipoTurno automedicaNotte = TipoTurno.findByCroceAndSigla(croce, DEMO_TIPO_TURNO_AUTOMEDICA_NOTTE_OLD)
+        Funzione autista = Funzione.findByCroceAndSigla(croce, DEMO_FUNZIONE_AUT)
+        Funzione secondo = Funzione.findByCroceAndSigla(croce, DEMO_FUNZIONE_SEC)
+        Funzione terzo = Funzione.findByCroceAndSigla(croce, DEMO_FUNZIONE_TER)
+        TipoTurno nuovoTurno
+
+        if (croce && automedicaMattino) {
+            automedicaMattino.sigla = DEMO_TIPO_TURNO_AUTOMEDICA_MATTINO
+            automedicaMattino.descrizione = 'Automedica mattino'
+            automedicaMattino.save(flush: true)
+        }// fine del blocco if
+
+        if (croce && automedicaPomeriggio) {
+            automedicaPomeriggio.sigla = DEMO_TIPO_TURNO_AUTOMEDICA_POMERIGGIO
+            automedicaPomeriggio.descrizione = 'Automedica pomeriggio'
+            automedicaPomeriggio.save(flush: true)
+        }// fine del blocco if
+
+        if (croce && automedicaNotte) {
+            automedicaNotte.sigla = DEMO_TIPO_TURNO_AUTOMEDICA_NOTTE
+            automedicaNotte.descrizione = 'Automedica notte'
+            automedicaNotte.save(flush: true)
+        }// fine del blocco if
+
+        if (autista && secondo && terzo) {
+            nuovoTurno = TipoTurno.findOrCreateByCroceAndSigla(croce, DEMO_TIPO_TURNO_AMBULANZA_MATTINO)
+            nuovoTurno.descrizione = 'Ambulanza mattino'
+            nuovoTurno.ordine = 4
+            nuovoTurno.oraInizio = 6
+            nuovoTurno.oraFine = 12
+            nuovoTurno.durata = 6
+            nuovoTurno.funzione1 = autista
+            nuovoTurno.funzione2 = secondo
+            nuovoTurno.funzione3 = terzo
+            nuovoTurno.funzioniObbligatorie = 1
+            nuovoTurno.primo = true
+            nuovoTurno.save(flush: true)
+
+            nuovoTurno = TipoTurno.findOrCreateByCroceAndSigla(croce, DEMO_TIPO_TURNO_AMBULANZA_POMERIGGIO)
+            nuovoTurno.descrizione = 'Ambulanza pomeriggio'
+            nuovoTurno.ordine = 5
+            nuovoTurno.oraInizio = 12
+            nuovoTurno.oraFine = 18
+            nuovoTurno.durata = 6
+            nuovoTurno.funzione1 = autista
+            nuovoTurno.funzione2 = secondo
+            nuovoTurno.funzione3 = terzo
+            nuovoTurno.funzioniObbligatorie = 1
+            nuovoTurno.save(flush: true)
+
+            nuovoTurno = TipoTurno.findOrCreateByCroceAndSigla(croce, DEMO_TIPO_TURNO_AMBULANZA_NOTTE)
+            nuovoTurno.descrizione = 'Ambulanza notte'
+            nuovoTurno.ordine = 6
+            nuovoTurno.oraInizio = 18
+            nuovoTurno.oraFine = 6
+            nuovoTurno.durata = 12
+            nuovoTurno.funzione1 = autista
+            nuovoTurno.funzione2 = secondo
+            nuovoTurno.funzione3 = terzo
+            nuovoTurno.funzioniObbligatorie = 1
+            nuovoTurno.fineGiornoSuccessivo = true
+            nuovoTurno.save(flush: true)
+
+            nuovoTurno = TipoTurno.findOrCreateByCroceAndSigla(croce, DEMO_TIPO_TURNO_EXTRA)
+            nuovoTurno.descrizione = 'Extra'
+            nuovoTurno.ordine = 7
+            nuovoTurno.primo = true
+            nuovoTurno.orario = false
+            nuovoTurno.funzione1 = autista
+            nuovoTurno.funzione2 = secondo
+            nuovoTurno.funzione3 = terzo
+            nuovoTurno.funzioniObbligatorie = 1
+            nuovoTurno.multiplo = true
+            nuovoTurno.save(flush: true)
+        }// fine del blocco if
+
+        newVersione(CROCE_DEMO, 'Turni', 'Aggiunti 4 tipi di turni')
     }// fine del metodo
 
     def destroy = {

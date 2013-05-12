@@ -114,4 +114,20 @@ public interface Cost {
     public static String CRPT_TIPO_TURNO_EXTRA = 'extra'
     public static String CRPT_TIPO_TURNO_SERVIZI = 'servizi'
 
+    //--funzioni nella croce demo
+    public static String DEMO_FUNZIONE_AUT = 'aut'
+    public static String DEMO_FUNZIONE_SEC = 'sec'
+    public static String DEMO_FUNZIONE_TER = 'ter'
+
+    //--sigle dei tipi di turno nella demo
+    public static String DEMO_TIPO_TURNO_AUTOMEDICA_MATTINO_OLD = 'mat'
+    public static String DEMO_TIPO_TURNO_AUTOMEDICA_MATTINO = 'msa-mat'
+    public static String DEMO_TIPO_TURNO_AUTOMEDICA_POMERIGGIO_OLD = 'pom'
+    public static String DEMO_TIPO_TURNO_AUTOMEDICA_POMERIGGIO = 'msa-pom'
+    public static String DEMO_TIPO_TURNO_AUTOMEDICA_NOTTE_OLD = 'notte'
+    public static String DEMO_TIPO_TURNO_AUTOMEDICA_NOTTE = 'msa-notte'
+    public static String DEMO_TIPO_TURNO_AMBULANZA_MATTINO = 'amb-mat'
+    public static String DEMO_TIPO_TURNO_AMBULANZA_POMERIGGIO = 'amb-pom'
+    public static String DEMO_TIPO_TURNO_AMBULANZA_NOTTE = 'amb-notte'
+    public static String DEMO_TIPO_TURNO_EXTRA = 'extra'
 } // fine della interfaccia

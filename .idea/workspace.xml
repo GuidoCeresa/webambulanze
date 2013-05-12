@@ -2,9 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2bee2297-4103-4d78-b423-f3f184afbabb" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/grails-app/taglib/webambulanze/AmbulanzaTagLib.groovy" afterPath="$PROJECT_DIR$/grails-app/taglib/webambulanze/AmbulanzaTagLib.groovy" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/groovy/webambulanze/Aspetto.groovy" afterPath="$PROJECT_DIR$/src/groovy/webambulanze/Aspetto.groovy" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web-app/css/main.css" afterPath="$PROJECT_DIR$/web-app/css/main.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/grails-app/conf/BootStrap.groovy" afterPath="$PROJECT_DIR$/grails-app/conf/BootStrap.groovy" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/groovy/webambulanze/Cost.groovy" afterPath="$PROJECT_DIR$/src/groovy/webambulanze/Cost.groovy" />
     </list>
     <ignored path="webambulanze.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -12,10 +11,10 @@
     <ignored path="out/" />
     <ignored path="lib/" />
     <ignored path="target/" />
-    <file path="/Dummy.txt" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1367739778381" ignored="false" />
+    <file path="/Dummy.txt" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1368375663583" ignored="false" />
     <file path="$PROJECT_DIR$/../webpubblica/grails-app/conf/BuildConfig.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1356086546461" ignored="false" />
     <file path="/*.regexp" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1367733925756" ignored="false" />
-    <file path="/a.dummy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1367739777347" ignored="false" />
+    <file path="/a.dummy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1368167365395" ignored="false" />
     <file path="$PROJECT_DIR$/../old/webbase/.idea/workspace.xml" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1356091245993" ignored="false" />
     <file path="$PROJECT_DIR$/../algosbase/plugin.xml" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1356091088695" ignored="false" />
     <file path="$PROJECT_DIR$/../algosbase/AlgosbaseGrailsPlugin.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1367480257281" ignored="false" />
@@ -24,15 +23,15 @@
     <file path="$PROJECT_DIR$/../algosbase/algosbase-grailsPlugins.iml" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1367480583426" ignored="false" />
     <file path="/AziendaController.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1357301676389" ignored="false" />
     <file path="/Azienda.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1356333499251" ignored="false" />
-    <file path="/BootStrap.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1367738880778" ignored="false" />
+    <file path="/BootStrap.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1368380387336" ignored="false" />
     <file path="/SettingsAzienda.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1357323534464" ignored="false" />
     <file path="/ControlloTemporale.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1356093280094" ignored="false" />
     <file path="/fragment.java" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1365424455237" ignored="false" />
     <file path="/SettingsAziendaController.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1357302064167" ignored="false" />
-    <file path="/Controller.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1356094046245" ignored="false" />
-    <file path="/messages_it.properties" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1367657175033" ignored="false" />
+    <file path="/Controller.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1367817037597" ignored="false" />
+    <file path="/messages_it.properties" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1367866118626" ignored="false" />
     <file path="/_form.gsp" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1362377341408" ignored="false" />
-    <file path="/show.gsp" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1360100416578" ignored="false" />
+    <file path="/show.gsp" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1368123661860" ignored="false" />
     <file path="/Ruolo.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1360099154615" ignored="false" />
     <file path="/TipoTurno.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1367656732082" ignored="false" />
     <file path="/Funzione.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1358923995013" ignored="false" />
@@ -53,8 +52,8 @@
     <file path="/programmatore.gsp" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1356244279358" ignored="false" />
     <file path="$PROJECT_DIR$/../webpubblica/grails-app/conf/BootStrap.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1356247384005" ignored="false" />
     <file path="/BuildConfig.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1364127478100" ignored="false" />
-    <file path="/list.gsp" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1364799255515" ignored="false" />
-    <file path="/main.css" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1367645059851" ignored="false" />
+    <file path="/list.gsp" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1368122374610" ignored="false" />
+    <file path="/main.css" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1367826312046" ignored="false" />
     <file path="/UrlMappings.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1365490506281" ignored="false" />
     <file path="/MiliteController.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1363938101553" ignored="false" />
     <file path="/FunzioneController.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1363156736305" ignored="false" />
@@ -77,8 +76,8 @@
     <file path="$PROJECT_DIR$/test/unit/webambulanze/AziendaControllerTests.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1357321487347" ignored="false" />
     <file path="/CroceController.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1363157516954" ignored="false" />
     <file path="/SettingsController.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1362415141295" ignored="false" />
-    <file path="/create.gsp" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1357335838563" ignored="false" />
-    <file path="/edit.gsp" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1360693400726" ignored="false" />
+    <file path="/create.gsp" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1368122738339" ignored="false" />
+    <file path="/edit.gsp" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1368121933870" ignored="false" />
     <file path="/Mese.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1358461690950" ignored="false" />
     <file path="/Croce.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1366357021790" ignored="false" />
     <file path="/FunzioneService.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1362157358764" ignored="false" />
@@ -96,7 +95,7 @@
     <file path="/UtenteController.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1363592390297" ignored="false" />
     <file path="/TipoTurnoController.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1362422847679" ignored="false" />
     <file path="/tabellone.gsp" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1365567398329" ignored="false" />
-    <file path="$PROJECT_DIR$/../untitled/grails-app/conf/BuildConfig.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1367477786520" ignored="false" />
+    <file path="$PROJECT_DIR$/../untitled/grails-app/conf/BuildConfig.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1367862053524" ignored="false" />
     <file path="$PROJECT_DIR$/../untitled/grails-app/controllers/LogoutController.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1357888906182" ignored="false" />
     <file path="$PROJECT_DIR$/../untitled/grails-app/controllers/LoginController.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1357888906182" ignored="false" />
     <file path="$PROJECT_DIR$/../untitled/grails-app/domain/untitled/SecUserSecRole.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1357837968755" ignored="false" />
@@ -114,7 +113,7 @@
     <file path="$PROJECT_DIR$/../untitled/grails-app/views/utente/list.gsp" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1357889223822" ignored="false" />
     <file path="$PROJECT_DIR$/../untitled/grails-app/views/utente/show.gsp" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1357889223822" ignored="false" />
     <file path="$PROJECT_DIR$/../untitled/grails-app/views/utente/_form.gsp" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1357889223822" ignored="false" />
-    <file path="/Cost.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1367693237265" ignored="false" />
+    <file path="/Cost.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1368378391802" ignored="false" />
     <file path="/LoginController.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1364286204684" ignored="false" />
     <file path="/auth.gsp" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1364071500236" ignored="false" />
     <file path="/PubblicaTagLib.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1358014305864" ignored="false" />
@@ -343,7 +342,7 @@
     <file path="$PROJECT_DIR$/grails-app/views/automezzo/show.gsp" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1365688753129" ignored="false" />
     <file path="/create118.gsp" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1365689869539" ignored="false" />
     <file path="$PROJECT_DIR$/../myvitaback/src/groovy/myvitaback/Mese.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1365750396788" ignored="false" />
-    <file path="/messages.properties" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1365757007334" ignored="false" />
+    <file path="/messages.properties" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1368104453267" ignored="false" />
     <file path="/Organizzazione.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1366374410703" ignored="false" />
     <file path="$PROJECT_DIR$/grails-app/views/croce/edit.gsp" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1366357132456" ignored="false" />
     <file path="$PROJECT_DIR$/grails-app/views/croce/create.gsp" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1366357132457" ignored="false" />
@@ -355,6 +354,69 @@
     <file path="$PROJECT_DIR$/../algosbase/application.properties" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1367480422222" ignored="false" />
     <file path="$PROJECT_DIR$/../algosbase/web-app/WEB-INF/applicationContext.xml" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1367480422223" ignored="false" />
     <file path="$PROJECT_DIR$/../algosbase/test/unit/algosbase/LibArrayTest.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1367480780476" ignored="false" />
+    <file path="$PROJECT_DIR$/../algos/src/templates/artifacts/DomainClass.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1367816647632" ignored="false" />
+    <file path="$PROJECT_DIR$/../algosbase/src/templates/scaffolding/Controller.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1367817082383" ignored="false" />
+    <file path="$PROJECT_DIR$/../algos/src/templates/scaffolding/Controller.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1367824835404" ignored="false" />
+    <file path="$PROJECT_DIR$/../algos/grails-app/domain/algos/Prova.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1367817113310" ignored="false" />
+    <file path="/Prova.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1367817103168" ignored="false" />
+    <file path="$PROJECT_DIR$/../algos/test/unit/algos/ProvaControllerTests.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1367824896339" ignored="false" />
+    <file path="$PROJECT_DIR$/../algos/grails-app/controllers/algos/ProvaController.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1367824896339" ignored="false" />
+    <file path="$PROJECT_DIR$/../algos/src/templates/artifacts/Service.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1367824998740" ignored="false" />
+    <file path="$PROJECT_DIR$/../algos/src/templates/artifacts/TagLib.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1367825101962" ignored="false" />
+    <file path="$PROJECT_DIR$/../algosbase/src/templates/artifacts/Controller.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1367825036689" ignored="false" />
+    <file path="$PROJECT_DIR$/../algos/src/templates/artifacts/Controller.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1367825049958" ignored="false" />
+    <file path="$PROJECT_DIR$/../algos/src/templates/artifacts/Filters.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1367825145438" ignored="false" />
+    <file path="/Filters.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1367825144136" ignored="false" />
+    <file path="$PROJECT_DIR$/../algos/src/templates/artifacts/Tests.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1367825260873" ignored="false" />
+    <file path="/Tests.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1367825260873" ignored="false" />
+    <file path="$PROJECT_DIR$/../algos/src/templates/artifacts/ScaffoldingController.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1367825324779" ignored="false" />
+    <file path="$PROJECT_DIR$/../algos/web-app/css/main.css" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1367826312046" ignored="false" />
+    <file path="$PROJECT_DIR$/../algos/grails-app/views/index.gsp" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1367862242615" ignored="false" />
+    <file path="$PROJECT_DIR$/../algos/grails-app/conf/BuildConfig.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1368167414002" ignored="false" />
+    <file path="$USER_HOME$/.grails/2.2.2/projects/algos/plugins/algospref-0.20/grails-app/i18n/messages_it.properties" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1367866254944" ignored="false" />
+    <file path="$USER_HOME$/.grails/2.2.2/projects/algos/plugins/algospref-0.20/grails-app/i18n/messages.properties" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1367866251174" ignored="false" />
+    <file path="$PROJECT_DIR$/../algospref/web-app/WEB-INF/sitemesh.xml" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1367867111861" ignored="false" />
+    <file path="$PROJECT_DIR$/../algospref/web-app/WEB-INF/tld/spring.tld" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1367867111861" ignored="false" />
+    <file path="$PROJECT_DIR$/../algospref/web-app/WEB-INF/tld/c.tld" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1367867111861" ignored="false" />
+    <file path="$PROJECT_DIR$/../algospref/web-app/WEB-INF/tld/fmt.tld" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1367867111861" ignored="false" />
+    <file path="$PROJECT_DIR$/../algospref/web-app/WEB-INF/tld/grails.tld" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1367867111861" ignored="false" />
+    <file path="$PROJECT_DIR$/../algospref/application.properties" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1367867111861" ignored="false" />
+    <file path="$PROJECT_DIR$/../algospref/web-app/WEB-INF/applicationContext.xml" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1367867111861" ignored="false" />
+    <file path="$PROJECT_DIR$/../algosvers/grails-app/domain/it/algos/algosvers/Versione.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1368122956803" ignored="false" />
+    <file path="$PROJECT_DIR$/../algos/src/templates/scaffolding/list.gsp" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1368123942809" ignored="false" />
+    <file path="$PROJECT_DIR$/../algos/grails-app/views/prova/create.gsp" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1368101526895" ignored="false" />
+    <file path="$PROJECT_DIR$/../algos/grails-app/views/prova/list.gsp" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1368101526895" ignored="false" />
+    <file path="$PROJECT_DIR$/../algos/grails-app/views/prova/_form.gsp" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1368101526895" ignored="false" />
+    <file path="$PROJECT_DIR$/../algos/grails-app/views/prova/edit.gsp" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1368101526895" ignored="false" />
+    <file path="$PROJECT_DIR$/../algos/grails-app/views/prova/show.gsp" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1368101526896" ignored="false" />
+    <file path="$PROJECT_DIR$/../algosvers/src/templates/scaffolding/list.gsp" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1368122259733" ignored="false" />
+    <file path="$PROJECT_DIR$/../algosvers/grails-app/views/versione/create.gsp" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1368123709904" ignored="false" />
+    <file path="$PROJECT_DIR$/../algosvers/grails-app/views/versione/list.gsp" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1368123709904" ignored="false" />
+    <file path="$PROJECT_DIR$/../algosvers/grails-app/views/versione/_form.gsp" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1368123709904" ignored="false" />
+    <file path="$PROJECT_DIR$/../algosvers/grails-app/views/versione/edit.gsp" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1368123709904" ignored="false" />
+    <file path="$PROJECT_DIR$/../algosvers/grails-app/views/versione/show.gsp" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1368123709904" ignored="false" />
+    <file path="$PROJECT_DIR$/../algospref/src/templates/scaffolding/list.gsp" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1368102515420" ignored="false" />
+    <file path="$PROJECT_DIR$/../algospref/AlgosprefGrailsPlugin.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1368167356044" ignored="false" />
+    <file path="$PROJECT_DIR$/../algospref/plugin.xml" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1368167373716" ignored="false" />
+    <file path="$PROJECT_DIR$/../algosvers/AlgosversGrailsPlugin.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1368125559718" ignored="false" />
+    <file path="$PROJECT_DIR$/../algosvers/scripts/_Install.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1368168228458" ignored="false" />
+    <file path="$PROJECT_DIR$/../algosvers/grails-app/i18n/messages.properties" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1368104454196" ignored="false" />
+    <file path="$PROJECT_DIR$/../algos/grails-app/i18n/messages.properties" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1368104494474" ignored="false" />
+    <file path="$PROJECT_DIR$/../algosvers/src/templates/scaffolding/create.gsp" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1368123312240" ignored="false" />
+    <file path="$PROJECT_DIR$/../algosvers/src/templates/scaffolding/edit.gsp" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1368121792307" ignored="false" />
+    <file path="/algosvers.properties" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1368123787633" ignored="false" />
+    <file path="$PROJECT_DIR$/../algosvers/grails-app/i18n/algosvers.properties" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1368123787633" ignored="false" />
+    <file path="$PROJECT_DIR$/../algosvers/src/templates/scaffolding/show.gsp" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1368123661860" ignored="false" />
+    <file path="$PROJECT_DIR$/../algos/src/templates/scaffolding/create.gsp" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1368123922046" ignored="false" />
+    <file path="$PROJECT_DIR$/../algos/src/templates/scaffolding/edit.gsp" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1368123932510" ignored="false" />
+    <file path="$PROJECT_DIR$/../algos/src/templates/scaffolding/show.gsp" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1368123953333" ignored="false" />
+    <file path="/AlgosprefGrailsPlugin.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1368125243967" ignored="false" />
+    <file path="$PROJECT_DIR$/../algosvers/plugin.xml" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1368125583929" ignored="false" />
+    <file path="$PROJECT_DIR$/../untitled3/grails-app/conf/BuildConfig.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1368165692669" ignored="false" />
+    <file path="$PROJECT_DIR$/../untitled4/grails-app/conf/BuildConfig.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1368165971236" ignored="false" />
+    <file path="$PROJECT_DIR$/../algos/AlgosGrailsPlugin.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1368166339514" ignored="false" />
+    <file path="$PROJECT_DIR$/../algospref/scripts/_Install.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1368167318499" ignored="false" />
+    <file path="$PROJECT_DIR$/../algos/grails-app/conf/DataSource.groovy" changelist="2bee2297-4103-4d78-b423-f3f184afbabb" time="1368168344532" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="true" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -374,7 +436,6 @@
     <disable_hints />
   </component>
   <component name="DebuggerManager">
-    <line_breakpoints default_suspend_policy="SuspendAll" default_condition_enabled="true" />
     <breakpoint_any default_suspend_policy="SuspendAll" default_condition_enabled="true">
       <breakpoint>
         <option name="NOTIFY_CAUGHT" value="true" />
@@ -411,6 +472,7 @@
         <option name="LOG_MESSAGE" value="" />
       </breakpoint>
     </breakpoint_any>
+    <line_breakpoints default_suspend_policy="SuspendAll" default_condition_enabled="true" />
     <ui_properties default_suspend_policy="SuspendAll" default_condition_enabled="true" />
     <breakpoint_rules />
     <ui_properties />
@@ -421,37 +483,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="BootStrap.groovy" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="BootStrap.groovy" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/grails-app/conf/BootStrap.groovy">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="2926" column="90" selection-start="119377" selection-end="119377" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Cost.groovy" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/groovy/webambulanze/Cost.groovy">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="93" column="77" selection-start="4595" selection-end="4595" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="AmbulanzaTagLib.groovy" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/grails-app/taglib/webambulanze/AmbulanzaTagLib.groovy">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="1208" column="54" selection-start="44219" selection-end="44219" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="TipoTurnoController.groovy" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/grails-app/controllers/webambulanze/TipoTurnoController.groovy">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="39" column="0" selection-start="1295" selection-end="1295" vertical-scroll-proportion="-10.434783">
+            <state line="3103" column="66" selection-start="129090" selection-end="129090" vertical-scroll-proportion="7.2402315">
               <folding />
             </state>
           </provider>
@@ -460,7 +495,7 @@
       <file leaf-file-name="TipoTurno.groovy" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/grails-app/domain/webambulanze/TipoTurno.groovy">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="34" column="6" selection-start="809" selection-end="809" vertical-scroll-proportion="-2.4">
+            <state line="46" column="18" selection-start="1193" selection-end="1199" vertical-scroll-proportion="-3.6">
               <folding />
             </state>
           </provider>
@@ -469,21 +504,15 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Aspetto.groovy" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/groovy/webambulanze/Aspetto.groovy">
+      <file leaf-file-name="Milite.groovy" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/grails-app/domain/webambulanze/Milite.groovy">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="40" column="9" selection-start="675" selection-end="680" vertical-scroll-proportion="-9.538462">
+            <state line="2" column="6" selection-start="28" selection-end="28" vertical-scroll-proportion="1.5">
               <folding />
             </state>
           </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="main.css" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/web-app/css/main.css">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="826" column="41" selection-start="16827" selection-end="16827" vertical-scroll-proportion="0.23802395">
-              <folding />
-            </state>
+          <provider editor-type-id="org.jetbrains.plugins.grails.perspectives.DomainClassesRelationsEditorProvider">
+            <state />
           </provider>
         </entry>
       </file>
@@ -514,13 +543,13 @@
         <option value="$PROJECT_DIR$/grails-app/controllers/webambulanze/UtenteRuoloController.groovy" />
         <option value="$PROJECT_DIR$/grails-app/views/gen/home.gsp" />
         <option value="$PROJECT_DIR$/grails-app/i18n/messages_it.properties" />
-        <option value="$PROJECT_DIR$/src/groovy/webambulanze/Cost.groovy" />
         <option value="$PROJECT_DIR$/grails-app/controllers/webambulanze/TipoTurnoController.groovy" />
         <option value="$PROJECT_DIR$/grails-app/domain/webambulanze/TipoTurno.groovy" />
-        <option value="$PROJECT_DIR$/grails-app/conf/BootStrap.groovy" />
         <option value="$PROJECT_DIR$/grails-app/taglib/webambulanze/AmbulanzaTagLib.groovy" />
         <option value="$PROJECT_DIR$/src/groovy/webambulanze/Aspetto.groovy" />
         <option value="$PROJECT_DIR$/web-app/css/main.css" />
+        <option value="$PROJECT_DIR$/src/groovy/webambulanze/Cost.groovy" />
+        <option value="$PROJECT_DIR$/grails-app/conf/BootStrap.groovy" />
       </list>
     </option>
   </component>
@@ -559,8 +588,8 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
       <pane id="Scope" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -639,50 +668,6 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="taglib" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="webambulanze" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="webambulanze" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="webambulanze" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="grails-app" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="i18n" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Resource Bundle 'messages'" />
-              <option name="myItemType" value="com.intellij.lang.properties.projectView.ResourceBundleNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="webambulanze" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="webambulanze" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="grails-app" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
               <option name="myItemId" value="domain" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -709,12 +694,12 @@
     <property name="MemberChooser.copyJavadoc" value="false" />
     <property name="GoToClass.toSaveIncludeLibraries" value="false" />
     <property name="restartRequiresConfirmation" value="true" />
-    <property name="MemberChooser.showClasses" value="true" />
     <property name="FullScreen" value="false" />
+    <property name="MemberChooser.showClasses" value="true" />
     <property name="GoToClass.includeLibraries" value="false" />
-    <property name="options.searchVisible" value="true" />
-    <property name="options.splitter.details.proportions" value="0.2" />
     <property name="dynamic.classpath" value="false" />
+    <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="options.searchVisible" value="true" />
   </component>
   <component name="RecentsManager">
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
@@ -727,6 +712,15 @@
     </key>
   </component>
   <component name="RunManager" selected="Grails.webambulanze">
+    <configuration default="true" type="GroovyScriptRunConfiguration" factoryName="Groovy">
+      <module name="" />
+      <setting name="path" value="" />
+      <setting name="vmparams" value="" />
+      <setting name="params" value="" />
+      <setting name="workDir" value="file://$PROJECT_DIR$" />
+      <setting name="debug" value="false" />
+      <method />
+    </configuration>
     <configuration default="true" type="GrailsRunConfigurationType" factoryName="Grails">
       <module name="" />
       <setting name="vmparams" value="" />
@@ -737,21 +731,25 @@
       <setting name="launchBrowser" value="true" />
       <method />
     </configuration>
-    <configuration default="true" type="GroovyScriptRunConfiguration" factoryName="Groovy">
-      <module name="" />
-      <setting name="path" value="" />
-      <setting name="vmparams" value="" />
-      <setting name="params" value="" />
-      <setting name="workDir" value="file://$PROJECT_DIR$" />
-      <setting name="debug" value="false" />
-      <method />
-    </configuration>
     <configuration default="true" type="Remote" factoryName="Remote">
       <option name="USE_SOCKET_TRANSPORT" value="true" />
       <option name="SERVER_MODE" value="false" />
       <option name="SHMEM_ADDRESS" value="javadebug" />
       <option name="HOST" value="localhost" />
       <option name="PORT" value="5005" />
+      <method />
+    </configuration>
+    <configuration default="true" type="Applet" factoryName="Applet">
+      <module name="" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="HTML_FILE_NAME" />
+      <option name="HTML_USED" value="false" />
+      <option name="WIDTH" value="400" />
+      <option name="HEIGHT" value="300" />
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <option name="VM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
       <method />
     </configuration>
     <configuration default="true" type="TestNG" factoryName="TestNG">
@@ -780,19 +778,6 @@
       <envs />
       <properties />
       <listeners />
-      <method />
-    </configuration>
-    <configuration default="true" type="Applet" factoryName="Applet">
-      <module name="" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="HTML_FILE_NAME" />
-      <option name="HTML_USED" value="false" />
-      <option name="WIDTH" value="400" />
-      <option name="HEIGHT" value="300" />
-      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
-      <option name="VM_PARAMETERS" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
       <method />
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
@@ -939,13 +924,11 @@
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3275862" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Persistence" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24859664" sideWeight="0.47763157" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.46131805" sideWeight="0.49355876" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24939856" sideWeight="0.71503955" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3920765" sideWeight="0.99924755" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.45264623" sideWeight="0.35346216" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.30094582" sideWeight="0.28109854" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32103825" sideWeight="0.47423512" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Grails View" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32793868" sideWeight="0.6146132" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3298153" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="CDI" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -956,11 +939,13 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2909699" sideWeight="0.6079235" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.27793697" sideWeight="0.7600644" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2773224" sideWeight="0.7600644" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Problems" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32103825" sideWeight="0.47423512" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.46131805" sideWeight="0.49355876" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3275862" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
@@ -1032,52 +1017,9 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="jar:///usr/share/grails-2.2.0/lib/org.springframework/spring-tx/jars/spring-tx-3.1.2.RELEASE.jar!/org/springframework/transaction/interceptor/TransactionInterceptor.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="13" column="28" selection-start="809" selection-end="809" vertical-scroll-proportion="-4.6" />
-      </provider>
-    </entry>
-    <entry file="jar:///usr/share/grails-2.2.0/lib/org.springframework/spring-aop/jars/spring-aop-3.1.2.RELEASE.jar!/org/springframework/aop/framework/Cglib2AopProxy.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="67" column="32" selection-start="3816" selection-end="3816" vertical-scroll-proportion="-4.6" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/grails-app/domain/webambulanze/Utente.groovy">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="2" column="6" selection-start="28" selection-end="28" vertical-scroll-proportion="0.09009009">
-          <folding />
-        </state>
-      </provider>
-      <provider editor-type-id="org.jetbrains.plugins.grails.perspectives.DomainClassesRelationsEditorProvider">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/grails-app/services/webambulanze/UtenteService.groovy">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="63" column="67" selection-start="2341" selection-end="2341" vertical-scroll-proportion="0.53002614">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/grails-app/controllers/webambulanze/UtenteRuoloController.groovy">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="49" column="66" selection-start="1695" selection-end="1785" vertical-scroll-proportion="2.2685184">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/grails-app/controllers/webambulanze/UtenteController.groovy">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="77" column="22" selection-start="2826" selection-end="2851" vertical-scroll-proportion="1.1239194">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/grails-app/views/gen/home.gsp">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="112" column="48" selection-start="2647" selection-end="2647" vertical-scroll-proportion="1.238961">
-          <folding />
-        </state>
+        <state line="112" column="48" selection-start="2647" selection-end="2647" vertical-scroll-proportion="1.238961" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/groovy/webambulanze/Lib.groovy">
@@ -1087,18 +1029,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/groovy/webambulanze/Cost.groovy">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="93" column="77" selection-start="4595" selection-end="4595" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/grails-app/i18n/messages_it.properties">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="236" column="29" selection-start="9148" selection-end="9148" vertical-scroll-proportion="0.046875">
-          <folding />
-        </state>
+        <state line="236" column="29" selection-start="9148" selection-end="9148" vertical-scroll-proportion="0.046875" />
       </provider>
       <provider editor-type-id="ResourceBundle">
         <state />
@@ -1106,24 +1039,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/grails-app/controllers/webambulanze/TipoTurnoController.groovy">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="39" column="0" selection-start="1295" selection-end="1295" vertical-scroll-proportion="-10.434783">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/grails-app/domain/webambulanze/TipoTurno.groovy">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="34" column="6" selection-start="809" selection-end="809" vertical-scroll-proportion="-2.4">
-          <folding />
-        </state>
-      </provider>
-      <provider editor-type-id="org.jetbrains.plugins.grails.perspectives.DomainClassesRelationsEditorProvider">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/grails-app/conf/BootStrap.groovy">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="2926" column="90" selection-start="119377" selection-end="119377" vertical-scroll-proportion="0.0">
+        <state line="39" column="0" selection-start="1295" selection-end="1295" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
@@ -1137,14 +1053,92 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/groovy/webambulanze/Aspetto.groovy">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="40" column="9" selection-start="675" selection-end="680" vertical-scroll-proportion="-9.538462">
+        <state line="40" column="9" selection-start="675" selection-end="680" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/web-app/css/main.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="826" column="41" selection-start="16827" selection-end="16827" vertical-scroll-proportion="0.23802395">
+        <state line="819" column="86" selection-start="16745" selection-end="16745" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/grails-app/domain/webambulanze/Automezzo.groovy">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="2" column="6" selection-start="28" selection-end="28" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="org.jetbrains.plugins.grails.perspectives.DomainClassesRelationsEditorProvider">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/grails-app/domain/webambulanze/Turno.groovy">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="4" column="6" selection-start="55" selection-end="55" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="org.jetbrains.plugins.grails.perspectives.DomainClassesRelationsEditorProvider">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/grails-app/views/index.gsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="138" column="65" selection-start="3948" selection-end="3948" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/grails-app/domain/webambulanze/Versione.groovy">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="2" column="22" selection-start="0" selection-end="1583" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="org.jetbrains.plugins.grails.perspectives.DomainClassesRelationsEditorProvider">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/templates/scaffolding/list.gsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="69" column="48" selection-start="3140" selection-end="3140" vertical-scroll-proportion="0.6596702">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/grails-app/domain/webambulanze/Milite.groovy">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="2" column="6" selection-start="28" selection-end="28" vertical-scroll-proportion="1.5">
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="org.jetbrains.plugins.grails.perspectives.DomainClassesRelationsEditorProvider">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/groovy/webambulanze/Cost.groovy">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="127" column="65" selection-start="6522" selection-end="6522" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/grails-app/domain/webambulanze/TipoTurno.groovy">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="46" column="18" selection-start="1193" selection-end="1199" vertical-scroll-proportion="-3.6">
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="org.jetbrains.plugins.grails.perspectives.DomainClassesRelationsEditorProvider">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/grails-app/conf/BootStrap.groovy">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="3103" column="66" selection-start="129090" selection-end="129090" vertical-scroll-proportion="7.2402315">
           <folding />
         </state>
       </provider>
