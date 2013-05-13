@@ -3050,18 +3050,25 @@ class BootStrap implements Cost {
         }// fine del blocco if
 
         if (autista && secondo && terzo) {
-            nuovoTurno = TipoTurno.findOrCreateByCroceAndSigla(croce, DEMO_TIPO_TURNO_AMBULANZA_MATTINO)
+            nuovoTurno = TipoTurno.findOrCreateByCroceAndSigla(croce, DEMO_TIPO_TURNO_AMBULANZA_MATTINO).save(failOnError: true)
             nuovoTurno.descrizione = 'Ambulanza mattino'
             nuovoTurno.ordine = 4
-            nuovoTurno.oraInizio = 6
-            nuovoTurno.oraFine = 12
             nuovoTurno.durata = 6
+            nuovoTurno.oraInizio = 6
+            nuovoTurno.minutiInizio = 0
+            nuovoTurno.oraFine = 12
+            nuovoTurno.minutiFine = 0
+            nuovoTurno.primo = true
+            nuovoTurno.fineGiornoSuccessivo = false
+            nuovoTurno.visibile = true
+            nuovoTurno.orario = true
+            nuovoTurno.multiplo = false
+            nuovoTurno.funzioniObbligatorie = 1
             nuovoTurno.funzione1 = autista
             nuovoTurno.funzione2 = secondo
             nuovoTurno.funzione3 = terzo
-            nuovoTurno.funzioniObbligatorie = 1
-            nuovoTurno.primo = true
-            nuovoTurno.save(flush: true)
+            nuovoTurno.funzione4 = null
+       def pippo=     nuovoTurno.save(flush: true)
 
             nuovoTurno = TipoTurno.findOrCreateByCroceAndSigla(croce, DEMO_TIPO_TURNO_AMBULANZA_POMERIGGIO)
             nuovoTurno.descrizione = 'Ambulanza pomeriggio'
