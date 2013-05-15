@@ -118,6 +118,7 @@ public interface Cost {
     public static String DEMO_FUNZIONE_AUT = 'aut'
     public static String DEMO_FUNZIONE_SEC = 'sec'
     public static String DEMO_FUNZIONE_TER = 'ter'
+    public static String DEMO_FUNZIONE_BAR = 'bar'
 
     //--sigle dei tipi di turno nella demo
     public static String DEMO_TIPO_TURNO_AUTOMEDICA_MATTINO_OLD = 'mat'

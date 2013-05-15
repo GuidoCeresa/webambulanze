@@ -207,6 +207,17 @@ class BootStrap implements Cost {
         if (installaVersione(30)) {
             addTurniDemo()
         }// fine del blocco if
+
+        //--Aggiunta una quarta funzione per i turni di ambulanza
+        if (installaVersione(31)) {
+            addFunzioneDemo()
+        }// fine del blocco if
+
+        //--Flag di barelliere a tutti i militi della demo
+        if (installaVersione(32)) {
+            addFlagBarelliereDemo()
+        }// fine del blocco if
+
         //--creazione dei record utenti per la pubblica castello
 //        if (installaVersione(99)) {
 //            utentiPubblicacastello()
@@ -3068,7 +3079,7 @@ class BootStrap implements Cost {
             nuovoTurno.funzione2 = secondo
             nuovoTurno.funzione3 = terzo
             nuovoTurno.funzione4 = null
-       def pippo=     nuovoTurno.save(flush: true)
+            nuovoTurno.save(flush: true)
 
             nuovoTurno = TipoTurno.findOrCreateByCroceAndSigla(croce, DEMO_TIPO_TURNO_AMBULANZA_POMERIGGIO)
             nuovoTurno.descrizione = 'Ambulanza pomeriggio'
@@ -3109,6 +3120,59 @@ class BootStrap implements Cost {
         }// fine del blocco if
 
         newVersione(CROCE_DEMO, 'Turni', 'Aggiunti 4 tipi di turni')
+    }// fine del metodo
+
+    //--Aggiunta una quarta funzione per i turni di ambulanza
+    private static void addFunzioneDemo() {
+        Croce croce = Croce.findBySigla(CROCE_DEMO)
+        Funzione bar
+        TipoTurno turno
+
+        newFunzione(CROCE_DEMO, DEMO_FUNZIONE_BAR, 'Bar', 'Barelliere', 4, '')
+
+        if (croce) {
+            bar = Funzione.findByCroceAndSigla(croce, DEMO_FUNZIONE_BAR)
+            if (bar) {
+                turno = TipoTurno.findByCroceAndSigla(croce, DEMO_TIPO_TURNO_AMBULANZA_MATTINO)
+                if (turno) {
+                    turno.funzione4 = bar
+                    turno.save(flush: true)
+                }// fine del blocco if
+                turno = TipoTurno.findByCroceAndSigla(croce, DEMO_TIPO_TURNO_AMBULANZA_POMERIGGIO)
+                if (turno) {
+                    turno.funzione4 = bar
+                    turno.save(flush: true)
+                }// fine del blocco if
+                turno = TipoTurno.findByCroceAndSigla(croce, DEMO_TIPO_TURNO_AMBULANZA_NOTTE)
+                if (turno) {
+                    turno.funzione4 = bar
+                    turno.save(flush: true)
+                }// fine del blocco if
+            }// fine del blocco if
+        }// fine del blocco if
+
+        newVersione(CROCE_DEMO, 'Funzione', 'Aggiunta una quarta funzione per i turni di ambulanza')
+    }// fine del metodo
+
+    //--Flag di barelliere a tutti i militi della demo
+    private static void addFlagBarelliereDemo() {
+        Croce croce = Croce.findBySigla(CROCE_DEMO)
+        Funzione bar
+        def militiDemo
+        Milite milite
+
+        if (croce) {
+            bar = Funzione.findByCroceAndSigla(croce, DEMO_FUNZIONE_BAR)
+            if (bar) {
+                militiDemo = Milite.findAllByCroce(croce)
+                militiDemo?.each {
+                    milite = (Milite) it
+                    Militefunzione.findOrCreateByCroceAndMiliteAndFunzione(croce, milite, bar).save(flush: true)
+                } // fine del ciclo each
+            }// fine del blocco if
+        }// fine del blocco if
+
+        newVersione(CROCE_DEMO, 'Funzione', 'Aggiuno flag di barelliere a tutti i militi della demo')
     }// fine del metodo
 
     def destroy = {
