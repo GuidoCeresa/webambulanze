@@ -15,6 +15,10 @@ class CalcolaJob {
     // il service viene iniettato automaticamente
     def logoService
 
+    // utilizzo di un service con la businessLogic per l'elaborazione dei dati
+    // il service viene iniettato automaticamente
+    def utenteService
+
     static boolean USA_MAIL = true
 
     static triggers = {
@@ -23,6 +27,7 @@ class CalcolaJob {
 
     def execute() {
         militeturnoService.calcola()
+        utenteService.regolaAbilitazioni()
 
         if (USA_MAIL) {
             spedisceMailDiControllo('Ricalcolo effettuato')

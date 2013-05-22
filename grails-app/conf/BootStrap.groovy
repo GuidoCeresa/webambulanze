@@ -218,6 +218,11 @@ class BootStrap implements Cost {
             addFlagBarelliereDemo()
         }// fine del blocco if
 
+        //--Regolato a TRUE per Fidenza il nuovo flag di disabilitazione automatica turni
+        if (installaVersione(33)) {
+            fixFlagDisabilitazioneFidenza()
+        }// fine del blocco if
+
         //--creazione dei record utenti per la pubblica castello
 //        if (installaVersione(99)) {
 //            utentiPubblicacastello()
@@ -3172,7 +3177,24 @@ class BootStrap implements Cost {
             }// fine del blocco if
         }// fine del blocco if
 
-        newVersione(CROCE_DEMO, 'Funzione', 'Aggiuno flag di barelliere a tutti i militi della demo')
+        newVersione(CROCE_DEMO, 'Funzione', 'Aggiunto flag di barelliere a tutti i militi della demo')
+    }// fine del metodo
+
+    //--Regolato a TRUE per Fidenza il nuovo flag di disabilitazione automatica turni
+    private static void fixFlagDisabilitazioneFidenza() {
+        Croce croce = Croce.findBySigla(CROCE_ROSSA_FIDENZA)
+        Settings settingsFidenza
+
+        if (croce) {
+            settingsFidenza = croce.settings
+
+            if (settingsFidenza) {
+                settingsFidenza.isDisabilitazioneAutomaticaLogin = true
+                settingsFidenza.save(flush: true)
+            }// fine del blocco if
+        }// fine del blocco if
+
+        newVersione(CROCE_ROSSA_FIDENZA, 'Settings', 'Aggiunto per tutti il flag isDisabilitazioneAutomaticaLogin e regolato a true per CRF')
     }// fine del metodo
 
     def destroy = {

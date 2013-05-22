@@ -8,7 +8,7 @@ class UtenteService {
 
     // utilizzo di un service con la businessLogic per l'elaborazione dei dati
     // il service viene iniettato automaticamente
-    def militeService
+    def croceService
 
     //--avviso conseguente alle modifiche effettuate
     def avvisoModifiche = { mappa, Utente utente ->
@@ -194,5 +194,57 @@ class UtenteService {
         return programmatore
     }// fine del metodo
 
+    //--regola le abilitazioni di tutti gli utenti in funzione del flag verde/rosso
+    //--del numero minimo obbligatorio di turni effettuati dall'inizio dell'anno
+    //--espressamente richiesto da Rita (CRF) in data 21 maggio 2013
+    public void regolaAbilitazioni() {
+        Croce croce
+        def listaCroci = Croce.findAll()
+
+        if (listaCroci) {
+            listaCroci?.each {
+                croce = (Croce) it
+                if (croceService.isCalcoloNotturnoStatistiche(croce)) {
+                    if (croceService.isDisabilitazioneAutomaticaLogin(croce)) {
+                        regolaAbilitazioni(croce)
+                    }// fine del blocco if
+                }// fine del blocco if
+            } // fine del ciclo each
+        }// fine del blocco if
+
+    }// fine del metodo
+
+    //--regola le abilitazioni di tutti gli utenti in funzione del flag verde/rosso
+    //--del numero minimo obbligatorio di turni effettuati dall'inizio dell'anno
+    //--espressamente richiesto da Rita (CRF) in data 21 maggio 2013
+    public void regolaAbilitazioni(Croce croce) {
+        def lista
+        Militestatistiche militestatistiche
+        Milite milite
+        boolean abilitato = true
+        def listaUtenti
+        Utente utente
+
+        lista = Militestatistiche.findAllByCroce(croce)
+        if (lista) {
+            lista?.each {
+                militestatistiche = (Militestatistiche) it
+                if (militestatistiche.status.equals(Cost.STATUS_ROSSO)) {
+                    abilitato = false
+                } else {
+                    abilitato = true
+                }// fine del blocco if-else
+                milite = militestatistiche.milite
+                if (milite) {
+                    listaUtenti = Utente.findAllByCroceAndMilite(croce, milite)
+                    listaUtenti?.each {
+                        utente = (Utente) it
+                        utente.enabled = abilitato
+                        utente.save(flush: true)
+                    } // fine del ciclo each
+                }// fine del blocco if
+            } // fine del ciclo each
+        }// fine del blocco if
+    }// fine del metodo
 
 } // end of Service Class

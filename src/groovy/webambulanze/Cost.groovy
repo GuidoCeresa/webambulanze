@@ -41,6 +41,7 @@ public interface Cost {
     public static String PREF_militePuoCancellareAltri = 'militePuoCancellareAltri'
     public static String PREF_isOrarioTurnoModificabileForm = 'isOrarioTurnoModificabileForm'
     public static String PREF_calcoloNotturnoStatistiche = 'isCalcoloNotturnoStatistiche'
+    public static String PREF_disabilitazioneAutomaticaLogin = 'isDisabilitazioneAutomaticaLogin'
     public static String PREF_fissaLimiteMassimoSingoloTurno = 'fissaLimiteMassimoSingoloTurno'
     public static String PREF_oreMassimeSingoloTurno = 'oreMassimeSingoloTurno'
     public static String PREF_maxMinutiTrascorsiModifica = 'maxMinutiTrascorsiModifica'

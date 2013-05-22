@@ -34,6 +34,10 @@ class MilitestatisticheController {
     // il service viene iniettato automaticamente
     def croceService
 
+    // utilizzo di un service con la businessLogic per l'elaborazione dei dati
+    // il service viene iniettato automaticamente
+    def utenteService
+
     def index() {
         redirect(action: 'list', params: params)
     } // fine del metodo
@@ -104,6 +108,7 @@ class MilitestatisticheController {
 
     def calcola() {
         militeturnoService.calcola(request)
+        utenteService.regolaAbilitazioni()
         redirect(action: 'list', params: params)
     } // fine del metodo
 

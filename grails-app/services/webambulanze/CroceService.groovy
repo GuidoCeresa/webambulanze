@@ -126,6 +126,11 @@ class CroceService {
     }// fine del metodo
 
     //--controlla il flag mantenuto nei Settings associati alla croce corrente
+    public boolean isDisabilitazioneAutomaticaLogin(Croce croce) {
+        return isFlag(croce, Cost.PREF_disabilitazioneAutomaticaLogin)
+    }// fine del metodo
+
+    //--controlla il flag mantenuto nei Settings associati alla croce corrente
     public boolean fissaLimiteMassimoSingoloTurno(Croce croce) {
         return isFlag(croce, Cost.PREF_fissaLimiteMassimoSingoloTurno)
     }// fine del metodo

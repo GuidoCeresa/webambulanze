@@ -336,6 +336,24 @@
 <g:checkBox name="isCalcoloNotturnoStatistiche" value="${settingsInstance?.isCalcoloNotturnoStatistiche}" />
 </div>
 
+<div class="fieldcontain ${hasErrors(bean: settingsInstance, field: 'isDisabilitazioneAutomaticaLogin', 'error')} ">
+	<label for="isDisabilitazioneAutomaticaLogin">
+		<g:message code="settings.isDisabilitazioneAutomaticaLogin.labelform" default="Is Disabilitazione Automatica Login" />
+		
+	</label>
+	
+
+
+
+
+
+
+
+
+
+<g:checkBox name="isDisabilitazioneAutomaticaLogin" value="${settingsInstance?.isDisabilitazioneAutomaticaLogin}" />
+</div>
+
 <div class="fieldcontain ${hasErrors(bean: settingsInstance, field: 'fissaLimiteMassimoSingoloTurno', 'error')} ">
 	<label for="fissaLimiteMassimoSingoloTurno">
 		<g:message code="settings.fissaLimiteMassimoSingoloTurno.labelform" default="Fissa Limite Massimo Singolo Turno" />

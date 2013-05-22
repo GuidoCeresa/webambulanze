@@ -223,6 +223,15 @@
         </li>
         
         <li class="fieldcontain">
+            <span id="isDisabilitazioneAutomaticaLogin-label" class="property-label"><g:message
+                    code="settings.isDisabilitazioneAutomaticaLogin.labelform" default="Is Disabilitazione Automatica Login"/></span>
+            
+            <span class="property-value" aria-labelledby="isDisabilitazioneAutomaticaLogin-label"><g:formatBoolean
+                    boolean="${settingsInstance?.isDisabilitazioneAutomaticaLogin}"/></span>
+            
+        </li>
+        
+        <li class="fieldcontain">
             <span id="fissaLimiteMassimoSingoloTurno-label" class="property-label"><g:message
                     code="settings.fissaLimiteMassimoSingoloTurno.labelform" default="Fissa Limite Massimo Singolo Turno"/></span>
             

@@ -80,6 +80,12 @@ class Settings {
     //--cancella e ricostruisce (sola per la croce selezionata), due tavole di statistiche
     boolean isCalcoloNotturnoStatistiche = false
 
+    //--regola in maniera automatica il flag Enabled (sola per la croce selezionata)
+    //--per abilitare o meno il login
+    //--in funzione del flag verde/rosso delle statistiche dei turni effettuati
+    //--in pratica esclude automaticamente chi non raggiunge la soglia minima di turni
+    boolean isDisabilitazioneAutomaticaLogin = false
+
     //--flag per controllare il numero massimo di ore inserite dal milite per un singolo turno
     boolean fissaLimiteMassimoSingoloTurno = false
 
@@ -114,6 +120,7 @@ class Settings {
         minGiorniMancantiCancellazione()
         isOrarioTurnoModificabileForm()
         isCalcoloNotturnoStatistiche()
+        isDisabilitazioneAutomaticaLogin()
         fissaLimiteMassimoSingoloTurno()
         oreMassimeSingoloTurno()
         usaModuloViaggi()
