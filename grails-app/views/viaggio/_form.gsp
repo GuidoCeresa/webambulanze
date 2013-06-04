@@ -66,9 +66,9 @@
 <g:datePicker name="fine" precision="day"  value="${viaggioInstance?.fine}"  />
 </div>
 
-<div class="fieldcontain ${hasErrors(bean: viaggioInstance, field: 'autista', 'error')} required">
-	<label for="autista">
-		<g:message code="viaggio.autista.labelform" default="Autista" />
+<div class="fieldcontain ${hasErrors(bean: viaggioInstance, field: 'autistaEmergenza', 'error')} required">
+	<label for="autistaEmergenza">
+		<g:message code="viaggio.autistaEmergenza.labelform" default="Autista Emergenza" />
 		<span class="required-indicator">*</span>
 	</label>
 	
@@ -81,13 +81,31 @@
 
 
 
-<g:select id="autista" name="autista.id" from="${webambulanze.Milite.list()}" optionKey="id" required="" value="${viaggioInstance?.autista?.id}" class="many-to-one"/>
+<g:select id="autistaEmergenza" name="autistaEmergenza.id" from="${webambulanze.Milite.list()}" optionKey="id" required="" value="${viaggioInstance?.autistaEmergenza?.id}" class="many-to-one"/>
 </div>
 
-<div class="fieldcontain ${hasErrors(bean: viaggioInstance, field: 'soccorritore', 'error')} required">
+<div class="fieldcontain ${hasErrors(bean: viaggioInstance, field: 'soccorritoreDae', 'error')} required">
+	<label for="soccorritoreDae">
+		<g:message code="viaggio.soccorritoreDae.labelform" default="Soccorritore Dae" />
+		<span class="required-indicator">*</span>
+	</label>
+	
+
+
+
+
+
+
+
+
+
+<g:select id="soccorritoreDae" name="soccorritoreDae.id" from="${webambulanze.Milite.list()}" optionKey="id" required="" value="${viaggioInstance?.soccorritoreDae?.id}" class="many-to-one"/>
+</div>
+
+<div class="fieldcontain ${hasErrors(bean: viaggioInstance, field: 'soccorritore', 'error')} ">
 	<label for="soccorritore">
 		<g:message code="viaggio.soccorritore.labelform" default="Soccorritore" />
-		<span class="required-indicator">*</span>
+		
 	</label>
 	
 
@@ -99,13 +117,13 @@
 
 
 
-<g:select id="soccorritore" name="soccorritore.id" from="${webambulanze.Milite.list()}" optionKey="id" required="" value="${viaggioInstance?.soccorritore?.id}" class="many-to-one"/>
+<g:select id="soccorritore" name="soccorritore.id" from="${webambulanze.Milite.list()}" optionKey="id" value="${viaggioInstance?.soccorritore?.id}" class="many-to-one" noSelection="['null': '']"/>
 </div>
 
-<div class="fieldcontain ${hasErrors(bean: viaggioInstance, field: 'barelliere', 'error')} required">
-	<label for="barelliere">
-		<g:message code="viaggio.barelliere.labelform" default="Barelliere" />
-		<span class="required-indicator">*</span>
+<div class="fieldcontain ${hasErrors(bean: viaggioInstance, field: 'barelliereAffiancamento', 'error')} ">
+	<label for="barelliereAffiancamento">
+		<g:message code="viaggio.barelliereAffiancamento.labelform" default="Barelliere Affiancamento" />
+		
 	</label>
 	
 
@@ -117,7 +135,7 @@
 
 
 
-<g:select id="barelliere" name="barelliere.id" from="${webambulanze.Milite.list()}" optionKey="id" required="" value="${viaggioInstance?.barelliere?.id}" class="many-to-one"/>
+<g:select id="barelliereAffiancamento" name="barelliereAffiancamento.id" from="${webambulanze.Milite.list()}" optionKey="id" value="${viaggioInstance?.barelliereAffiancamento?.id}" class="many-to-one" noSelection="['null': '']"/>
 </div>
 
 <div class="fieldcontain ${hasErrors(bean: viaggioInstance, field: 'automezzo', 'error')} required">
@@ -125,6 +143,14 @@
 		<g:message code="viaggio.automezzo.labelform" default="Automezzo" />
 		<span class="required-indicator">*</span>
 	</label>
+<g:select id="automezzo" name="automezzo.id" from="${webambulanze.Automezzo.list()}" optionKey="id" required="" value="${viaggioInstance?.automezzo?.id}" class="many-to-one"/>
+</div>
+
+<div class="fieldcontain ${hasErrors(bean: viaggioInstance, field: 'chilometriArrivo', 'error')} required">
+	<label for="chilometriArrivo">
+		<g:message code="viaggio.chilometriArrivo.labelform" default="Chilometri Arrivo" />
+		<span class="required-indicator">*</span>
+	</label>
 	
 
 
@@ -135,7 +161,43 @@
 
 
 
-<g:select id="automezzo" name="automezzo.id" from="${webambulanze.Automezzo.list()}" optionKey="id" required="" value="${viaggioInstance?.automezzo?.id}" class="many-to-one"/>
+<g:field name="chilometriArrivo" type="number" value="${viaggioInstance.chilometriArrivo}" required=""/>
+</div>
+
+<div class="fieldcontain ${hasErrors(bean: viaggioInstance, field: 'chilometriPartenza', 'error')} required">
+	<label for="chilometriPartenza">
+		<g:message code="viaggio.chilometriPartenza.labelform" default="Chilometri Partenza" />
+		<span class="required-indicator">*</span>
+	</label>
+	
+
+
+
+
+
+
+
+
+
+<g:field name="chilometriPartenza" type="number" value="${viaggioInstance.chilometriPartenza}" required=""/>
+</div>
+
+<div class="fieldcontain ${hasErrors(bean: viaggioInstance, field: 'chilometriPercorsi', 'error')} required">
+	<label for="chilometriPercorsi">
+		<g:message code="viaggio.chilometriPercorsi.labelform" default="Chilometri Percorsi" />
+		<span class="required-indicator">*</span>
+	</label>
+	
+
+
+
+
+
+
+
+
+
+<g:field name="chilometriPercorsi" type="number" value="${viaggioInstance.chilometriPercorsi}" required=""/>
 </div>
 
 <div class="fieldcontain ${hasErrors(bean: viaggioInstance, field: 'cittaPaziente', 'error')} ">
@@ -316,6 +378,24 @@
 
 
 <g:field name="numeroServizio" type="number" value="${viaggioInstance.numeroServizio}" required=""/>
+</div>
+
+<div class="fieldcontain ${hasErrors(bean: viaggioInstance, field: 'numeroViaggio', 'error')} required">
+	<label for="numeroViaggio">
+		<g:message code="viaggio.numeroViaggio.labelform" default="Numero Viaggio" />
+		<span class="required-indicator">*</span>
+	</label>
+	
+
+
+
+
+
+
+
+
+
+<g:field name="numeroViaggio" type="number" value="${viaggioInstance.numeroViaggio}" required=""/>
 </div>
 
 <div class="fieldcontain ${hasErrors(bean: viaggioInstance, field: 'patologia', 'error')} required">

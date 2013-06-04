@@ -88,20 +88,20 @@
         </li>
         
         <li class="fieldcontain">
-            <span id="targa-label" class="property-label"><g:message
-                    code="automezzo.targa.labelform" default="Targa"/></span>
-            
-            <span class="property-value" aria-labelledby="targa-label"><g:fieldValue bean="${automezzoInstance}"
-                                                                                         field="targa"/></span>
-            
-        </li>
-        
-        <li class="fieldcontain">
             <span id="sigla-label" class="property-label"><g:message
                     code="automezzo.sigla.labelform" default="Sigla"/></span>
             
             <span class="property-value" aria-labelledby="sigla-label"><g:fieldValue bean="${automezzoInstance}"
                                                                                          field="sigla"/></span>
+            
+        </li>
+        
+        <li class="fieldcontain">
+            <span id="targa-label" class="property-label"><g:message
+                    code="automezzo.targa.labelform" default="Targa"/></span>
+            
+            <span class="property-value" aria-labelledby="targa-label"><g:fieldValue bean="${automezzoInstance}"
+                                                                                         field="targa"/></span>
             
         </li>
         
@@ -124,11 +124,20 @@
         </li>
         
         <li class="fieldcontain">
-            <span id="contakilometri-label" class="property-label"><g:message
-                    code="automezzo.contakilometri.labelform" default="Contakilometri"/></span>
+            <span id="chilometriTotaliPercorsi-label" class="property-label"><g:message
+                    code="automezzo.chilometriTotaliPercorsi.labelform" default="Chilometri Totali Percorsi"/></span>
             
-            <span class="property-value" aria-labelledby="contakilometri-label"><g:fieldValue bean="${automezzoInstance}"
-                                                                                         field="contakilometri"/></span>
+            <span class="property-value" aria-labelledby="chilometriTotaliPercorsi-label"><g:fieldValue bean="${automezzoInstance}"
+                                                                                         field="chilometriTotaliPercorsi"/></span>
+            
+        </li>
+        
+        <li class="fieldcontain">
+            <span id="numeroViaggiEffettuati-label" class="property-label"><g:message
+                    code="automezzo.numeroViaggiEffettuati.labelform" default="Numero Viaggi Effettuati"/></span>
+            
+            <span class="property-value" aria-labelledby="numeroViaggiEffettuati-label"><g:fieldValue bean="${automezzoInstance}"
+                                                                                         field="numeroViaggiEffettuati"/></span>
             
         </li>
         

@@ -223,6 +223,12 @@ class BootStrap implements Cost {
             fixFlagDisabilitazioneFidenza()
         }// fine del blocco if
 
+        //--cancella un campo
+        //--elimina il campo 'contakilometri' della tavola 'Viaggio'
+        if (installaVersione(34)) {
+            cancellaKilometro()
+        }// fine del blocco if
+
         //--creazione dei record utenti per la pubblica castello
 //        if (installaVersione(99)) {
 //            utentiPubblicacastello()
@@ -2513,11 +2519,11 @@ class BootStrap implements Cost {
         TipoTurno ordinarioSingolo
         TipoTurno ordinarioDoppio
         TipoTurno extraAmbulanza
-        Funzione aut118 = Funzione.findByCroceAndSigla(croce, Cost.CRPT_FUNZIONE_AUT_118)
-        Funzione autOrd = Funzione.findByCroceAndSigla(croce, Cost.CRPT_FUNZIONE_AUT_ORD)
-        Funzione dae = Funzione.findByCroceAndSigla(croce, Cost.CRPT_FUNZIONE_DAE)
-        Funzione soccorritore = Funzione.findByCroceAndSigla(croce, Cost.CRPT_FUNZIONE_SOC)
-        Funzione barelliere = Funzione.findByCroceAndSigla(croce, Cost.CRPT_FUNZIONE_BAR)
+        Funzione aut118 = Funzione.findByCroceAndSigla(croce, CRPT_FUNZIONE_AUT_118)
+        Funzione autOrd = Funzione.findByCroceAndSigla(croce, CRPT_FUNZIONE_AUT_ORD)
+        Funzione dae = Funzione.findByCroceAndSigla(croce, CRPT_FUNZIONE_DAE)
+        Funzione soccorritore = Funzione.findByCroceAndSigla(croce, CRPT_FUNZIONE_SOC)
+        Funzione barelliere = Funzione.findByCroceAndSigla(croce, CRPT_FUNZIONE_BAR)
 
         //-- sostituzione nei turni dia-2a e dia-2r della 2° funzione bar in soc
         dialisiDueAndata = TipoTurno.findByCroceAndSigla(croce, CRPT_TIPO_TURNO_DIALISI_DUE_ANDATA)
@@ -3195,6 +3201,47 @@ class BootStrap implements Cost {
         }// fine del blocco if
 
         newVersione(CROCE_ROSSA_FIDENZA, 'Settings', 'Aggiunto per tutti il flag isDisabilitazioneAutomaticaLogin e regolato a true per CRF')
+    }// fine del metodo
+
+    //--cancella un campo
+    //--salva i valori del vecchio campo 'contakilometri' nel nuovo 'chilometriTotaliPercorsi'
+    //--elimina il campo 'contakilometri' della tavola 'Automezzo'
+    //--il campo era eliminato dalla Domain Class, ma occorre cancellarlo anche dal DB
+    //--altrimenti non si riesce a creare un nuovo record
+    private static void cancellaKilometro() {
+        Croce croce = Croce.findBySigla(CROCE_ROSSA_PONTETARO)
+        Automezzo automezzo
+
+        if (croce) {
+            automezzo = Automezzo.findByCroceAndSigla(croce, 'PR 154')
+            if (automezzo && automezzo.chilometriTotaliPercorsi == 0) {
+                automezzo.chilometriTotaliPercorsi = 55833
+                automezzo.save(flush: true)
+            }// fine del blocco if
+            automezzo = Automezzo.findByCroceAndSigla(croce, 'PR 159')
+            if (automezzo && automezzo.chilometriTotaliPercorsi == 0) {
+                automezzo.chilometriTotaliPercorsi = 118009
+                automezzo.save(flush: true)
+            }// fine del blocco if
+            automezzo = Automezzo.findByCroceAndSigla(croce, 'PR 152')
+            if (automezzo && automezzo.chilometriTotaliPercorsi == 0) {
+                automezzo.chilometriTotaliPercorsi = 160499
+                automezzo.save(flush: true)
+            }// fine del blocco if
+            automezzo = Automezzo.findByCroceAndSigla(croce, 'PR 153')
+            if (automezzo && automezzo.chilometriTotaliPercorsi == 0) {
+                automezzo.chilometriTotaliPercorsi = 7559
+                automezzo.save(flush: true)
+            }// fine del blocco if
+            automezzo = Automezzo.findByCroceAndSigla(croce, 'PR 155')
+            if (automezzo && automezzo.chilometriTotaliPercorsi == 0) {
+                automezzo.chilometriTotaliPercorsi = 40573
+                automezzo.save(flush: true)
+            }// fine del blocco if
+        }// fine del blocco if
+
+        //@todo devi eliminarlo con MSQLQueryBrowser
+        newVersione(CROCE_ALGOS, 'DB', "Eliminato il campo 'contakilometri' della tavola 'Automezzo'")
     }// fine del metodo
 
     def destroy = {

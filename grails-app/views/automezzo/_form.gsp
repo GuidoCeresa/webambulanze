@@ -48,24 +48,6 @@
 <g:datePicker name="dataAcquisto" precision="day"  value="${automezzoInstance?.dataAcquisto}" default="none" noSelection="['': '']" />
 </div>
 
-<div class="fieldcontain ${hasErrors(bean: automezzoInstance, field: 'targa', 'error')} required">
-	<label for="targa">
-		<g:message code="automezzo.targa.labelform" default="Targa" />
-		<span class="required-indicator">*</span>
-	</label>
-	
-
-
-
-
-
-
-
-
-
-<g:textField name="targa" required="" value="${automezzoInstance?.targa}"/>
-</div>
-
 <div class="fieldcontain ${hasErrors(bean: automezzoInstance, field: 'sigla', 'error')} ">
 	<label for="sigla">
 		<g:message code="automezzo.sigla.labelform" default="Sigla" />
@@ -82,6 +64,24 @@
 
 
 <g:textField name="sigla" value="${automezzoInstance?.sigla}"/>
+</div>
+
+<div class="fieldcontain ${hasErrors(bean: automezzoInstance, field: 'targa', 'error')} required">
+	<label for="targa">
+		<g:message code="automezzo.targa.labelform" default="Targa" />
+		<span class="required-indicator">*</span>
+	</label>
+	
+
+
+
+
+
+
+
+
+
+<g:textField name="targa" required="" value="${automezzoInstance?.targa}"/>
 </div>
 
 <div class="fieldcontain ${hasErrors(bean: automezzoInstance, field: 'descrizione', 'error')} ">
@@ -120,9 +120,9 @@
 <g:textArea name="donazione" cols="40" rows="5" value="${automezzoInstance?.donazione}"/>
 </div>
 
-<div class="fieldcontain ${hasErrors(bean: automezzoInstance, field: 'contakilometri', 'error')} required">
-	<label for="contakilometri">
-		<g:message code="automezzo.contakilometri.labelform" default="Contakilometri" />
+<div class="fieldcontain ${hasErrors(bean: automezzoInstance, field: 'chilometriTotaliPercorsi', 'error')} required">
+	<label for="chilometriTotaliPercorsi">
+		<g:message code="automezzo.chilometriTotaliPercorsi.labelform" default="Chilometri Totali Percorsi" />
 		<span class="required-indicator">*</span>
 	</label>
 	
@@ -135,7 +135,25 @@
 
 
 
-<g:field name="contakilometri" type="number" value="${automezzoInstance.contakilometri}" required=""/>
+<g:field name="chilometriTotaliPercorsi" type="number" value="${automezzoInstance.chilometriTotaliPercorsi}" required=""/>
+</div>
+
+<div class="fieldcontain ${hasErrors(bean: automezzoInstance, field: 'numeroViaggiEffettuati', 'error')} required">
+	<label for="numeroViaggiEffettuati">
+		<g:message code="automezzo.numeroViaggiEffettuati.labelform" default="Numero Viaggi Effettuati" />
+		<span class="required-indicator">*</span>
+	</label>
+	
+
+
+
+
+
+
+
+
+
+<g:field name="numeroViaggiEffettuati" type="number" value="${automezzoInstance.numeroViaggiEffettuati}" required=""/>
 </div>
 
 <g:if test="${campiExtra}">

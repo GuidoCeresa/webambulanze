@@ -45,7 +45,6 @@
     }
 
     h1 {
-        margin-left: 2em;
         margin-top: 1em;
         font-size: 1.4em;
     }
@@ -123,7 +122,8 @@
 
 <div id="page-body" role="main">
     <div id="controller-list" role="navigation">
-        <h2>Selezione del tipo di viaggio effettuato:</h2>
+        <h2>Nuovo viaggio</h2>
+        <h1>Selezione del tipo di viaggio effettuato:</h1>
         <amb:selezioneViaggio></amb:selezioneViaggio>
     </div>
 </div>

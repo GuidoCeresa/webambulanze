@@ -9,9 +9,10 @@
 /* flagOverwrite = false */
 
 package webambulanze
-
+import grails.plugins.springsecurity.Secured
 import org.springframework.dao.DataIntegrityViolationException
 
+@Secured([Cost.ROLE_MILITE])
 class ViaggioController {
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
@@ -31,9 +32,9 @@ class ViaggioController {
                 'numeroServizio',
                 'giorno',
                 'automezzo',
-                'prelievo',
                 'codiceInvio',
-                'codiceRicovero'
+                'codiceRicovero',
+                'chilometriPercorsi'
         ]
 
         if (params.order) {
@@ -52,10 +53,7 @@ class ViaggioController {
                 lista = Viaggio.findAll("from Viaggio order by croce_id,giorno")
                 campiLista = ['id', 'croce'] + campiLista
             } else {
-                if (!params.sort) {
-                    params.sort = 'giorno'
-                }// fine del blocco if-else
-                lista = Viaggio.findAllByCroce(croce, params)
+                lista = Viaggio.findAll("from Viaggio order by croce_id,giorno")
             }// fine del blocco if-else
         } else {
             lista = Viaggio.findAll(params)
@@ -66,21 +64,59 @@ class ViaggioController {
 
     def create() {
         params.siglaCroce = croceService.getSiglaCroce(request)
-        render(view: 'selezione', params: params)
+        render(view: 'selezionetipo', params: params)
 
 //        [viaggioInstance: new Viaggio(params)]
     } // fine del metodo
 
-    def nuovoServizio118() {
-        render(view: 'create118', model: [viaggioInstance: new Viaggio(params)], params: params)
+    def nuovo118() {
+        params.tipoViaggio = '118'
+        redirect(action: 'selezionemezzo', params: params)
     } // fine del metodo
 
-    def nuovoServizioOrdinario() {
-        render(view: 'createOrdinario', model: [viaggioInstance: new Viaggio(params)], params: params)
+    def nuovoOrdinario() {
+        params.tipoViaggio = 'ordinario'
+        render(view: 'selezionemancante', params: params)
+//        redirect(action: 'selezionemezzo', params: params)
     } // fine del metodo
 
-    def nuovoServizioDializzati() {
-        render(view: 'createDializzato', model: [viaggioInstance: new Viaggio(params)], params: params)
+    def nuovoDializzati() {
+        params.tipoViaggio = 'dializzati'
+        render(view: 'selezionemancante', params: params)
+//        redirect(action: 'selezionemezzo', params: params)
+    } // fine del metodo
+
+    def nuovoInterno() {
+        params.tipoViaggio = 'interno'
+        render(view: 'selezionemancante', params: params)
+//        redirect(action: 'selezionemezzo', params: params)
+    } // fine del metodo
+
+    def selezionemezzo() {
+        params.siglaCroce = croceService.getSiglaCroce(request)
+        def tipoViaggio = params.tipoViaggio
+        render(view: 'selezionemezzo', model: [viaggioInstance: new Viaggio(params), tipoViaggio: tipoViaggio], params: params)
+    } // fine del metodo
+
+    def nuovoViaggio() {
+        params.siglaCroce = croceService.getSiglaCroce(request)
+        String tipoViaggio = params.tipoViaggio
+        Automezzo automezzo
+        String numViaggi
+
+        if (params.automezzo) {
+            automezzo = Automezzo.findById(Long.decode(params.automezzo.id))
+            if (automezzo) {
+                numViaggi = automezzo.numeroViaggiEffettuati
+                params.chilometriPartenza = automezzo.chilometriTotaliPercorsi
+            }// fine del blocco if
+        }// fine del blocco if
+
+        if (tipoViaggio.equals('118')) {
+            render(view: 'create118', model: [viaggioInstance: new Viaggio(params)], params: params)
+        } else {
+            render(view: 'selezionemancante', params: params)
+        }// fine del blocco if-else
     } // fine del metodo
 
     def save() {
@@ -98,9 +134,21 @@ class ViaggioController {
             viaggioInstance.giorno = new Date()
         }// fine del blocco if
 
+        if (!viaggioInstance.inizio) {
+            //  viaggioInstance.inizio = viaggioInstance.giorno.toTimestamp()
+        }// fine del blocco if
+
+        if (!viaggioInstance.fine) {
+            //  viaggioInstance.fine = viaggioInstance.giorno.toTimestamp()
+        }// fine del blocco if
+
         if (!viaggioInstance.save(flush: true)) {
             render(view: "create", model: [viaggioInstance: viaggioInstance])
             return
+        }// fine del blocco if
+
+        if (viaggioInstance) {
+            afterRegolaChilometri(viaggioInstance.id)
         }// fine del blocco if
 
         flash.message = message(code: 'default.created.message', args: [message(code: 'viaggio.label', default: 'Viaggio'), viaggioInstance.id])
@@ -154,10 +202,31 @@ class ViaggioController {
             return
         }
 
+        if (viaggioInstance) {
+            afterRegolaChilometri(viaggioInstance.id)
+        }// fine del blocco if
+
         flash.message = message(code: 'default.updated.message', args: [message(code: 'viaggio.label', default: 'Viaggio'), viaggioInstance.id])
         redirect(action: "show", id: viaggioInstance.id)
     } // fine del metodo
 
+    /**
+     * metodo chiamato dopo aver creato o modificato un record
+     */
+    public afterRegolaChilometri(Long id) {
+        Automezzo auto
+        def viaggioInstance = Viaggio.get(id)
+
+        if (viaggioInstance) {
+            auto = viaggioInstance.automezzo
+            if (auto) {
+                auto.chilometriTotaliPercorsi = viaggioInstance.chilometriArrivo
+                auto.save(flush: true)
+            }// fine del blocco if
+        }// fine del blocco if
+    } // fine del metodo
+
+    @Secured([Cost.ROLE_PROG])
     def delete(Long id) {
         def viaggioInstance = Viaggio.get(id)
         if (!viaggioInstance) {

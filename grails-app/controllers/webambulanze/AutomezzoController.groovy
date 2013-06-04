@@ -32,9 +32,10 @@ class AutomezzoController {
         def campiLista = [
                 'tipo',
                 'dataAcquisto',
-                'targa',
                 'sigla',
-                'contakilometri']
+                'targa',
+                'chilometriTotaliPercorsi',
+                'numeroViaggiEffettuati']
 
         if (params.order) {
             if (params.order == 'asc') {

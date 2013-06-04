@@ -23,7 +23,14 @@ class Automezzo {
     //--riferimenti di un'eventuale donazione
     String donazione = ''
 
-    int contakilometri = 0
+    //--aggiornato automaticamente da ogni nuovo viaggio
+    //--se modificato da qui, occorre un avviso
+    int chilometriTotaliPercorsi = 0
+
+    //--progressivo dei viagi effettuati
+    //--aggiornato automaticamente da ogni nuovo viaggio
+    //--se modificato da qui, occorre un avviso
+    int numeroViaggiEffettuati = 0
 
     /**
      * regolazione delle proprietà di ogni campo
@@ -34,11 +41,12 @@ class Automezzo {
         croce(nullable: false, blank: false, display: false)
         tipo(nullable: false)
         dataAcquisto(nullable: true)
-        targa(nullable: false, blank: false)
         sigla(nullable: true, blank: true)
+        targa(nullable: false, blank: false)
         descrizione(widget: 'textarea', nullable: true, blank: true)
         donazione(widget: 'textarea', nullable: true, blank: true)
-        contakilometri(nullable: false)
+        chilometriTotaliPercorsi(nullable: false)
+        numeroViaggiEffettuati(nullable: false)
     } // end of static constraints
 
     static mapping = {

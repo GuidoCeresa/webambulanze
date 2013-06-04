@@ -28,13 +28,27 @@ class Viaggio {
     String prelievo
     String ricovero
 
-    String numeroCartellino
-    int numeroServizio
-    int numeroBolla
+    String numeroCartellino         // senza automatismo - viene dalla CO
+    int numeroServizio              // progressivo della croce
+    int numeroBolla                 // senza automatismo - si legge dal blocchetto
+    int numeroViaggio = 0               // progressivo dell'automezzo
 
-    Milite autista
+    //--Suggerito automaticamente quando si seleziona l'automezzo.
+    //--Usa l'ultimo chilometraggio registrato.
+    //--Modificabile dall'utente per forzatura.
+    //--Segnalazione mail in caso di forzatura.
+    int chilometriPartenza = 0
+
+    //--Inserimento manuale
+    int chilometriArrivo = 0
+
+    //--Calcolati
+    int chilometriPercorsi = 0
+
+    Milite autistaEmergenza
+    Milite soccorritoreDae
     Milite soccorritore
-    Milite barelliere
+    Milite barelliereAffiancamento
 
     /**
      * regolazione delle proprietà di ogni campo
@@ -46,10 +60,10 @@ class Viaggio {
         giorno()
         inizio()
         fine()
-        autista()
-        soccorritore()
-        barelliere()
-
+        autistaEmergenza(nullable: false)
+        soccorritoreDae(nullable: false)
+        soccorritore(nullable: true)
+        barelliereAffiancamento(nullable: true)
     } // end of static constraints
 
     static mapping = {
@@ -68,6 +82,7 @@ class Viaggio {
      * prima di creare un nuovo record
      */
     def beforeInsert = {
+        beforeRegolaChilometri()
     } // end of def beforeInsert
 
     /**
@@ -75,7 +90,39 @@ class Viaggio {
      * prima di registrare un record esistente
      */
     def beforeUpdate = {
+        beforeRegolaChilometri()
     } // end of def beforeUpdate
+
+    /**
+     * metodo chiamato prima di creare o modificare un record
+     */
+    private beforeRegolaChilometri() {
+        if (chilometriPartenza && chilometriArrivo) {
+            chilometriPercorsi = chilometriArrivo - chilometriPartenza
+        }// fine del blocco if
+    } // fine del metodo
+
+    /**
+     * metodo chiamato automaticamente da Grails
+     * dopo aver creato un nuovo record
+     */
+    def afterInsert = {
+        afterRegolaChilometri()
+    } // end of def beforeInsert
+
+    /**
+     * metodo chiamato automaticamente da Grails
+     * dopo aver registrato un record esistente
+     */
+    def afterUpdate = {
+        afterRegolaChilometri()
+    } // end of def beforeUpdate
+
+    /**
+     * metodo chiamato dopo aver creato o modificato un record
+     */
+    public afterRegolaChilometri() {
+    } // fine del metodo
 
     /**
      * metodo chiamato automaticamente da Grails

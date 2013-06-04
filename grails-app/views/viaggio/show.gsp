@@ -97,12 +97,22 @@
         </li>
         
         <li class="fieldcontain">
-            <span id="autista-label" class="property-label"><g:message
-                    code="viaggio.autista.labelform" default="Autista"/></span>
+            <span id="autistaEmergenza-label" class="property-label"><g:message
+                    code="viaggio.autistaEmergenza.labelform" default="Autista Emergenza"/></span>
             
-            <span class="property-value" aria-labelledby="autista-label"><g:link
+            <span class="property-value" aria-labelledby="autistaEmergenza-label"><g:link
                     controller="milite" action="show"
-                    id="${viaggioInstance?.autista?.id}">${viaggioInstance?.autista?.encodeAsHTML()}</g:link></span>
+                    id="${viaggioInstance?.autistaEmergenza?.id}">${viaggioInstance?.autistaEmergenza?.encodeAsHTML()}</g:link></span>
+            
+        </li>
+        
+        <li class="fieldcontain">
+            <span id="soccorritoreDae-label" class="property-label"><g:message
+                    code="viaggio.soccorritoreDae.labelform" default="Soccorritore Dae"/></span>
+            
+            <span class="property-value" aria-labelledby="soccorritoreDae-label"><g:link
+                    controller="milite" action="show"
+                    id="${viaggioInstance?.soccorritoreDae?.id}">${viaggioInstance?.soccorritoreDae?.encodeAsHTML()}</g:link></span>
             
         </li>
         
@@ -117,12 +127,12 @@
         </li>
         
         <li class="fieldcontain">
-            <span id="barelliere-label" class="property-label"><g:message
-                    code="viaggio.barelliere.labelform" default="Barelliere"/></span>
+            <span id="barelliereAffiancamento-label" class="property-label"><g:message
+                    code="viaggio.barelliereAffiancamento.labelform" default="Barelliere Affiancamento"/></span>
             
-            <span class="property-value" aria-labelledby="barelliere-label"><g:link
+            <span class="property-value" aria-labelledby="barelliereAffiancamento-label"><g:link
                     controller="milite" action="show"
-                    id="${viaggioInstance?.barelliere?.id}">${viaggioInstance?.barelliere?.encodeAsHTML()}</g:link></span>
+                    id="${viaggioInstance?.barelliereAffiancamento?.id}">${viaggioInstance?.barelliereAffiancamento?.encodeAsHTML()}</g:link></span>
             
         </li>
         
@@ -133,6 +143,33 @@
             <span class="property-value" aria-labelledby="automezzo-label"><g:link
                     controller="automezzo" action="show"
                     id="${viaggioInstance?.automezzo?.id}">${viaggioInstance?.automezzo?.encodeAsHTML()}</g:link></span>
+            
+        </li>
+        
+        <li class="fieldcontain">
+            <span id="chilometriArrivo-label" class="property-label"><g:message
+                    code="viaggio.chilometriArrivo.labelform" default="Chilometri Arrivo"/></span>
+            
+            <span class="property-value" aria-labelledby="chilometriArrivo-label"><g:fieldValue bean="${viaggioInstance}"
+                                                                                         field="chilometriArrivo"/></span>
+            
+        </li>
+        
+        <li class="fieldcontain">
+            <span id="chilometriPartenza-label" class="property-label"><g:message
+                    code="viaggio.chilometriPartenza.labelform" default="Chilometri Partenza"/></span>
+            
+            <span class="property-value" aria-labelledby="chilometriPartenza-label"><g:fieldValue bean="${viaggioInstance}"
+                                                                                         field="chilometriPartenza"/></span>
+            
+        </li>
+        
+        <li class="fieldcontain">
+            <span id="chilometriPercorsi-label" class="property-label"><g:message
+                    code="viaggio.chilometriPercorsi.labelform" default="Chilometri Percorsi"/></span>
+            
+            <span class="property-value" aria-labelledby="chilometriPercorsi-label"><g:fieldValue bean="${viaggioInstance}"
+                                                                                         field="chilometriPercorsi"/></span>
             
         </li>
         
@@ -223,6 +260,15 @@
             
             <span class="property-value" aria-labelledby="numeroServizio-label"><g:fieldValue bean="${viaggioInstance}"
                                                                                          field="numeroServizio"/></span>
+            
+        </li>
+        
+        <li class="fieldcontain">
+            <span id="numeroViaggio-label" class="property-label"><g:message
+                    code="viaggio.numeroViaggio.labelform" default="Numero Viaggio"/></span>
+            
+            <span class="property-value" aria-labelledby="numeroViaggio-label"><g:fieldValue bean="${viaggioInstance}"
+                                                                                         field="numeroViaggio"/></span>
             
         </li>
         
