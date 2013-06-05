@@ -27,6 +27,9 @@
 <g:if test="${flash.message}">
     <div class="message" role="status">${flash.message}</div>
 </g:if>
+<g:if test="${flash.errors}">
+    <div class="errors" role="status">${flash.errors}</div>
+</g:if>
 <g:hasErrors bean="${viaggioInstance}">
     <ul class="errors" role="alert">
         <g:eachError bean="${viaggioInstance}" var="error">
@@ -35,6 +38,7 @@
         </g:eachError>
     </ul>
 </g:hasErrors>
+
 <g:form action="save">
 <fieldset class="form">
 

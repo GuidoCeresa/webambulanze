@@ -3241,7 +3241,7 @@ class BootStrap implements Cost {
         }// fine del blocco if
 
         //@todo devi eliminarlo con MSQLQueryBrowser
-        newVersione(CROCE_ALGOS, 'DB', "Eliminato il campo 'contakilometri' della tavola 'Automezzo'")
+        newVersione(CROCE_ROSSA_PONTETARO, 'DB', "Eliminato il campo 'contakilometri' della tavola 'Automezzo'")
     }// fine del metodo
 
     def destroy = {

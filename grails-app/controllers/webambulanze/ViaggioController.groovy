@@ -9,6 +9,7 @@
 /* flagOverwrite = false */
 
 package webambulanze
+
 import grails.plugins.springsecurity.Secured
 import org.springframework.dao.DataIntegrityViolationException
 
@@ -59,6 +60,7 @@ class ViaggioController {
             lista = Viaggio.findAll(params)
         }// fine del blocco if-else
 
+        flash.errors =''
         render(view: 'list', model: [viaggioInstanceList: lista, viaggioInstanceTotal: 0, campiLista: campiLista], params: params)
     } // fine del metodo
 
@@ -104,12 +106,22 @@ class ViaggioController {
         Automezzo automezzo
         String numViaggi
 
+        //--valori recuperati dal DB
         if (params.automezzo) {
             automezzo = Automezzo.findById(Long.decode(params.automezzo.id))
             if (automezzo) {
                 numViaggi = automezzo.numeroViaggiEffettuati
                 params.chilometriPartenza = automezzo.chilometriTotaliPercorsi
+                params.chilometriArrivo = automezzo.chilometriTotaliPercorsi
             }// fine del blocco if
+        }// fine del blocco if
+
+        //--valori suggeriti
+        if (true) {
+            params.codiceInvio = CodiceInvio.verde
+            params.luogoEvento = LuogoEvento.Z
+            params.codiceRicovero = CodiceRicovero.normale
+            params.patologia = Patologia.C20
         }// fine del blocco if
 
         if (tipoViaggio.equals('118')) {
@@ -140,6 +152,20 @@ class ViaggioController {
 
         if (!viaggioInstance.fine) {
             //  viaggioInstance.fine = viaggioInstance.giorno.toTimestamp()
+        }// fine del blocco if
+
+        //--controllo chilometraggio
+        if (true) {
+            if (viaggioInstance.chilometriArrivo == viaggioInstance.chilometriPartenza) {
+                flash.errors = "Viaggio non registrato - Ti sei dimenticato di modificare i chilometri all'arrivo"
+                render(view: 'create118', model: [viaggioInstance: viaggioInstance])
+                return
+            }// fine del blocco if
+            if (viaggioInstance.chilometriArrivo < viaggioInstance.chilometriPartenza) {
+                flash.errors = "Viaggio non registrato - I chilometri all'arrivo non possono essere minori di quelli alla partenza"
+                render(view: 'create118', model: [viaggioInstance: viaggioInstance])
+                return
+            }// fine del blocco if
         }// fine del blocco if
 
         if (!viaggioInstance.save(flush: true)) {

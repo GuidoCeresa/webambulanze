@@ -15,9 +15,9 @@ class Viaggio {
     //--giorno, ora e minuto di fine viaggio
     Date fine
 
+    CodiceInvio codiceInvio
     LuogoEvento luogoEvento
     Patologia patologia
-    CodiceInvio codiceInvio
     CodiceRicovero codiceRicovero
 
     String nomePaziente

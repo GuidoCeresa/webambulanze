@@ -7,10 +7,10 @@ package webambulanze
  * Time: 14:25
  */
 public enum CodiceInvio {
-    B('B-Bianco'),
-    V('V-Verde'),
-    G('G-Giallo'),
-    R('R-Rosso')
+    bianco('Bianco'),
+    verde('Verde'),
+    giallo('Giallo'),
+    rosso('Rosso')
 
     String nome
 
