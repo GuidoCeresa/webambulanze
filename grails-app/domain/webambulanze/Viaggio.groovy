@@ -4,6 +4,9 @@ class Viaggio {
     //--croce di riferimento
     Croce croce
 
+    //--tipologia prestabilita
+    TipoViaggio tipoViaggio
+
     //--automezzo utilizzato
     Automezzo automezzo
 
@@ -31,7 +34,7 @@ class Viaggio {
     String numeroCartellino         // senza automatismo - viene dalla CO
     int numeroServizio              // progressivo della croce
     int numeroBolla                 // senza automatismo - si legge dal blocchetto
-    int numeroViaggio = 0               // progressivo dell'automezzo
+    int numeroViaggio = 0           // progressivo dell'automezzo
 
     //--Suggerito automaticamente quando si seleziona l'automezzo.
     //--Usa l'ultimo chilometraggio registrato.

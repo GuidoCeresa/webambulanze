@@ -175,6 +175,14 @@
         <g:field name="numeroServizio" type="number" value="${viaggioInstance.numeroServizio}" required=""/>
     </div>
 
+    <div class="fieldcontain ${hasErrors(bean: viaggioInstance, field: 'numeroViaggio', 'error')} required">
+        <label for="numeroViaggio">
+            <g:message code="viaggio.numeroViaggio.labelform" default="Numero viaggio"/>
+            <span class="required-indicator">*</span>
+        </label>
+        <g:field name="numeroViaggio" type="number" value="${viaggioInstance.numeroViaggio}" required=""/>
+    </div>
+
     <div class="fieldcontain ${hasErrors(bean: viaggioInstance, field: 'prelievo', 'error')} ">
         <label for="prelievo">
             <g:message code="viaggio.prelievo.labelform" default="Prelievo"/>

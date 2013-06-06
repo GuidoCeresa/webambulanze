@@ -258,6 +258,15 @@
             
         </li>
         
+        <li class="fieldcontain">
+            <span id="numeroServiziEffettuati-label" class="property-label"><g:message
+                    code="settings.numeroServiziEffettuati.labelform" default="Numero Servizi Effettuati"/></span>
+            
+            <span class="property-value" aria-labelledby="numeroServiziEffettuati-label"><g:fieldValue bean="${settingsInstance}"
+                                                                                         field="numeroServiziEffettuati"/></span>
+            
+        </li>
+        
     </ol>
 
     <g:if test="${campiExtra}">

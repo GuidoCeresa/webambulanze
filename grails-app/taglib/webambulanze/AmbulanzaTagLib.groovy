@@ -1431,10 +1431,10 @@ class AmbulanzaTagLib {
     def selezioneViaggio = {
         String testoOut = ''
 
-        testoOut += Lib.tagController('Viaggio', TipoViaggio.auto118.toString(), 'nuovo118')
-        testoOut += Lib.tagController('Viaggio', TipoViaggio.ordinario.toString(), 'nuovoOrdinario')
-        testoOut += Lib.tagController('Viaggio', TipoViaggio.dializzati.toString(), 'nuovoDializzati')
-        testoOut += Lib.tagController('Viaggio', TipoViaggio.interno.toString(), 'nuovoInterno')
+        testoOut += Lib.tagController('Viaggio', TipoViaggio.auto118.nome, 'nuovo118')
+        testoOut += Lib.tagController('Viaggio', TipoViaggio.ordinario.nome, 'nuovoOrdinario')
+        testoOut += Lib.tagController('Viaggio', TipoViaggio.dializzati.nome, 'nuovoDializzati')
+        testoOut += Lib.tagController('Viaggio', TipoViaggio.interno.nome, 'nuovoInterno')
 
         out << testoOut
     }// fine della closure
@@ -1448,7 +1448,7 @@ class AmbulanzaTagLib {
         String testoOut
         String testo
 
-        testo = 'Algos© - v3.0 del 5 giugno 2013'
+        testo = 'Algos© - v3.1 del 6 giugno 2013'
         testo = Lib.tagCella(testo, Aspetto.copyright)
         testoOut = Lib.tagTable(testo)
         return testoOut

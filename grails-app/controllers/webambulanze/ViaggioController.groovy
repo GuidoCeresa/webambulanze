@@ -31,11 +31,14 @@ class ViaggioController {
         Croce croce = croceService.getCroce(request)
         def campiLista = [
                 'numeroServizio',
+                'tipoViaggio',
                 'giorno',
                 'automezzo',
+                'numeroBolla',
+                'numeroViaggio',
+                'chilometriPercorsi',
                 'codiceInvio',
                 'codiceRicovero',
-                'chilometriPercorsi'
         ]
 
         if (params.order) {
@@ -60,7 +63,7 @@ class ViaggioController {
             lista = Viaggio.findAll(params)
         }// fine del blocco if-else
 
-        flash.errors =''
+        flash.errors = ''
         render(view: 'list', model: [viaggioInstanceList: lista, viaggioInstanceTotal: 0, campiLista: campiLista], params: params)
     } // fine del metodo
 
@@ -101,23 +104,31 @@ class ViaggioController {
     } // fine del metodo
 
     def nuovoViaggio() {
+        Croce croce = croceService.getCroce(request)
         params.siglaCroce = croceService.getSiglaCroce(request)
         String tipoViaggio = params.tipoViaggio
         Automezzo automezzo
-        String numViaggi
+        Settings settingsCroce
 
         //--valori recuperati dal DB
         if (params.automezzo) {
             automezzo = Automezzo.findById(Long.decode(params.automezzo.id))
             if (automezzo) {
-                numViaggi = automezzo.numeroViaggiEffettuati
+                params.numeroViaggio = automezzo.numeroViaggiEffettuati + 1
                 params.chilometriPartenza = automezzo.chilometriTotaliPercorsi
                 params.chilometriArrivo = automezzo.chilometriTotaliPercorsi
+            }// fine del blocco if
+        }// fine del blocco if
+        if (croce) {
+            settingsCroce = croce.settings
+            if (settingsCroce) {
+                params.numeroServizio = settingsCroce.numeroServiziEffettuati + 1
             }// fine del blocco if
         }// fine del blocco if
 
         //--valori suggeriti
         if (true) {
+            params.tipoViaggio = TipoViaggio.auto118
             params.codiceInvio = CodiceInvio.verde
             params.luogoEvento = LuogoEvento.Z
             params.codiceRicovero = CodiceRicovero.normale
@@ -132,6 +143,8 @@ class ViaggioController {
     } // fine del metodo
 
     def save() {
+        params.tipoViaggio = TipoViaggio.auto118   //@todo ASSOLUTAMENTE PROVVISORIO
+
         def viaggioInstance = new Viaggio(params)
         Croce croce = croceService.getCroce(request)
 
@@ -174,7 +187,8 @@ class ViaggioController {
         }// fine del blocco if
 
         if (viaggioInstance) {
-            afterRegolaChilometri(viaggioInstance.id)
+            afterRegolaAutomezzo(viaggioInstance.id)
+            afterRegolaSettingsCroce(viaggioInstance.id)
         }// fine del blocco if
 
         flash.message = message(code: 'default.created.message', args: [message(code: 'viaggio.label', default: 'Viaggio'), viaggioInstance.id])
@@ -229,7 +243,8 @@ class ViaggioController {
         }
 
         if (viaggioInstance) {
-            afterRegolaChilometri(viaggioInstance.id)
+            afterRegolaAutomezzo(viaggioInstance.id)
+            afterRegolaSettingsCroce(viaggioInstance.id)
         }// fine del blocco if
 
         flash.message = message(code: 'default.updated.message', args: [message(code: 'viaggio.label', default: 'Viaggio'), viaggioInstance.id])
@@ -239,7 +254,7 @@ class ViaggioController {
     /**
      * metodo chiamato dopo aver creato o modificato un record
      */
-    public afterRegolaChilometri(Long id) {
+    public afterRegolaAutomezzo(Long id) {
         Automezzo auto
         def viaggioInstance = Viaggio.get(id)
 
@@ -247,7 +262,24 @@ class ViaggioController {
             auto = viaggioInstance.automezzo
             if (auto) {
                 auto.chilometriTotaliPercorsi = viaggioInstance.chilometriArrivo
+                auto.numeroViaggiEffettuati = viaggioInstance.numeroViaggio
                 auto.save(flush: true)
+            }// fine del blocco if
+        }// fine del blocco if
+    } // fine del metodo
+
+    /**
+     * metodo chiamato dopo aver creato o modificato un record
+     */
+    public afterRegolaSettingsCroce(Long id) {
+        Croce croce = croceService.getCroce(request)
+        Settings settingsCroce
+        def viaggioInstance = Viaggio.get(id)
+
+        if (croce) {
+            settingsCroce = croce.settings
+            if (settingsCroce) {
+                settingsCroce.numeroServiziEffettuati = viaggioInstance.numeroServizio
             }// fine del blocco if
         }// fine del blocco if
     } // fine del metodo

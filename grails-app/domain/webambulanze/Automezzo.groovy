@@ -27,7 +27,7 @@ class Automezzo {
     //--se modificato da qui, occorre un avviso
     int chilometriTotaliPercorsi = 0
 
-    //--progressivo dei viagi effettuati
+    //--progressivo dei viaggi effettuati dal mezzo
     //--aggiornato automaticamente da ogni nuovo viaggio
     //--se modificato da qui, occorre un avviso
     int numeroViaggiEffettuati = 0

@@ -408,6 +408,24 @@
 <g:checkBox name="usaModuloViaggi" value="${settingsInstance?.usaModuloViaggi}" />
 </div>
 
+<div class="fieldcontain ${hasErrors(bean: settingsInstance, field: 'numeroServiziEffettuati', 'error')} required">
+	<label for="numeroServiziEffettuati">
+		<g:message code="settings.numeroServiziEffettuati.labelform" default="Numero Servizi Effettuati" />
+		<span class="required-indicator">*</span>
+	</label>
+	
+
+
+
+
+
+
+
+
+
+<g:field name="numeroServiziEffettuati" type="number" value="${settingsInstance.numeroServiziEffettuati}" required=""/>
+</div>
+
 <g:if test="${campiExtra}">
     <amb:extraSchedaForm rec="${settingsInstance}" campiExtra="${campiExtra}"></amb:extraSchedaForm>
 </g:if>

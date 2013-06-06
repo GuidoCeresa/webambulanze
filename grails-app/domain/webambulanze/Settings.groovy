@@ -96,6 +96,11 @@ class Settings {
     //--abilitazione al modulo
     boolean usaModuloViaggi = false
 
+    //--progressivo dei servizi effettuati da tutti i mezzi della croce
+    //--aggiornato automaticamente da ogni nuovo viaggio
+    //--se modificato da qui, occorre un avviso
+    int numeroServiziEffettuati = 0
+
     /**
      * regolazione delle proprietà di ogni campo
      * l'ordine con cui vengono elencati qui, viene rispettato nella lista e nella scheda standard
@@ -124,6 +129,7 @@ class Settings {
         fissaLimiteMassimoSingoloTurno()
         oreMassimeSingoloTurno()
         usaModuloViaggi()
+        numeroServiziEffettuati()
     } // end of static constraints
 
     /*+
