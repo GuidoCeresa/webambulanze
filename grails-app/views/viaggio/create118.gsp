@@ -237,7 +237,9 @@
 </fieldset>
 <fieldset class="buttons">
     <g:submitButton name="create" class="save"
-                    value="${message(code: 'default.button.create.label', default: 'Create')}"/>
+                    value="${message(code: 'default.button.confirm.label', default: 'Create')}"/>
+    <g:submitButton name="list" class="list"         annulla=""
+                    value="${message(code: 'default.button.cancel.label', default: 'Annulla')}"/>
 </fieldset>
 </g:form>
 </div>

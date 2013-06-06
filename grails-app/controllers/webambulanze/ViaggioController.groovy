@@ -142,7 +142,16 @@ class ViaggioController {
         }// fine del blocco if-else
     } // fine del metodo
 
+    def pippoz() {
+        def stop
+    }
+
     def save() {
+        if (params.list) {
+            redirect(action: 'list')
+            return
+        }// fine del blocco if
+
         params.tipoViaggio = TipoViaggio.auto118   //@todo ASSOLUTAMENTE PROVVISORIO
 
         def viaggioInstance = new Viaggio(params)
@@ -191,15 +200,16 @@ class ViaggioController {
             afterRegolaSettingsCroce(viaggioInstance.id)
         }// fine del blocco if
 
-        flash.message = message(code: 'default.created.message', args: [message(code: 'viaggio.label', default: 'Viaggio'), viaggioInstance.id])
-        redirect(action: "show", id: viaggioInstance.id)
+//        flash.message = message(code: 'default.created.message', args: [message(code: 'viaggio.label', default: 'Viaggio'), viaggioInstance.id])
+        flash.message='Registrato il servizio n° '+ viaggioInstance.numeroServizio
+        redirect(action: 'list')
     } // fine del metodo
 
     def show(Long id) {
         def viaggioInstance = Viaggio.get(id)
         if (!viaggioInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'viaggio.label', default: 'Viaggio'), id])
-            redirect(action: "list")
+            redirect(action: 'list')
             return
         }
 
@@ -210,7 +220,7 @@ class ViaggioController {
         def viaggioInstance = Viaggio.get(id)
         if (!viaggioInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'viaggio.label', default: 'Viaggio'), id])
-            redirect(action: "list")
+            redirect(action: 'list')
             return
         }
 
@@ -221,7 +231,7 @@ class ViaggioController {
         def viaggioInstance = Viaggio.get(id)
         if (!viaggioInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'viaggio.label', default: 'Viaggio'), id])
-            redirect(action: "list")
+            redirect(action: 'list')
             return
         }
 
@@ -248,7 +258,7 @@ class ViaggioController {
         }// fine del blocco if
 
         flash.message = message(code: 'default.updated.message', args: [message(code: 'viaggio.label', default: 'Viaggio'), viaggioInstance.id])
-        redirect(action: "show", id: viaggioInstance.id)
+        redirect(action: 'list')
     } // fine del metodo
 
     /**
