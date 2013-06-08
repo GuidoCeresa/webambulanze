@@ -35,7 +35,7 @@ public enum Mese {
 
     // l'anno parte da gennaio che è il numero 1
     public static int getGiorni(int ord) {
-        int giorni
+        int giorni   =0
         Mese mese = getMese(ord)
 
         if (mese) {
@@ -49,7 +49,7 @@ public enum Mese {
         Mese mese = null
         ord = ord - 1
 
-        Mese.values()?.each {
+        values()?.each {
             if (it.ordinal() == ord) {
                 mese = it
             }// fine del blocco if
@@ -89,7 +89,7 @@ public enum Mese {
         String stringa = ''
         String sep = ', '
 
-        Mese.values()?.each {
+        values()?.each {
             stringa += it.getBreve()
             stringa += sep
         }// fine del ciclo each

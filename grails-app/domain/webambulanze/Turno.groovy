@@ -9,7 +9,7 @@ class Turno {
     //--tipologia del turno
     TipoTurno tipoTurno
 
-    //--giorno di svolgimento del tuno (giorno iniziale se termina il mattino dopo)
+    //--giorno di svolgimento del turno (giorno iniziale se termina il mattino dopo)
     //--ore e minuti sono sempre a zero
     Date giorno
     //--giorno, ora e minuto di inizio turno

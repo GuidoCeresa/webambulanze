@@ -57,9 +57,6 @@ class LoginController {
         ArrayList<String> listaUtenti = null
         ArrayList<String> listaUtentiNick = null
         def config = SpringSecurityUtils.securityConfig
-        String nick
-        int pos = 0
-        String tag = '/'
 
         croce = croceService.getCroce(request)
 

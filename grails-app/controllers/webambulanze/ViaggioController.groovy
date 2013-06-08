@@ -22,6 +22,14 @@ class ViaggioController {
     // il service viene iniettato automaticamente
     def croceService
 
+    // utilizzo di un service con la businessLogic per l'elaborazione dei dati
+    // il service viene iniettato automaticamente
+    def automezzoService
+
+    // utilizzo di un service con la businessLogic per l'elaborazione dei dati
+    // il service viene iniettato automaticamente
+    def turnoService
+
     def index() {
         redirect(action: 'list', params: params)
     } // fine del metodo
@@ -68,10 +76,20 @@ class ViaggioController {
     } // fine del metodo
 
     def create() {
+        Croce croce = croceService.getCroce(request)
         params.siglaCroce = croceService.getSiglaCroce(request)
-        render(view: 'selezionetipo', params: params)
+        ArrayList listaTipologieViaggi = TipoViaggio.getListaNomi()
+        ArrayList listaAutomezzi = automezzoService.getAllTarga()
+        ArrayList listaUltimiTurni = turnoService.getLastTwoDays(croce)
+        ArrayList listaUltimiTurniId = turnoService.getLastTwoDaysId(croce)
 
-//        [viaggioInstance: new Viaggio(params)]
+        //        render(view: 'selezionetipo', params: params)
+        render(view: 'selezione', model: [
+                listaTipologieViaggi: listaTipologieViaggi,
+                listaAutomezzi: listaAutomezzi,
+                listaUltimiTurni: listaUltimiTurni,
+                listaUltimiTurniId: listaUltimiTurniId],
+                params: params)
     } // fine del metodo
 
     def nuovo118() {
@@ -108,16 +126,27 @@ class ViaggioController {
         params.siglaCroce = croceService.getSiglaCroce(request)
         String tipoViaggio = params.tipoViaggio
         Automezzo automezzo
+        Turno turno
+        long turnoId
         Settings settingsCroce
 
         //--valori recuperati dal DB
-        if (params.automezzo) {
-            automezzo = Automezzo.findById(Long.decode(params.automezzo.id))
+        if (params.tipoViaggio) {
+            def stop
+        }// fine del blocco if
+
+        if (params.auto) {
+            automezzo = Automezzo.findByCroceAndTarga(croce, params.auto)
             if (automezzo) {
+                params.automezzo = automezzo
                 params.numeroViaggio = automezzo.numeroViaggiEffettuati + 1
                 params.chilometriPartenza = automezzo.chilometriTotaliPercorsi
                 params.chilometriArrivo = automezzo.chilometriTotaliPercorsi
-            }// fine del blocco if
+            } else {
+                flash.errors = "Devi selezionare un automezzo, prima di proseguire"
+                redirect(action: 'create')
+                return
+            }// fine del blocco if-else
         }// fine del blocco if
         if (croce) {
             settingsCroce = croce.settings
@@ -125,6 +154,31 @@ class ViaggioController {
                 params.numeroServizio = settingsCroce.numeroServiziEffettuati + 1
             }// fine del blocco if
         }// fine del blocco if
+
+        if (params.turno) {
+            turnoId = Long.decode(params.turno)
+            if (turnoId) {
+                turno = Turno.findById(turnoId)
+                if (turno) {
+                    if (turno.militeFunzione1) {
+                        params.autistaEmergenza = turno.militeFunzione1
+                    }// fine del blocco if
+                    if (turno.militeFunzione2) {
+                        params.soccorritoreDae = turno.militeFunzione2
+                    }// fine del blocco if
+                    if (turno.militeFunzione3) {
+                        params.soccorritore = turno.militeFunzione3
+                    }// fine del blocco if
+                    if (turno.militeFunzione4) {
+                        params.barelliereAffiancamento = turno.militeFunzione4
+                    }// fine del blocco if
+                }// fine del blocco if
+            }// fine del blocco if
+        } else {
+            flash.errors = "Devi selezionare un turno, prima di proseguire"
+            redirect(action: 'create')
+            return
+        }// fine del blocco if-else
 
         //--valori suggeriti
         if (true) {
@@ -135,16 +189,13 @@ class ViaggioController {
             params.patologia = Patologia.C20
         }// fine del blocco if
 
-        if (tipoViaggio.equals('118')) {
+        if (true) {
+            //    if (tipoViaggio.equals('118')) {
             render(view: 'create118', model: [viaggioInstance: new Viaggio(params)], params: params)
         } else {
             render(view: 'selezionemancante', params: params)
         }// fine del blocco if-else
     } // fine del metodo
-
-    def pippoz() {
-        def stop
-    }
 
     def save() {
         if (params.list) {
@@ -201,7 +252,7 @@ class ViaggioController {
         }// fine del blocco if
 
 //        flash.message = message(code: 'default.created.message', args: [message(code: 'viaggio.label', default: 'Viaggio'), viaggioInstance.id])
-        flash.message='Registrato il servizio n° '+ viaggioInstance.numeroServizio
+        flash.message = 'Registrato il servizio n° ' + viaggioInstance.numeroServizio
         redirect(action: 'list')
     } // fine del metodo
 

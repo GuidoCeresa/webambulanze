@@ -8,15 +8,15 @@ package webambulanze
  */
 public enum TipoViaggio {
 
-    auto118('118','Servizio automedica del 118'),
-    ordinario('ord','Servizio ambulanza ordinario (per adesso non funziona)'),
-    dializzati('dia','Servizio trasporto dializzati (per adesso non funziona)'),
-    interno('int','Servizio interno (per adesso non funziona)')
+    auto118('118', 'Servizio automedica del 118'),
+    ordinario('ord', 'Servizio ambulanza ordinario (per adesso non funziona)'),
+    dializzati('dia', 'Servizio trasporto dializzati (per adesso non funziona)'),
+    interno('int', 'Servizio interno (per adesso non funziona)')
 
     String sigla
     String nome
 
-    TipoViaggio(String sigla,String nome) {
+    TipoViaggio(String sigla, String nome) {
         this.sigla = sigla
         this.nome = nome
     }// fine del metodo costruttore
@@ -27,5 +27,17 @@ public enum TipoViaggio {
     String toString() {
         return sigla
     } // end of toString
+
+    public static ArrayList getListaNomi() {
+        ArrayList lista = new ArrayList()
+        String nome
+
+        values()?.each {
+            nome = it.nome
+            lista.add(nome)
+        }// fine del ciclo each
+
+        return lista
+    }// fine del metodo statico
 
 }// fine della classe Enumeration

@@ -1448,7 +1448,7 @@ class AmbulanzaTagLib {
         String testoOut
         String testo
 
-        testo = 'Algos© - v3.1 del 6 giugno 2013'
+        testo = 'Algos© - v3.2 del 8 giugno 2013'
         testo = Lib.tagCella(testo, Aspetto.copyright)
         testoOut = Lib.tagTable(testo)
         return testoOut
