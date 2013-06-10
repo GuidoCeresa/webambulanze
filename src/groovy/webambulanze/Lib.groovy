@@ -348,6 +348,7 @@ class Lib {
             if (value instanceof Date) {
                 if (value instanceof Timestamp) {
                     testo = getCampoTabellaTime(app, cont, id, value)
+                    testo = getCampoTabellaData(app, cont, id, value)
                 } else {
                     testo = getCampoTabellaData(app, cont, id, value)
                 }// fine del blocco if-else

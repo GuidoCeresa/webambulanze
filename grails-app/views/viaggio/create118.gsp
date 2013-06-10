@@ -41,14 +41,18 @@
 
 <g:form action="save">
 <fieldset class="form">
+    <g:hiddenField name="automezzoId" value="${automezzoId}"/>
 
-    <div class="fieldcontain ${hasErrors(bean: viaggioInstance, field: 'automezzo', 'error')} required">
-        <label for="automezzo">
+    <div class="fieldcontain">
+        <label>Turno</label>
+        <a href="/webambulanze/turno/show/${turnoId}">${siglaTurno}</a>
+    </div>
+
+    <div class="fieldcontain">
+        <label>
             <g:message code="viaggio.automezzo.labelform" default="Automezzo"/>
-            <span class="required-indicator">*</span>
         </label>
-        <g:select id="automezzo" name="automezzo.id" from="${webambulanze.Automezzo.list()}" optionKey="id"
-                  required="" value="${viaggioInstance?.automezzo?.id}" class="many-to-one"/>
+        <a href="/webambulanze/automezzo/show/${automezzoId}">${siglaAutomezzo}</a>
     </div>
 
     <div class="fieldcontain ${hasErrors(bean: viaggioInstance, field: 'chilometriPartenza', 'error')} required">
@@ -202,9 +206,8 @@
             <g:message code="viaggio.autistaEmergenza.labelform" default="Autista Emergenza"/>
             <span class="required-indicator">*</span>
         </label>
-        <g:select id="autista" name="autistaEmergenza.id" from="${Milite.list()}" optionKey="id"
-                  required=""
-                  value="${viaggioInstance?.autistaEmergenza?.id}" class="many-to-one"/>
+        <g:select id="autistaEmergenza" name="autistaEmergenza.id" from="${listaAutisti}" optionKey="id"
+                  required="" value="${viaggioInstance?.autistaEmergenza?.id}" class="many-to-one"/>
     </div>
 
     <div class="fieldcontain ${hasErrors(bean: viaggioInstance, field: 'soccorritoreDae', 'error')} required">
@@ -212,7 +215,7 @@
             <g:message code="viaggio.soccorritoreDae.labelform" default="Soccorritore Dae"/>
             <span class="required-indicator">*</span>
         </label>
-        <g:select id="soccorritoreDae" name="soccorritoreDae.id" from="${Milite.list()}" optionKey="id"
+        <g:select id="soccorritoreDae" name="soccorritoreDae.id" from="${listaSocDae}" optionKey="id"
                   required="" value="${viaggioInstance?.soccorritoreDae?.id}" class="many-to-one"/>
     </div>
 
@@ -220,7 +223,7 @@
         <label for="soccorritore">
             <g:message code="viaggio.soccorritore.labelform" default="Soccorritore"/>
         </label>
-        <g:select id="soccorritore" name="soccorritore.id" from="${Milite.list()}" optionKey="id"
+        <g:select id="soccorritore" name="soccorritore.id" from="${listaSoccorritori}" optionKey="id"
                   value="${viaggioInstance?.soccorritore?.id}" class="many-to-one" noSelection="['null': '']"/>
     </div>
 
@@ -229,7 +232,7 @@
             <g:message code="viaggio.barelliereAffiancamento.labelform" default="Barelliere Affiancamento"/>
         </label>
         <g:select id="barelliereAffiancamento" name="barelliereAffiancamento.id"
-                  from="${Milite.list()}" optionKey="id"
+                  from="${listaBarellieri}" optionKey="id"
                   value="${viaggioInstance?.barelliereAffiancamento?.id}" class="many-to-one"
                   noSelection="['null': '']"/>
     </div>
@@ -238,7 +241,7 @@
 <fieldset class="buttons">
     <g:submitButton name="create" class="save"
                     value="${message(code: 'default.button.confirm.label', default: 'Create')}"/>
-    <g:submitButton name="list" class="list"         annulla=""
+    <g:submitButton name="list" class="list" annulla=""
                     value="${message(code: 'default.button.cancel.label', default: 'Annulla')}"/>
 </fieldset>
 </g:form>

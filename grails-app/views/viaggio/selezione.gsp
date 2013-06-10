@@ -54,7 +54,7 @@
     }
 
     h2 {
-        margin-top: 1em;
+        margin-top: 0em;
         margin-bottom: 0.3em;
         font-size: 1.4em;
     }
@@ -64,6 +64,15 @@
         margin-bottom: 0.7em;
         font-size: 0.8em;
         color: #ff3300;
+    }
+
+    .algoslabel {
+        margin-left: 0em;
+        margin-top: 1em;
+        margin-bottom: 0em;
+        color: #48802c;
+        font-weight: bold;
+        font-size: 1.25em;
     }
 
     p {
@@ -146,33 +155,23 @@
     <g:hiddenField name="version" value="${viaggioInstance?.version}"/>
     <g:hiddenField name="tipoViaggio" value="${tipoViaggio}"/>
 
-    <div id="algosform">
+    <fieldset class="form">
         <h2>Nuovo viaggio</h2>
-    </div>
 
-    <div id="algosservizio">
-        <h1>Selezione del tipo di viaggio effettuato:</h1>
-
+        <label class="algoslabel">Selezione del tipo di viaggio effettuato:</label>
+        <g:select name="tipoViaggio" from="${listaTipologieViaggi}" required=""
+                  value="${tipoSelezionato}" noSelection="['null': '']"/>
         <h3>(Prepara il form adeguato)</h3>
-        <g:select name="tipoViaggio" keys="${listaTipologieViaggi}" from="${listaTipologieViaggi}"
-                  value="${listaTipologieViaggi}" required="" class="many-to-one"/>
-    </div>
 
-    <div id="algosmezzo">
-        <h1>Automezzo impiegato</h1>
-
+        <label class="algoslabel">Automezzo impiegato nel servizio:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        <g:select name="auto" from="${listaAutomezzi}" required="" noSelection="['null': '']"/>
         <h3>(Recupera i chilometri ed i viaggi effettuati dal mezzo)</h3>
-        <g:select name="auto" keys="${listaAutomezzi}" from="${listaAutomezzi}" value="${listaAutomezzi}"
-                  required="" class="many-to-one"/>
-    </div>
 
-    <div id="algosturno">
-        <h1>Turno di riferimento</h1>
+        <label class="algoslabel">Turno di riferimento:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        <g:select name="turno" keys="${listaUltimiTurniId}" from="${listaUltimiTurni}" noSelection="['null': '']"/>
+        <h3>(Recupera i militi presenti nel turno)</h3>
 
-        <h3>(Recupera i militi presenti nel tuno)</h3>
-        <g:select name="turno" keys="${listaUltimiTurniId}" from="${listaUltimiTurni}"
-                  value="${listaUltimiTurni}" class="many-to-one"/>
-    </div>
+    </fieldset>
 
     <fieldset class="buttons">
         <g:actionSubmit class="save" action="nuovoViaggio"
