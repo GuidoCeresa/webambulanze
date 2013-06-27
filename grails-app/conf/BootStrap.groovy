@@ -229,6 +229,11 @@ class BootStrap implements Cost {
             cancellaKilometro()
         }// fine del blocco if
 
+        //--aggiunta di nuovi militi all'elenco militi per la Croce Rossa Ponte Taro
+        if (installaVersione(35)) {
+            militiRossaPonteTaroAggiuntivi()
+        }// fine del blocco if
+
         //--creazione dei record utenti per la pubblica castello
 //        if (installaVersione(99)) {
 //            utentiPubblicacastello()
@@ -3242,6 +3247,119 @@ class BootStrap implements Cost {
 
         //@todo devi eliminarlo con MSQLQueryBrowser
         newVersione(CROCE_ROSSA_PONTETARO, 'DB', "Eliminato il campo 'contakilometri' della tavola 'Automezzo'")
+    }// fine del metodo
+
+    //--aggiunta di nuovi militi all'elenco militi per la Croce Rossa Ponte Taro
+    //--elenco disponibile in csv
+    //--li crea SOLO se non esistono già
+    private static void militiRossaPonteTaroAggiuntivi() {
+        Croce croce = Croce.findBySigla(CROCE_ROSSA_PONTETARO)
+        String nomeFileSoci = 'crptnew'
+        def righe
+        String nominativo = ''
+        int pos = 0
+        String nome = ''
+        String cognome = ''
+        String telefono = ''
+        String fisso = ''
+        String mail = ''
+        String dataNascitaTxt = ''
+        Date dataNascita = null
+        Map mappa
+        Milite milite
+        String tagSep = '-'
+        String prima
+        String dopo
+        String tagSpazio = ' '
+        Funzione bar = Funzione.findByCroceAndSigla(croce, CRPT_FUNZIONE_BAR)
+
+        if (!ESISTE_COLLEGAMENTO_INTERNET) {
+            return
+        }// fine del blocco if
+
+        if (!croce) {
+            return
+        }// fine del blocco if
+
+        righe = LibFile.leggeCsv(DIR_PATH + nomeFileSoci)
+        righe?.each {
+            nominativo = ''
+            cognome = ''
+            nome = ''
+            telefono = ''
+            fisso = ''
+            mail = ''
+            dataNascitaTxt = ''
+
+            mappa = (Map) it
+
+            if (mappa.NOMINATIVO) {
+                nominativo = mappa.NOMINATIVO
+                pos = nominativo.indexOf(' ')
+                if (pos) {
+                    cognome = nominativo.substring(0, pos)
+                    cognome = cognome.trim()
+                    cognome = Lib.primaMaiuscola(cognome)
+                    nome = nominativo.substring(pos + 1)
+                    nome = nome.trim()
+                    nome = Lib.primaMaiuscola(nome)
+                }// fine del blocco if
+            }// fine del blocco if
+
+            if (mappa.cellulare) {
+                telefono = mappa.cellulare
+                pos = 3
+                prima = telefono.substring(0, pos)
+                dopo = telefono.substring(pos)
+                telefono = prima + tagSpazio + dopo
+            }// fine del blocco if
+
+            if (mappa.fisso) {
+                fisso = mappa.fisso
+                if (fisso.contains(tagSep)) {
+                    pos = fisso.indexOf(tagSep)
+                    prima = fisso.substring(0, pos)
+                    dopo = fisso.substring(pos+1)
+                    fisso = prima + dopo
+                }// fine del blocco if
+                pos = 4
+                prima = fisso.substring(0, pos)
+                dopo = fisso.substring(pos)
+                fisso = prima + tagSpazio + dopo
+            }// fine del blocco if
+
+            if (mappa.MAIL) {
+                mail = mappa.MAIL
+                if (mail.equals(' ')) {
+                    mail = ''
+                }// fine del blocco if
+            }// fine del blocco if
+
+            if (mappa.nascita) {
+                dataNascitaTxt = mappa.nascita
+                if (dataNascitaTxt) {
+                    dataNascita = Lib.creaData(dataNascitaTxt)
+                }// fine del blocco if
+            }// fine del blocco if
+
+            milite = Milite.findOrCreateByCroceAndNomeAndCognome(croce, nome, cognome)
+            if (!milite.telefonoCellulare) {
+                milite.telefonoCellulare = telefono
+            }// fine del blocco if
+            if (!milite.telefonoFisso) {
+                milite.telefonoFisso = fisso
+            }// fine del blocco if
+            if (!milite.email) {
+                milite.email = mail
+            }// fine del blocco if
+            if (!milite.dataNascita) {
+                milite.dataNascita = dataNascita
+            }// fine del blocco if
+            milite.save(failOnError: true)
+            if (milite) {
+                Militefunzione.findOrCreateByCroceAndMiliteAndFunzione(croce, milite, bar).save(flush: true)
+            }// fine del blocco if
+        } // fine del ciclo each
     }// fine del metodo
 
     def destroy = {
