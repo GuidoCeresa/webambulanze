@@ -3360,6 +3360,8 @@ class BootStrap implements Cost {
                 Militefunzione.findOrCreateByCroceAndMiliteAndFunzione(croce, milite, bar).save(flush: true)
             }// fine del blocco if
         } // fine del ciclo each
+
+        newVersione(CROCE_ROSSA_PONTETARO, 'Militi', 'Aggiunta militi nuovo corso')
     }// fine del metodo
 
     def destroy = {
