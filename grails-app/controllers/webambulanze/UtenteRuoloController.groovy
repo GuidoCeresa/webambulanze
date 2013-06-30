@@ -72,7 +72,7 @@ class UtenteRuoloController {
     } // fine del metodo
 
     def show(Long id) {
-        def utenteRuoloInstance = UtenteRuolo.get(id)
+        def utenteRuoloInstance = UtenteRuolo.get(24)
         if (!utenteRuoloInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'utenteRuolo.label', default: 'UtenteRuolo'), id])
             redirect(action: "list")

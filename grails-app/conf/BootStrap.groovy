@@ -239,6 +239,11 @@ class BootStrap implements Cost {
             rossaPonteTaroBloccoSettimanale()
         }// fine del blocco if
 
+        //--modifica di un ruolo admin della croce rossa ponte taro
+        if (installaVersione(37)) {
+            fixRuoloCRPT()
+        }// fine del blocco if
+
         //--creazione dei record utenti per la pubblica castello
 //        if (installaVersione(99)) {
 //            utentiPubblicacastello()
@@ -3386,6 +3391,36 @@ class BootStrap implements Cost {
         }// fine del blocco if
 
         newVersione(CROCE_ROSSA_PONTETARO, 'Controlli', 'Aggiunta controllo temporale bloccoSettimanale')
+    }// fine del metodo
+
+    //--modifica di un ruolo admin della croce rossa ponte taro
+    private static void fixRuoloCRPT() {
+        String nickOld = 'Gallo Gennaro'
+        String nickNew = 'Giulivi Scilla'
+        Croce croce = Croce.findBySigla(CROCE_ROSSA_PONTETARO)
+        Ruolo ruoloAdmin = Ruolo.findByAuthority(ROLE_ADMIN)
+        Ruolo ruoloMilite = Ruolo.findByAuthority(ROLE_MILITE)
+        Utente utenteGallo = Utente.findByCroceAndNickname(croce, nickOld)
+        Utente utenteScilla = Utente.findByCroceAndNickname(croce, nickNew)
+        UtenteRuolo utenteRuolo
+
+        if (ruoloAdmin && utenteGallo) {
+            utenteRuolo = UtenteRuolo.findByRuoloAndUtente(ruoloAdmin, utenteGallo)
+            if (utenteRuolo && ruoloMilite) {
+                utenteRuolo.delete(flush: true)
+                UtenteRuolo.findOrCreateByRuoloAndUtente(ruoloMilite, utenteGallo).save(failOnError: true)
+            }// fine del blocco if
+        }// fine del blocco if
+
+        if (ruoloMilite && utenteScilla) {
+            utenteRuolo = UtenteRuolo.findByRuoloAndUtente(ruoloMilite, utenteScilla)
+            if (utenteRuolo && ruoloAdmin) {
+                utenteRuolo.delete(flush: true)
+                UtenteRuolo.findOrCreateByRuoloAndUtente(ruoloAdmin, utenteScilla).save(failOnError: true)
+            }// fine del blocco if
+        }// fine del blocco if
+
+        newVersione(CROCE_ROSSA_PONTETARO, 'Security', 'Cambiato admin da Gallo -> Giulivi')
     }// fine del metodo
 
     def destroy = {
