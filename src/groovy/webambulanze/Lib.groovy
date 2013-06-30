@@ -1082,11 +1082,21 @@ class Lib {
     }// fine del metodo
 
     public static int getNumSettimana(Date giornoIn) {
+        int numSettimana
+        Calendar cal = Calendar.getInstance()
+
+        cal.setTime(giornoIn)
+        numSettimana = cal.get(Calendar.DAY_OF_WEEK)
+
+        return numSettimana
+    }// fine del metodo
+
+    public static int getSettimana(Date giornoIn) {
         int settimana
         Calendar cal = Calendar.getInstance()
 
         cal.setTime(giornoIn)
-        settimana = cal.get(Calendar.DAY_OF_WEEK)
+        settimana = cal.get(Calendar.WEEK_OF_YEAR)
 
         return settimana
     }// fine del metodo
@@ -1098,6 +1108,24 @@ class Lib {
         durata = Math.abs(durata)
 
         return durata
+    }// fine del metodo
+
+    public static int getNumSettimanaOdierna() {
+        int settimana
+        Date oggi = creaDataOggi()
+
+        settimana = getSettimana(oggi)
+
+        return settimana
+    }// fine del metodo
+
+    public static int getNumSettimanaTurno(Turno turno) {
+        int settimana
+        Date giornoTurno = turno.giorno
+
+        settimana = getSettimana(giornoTurno)
+
+        return settimana
     }// fine del metodo
 
     //--Costruisce il tag controller per il testo indicato

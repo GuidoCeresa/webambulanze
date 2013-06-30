@@ -234,6 +234,11 @@ class BootStrap implements Cost {
             militiRossaPonteTaroAggiuntivi()
         }// fine del blocco if
 
+        //--controlloTemporale aggiunto per la Croce Rossa Ponte Taro
+        if (installaVersione(36)) {
+            rossaPonteTaroBloccoSettimanale()
+        }// fine del blocco if
+
         //--creazione dei record utenti per la pubblica castello
 //        if (installaVersione(99)) {
 //            utentiPubblicacastello()
@@ -3319,7 +3324,7 @@ class BootStrap implements Cost {
                 if (fisso.contains(tagSep)) {
                     pos = fisso.indexOf(tagSep)
                     prima = fisso.substring(0, pos)
-                    dopo = fisso.substring(pos+1)
+                    dopo = fisso.substring(pos + 1)
                     fisso = prima + dopo
                 }// fine del blocco if
                 pos = 4
@@ -3362,6 +3367,25 @@ class BootStrap implements Cost {
         } // fine del ciclo each
 
         newVersione(CROCE_ROSSA_PONTETARO, 'Militi', 'Aggiunta militi nuovo corso')
+    }// fine del metodo
+
+    //--controlloTemporale aggiunto per la Croce Rossa Ponte Taro
+    private static void rossaPonteTaroBloccoSettimanale() {
+        Croce croce = Croce.findBySigla(CROCE_ROSSA_PONTETARO)
+        Settings settings
+
+        if (croce) {
+            settings = croce.settings
+            if (settings) {
+                settings.tipoControlloModifica = ControlloTemporale.bloccoSettimanale
+                settings.minGiorniMancantiModifica = 0
+                settings.tipoControlloCancellazione = ControlloTemporale.bloccoSettimanale
+                settings.minGiorniMancantiCancellazione = 0
+                settings.save(flush: true)
+            }// fine del blocco if
+        }// fine del blocco if
+
+        newVersione(CROCE_ROSSA_PONTETARO, 'Controlli', 'Aggiunta controllo temporale bloccoSettimanale')
     }// fine del metodo
 
     def destroy = {

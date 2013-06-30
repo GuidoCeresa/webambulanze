@@ -596,25 +596,13 @@ class TurnoController {
     //--controlla che i dati siano ''accettabili''
     private ArrayList esistonoErrori(Turno turno, mappa) {
         ArrayList listaErrori = new ArrayList()
-        String testoErrore
+        String testoErrore = ''
         int numMaxFunz = 4
         String campo
         ArrayList listaTmp = new ArrayList()
         HashMap mapTmp = new HashMap()
         boolean isAdmin = militeService.isLoggatoAdminOrMore()
-        boolean isControlloModificaTempoTrascorso = croceService.isControlloModificaTempoTrascorso(request)
-        int maxMinutiTrascorsiModifica = croceService.maxMinutiTrascorsiModifica(request)
-        long oldTime
-        long actualTime
-        int minutiTrascorsi
-        boolean modificatoMilite
-        boolean tempoScaduto = false
-        String milFunz
-        String modFunz
-        Milite milite
-        String oldMiliteIdTxt
-        String militeIdTxt = ''
-        Timestamp tempo
+        ControlloTemporale controlloModifica = croceService.getControlloModifica(request)
 
         //--le funzioni hardcoded sono al massimo 4
         for (int k = 1; k <= numMaxFunz; k++) {
@@ -631,47 +619,29 @@ class TurnoController {
             listaErrori.add(testoErrore)
         }// fine del blocco if
 
-        //--controllo che non sia  un admin
+        //--controllo che non sia un admin
         //--controllo che ci sia il flag dei settings
         //--controllo del tempo trascorso
+        //--controllo del blocco settimanale
         if (!isAdmin) {
-            if (isControlloModificaTempoTrascorso) {
-                actualTime = new Date().time
-                for (int k = 1; k <= numMaxFunz; k++) {
-                    oldMiliteIdTxt = ''
-                    militeIdTxt = ''
-                    oldTime = actualTime
-                    campo = 'militeFunzione' + k + '_id'
-                    milFunz = 'militeFunzione' + k
-                    modFunz = 'modificaFunzione' + k
-                    milite = turno."${milFunz}"
-                    if (milite) {
-                        oldMiliteIdTxt = milite.id.toString()
-                    }// fine del blocco if
-                    if (mappa."${campo}") {
-                        militeIdTxt = mappa."${campo}"
-                    }// fine del blocco if
+            switch (controlloModifica) {
+                case ControlloTemporale.tempoTrascorso:
+                    testoErrore = getErroreTempoTrascorso(turno, 4, mappa)
+                    break
+                case 2:
+                case ControlloTemporale.tempoMancante:
 
-                    modificatoMilite = (!militeIdTxt.equals(oldMiliteIdTxt))
+                    break
+                case 3:
+                case ControlloTemporale.bloccoSettimanale:
+                    testoErrore = getErroreBloccoSettimanale(turno, 4, mappa)
 
-                    if (modificatoMilite) {
-                        tempo = turno."${modFunz}"
-                        if (tempo) {
-                            oldTime = tempo.time
-                        }// fine del blocco if
-                        minutiTrascorsi = actualTime - oldTime
-                        minutiTrascorsi = minutiTrascorsi / 1000
-                        minutiTrascorsi = minutiTrascorsi / 60
-                        if (minutiTrascorsi > maxMinutiTrascorsiModifica) {
-                            tempoScaduto = true
-                        }// fine del blocco if
-                    }// fine del blocco if
-                } // fine del ciclo for
-
-                if (tempoScaduto) {
-                    testoErrore = 'Non puoi più modificare il turno, dopo 30 minuti'
-                    listaErrori.add(testoErrore)
-                }// fine del blocco if
+                    break
+                default: // caso non definito
+                    break
+            } // fine del blocco switch
+            if (testoErrore) {
+                listaErrori.add(testoErrore)
             }// fine del blocco if
         }// fine del blocco if
 
@@ -689,6 +659,110 @@ class TurnoController {
         }// fine del blocco if
 
         return listaErrori
+    } // fine del metodo
+
+    private String getErroreTempoTrascorso(Turno turno, int numMaxFunz, mappa) {
+        String testoErrore = ''
+        long actualTime
+        long oldTime
+        String oldMiliteIdTxt
+        String militeIdTxt
+        String campo
+        String milFunz
+        String modFunz
+        Milite milite
+        boolean modificatoMilite
+        Timestamp tempo
+        int maxMinutiTrascorsiModifica = croceService.maxMinutiTrascorsiModifica(request)
+        int minutiTrascorsi
+        boolean tempoScaduto = false
+
+        actualTime = new Date().time
+        for (int k = 1; k <= numMaxFunz; k++) {
+            oldMiliteIdTxt = ''
+            militeIdTxt = ''
+            oldTime = actualTime
+            campo = 'militeFunzione' + k + '_id'
+            milFunz = 'militeFunzione' + k
+            modFunz = 'modificaFunzione' + k
+            milite = turno."${milFunz}"
+            if (milite) {
+                oldMiliteIdTxt = milite.id.toString()
+            }// fine del blocco if
+            if (mappa."${campo}") {
+                militeIdTxt = mappa."${campo}"
+            }// fine del blocco if
+
+            modificatoMilite = (!militeIdTxt.equals(oldMiliteIdTxt))
+
+            if (modificatoMilite) {
+                tempo = turno."${modFunz}"
+                if (tempo) {
+                    oldTime = tempo.time
+                }// fine del blocco if
+                minutiTrascorsi = actualTime - oldTime
+                minutiTrascorsi = minutiTrascorsi / 1000
+                minutiTrascorsi = minutiTrascorsi / 60
+                if (minutiTrascorsi > maxMinutiTrascorsiModifica) {
+                    tempoScaduto = true
+                }// fine del blocco if
+            }// fine del blocco if
+        } // fine del ciclo for
+
+        if (tempoScaduto) {
+            testoErrore = 'Non puoi modificare il turno dopo che sono passati più di ' + maxMinutiTrascorsiModifica + ' minuti da quando ti sei segnato'
+        }// fine del blocco if
+
+        return testoErrore
+    } // fine del metodo
+
+    private static String getErroreBloccoSettimanale(Turno turno, int numMaxFunz, mappa) {
+        String testoErrore = ''
+        long actualTime
+        long oldTime
+        String oldMiliteIdTxt
+        String militeIdTxt
+        String campo
+        String milFunz
+        String modFunz
+        Milite milite
+        boolean modificatoMilite
+        int settimanaCorrente
+        int settimanaTurno
+        boolean iniziataSettimanaCorrente = false
+
+        for (int k = 1; k <= numMaxFunz; k++) {
+            modificatoMilite = false
+            oldMiliteIdTxt = ''
+            militeIdTxt = ''
+            campo = 'militeFunzione' + k + '_id'
+            milFunz = 'militeFunzione' + k
+            milite = turno."${milFunz}"
+            if (milite) {
+                oldMiliteIdTxt = milite.id.toString()
+            }// fine del blocco if
+            if (mappa."${campo}") {
+                militeIdTxt = mappa."${campo}"
+            }// fine del blocco if
+
+            if (milite && milite.id) {
+                modificatoMilite = (!militeIdTxt.equals(oldMiliteIdTxt))
+            }// fine del blocco if
+
+            if (modificatoMilite) {
+                settimanaCorrente = Lib.getNumSettimanaOdierna()
+                settimanaTurno = Lib.getNumSettimanaTurno(turno)
+                if (settimanaCorrente >= settimanaTurno) {
+                    iniziataSettimanaCorrente = true
+                }// fine del blocco if
+            }// fine del blocco if
+        } // fine del ciclo for
+
+        if (iniziataSettimanaCorrente) {
+            testoErrore = 'Non puoi modificare il turno della settimana corrente'
+        }// fine del blocco if
+
+        return testoErrore
     } // fine del metodo
 
     //--controlla che i dati siano ''congruenti''
