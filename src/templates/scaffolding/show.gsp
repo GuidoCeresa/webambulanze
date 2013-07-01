@@ -8,7 +8,6 @@
 <!--regola a true il flag di controllo flagOverwrite©-->
 <!--flagOverwrite = false-->
 
-<% import grails.persistence.Event %>
 <%=packageName%>
 <!DOCTYPE html>
 <html>
@@ -39,6 +38,9 @@
         <li><g:link class="edit" action="edit" id="\${${propertyName}?.id}">
             <g:message code="${domainClass.propertyName}.edit.label" default="Modifica ${domainClass.propertyName}"/>
         </g:link></li>
+        <g:if test="\${menuExtra}">
+            <li><amb:menuExtra menuExtra="\${menuExtra}"></amb:menuExtra></li>
+        </g:if>
     </ul>
 </div>
 

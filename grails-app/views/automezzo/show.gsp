@@ -39,6 +39,9 @@
         <li><g:link class="edit" action="edit" id="${automezzoInstance?.id}">
             <g:message code="automezzo.edit.label" default="Modifica automezzo"/>
         </g:link></li>
+        <g:if test="${menuExtra}">
+            <li><amb:menuExtra menuExtra="${menuExtra}" id="${automezzoInstance?.id}"></amb:menuExtra></li>
+        </g:if>
     </ul>
 </div>
 

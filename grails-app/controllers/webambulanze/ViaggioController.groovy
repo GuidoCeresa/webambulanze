@@ -49,11 +49,11 @@ class ViaggioController {
         Croce croce = croceService.getCroce(request)
         def campiLista = [
                 'numeroServizio',
+                'numeroViaggio',
+                'numeroBolla',
                 'tipoViaggio',
                 'giorno',
                 'automezzo',
-                'numeroBolla',
-                'numeroViaggio',
                 'chilometriPercorsi',
                 'codiceInvio',
                 'codiceRicovero',
@@ -82,7 +82,55 @@ class ViaggioController {
         }// fine del blocco if-else
 
         flash.errors = ''
-        render(view: 'list', model: [viaggioInstanceList: lista, viaggioInstanceTotal: 0, campiLista: campiLista], params: params)
+        render(view: 'list', model: [titoloLista: 'prot', viaggioInstanceList: lista, viaggioInstanceTotal: 0, campiLista: campiLista], params: params)
+    } // fine del metodo
+
+    def listaMezzo(Long id) {
+        def lista
+        String titolo
+        String nomeMezzo = ''
+        Croce croce = croceService.getCroce(request)
+        Automezzo mezzo = null
+        def campiLista = [
+                'numeroServizio',
+                'numeroViaggio',
+                'numeroBolla',
+                'tipoViaggio',
+                'giorno',
+                'chilometriPercorsi',
+                'chilometriArrivo',
+        ]
+
+        if (params.order) {
+            if (params.order == 'asc') {
+                params.order = 'desc'
+            } else {
+                params.order = 'asc'
+            }// fine del blocco if-else
+        } else {
+            params.order = 'asc'
+        }// fine del blocco if-else
+
+        if (id) {
+            mezzo = Automezzo.findById(id)
+            nomeMezzo = mezzo.targa
+        }// fine del blocco if
+
+        if (croce) {
+            params.siglaCroce = croce.sigla
+            if (params.siglaCroce.equals(Cost.CROCE_ALGOS)) {
+                lista = Viaggio.findAll("from Viaggio order by croce_id,giorno")
+                campiLista = ['id', 'croce'] + campiLista
+            } else {
+                lista = Viaggio.findAllByAutomezzo(mezzo)
+            }// fine del blocco if-else
+        } else {
+            lista = Viaggio.findAll(params)
+        }// fine del blocco if-else
+
+        flash.errors = ''
+        titolo = "Viaggi del mezzo ${nomeMezzo}"
+        render(view: 'list', model: [titolo: titolo, viaggioInstanceList: lista, viaggioInstanceTotal: 0, campiLista: campiLista], params: params)
     } // fine del metodo
 
     def create() {
@@ -255,11 +303,11 @@ class ViaggioController {
             redirect(action: 'list')
             return
         }// fine del blocco if
-          def pippoz=params
+        def pippoz = params
         params.tipoViaggio = TipoViaggio.auto118   //@todo ASSOLUTAMENTE PROVVISORIO
 
         if (params.automezzoId) {
-            params.automezzo=Automezzo.findById(params.automezzoId)
+            params.automezzo = Automezzo.findById(params.automezzoId)
         }// fine del blocco if
 
         if (!params.giorno) {

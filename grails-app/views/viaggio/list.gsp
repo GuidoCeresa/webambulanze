@@ -40,7 +40,14 @@
 </div>
 
 <div id="list-viaggio" class="content scaffold-list" role="main">
-    <h1><g:message code="viaggio.list.label" default="Elenco viaggio"/></h1>
+
+    <g:if test="${titolo}">
+        <h1><g:message/>${titolo}</h1>
+    </g:if>
+    <g:else>
+        <h1><g:message code="viaggio.list.label" default="Elenco viaggio"/></h1>
+    </g:else>
+
     <g:if test="${flash.message}">
         <div class="message" role="status">${flash.message}</div>
     </g:if>

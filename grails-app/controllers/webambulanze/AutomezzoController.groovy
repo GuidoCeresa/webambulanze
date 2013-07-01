@@ -98,8 +98,9 @@ class AutomezzoController {
             redirect(action: "list")
             return
         }
+        def menuExtra = [class: 'list', controller: 'viaggio', action: 'listaMezzo', message: 'Viaggi del mezzo']
 
-        [automezzoInstance: automezzoInstance]
+        [automezzoInstance: automezzoInstance, menuExtra: menuExtra]
     } // fine del metodo
 
     @Secured([Cost.ROLE_ADMIN])

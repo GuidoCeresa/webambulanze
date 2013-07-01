@@ -8,7 +8,6 @@
 <!--regola a true il flag di controllo flagOverwrite©-->
 <!--flagOverwrite = false-->
 
-<% import grails.persistence.Event %>
 <%=packageName%>
 <!DOCTYPE html>
 <html>
@@ -48,7 +47,8 @@
         <div class="errors" role="status">\${flash.errors}</div>
     </g:if>
     <g:if test="\${flash.listaMessaggi}">
-        <ul><g:each in="\${flash.listaMessaggi}" var="messaggio"><li><div class="message">\${messaggio}</div></li></g:each></ul>
+        <ul><g:each in="\${flash.listaMessaggi}" var="messaggio"><li><div class="message">\${messaggio}</div>
+        </li></g:each></ul>
     </g:if>
     <g:if test="\${flash.listaErrori}">
         <ul><g:each in="\${flash.listaErrori}" var="errore"><li class="errors"><div>\${errore}</div></li></g:each></ul>
@@ -63,7 +63,8 @@
         <tbody>
         <g:each in="\${${propertyName}List}" status="i" var="${propertyName}">
             <tr class="\${(i % 2) == 0 ? 'even' : 'odd'}">
-                <amb:rigaLista campiLista="\${campiLista}" rec="\${${propertyName}}" campiExtra="\${campiExtra}"></amb:rigaLista>
+                <amb:rigaLista campiLista="\${campiLista}" rec="\${${propertyName}}"
+                               campiExtra="\${campiExtra}"></amb:rigaLista>
             </tr>
         </g:each>
         </tbody>

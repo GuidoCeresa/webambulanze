@@ -353,6 +353,53 @@ class AmbulanzaTagLib {
         return testo
     }// fine del metodo
 
+    //--disegna i menu aggiuntivi (oltre a quelli standard del GPS tipico)
+    def menuExtra = { args ->
+        String testoOut = ''
+        def menuExtra
+        String className
+        String controller
+        String action
+        String message
+        def id
+
+        if (args.menuExtra) {
+            menuExtra = args.menuExtra
+        }// fine del blocco if
+
+        if (args.id) {
+            id = args.id
+        }// fine del blocco if
+
+        if (menuExtra&&menuExtra instanceof Map) {
+            def  temp=  menuExtra
+            menuExtra = new ArrayList()
+            menuExtra.add(temp)
+        }// fine del blocco if
+
+        if (menuExtra) {
+            menuExtra?.each {
+                testoOut = ''
+                className = it.class
+                controller = it.controller
+                action = it.action
+                message = it.message
+
+                if (className && controller && action) {
+                    testoOut += "<a "
+                    testoOut += "href=\"/webambulanze/${controller}/${action}/${id}\" "
+                    testoOut += "class=\"${className}\""
+                    testoOut += ">"
+                    testoOut += message
+                    testoOut += "</a>"
+                }// fine del blocco if
+
+            } // fine del ciclo each
+        }// fine del blocco if
+
+        out << testoOut
+    }// fine della closure
+
     //--disegna i titoli delle colonne della tavola/lista
     def titoliLista = { args ->
         String testoOut = ''
@@ -1450,7 +1497,8 @@ class AmbulanzaTagLib {
 
 //        testo = 'Algos© - v3.4 del 27 giugno 2013'
 //        testo = 'Algos© - v3.5 del 30 giugno 2013'
-        testo = 'Algos© - v3.6 del 30 giugno 2013'
+//        testo = 'Algos© - v3.6 del 30 giugno 2013'
+        testo = 'Algos© - v3.7 del 1 luglio 2013'
         testo = Lib.tagCella(testo, Aspetto.copyright)
         testoOut = Lib.tagTable(testo)
         return testoOut

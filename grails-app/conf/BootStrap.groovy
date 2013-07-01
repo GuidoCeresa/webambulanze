@@ -244,6 +244,16 @@ class BootStrap implements Cost {
             fixRuoloCRPT()
         }// fine del blocco if
 
+        //--corretto errore precedente
+        if (installaVersione(38)) {
+            fixErroreRuoloCRPT()
+        }// fine del blocco if
+
+        //--modifica di un ruolo admin della croce rossa fidenza
+        if (installaVersione(39)) {
+            fixRuoloCRF()
+        }// fine del blocco if
+
         //--creazione dei record utenti per la pubblica castello
 //        if (installaVersione(99)) {
 //            utentiPubblicacastello()
@@ -3421,6 +3431,37 @@ class BootStrap implements Cost {
         }// fine del blocco if
 
         newVersione(CROCE_ROSSA_PONTETARO, 'Security', 'Cambiato admin da Gallo -> Giulivi')
+    }// fine del metodo
+
+    //--corretto errore precedente
+    //--avevo modificato il ruolo in admin, cancellando quello del milite
+    //--da rimettere
+    private static void fixErroreRuoloCRPT() {
+        String nick = 'Giulivi Scilla'
+        Croce croce = Croce.findBySigla(CROCE_ROSSA_PONTETARO)
+        Ruolo ruoloMilite = Ruolo.findByAuthority(ROLE_MILITE)
+        Utente utente = Utente.findByCroceAndNickname(croce, nick)
+
+        if (ruoloMilite && utente) {
+            UtenteRuolo.findOrCreateByRuoloAndUtente(ruoloMilite, utente).save(failOnError: true)
+        }// fine del blocco if
+
+
+        newVersione(CROCE_ROSSA_PONTETARO, 'Security', 'Ripristinato ruolo milite a Giulivi')
+    }// fine del metodo
+
+    //--modifica di un ruolo admin della croce rossa fidenza
+    private static void fixRuoloCRF() {
+        String nick = 'Porcari Stefano'
+        Croce croce = Croce.findBySigla(CROCE_ROSSA_FIDENZA)
+        Ruolo ruoloAdmin = Ruolo.findByAuthority(ROLE_ADMIN)
+        Utente utente = Utente.findByCroceAndNickname(croce, nick)
+
+        if (ruoloAdmin && utente) {
+            UtenteRuolo.findOrCreateByRuoloAndUtente(ruoloAdmin, utente).save(failOnError: true)
+        }// fine del blocco if
+
+        newVersione(CROCE_ROSSA_FIDENZA, 'Security', 'Creato admin Porcari Stefano')
     }// fine del metodo
 
     def destroy = {
