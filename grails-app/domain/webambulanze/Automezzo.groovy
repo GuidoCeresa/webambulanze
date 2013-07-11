@@ -14,7 +14,7 @@ class Automezzo {
     //--targa stradale
     String targa = ''
 
-    //--eventuale sigla di riferimento interna CRI
+    //--eventuale sigla di riferimento interna (CRI od altro)
     String sigla = ''
 
     //--marca, modello, allestimento

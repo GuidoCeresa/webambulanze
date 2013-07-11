@@ -201,39 +201,39 @@
         <g:textField name="ricovero" value="${viaggioInstance?.ricovero}"/>
     </div>
 
-    <div class="fieldcontain ${hasErrors(bean: viaggioInstance, field: 'autistaEmergenza', 'error')} required">
-        <label for="autistaEmergenza">
-            <g:message code="viaggio.autistaEmergenza.labelform" default="Autista Emergenza"/>
+    <div class="fieldcontain ${hasErrors(bean: viaggioInstance, field: 'militeFunzione1', 'error')} required">
+        <label for="militeFunzione1">
+            <g:message code="viaggio.militeFunzione1.labelform" default="Autista Emergenza"/>
             <span class="required-indicator">*</span>
         </label>
-        <g:select id="autistaEmergenza" name="autistaEmergenza.id" from="${listaAutisti}" optionKey="id"
-                  required="" value="${viaggioInstance?.autistaEmergenza?.id}" class="many-to-one"/>
+        <g:select id="militeFunzione1" name="militeFunzione1.id" from="${listaAutisti}" optionKey="id"
+                  required="" value="${viaggioInstance?.militeFunzione1?.id}" class="many-to-one"/>
     </div>
 
-    <div class="fieldcontain ${hasErrors(bean: viaggioInstance, field: 'soccorritoreDae', 'error')} required">
-        <label for="soccorritoreDae">
-            <g:message code="viaggio.soccorritoreDae.labelform" default="Soccorritore Dae"/>
+    <div class="fieldcontain ${hasErrors(bean: viaggioInstance, field: 'militeFunzione2', 'error')} required">
+        <label for="militeFunzione2">
+            <g:message code="viaggio.militeFunzione2.labelform" default="Soccorritore Dae"/>
             <span class="required-indicator">*</span>
         </label>
-        <g:select id="soccorritoreDae" name="soccorritoreDae.id" from="${listaSocDae}" optionKey="id"
-                  required="" value="${viaggioInstance?.soccorritoreDae?.id}" class="many-to-one"/>
+        <g:select id="militeFunzione2" name="militeFunzione2.id" from="${listaSocDae}" optionKey="id"
+                  required="" value="${viaggioInstance?.militeFunzione2?.id}" class="many-to-one"/>
     </div>
 
-    <div class="fieldcontain ${hasErrors(bean: viaggioInstance, field: 'soccorritore', 'error')}">
-        <label for="soccorritore">
-            <g:message code="viaggio.soccorritore.labelform" default="Soccorritore"/>
+    <div class="fieldcontain ${hasErrors(bean: viaggioInstance, field: 'militeFunzione3', 'error')}">
+        <label for="militeFunzione3">
+            <g:message code="viaggio.militeFunzione3.labelform" default="Soccorritore"/>
         </label>
-        <g:select id="soccorritore" name="soccorritore.id" from="${listaSoccorritori}" optionKey="id"
-                  value="${viaggioInstance?.soccorritore?.id}" class="many-to-one" noSelection="['null': '']"/>
+        <g:select id="militeFunzione3" name="militeFunzione3.id" from="${listaSoccorritori}" optionKey="id"
+                  value="${viaggioInstance?.militeFunzione3?.id}" class="many-to-one" noSelection="['null': '']"/>
     </div>
 
-    <div class="fieldcontain ${hasErrors(bean: viaggioInstance, field: 'barelliereAffiancamento', 'error')}">
-        <label for="barelliereAffiancamento">
-            <g:message code="viaggio.barelliereAffiancamento.labelform" default="Barelliere Affiancamento"/>
+    <div class="fieldcontain ${hasErrors(bean: viaggioInstance, field: 'militeFunzione4', 'error')}">
+        <label for="militeFunzione4">
+            <g:message code="viaggio.militeFunzione4.labelform" default="Barelliere Affiancamento"/>
         </label>
-        <g:select id="barelliereAffiancamento" name="barelliereAffiancamento.id"
+        <g:select id="militeFunzione4" name="militeFunzione4.id"
                   from="${listaBarellieri}" optionKey="id"
-                  value="${viaggioInstance?.barelliereAffiancamento?.id}" class="many-to-one"
+                  value="${viaggioInstance?.militeFunzione4?.id}" class="many-to-one"
                   noSelection="['null': '']"/>
     </div>
 

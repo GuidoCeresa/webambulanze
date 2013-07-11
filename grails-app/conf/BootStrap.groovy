@@ -254,6 +254,17 @@ class BootStrap implements Cost {
             fixRuoloCRF()
         }// fine del blocco if
 
+        //--aggiunta dei viaggi alla demo
+        //--modifica del flag
+        if (installaVersione(40)) {
+            addViaggiDemo()
+        }// fine del blocco if
+
+        //--aggiunta degli automezzi alla demo per operare sui viaggi
+        if (installaVersione(41)) {
+            addAutomezziDemo()
+        }// fine del blocco if
+
         //--creazione dei record utenti per la pubblica castello
 //        if (installaVersione(99)) {
 //            utentiPubblicacastello()
@@ -1080,13 +1091,13 @@ class BootStrap implements Cost {
         if (SVILUPPO_CROCE_ROSSA_FIDENZA) {
             //--turni automedica
             newFunzRossaMedica('aut-msa', 'Aut MSA', 'Autista automedica', 1, 'pri-msa, sec-msa')
-            newFunzRossaMedica('pri-msa', '1° soc', 'Primo soccorritore automedica', 2, 'sec-msa')
-            newFunzRossaMedica('sec-msa', '2° soc', 'Secondo soccorritore automedica', 3, '')
+            newFunzRossaMedica('pri-msa', '1° soc', 'Primo militeFunzione3 automedica', 2, 'sec-msa')
+            newFunzRossaMedica('sec-msa', '2° soc', 'Secondo militeFunzione3 automedica', 3, '')
             //--turni ambulanza
             newFunzRossaAmb('aut-amb', 'Aut Amb', 'Autista ambulanza', 4, 'pri-amb, sec-amb, ter-amb')
-            newFunzRossaAmb('pri-amb', '1° soc', 'Primo soccorritore ambulanza', 5, 'sec-amb, ter-amb')
-            newFunzRossaAmb('sec-amb', '2° soc', 'Secondo soccorritore ambulanza', 6, 'ter-amb')
-            newFunzRossaAmb('ter-amb', '3° soc', 'Terzo soccorritore ambulanza', 7, '')
+            newFunzRossaAmb('pri-amb', '1° soc', 'Primo militeFunzione3 ambulanza', 5, 'sec-amb, ter-amb')
+            newFunzRossaAmb('sec-amb', '2° soc', 'Secondo militeFunzione3 ambulanza', 6, 'ter-amb')
+            newFunzRossaAmb('ter-amb', '3° soc', 'Terzo militeFunzione3 ambulanza', 7, '')
         }// fine del blocco if
     }// fine del metodo
 
@@ -3462,6 +3473,64 @@ class BootStrap implements Cost {
         }// fine del blocco if
 
         newVersione(CROCE_ROSSA_FIDENZA, 'Security', 'Creato admin Porcari Stefano')
+    }// fine del metodo
+
+    //--aggiunta dei viaggi alla demo
+    //--modifica del flag
+    private static void addViaggiDemo() {
+        Croce croce = Croce.findBySigla(CROCE_DEMO)
+        Settings settings
+
+        if (croce) {
+            settings = croce.settings
+            if (settings) {
+                settings.usaModuloViaggi = true
+                settings.save(flush: true)
+            }// fine del blocco if
+        }// fine del blocco if
+
+        newVersione(CROCE_DEMO, 'Viaggi', 'Modifica del flag per abilitare i viaggi')
+    }// fine del metodo
+
+    //--aggiunta degli automezzi alla demo per operare sui viaggi
+    private static void addAutomezziDemo() {
+        Croce croce = Croce.findBySigla(CROCE_DEMO)
+        Automezzo mezzo
+
+        if (croce) {
+            mezzo = Automezzo.findOrCreateByCroceAndSigla(croce, 'A4')
+            if (mezzo) {
+                mezzo.tipo = TipoAutomezzo.amb
+                mezzo.chilometriTotaliPercorsi = 43821
+                mezzo.dataAcquisto = new Date()
+                mezzo.targa = 'VR342576'
+                mezzo.descrizione = 'ambulanza'
+                mezzo.numeroViaggiEffettuati = 78
+                mezzo.save(flush: true)
+            }// fine del blocco if
+            mezzo = Automezzo.findOrCreateByCroceAndSigla(croce, 'A5')
+            if (mezzo) {
+                mezzo.tipo = TipoAutomezzo.automedica
+                mezzo.chilometriTotaliPercorsi = 81545
+                mezzo.dataAcquisto = new Date()
+                mezzo.targa = 'EB347YT'
+                mezzo.descrizione = 'automedica'
+                mezzo.numeroViaggiEffettuati = 43
+                mezzo.save(flush: true)
+            }// fine del blocco if
+            mezzo = Automezzo.findOrCreateByCroceAndSigla(croce, 'A6')
+            if (mezzo) {
+                mezzo.tipo = TipoAutomezzo.pulmino
+                mezzo.chilometriTotaliPercorsi = 127890
+                mezzo.dataAcquisto = new Date()
+                mezzo.targa = 'DG389FM'
+                mezzo.descrizione = 'pulmino sociale'
+                mezzo.numeroViaggiEffettuati = 388
+                mezzo.save(flush: true)
+            }// fine del blocco if
+        }// fine del blocco if
+
+        //newVersione(CROCE_DEMO, 'Automezzi', 'Creazione di 3 mezzi')
     }// fine del metodo
 
     def destroy = {

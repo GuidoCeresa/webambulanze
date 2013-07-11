@@ -8,7 +8,6 @@
 <!--regola a true il flag di controllo flagOverwrite©-->
 <!--flagOverwrite = false-->
 
-
 <%@ page import="webambulanze.Viaggio" %>
 <!DOCTYPE html>
 <html>
@@ -40,14 +39,7 @@
 </div>
 
 <div id="list-viaggio" class="content scaffold-list" role="main">
-
-    <g:if test="${titolo}">
-        <h1><g:message/>${titolo}</h1>
-    </g:if>
-    <g:else>
-        <h1><g:message code="viaggio.list.label" default="Elenco viaggio"/></h1>
-    </g:else>
-
+    <h1><g:message code="viaggio.list.label" default="Elenco viaggio"/></h1>
     <g:if test="${flash.message}">
         <div class="message" role="status">${flash.message}</div>
     </g:if>
@@ -55,7 +47,8 @@
         <div class="errors" role="status">${flash.errors}</div>
     </g:if>
     <g:if test="${flash.listaMessaggi}">
-        <ul><g:each in="${flash.listaMessaggi}" var="messaggio"><li><div class="message">${messaggio}</div></li></g:each></ul>
+        <ul><g:each in="${flash.listaMessaggi}" var="messaggio"><li><div class="message">${messaggio}</div>
+        </li></g:each></ul>
     </g:if>
     <g:if test="${flash.listaErrori}">
         <ul><g:each in="${flash.listaErrori}" var="errore"><li class="errors"><div>${errore}</div></li></g:each></ul>
@@ -70,7 +63,8 @@
         <tbody>
         <g:each in="${viaggioInstanceList}" status="i" var="viaggioInstance">
             <tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
-                <amb:rigaLista campiLista="${campiLista}" rec="${viaggioInstance}" campiExtra="${campiExtra}"></amb:rigaLista>
+                <amb:rigaLista campiLista="${campiLista}" rec="${viaggioInstance}"
+                               campiExtra="${campiExtra}"></amb:rigaLista>
             </tr>
         </g:each>
         </tbody>

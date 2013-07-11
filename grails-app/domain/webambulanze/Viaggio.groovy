@@ -23,17 +23,17 @@ class Viaggio {
     Patologia patologia
     CodiceRicovero codiceRicovero
 
-    String nomePaziente
-    String indirizzoPaziente
-    String cittaPaziente
-    String etaPaziente
+    String nomePaziente = ''
+    String indirizzoPaziente = ''
+    String cittaPaziente = ''
+    String etaPaziente = ''
 
-    String prelievo
-    String ricovero
+    String prelievo = ''
+    String ricovero = ''
 
     String numeroCartellino         // senza automatismo - viene dalla CO
-    int numeroServizio              // progressivo della croce
     int numeroBolla                 // senza automatismo - si legge dal blocchetto
+    int numeroServizio              // progressivo della croce
     int numeroViaggio = 0           // progressivo dell'automezzo
 
     //--Suggerito automaticamente quando si seleziona l'automezzo.
@@ -48,10 +48,10 @@ class Viaggio {
     //--Calcolati
     int chilometriPercorsi = 0
 
-    Milite autistaEmergenza
-    Milite soccorritoreDae
-    Milite soccorritore
-    Milite barelliereAffiancamento
+    Milite militeFunzione1
+    Milite militeFunzione2
+    Milite militeFunzione3
+    Milite militeFunzione4
 
     /**
      * regolazione delle proprietà di ogni campo
@@ -63,10 +63,10 @@ class Viaggio {
         giorno()
         inizio()
         fine()
-        autistaEmergenza(nullable: false)
-        soccorritoreDae(nullable: false)
-        soccorritore(nullable: true)
-        barelliereAffiancamento(nullable: true)
+        militeFunzione1(nullable: false)
+        militeFunzione2(nullable: false)
+        militeFunzione3(nullable: true)
+        militeFunzione4(nullable: true)
     } // end of static constraints
 
     static mapping = {

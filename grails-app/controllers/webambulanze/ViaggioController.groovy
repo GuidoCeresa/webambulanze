@@ -75,7 +75,10 @@ class ViaggioController {
                 lista = Viaggio.findAll("from Viaggio order by croce_id,giorno")
                 campiLista = ['id', 'croce'] + campiLista
             } else {
-                lista = Viaggio.findAll("from Viaggio order by croce_id,giorno")
+                if (!params.sort) {
+                    params.sort = 'giorno'
+                }// fine del blocco if-else
+                lista = Viaggio.findAllByCroce(croce, params)
             }// fine del blocco if-else
         } else {
             lista = Viaggio.findAll(params)
@@ -137,7 +140,7 @@ class ViaggioController {
         Croce croce = croceService.getCroce(request)
         params.siglaCroce = croceService.getSiglaCroce(request)
         ArrayList listaTipologieViaggi = TipoViaggio.getListaNomi()
-        ArrayList listaAutomezzi = automezzoService.getAllTarga()
+        ArrayList listaAutomezzi = automezzoService.getAllTarga(croce)
         ArrayList listaUltimiTurni = turnoService.getLastTwoDays(croce)
         ArrayList listaUltimiTurniId = turnoService.getLastTwoDaysId(croce)
         String tipoSelezionato
@@ -207,6 +210,7 @@ class ViaggioController {
         String autistaTurno = ''
         String siglaTurno = ''
         String siglaAutomezzo = ''
+        String tipoForm = 'Crea viaggio 118'
 
         //--controlla che sia selezionato il tipo di viaggio
         if (params.tipoViaggio[1].equals('null')) {
@@ -263,7 +267,7 @@ class ViaggioController {
 //            redirect(action: 'create')
 //            return
         }// fine del blocco if-else
-
+        def a = params
         //--valori suggeriti
         if (true) {
             params.tipoViaggio = TipoViaggio.auto118
@@ -281,18 +285,25 @@ class ViaggioController {
 
         if (true) {
             //    if (tipoViaggio.equals('118')) {
-            render(view: 'create118', model: [
-                    viaggioInstance: new Viaggio(params),
-                    turnoId: turnoId,
-                    siglaTurno: siglaTurno,
-                    automezzoId: automezzoId,
-                    siglaAutomezzo: siglaAutomezzo,
-                    listaAutisti: listaAutisti,
-                    listaSocDae: listaSocDae,
-                    listaSoccorritori: listaSoccorritori,
-                    listaBarellieri: listaBarellieri,
-                    autistaTurno: autistaTurno],
+            render(view: 'fillViaggio', model: [
+                    // viaggioInstance: new Viaggio(params),
+                    tipoForm: tipoForm,
+                    tipoViaggio: TipoViaggio.auto118.toString(), //@todo provvisorio
+                    automezzoId: params.automezzo.id,
+                    turnoId: turnoId],
                     params: params)
+//            render(view: 'create118', model: [
+//                    viaggioInstance: new Viaggio(params),
+//                    turnoId: turnoId,
+//                    siglaTurno: siglaTurno,
+//                    automezzoId: automezzoId,
+//                    siglaAutomezzo: siglaAutomezzo,
+//                    listaAutisti: listaAutisti,
+//                    listaSocDae: listaSocDae,
+//                    listaSoccorritori: listaSoccorritori,
+//                    listaBarellieri: listaBarellieri,
+//                    autistaTurno: autistaTurno],
+//                    params: params)
         } else {
             render(view: 'selezionemancante', params: params)
         }// fine del blocco if-else
@@ -304,25 +315,64 @@ class ViaggioController {
             return
         }// fine del blocco if
         def pippoz = params
-        params.tipoViaggio = TipoViaggio.auto118   //@todo ASSOLUTAMENTE PROVVISORIO
+
+        if (params.tipoViaggio) {
+            params.tipoViaggio = TipoViaggio.getDaSigla(params.tipoViaggio)
+        }// fine del blocco if
 
         if (params.automezzoId) {
             params.automezzo = Automezzo.findById(params.automezzoId)
         }// fine del blocco if
 
+        //@todo da controllare
         if (!params.giorno) {
             params.giorno = new Date()
         }// fine del blocco if
 
+        //@todo da controllare
         if (!params.inizio) {
             params.inizio = params.giorno
         }// fine del blocco if
 
+        //@todo da controllare
         if (!params.fine) {
             params.fine = params.giorno
         }// fine del blocco if
 
-        if (params.autistaEmergenza) {
+        if (params.codiceInvio) {
+            params.codiceInvio = CodiceInvio.getDaNome(params.codiceInvio)
+        }// fine del blocco if
+
+        if (params.luogoEvento) {
+            params.luogoEvento = LuogoEvento.getDaNome(params.luogoEvento)
+        }// fine del blocco if
+
+        if (params.patologia) {
+            params.patologia = Patologia.getDaNome(params.patologia)
+        }// fine del blocco if
+
+        if (params.codiceRicovero) {
+            params.codiceRicovero = CodiceRicovero.getDaNome(params.codiceRicovero)
+        }// fine del blocco if
+
+        def pippoz2 = params
+
+        if (params.chilometriPartenza) {
+            params.chilometriPartenza= Integer.decode(params.chilometriPartenza)
+        }// fine del blocco if
+
+        if (params.chilometriArrivo) {
+            params.chilometriArrivo= Integer.decode(params.chilometriArrivo)
+        }// fine del blocco if
+
+        //@todo da modificare
+        if (!params.militeFunzione1) {
+            params.militeFunzione1 = Milite.get(1)
+        }// fine del blocco if
+
+        //@todo da modificare
+        if (!params.militeFunzione2) {
+            params.militeFunzione2 = Milite.get(1)
         }// fine del blocco if
 
         def viaggioInstance = new Viaggio(params)
@@ -388,6 +438,9 @@ class ViaggioController {
 
     def update(Long id, Long version) {
         def viaggioInstance = Viaggio.get(id)
+
+        def pippoz = params
+
         if (!viaggioInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'viaggio.label', default: 'Viaggio'), id])
             redirect(action: 'list')

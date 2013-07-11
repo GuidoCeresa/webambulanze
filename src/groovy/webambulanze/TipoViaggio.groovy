@@ -40,4 +40,18 @@ public enum TipoViaggio {
         return lista
     }// fine del metodo statico
 
+    public static TipoViaggio getDaSigla(String sigla) {
+        TipoViaggio tipoViaggio = null
+        String siglaCorrente
+
+        values()?.each {
+            siglaCorrente = it.sigla
+            if (siglaCorrente.equals(sigla)) {
+                tipoViaggio = it
+            }// fine del blocco if
+        }// fine del ciclo each
+
+        return tipoViaggio
+    }// fine del metodo statico
+
 }// fine della classe Enumeration

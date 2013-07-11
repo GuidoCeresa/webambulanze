@@ -371,8 +371,8 @@ class AmbulanzaTagLib {
             id = args.id
         }// fine del blocco if
 
-        if (menuExtra&&menuExtra instanceof Map) {
-            def  temp=  menuExtra
+        if (menuExtra && menuExtra instanceof Map) {
+            def temp = menuExtra
             menuExtra = new ArrayList()
             menuExtra.add(temp)
         }// fine del blocco if
@@ -1573,6 +1573,103 @@ class AmbulanzaTagLib {
         }// fine del blocco if
 
         testoOut = Lib.tagTable(testoOut, Aspetto.formtable)
+        out << testoOut
+    }// fine della closure
+
+    /**
+     * Form del singolo viaggio <br>
+     *
+     * @return testo del tag
+     */
+    def fillViaggio = { mappa ->
+        String testoOut = ''
+        Croce croce
+        String descrizioneTurno = 'turno non specificato'
+        Automezzo mezzo = null
+        String targaMezzo = 'mezzo non specificato'
+        long mezzoId = 0
+        long chilometriPartenza = 0
+        long chilometriArrivo = 0
+        String testoRiga
+        Turno turno = null
+        String turnoIdTxt
+        long turnoId = 0
+        int numFunzioni
+        TipoTurno tipoTurno
+        String nuovoTurnoTxt
+        boolean nuovoTurno = false
+        boolean mostraOreSingoloMilite = false
+        boolean isTurnoExtra = false
+        def a
+        def b
+        Date oggi = new Date()
+        ArrayList listaInvio = CodiceInvio.getAll()
+        ArrayList listaLuogo = LuogoEvento.getAll()
+        ArrayList listaPatologia = Patologia.getAll()
+        ArrayList listaRicovero = CodiceRicovero.getAll()
+
+        if (params.siglaCroce) {
+            croce = Croce.findBySigla((String) params.siglaCroce)
+        }// fine del blocco if
+        if (mappa.tipoViaggio) {
+            a = mappa.tipoViaggio
+        }// fine del blocco if
+        if (mappa.automezzoId) {
+            mezzo = Automezzo.findById(mappa.automezzoId)
+            if (mezzo) {
+                mezzoId = mezzo.id
+                targaMezzo = mezzo.targa
+                chilometriPartenza = mezzo.chilometriTotaliPercorsi
+                chilometriArrivo = 0
+            }// fine del blocco if
+        }// fine del blocco if
+        if (mappa.turnoId) {
+            turno = Turno.get(mappa.turnoId)
+            if (turno) {
+                turnoId = turno.id
+            }// fine del blocco if
+        }// fine del blocco if
+
+//        if (turno.militeFunzione1 == null && turno.militeFunzione2 == null && turno.militeFunzione3 == null) {
+//            mostraOreSingoloMilite = true
+//        }// fine del blocco if
+
+        if (turno) {
+            tipoTurno = turno.tipoTurno
+            if (tipoTurno) {
+                descrizioneTurno = tipoTurno.descrizione
+            }// fine del blocco if
+
+            if (tipoTurno.sigla.equals(Cost.EXTRA)) {
+                isTurnoExtra = true
+            }// fine del blocco if
+
+            numFunzioni = tipoTurno.numFunzioni()
+
+            testoOut += LibHtml.field('Giorno', Lib.presentaDataCompleta(turno.giorno))
+            testoOut += LibHtml.field(Field.testoLink, 'Turno', descrizioneTurno, "turno/fillTurno?turnoId=${turnoId}")
+            testoOut += LibHtml.field(Field.testoLink, 'Automezzo utilizzato', targaMezzo, "automezzo/show/${mezzoId}")
+            testoOut += LibHtml.field(Field.testoObbEdit, 'Chilometri alla partenza', chilometriPartenza, 'chilometriPartenza')
+            testoOut += LibHtml.field(Field.testoObbEdit, "Chilometri all'arrivo", '', 'chilometriArrivo')
+            testoOut += LibHtml.field(Field.oraMin, "Orario di chiamata", oggi, 'inizio')
+            testoOut += LibHtml.fieldLista("Codice invio", 'codiceInvio', listaInvio, CodiceInvio.get(), true)
+            testoOut += LibHtml.fieldLista("Luogo evento", 'luogoEvento', listaLuogo, LuogoEvento.get(), true)
+            testoOut += LibHtml.fieldLista("Patologia segnalata", 'patologia', listaPatologia, Patologia.get(), true)
+            testoOut += LibHtml.fieldLista("Codice ricovero", 'codiceRicovero', listaRicovero, CodiceRicovero.get(), true)
+            testoOut += LibHtml.field(Field.oraMin, "Orario di rientro", oggi, 'rientro')
+            testoOut += LibHtml.field(Field.testoObbEdit, "Cartellino 118", '', 'numeroCartellino')
+            testoOut += LibHtml.field('nomePaziente')
+            testoOut += LibHtml.field('indirizzoPaziente')
+            testoOut += LibHtml.field('cittaPaziente')
+            testoOut += LibHtml.field('etaPaziente')
+            testoOut += LibHtml.field('prelievo')
+            testoOut += LibHtml.field('ricovero')
+            testoOut += LibHtml.field(Field.testoObbEdit,'numeroBolla')
+            testoOut += LibHtml.field(Field.testoObbEdit,'numeroServizio')
+            testoOut += LibHtml.field(Field.testoObbEdit,'numeroViaggio')
+        }// fine del blocco if
+
+        //testoOut = Lib.tagTable(testoOut, Aspetto.formtable)
         out << testoOut
     }// fine della closure
 
