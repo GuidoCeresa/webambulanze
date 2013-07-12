@@ -327,6 +327,7 @@ class MiliteService {
         def authentication = springSecurityService.authentication
         def ruoli
         String ruolo
+        String userName
 
         if (authentication) {
             ruoli = authentication.authorities
@@ -336,6 +337,14 @@ class MiliteService {
                     risposta = true
                 }// fine del blocco if
             } // fine del ciclo each
+        }// fine del blocco if
+
+        //--patch
+        if (authentication) {
+            userName = authentication.principal.username
+            if (userName && userName.contains('ospite')) {
+                risposta = false
+            }// fine del blocco if
         }// fine del blocco if
 
         return risposta

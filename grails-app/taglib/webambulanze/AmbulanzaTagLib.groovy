@@ -1004,8 +1004,10 @@ class AmbulanzaTagLib {
             }// fine del blocco if
             testoOut += Lib.tagController('Funzione', 'Funzioni')
             testoOut += Lib.tagController('TipoTurno', 'Tipologia turni')
-            testoOut += Lib.tagController('Milite', 'Militi')
-            testoOut += Lib.tagController('Militestatistiche', 'Statistiche')
+            if (militeService.isLoggatoMiliteOrMore()) {
+                testoOut += Lib.tagController('Milite', 'Militi')
+                testoOut += Lib.tagController('Militestatistiche', 'Statistiche')
+            }// fine del blocco if
             testoOut += Lib.tagController('Gen', 'Tabellone turni')
             if (croceService.usaModuloViaggi((String) params.siglaCroce)) {
                 testoOut += Lib.tagController('Viaggio', 'Viaggi effettuati')
@@ -1498,7 +1500,8 @@ class AmbulanzaTagLib {
 //        testo = 'Algos© - v3.4 del 27 giugno 2013'
 //        testo = 'Algos© - v3.5 del 30 giugno 2013'
 //        testo = 'Algos© - v3.6 del 30 giugno 2013'
-        testo = 'Algos© - v3.7 del 1 luglio 2013'
+//        testo = 'Algos© - v3.7 del 1 luglio 2013'
+        testo = 'Algos© - v3.8 del 12 luglio 2013'
         testo = Lib.tagCella(testo, Aspetto.copyright)
         testoOut = Lib.tagTable(testo)
         return testoOut
@@ -1664,9 +1667,9 @@ class AmbulanzaTagLib {
             testoOut += LibHtml.field('etaPaziente')
             testoOut += LibHtml.field('prelievo')
             testoOut += LibHtml.field('ricovero')
-            testoOut += LibHtml.field(Field.testoObbEdit,'numeroBolla')
-            testoOut += LibHtml.field(Field.testoObbEdit,'numeroServizio')
-            testoOut += LibHtml.field(Field.testoObbEdit,'numeroViaggio')
+            testoOut += LibHtml.field(Field.testoObbEdit, 'numeroBolla')
+            testoOut += LibHtml.field(Field.testoObbEdit, 'numeroServizio')
+            testoOut += LibHtml.field(Field.testoObbEdit, 'numeroViaggio')
         }// fine del blocco if
 
         //testoOut = Lib.tagTable(testoOut, Aspetto.formtable)

@@ -285,25 +285,25 @@ class ViaggioController {
 
         if (true) {
             //    if (tipoViaggio.equals('118')) {
-            render(view: 'fillViaggio', model: [
-                    // viaggioInstance: new Viaggio(params),
-                    tipoForm: tipoForm,
-                    tipoViaggio: TipoViaggio.auto118.toString(), //@todo provvisorio
-                    automezzoId: params.automezzo.id,
-                    turnoId: turnoId],
-                    params: params)
-//            render(view: 'create118', model: [
-//                    viaggioInstance: new Viaggio(params),
-//                    turnoId: turnoId,
-//                    siglaTurno: siglaTurno,
-//                    automezzoId: automezzoId,
-//                    siglaAutomezzo: siglaAutomezzo,
-//                    listaAutisti: listaAutisti,
-//                    listaSocDae: listaSocDae,
-//                    listaSoccorritori: listaSoccorritori,
-//                    listaBarellieri: listaBarellieri,
-//                    autistaTurno: autistaTurno],
+//            render(view: 'fillViaggio', model: [
+//                    // viaggioInstance: new Viaggio(params),
+//                    tipoForm: tipoForm,
+//                    tipoViaggio: TipoViaggio.auto118.toString(), //@todo provvisorio
+//                    automezzoId: params.automezzo.id,
+//                    turnoId: turnoId],
 //                    params: params)
+            render(view: 'create118', model: [
+                    viaggioInstance: new Viaggio(params),
+                    turnoId: turnoId,
+                    siglaTurno: siglaTurno,
+                    automezzoId: automezzoId,
+                    siglaAutomezzo: siglaAutomezzo,
+                    listaAutisti: listaAutisti,
+                    listaSocDae: listaSocDae,
+                    listaSoccorritori: listaSoccorritori,
+                    listaBarellieri: listaBarellieri,
+                    autistaTurno: autistaTurno],
+                    params: params)
         } else {
             render(view: 'selezionemancante', params: params)
         }// fine del blocco if-else
@@ -315,9 +315,10 @@ class ViaggioController {
             return
         }// fine del blocco if
         def pippoz = params
+        params.tipoViaggio = TipoViaggio.auto118   //@todo ASSOLUTAMENTE PROVVISORIO
 
         if (params.tipoViaggio) {
-            params.tipoViaggio = TipoViaggio.getDaSigla(params.tipoViaggio)
+//            params.tipoViaggio = TipoViaggio.getDaSigla(params.tipoViaggio)  //@todo rimettere
         }// fine del blocco if
 
         if (params.automezzoId) {
@@ -340,19 +341,19 @@ class ViaggioController {
         }// fine del blocco if
 
         if (params.codiceInvio) {
-            params.codiceInvio = CodiceInvio.getDaNome(params.codiceInvio)
+         //   params.codiceInvio = CodiceInvio.getDaNome(params.codiceInvio)//@todo rimettere
         }// fine del blocco if
 
         if (params.luogoEvento) {
-            params.luogoEvento = LuogoEvento.getDaNome(params.luogoEvento)
+//            params.luogoEvento = LuogoEvento.getDaNome(params.luogoEvento)  //@todo rimettere
         }// fine del blocco if
 
         if (params.patologia) {
-            params.patologia = Patologia.getDaNome(params.patologia)
+          //  params.patologia = Patologia.getDaNome(params.patologia)  //@todo rimettere
         }// fine del blocco if
 
         if (params.codiceRicovero) {
-            params.codiceRicovero = CodiceRicovero.getDaNome(params.codiceRicovero)
+//            params.codiceRicovero = CodiceRicovero.getDaNome(params.codiceRicovero) //@todo rimettere
         }// fine del blocco if
 
         def pippoz2 = params
