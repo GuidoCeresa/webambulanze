@@ -81,5 +81,5 @@ grails.war.copyToWebApp = { args ->
         include(name: "images/**")
         include(name: "js/**")
         include(name: "WEB-INF/**")
-    }
-}
+    }// fine della closure fileset
+}// fine di grails.war.copyToWebApp

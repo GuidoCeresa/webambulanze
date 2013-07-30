@@ -55,7 +55,11 @@
             <li><g:link class="viaggio" controller="viaggio">Viaggi</g:link></li>
         </amb:ifModuloViaggi>
         <sec:ifNotLoggedIn>
-            <li><g:link class="login" controller="login">Login</g:link></li>
+            <li><g:link
+                    class="login"
+                    controller="accesso"
+                    action="selezionaLogin">
+                Login</g:link></li>
         </sec:ifNotLoggedIn>
         <sec:ifLoggedIn>
             <li><g:link class="logout" controller="logout">Logout</g:link></li>

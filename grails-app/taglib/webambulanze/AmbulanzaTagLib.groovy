@@ -998,20 +998,22 @@ class AmbulanzaTagLib {
                 testoOut += Lib.tagController('Logo', 'Logs')
                 testoOut += Lib.tagController('Militeturno', 'Statistiche dettagliate')
             }// fine del blocco if
-            testoOut += '<h2>Moduli disponibili ai militi:</h2>'
-            if (croceService.usaModuloViaggi((String) params.siglaCroce)) {
-                testoOut += Lib.tagController('Automezzo', 'Automezzi')
-            }// fine del blocco if
-            testoOut += Lib.tagController('Funzione', 'Funzioni')
-            testoOut += Lib.tagController('TipoTurno', 'Tipologia turni')
             if (militeService.isLoggatoMiliteOrMore()) {
+                testoOut += '<h2>Moduli disponibili ai militi:</h2>'
+                if (croceService.usaModuloViaggi((String) params.siglaCroce)) {
+                    testoOut += Lib.tagController('Automezzo', 'Automezzi')
+                }// fine del blocco if
+                testoOut += Lib.tagController('Funzione', 'Funzioni')
+                testoOut += Lib.tagController('TipoTurno', 'Tipologia turni')
                 testoOut += Lib.tagController('Milite', 'Militi')
                 testoOut += Lib.tagController('Militestatistiche', 'Statistiche')
+                if (croceService.usaModuloViaggi((String) params.siglaCroce)) {
+                    testoOut += Lib.tagController('Viaggio', 'Viaggi effettuati')
+                }// fine del blocco if
             }// fine del blocco if
+            testoOut += '<h2>Moduli sempre visibili:</h2>'
             testoOut += Lib.tagController('Gen', 'Tabellone turni')
-            if (croceService.usaModuloViaggi((String) params.siglaCroce)) {
-                testoOut += Lib.tagController('Viaggio', 'Viaggi effettuati')
-            }// fine del blocco if
+
 
         }// fine del blocco if-else
 
@@ -1501,7 +1503,8 @@ class AmbulanzaTagLib {
 //        testo = 'Algos© - v3.5 del 30 giugno 2013'
 //        testo = 'Algos© - v3.6 del 30 giugno 2013'
 //        testo = 'Algos© - v3.7 del 1 luglio 2013'
-        testo = 'Algos© - v3.8 del 12 luglio 2013'
+//        testo = 'Algos© - v3.8 del 12 luglio 2013'
+        testo = 'Algos© - v3.9 del 30 luglio 2013'
         testo = Lib.tagCella(testo, Aspetto.copyright)
         testoOut = Lib.tagTable(testo)
         return testoOut
@@ -1633,21 +1636,11 @@ class AmbulanzaTagLib {
             }// fine del blocco if
         }// fine del blocco if
 
-//        if (turno.militeFunzione1 == null && turno.militeFunzione2 == null && turno.militeFunzione3 == null) {
-//            mostraOreSingoloMilite = true
-//        }// fine del blocco if
-
         if (turno) {
             tipoTurno = turno.tipoTurno
             if (tipoTurno) {
                 descrizioneTurno = tipoTurno.descrizione
             }// fine del blocco if
-
-            if (tipoTurno.sigla.equals(Cost.EXTRA)) {
-                isTurnoExtra = true
-            }// fine del blocco if
-
-            numFunzioni = tipoTurno.numFunzioni()
 
             testoOut += LibHtml.field('Giorno', Lib.presentaDataCompleta(turno.giorno))
             testoOut += LibHtml.field(Field.testoLink, 'Turno', descrizioneTurno, "turno/fillTurno?turnoId=${turnoId}")
@@ -1670,11 +1663,64 @@ class AmbulanzaTagLib {
             testoOut += LibHtml.field(Field.testoObbEdit, 'numeroBolla')
             testoOut += LibHtml.field(Field.testoObbEdit, 'numeroServizio')
             testoOut += LibHtml.field(Field.testoObbEdit, 'numeroViaggio')
+            testoOut += listaMilitiFunzioni(turno)
         }// fine del blocco if
 
-        //testoOut = Lib.tagTable(testoOut, Aspetto.formtable)
         out << testoOut
     }// fine della closure
+
+    private String listaMilitiFunzioni(Turno turno) {
+        String testoOut = ''
+        int max = 4
+
+        for (int k = 1; k <= max; k++) {
+            testoOut += listaMiliteFunzioni(turno, k)
+        } // fine del ciclo for
+
+        return testoOut
+    }// fine del metodo
+
+    private String listaMiliteFunzioni(Turno turno, int pos) {
+        String testoOut = ''
+        Funzione funz
+        Milite milite
+
+        funz = getFunzione(turno, pos)
+        if (funz) {
+            milite = getMiliteForFunzione(turno, pos)
+            if (milite) {
+                testoOut += listaMiliti(funz, milite, pos)
+            }// fine del blocco if
+        }// fine del blocco if
+
+        return testoOut
+    }// fine del metodo
+
+    private String listaMiliti(Funzione funz, Milite milite, int numFunzione) {
+        String testoOut
+        Croce croce
+        String label = ''
+        ArrayList lista = null
+        String campo = 'militeFunzione' + numFunzione
+
+//        if (turno."${num}") {
+//            milite = turno."${campo}"
+//        }// fine del blocco if
+
+        if (funz) {
+            croce = funz.croce
+            label = funz.descrizione
+        }// fine del blocco if
+
+        if (croce && militeService) {
+            lista = militeService.listaMilitiAbilitati(croce, funz)
+        }// fine del blocco if
+
+//        testoOut = LibHtml.field(label, milite.toString())
+        testoOut = LibHtml.fieldLista(label, campo, lista, milite, false)
+
+        return testoOut
+    }// fine del metodo
 
     private static String formTipoTurno(Turno turno) {
         String testo = ''

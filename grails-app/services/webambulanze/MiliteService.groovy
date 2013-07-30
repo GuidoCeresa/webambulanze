@@ -340,11 +340,19 @@ class MiliteService {
         }// fine del blocco if
 
         //--patch
+        def principale
         if (authentication) {
-            userName = authentication.principal.username
-            if (userName && userName.contains('ospite')) {
-                risposta = false
-            }// fine del blocco if
+            principale = authentication.principal
+            if (principale instanceof String) {
+                if (userName && userName.contains('anonymousUser')) {
+                    risposta = false
+                }// fine del blocco if
+            } else {
+                userName = principale.username
+                if (userName && userName.contains('ospite')) {
+                    risposta = false
+                }// fine del blocco if
+            }// fine del blocco if-else
         }// fine del blocco if
 
         return risposta

@@ -7,20 +7,24 @@ class Settings {
 
     //--login preliminare al tabellone ed al menu
     //--impedita anche la visione iniziale
+    //--@deprecated
     boolean startLogin = false
 
     //--nome dell'eventuale controller da invocare
     //--automaticamente alla partenza del programma.
     //--se non definita, va al menu (home)
+    //--@deprecated
     String startController = 'home'
 
     //--flag per controllare quali controller
     //--mostrare nella gsp inziale
     //--se falso, mostra solo quelli utilizzabili dal Utente finale
+    //--@deprecated
     boolean allControllers = false
 
     //--nomi dei controllers da
     //--mostrare nella gsp inziale
+    //--@deprecated
     String controlli = ''
 
     //--mostra solo i militi abilitati alla funzione
@@ -101,6 +105,15 @@ class Settings {
     //--se modificato da qui, occorre un avviso
     int numeroServiziEffettuati = 0
 
+    //--protezione del tabellone che viene mostrato solo DOPO aver effettuato il Login
+    boolean tabelloneSecured = false
+
+    //--protezione delle modifiche ai turni che vengono abilitate solo DOPO aver effettuato il Login
+    boolean turniSecured = true
+
+    //--mostra il tabellone alla partenza; in caso contrario va alla home
+    boolean mostraTabellonePartenza = true
+
     /**
      * regolazione delle proprietà di ogni campo
      * l'ordine con cui vengono elencati qui, viene rispettato nella lista e nella scheda standard
@@ -130,6 +143,9 @@ class Settings {
         oreMassimeSingoloTurno()
         usaModuloViaggi()
         numeroServiziEffettuati()
+        tabelloneSecured()
+        turniSecured()
+        mostraTabellonePartenza()
     } // end of static constraints
 
     /*+

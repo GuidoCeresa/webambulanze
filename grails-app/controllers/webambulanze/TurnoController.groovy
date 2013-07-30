@@ -41,7 +41,15 @@ class TurnoController {
     static int giorniVisibili = 7
     static int delta = giorniVisibili - 1
 
+    def index() {
+        redirect(action: 'tabellone', params: params)
+    } // fine del metodo
+
     @Secured([Cost.ROLE_MILITE])
+    def indexSecured() {
+        redirect(action: 'tabellone', params: params)
+    } // fine del metodo
+
     def tabellone = {
         params.siglaCroce = croceService.getSiglaCroce(request)
         flash.message = ''
@@ -49,10 +57,10 @@ class TurnoController {
         flash.listaErrori = null
         dataInizio = AmbulanzaTagLib.creaDataOggi()
         dataFine = (dataInizio + delta).toTimestamp()
+        def a=params
         render(view: 'tabellone', model: [dataInizio: dataInizio, dataFine: dataFine], params: params)
     }// fine della closure
 
-    @Secured([Cost.ROLE_MILITE])
     def tabCorrente = {
         params.siglaCroce = croceService.getSiglaCroce(request)
         flash.errors = null
@@ -60,7 +68,6 @@ class TurnoController {
         render(view: 'tabellone', model: [dataInizio: dataInizio, dataFine: dataFine], params: params)
     }// fine della closure
 
-    @Secured([Cost.ROLE_MILITE])
     def tabellonePrima = {
         params.siglaCroce = croceService.getSiglaCroce(request)
         flash.message = ''
@@ -69,7 +76,6 @@ class TurnoController {
         render(view: 'tabellone', model: [dataInizio: dataInizio, dataFine: dataFine], params: params)
     }// fine della closure
 
-    @Secured([Cost.ROLE_MILITE])
     def tabelloneOggi = {
         params.siglaCroce = croceService.getSiglaCroce(request)
         flash.message = ''
@@ -78,7 +84,6 @@ class TurnoController {
         render(view: 'tabellone', model: [dataInizio: dataInizio, dataFine: dataFine], params: params)
     }// fine della closure
 
-    @Secured([Cost.ROLE_MILITE])
     def tabelloneLunedi = {
         params.siglaCroce = croceService.getSiglaCroce(request)
         flash.message = ''
@@ -87,7 +92,6 @@ class TurnoController {
         render(view: 'tabellone', model: [dataInizio: dataInizio, dataFine: dataFine], params: params)
     }// fine della closure
 
-    @Secured([Cost.ROLE_MILITE])
     def tabelloneDopo = {
         params.siglaCroce = croceService.getSiglaCroce(request)
         flash.message = ''
@@ -216,9 +220,6 @@ class TurnoController {
         redirect(action: 'show', id: turnoInstance.id)
     }// fine della closure
 
-    def index() {
-        redirect(action: 'tabellone', params: params)
-    } // fine del metodo
 
     def list(Integer max) {
         def lista
@@ -379,6 +380,7 @@ class TurnoController {
         redirect(action: 'tabCorrente')
     } // fine del metodo
 
+    @Secured([Cost.ROLE_MILITE])
     def delete(Long id) {
         def turnoInstance = Turno.get(id)
         TipoTurno tipoTurno = turnoInstance.tipoTurno

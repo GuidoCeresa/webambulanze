@@ -85,7 +85,7 @@
 </head>
 
 <body>
-<amb:titoloPagina></amb:titoloPagina>
+<amb:titoloPagina> </amb:titoloPagina>
 <div id='login'>
 	<div class='inner'>
 		<div class='fheader'><g:message code="springSecurity.login.header"/></div>
@@ -96,7 +96,7 @@
 
 		<form action='${postUrl}' method='POST' id='loginForm' class='cssform' autocomplete='off'>
 			<p>
-				<label for='username'><g:message code="springSecurity.login.username.label"/>:</label>
+				<label for='j_username'><g:message code="springSecurity.login.username.label"/>:</label>
 				%{--<input type='text' class='text_' name='j_username' id='username'/>--}%
                 <g:select name="j_username" keys="${listaUtenti}" from="${listaUtentiNick}"/>
 			</p>

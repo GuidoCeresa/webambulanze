@@ -265,6 +265,21 @@ class BootStrap implements Cost {
             addAutomezziDemo()
         }// fine del blocco if
 
+        //--regolazione di due nuovi flag dei Settings per le Croci esistenti
+        if (installaVersione(42)) {
+            addFlagSetting()
+        }// fine del blocco if
+
+        //--regolazione di un ulteriore flag dei Settings per le Croci esistenti
+        if (installaVersione(43)) {
+            addTabelloneFlagSetting()
+        }// fine del blocco if
+
+        //--eliminazione utente .ospite. (non più necessario)
+        if (installaVersione(44)) {
+            deleteOspite()
+        }// fine del blocco if
+
         //--creazione dei record utenti per la pubblica castello
 //        if (installaVersione(99)) {
 //            utentiPubblicacastello()
@@ -3531,6 +3546,116 @@ class BootStrap implements Cost {
         }// fine del blocco if
 
         //newVersione(CROCE_DEMO, 'Automezzi', 'Creazione di 3 mezzi')
+    }// fine del metodo
+
+    //--regolazione di due nuovi flag dei Settings per le Croci esistenti
+    private static void addFlagSetting() {
+
+        //--algos
+        regolaFlagSecured(CROCE_ALGOS, true, true)
+
+        //--demo
+        regolaFlagSecured(CROCE_DEMO, false, false)
+
+        //--castello
+        regolaFlagSecured(CROCE_PUBBLICA_CASTELLO, false, true)
+
+        //--fidenza
+        regolaFlagSecured(CROCE_ROSSA_FIDENZA, true, true)
+
+        //--pontetaro
+        regolaFlagSecured(CROCE_ROSSA_PONTETARO, false, true)
+
+        newVersione(CROCE_ALGOS, 'Settings', 'Aggiunti due flag per controllare il login alla partenza')
+    }// fine del metodo
+
+    //--regolazione base per una singola croce
+    private static void regolaFlagSecured(String siglaCroce, boolean tabelloneSecured, boolean turniSecured) {
+        Croce croce
+        Settings settings
+
+        //--algos
+        croce = Croce.findBySigla(siglaCroce)
+        if (croce) {
+            settings = croce.settings
+        }// fine del blocco if
+
+        if (settings) {
+            settings.tabelloneSecured = tabelloneSecured
+            settings.turniSecured = turniSecured
+            settings.save(flush: true)
+        }// fine del blocco if
+    }// fine del metodo
+
+    //--regolazione di un ulteriore flag dei Settings per le Croci esistenti
+    private static void addTabelloneFlagSetting() {
+
+        //--algos
+        regolaFlagTabellone(CROCE_ALGOS, false)
+
+        //--demo
+        regolaFlagTabellone(CROCE_DEMO, true)
+
+        //--castello
+        regolaFlagTabellone(CROCE_PUBBLICA_CASTELLO, false)
+
+        //--fidenza
+        regolaFlagTabellone(CROCE_ROSSA_FIDENZA, true)
+
+        //--pontetaro
+        regolaFlagTabellone(CROCE_ROSSA_PONTETARO, true)
+
+        newVersione(CROCE_ALGOS, 'Settings', 'Aggiunti di un flag per controllare la videata da mostrare alla partenza')
+    }// fine del metodo
+
+    //--regolazione base per una singola croce
+    private static void regolaFlagTabellone(String siglaCroce, boolean mostraTabellonePartenza) {
+        Croce croce
+        Settings settings
+
+        //--algos
+        croce = Croce.findBySigla(siglaCroce)
+        if (croce) {
+            settings = croce.settings
+        }// fine del blocco if
+
+        if (settings) {
+            settings.mostraTabellonePartenza = mostraTabellonePartenza
+            settings.save(flush: true)
+        }// fine del blocco if
+    }// fine del metodo
+
+    //--eliminazione utente .ospite. (non più necessario)
+    private static void deleteOspite() {
+        String tagOspite = '.ospite.'
+        Croce croce
+        Utente utenteOspite
+        UtenteRuolo utenteRuolo
+        def logo
+
+        croce = Croce.findBySigla(CROCE_ROSSA_PONTETARO)
+        if (croce) {
+            utenteOspite = Utente.findByCroceAndNickname(croce, tagOspite)
+            if (utenteOspite) {
+                utenteRuolo = UtenteRuolo.findByUtente(utenteOspite)
+                if (utenteRuolo) {
+                    utenteRuolo.delete(flush: true)
+                }// fine del blocco if
+                logo = Logo.findAllByUtente(utenteOspite)
+                if (logo instanceof Logo) {
+                    logo.utente = null
+                    logo.save(flush: true)
+                } else {
+                    logo?.each {
+                        it.utente = null
+                        it.save(flush: true)
+                    } // fine del ciclo each
+                }// fine del blocco if-else
+                utenteOspite.delete(flush: true)
+            }// fine del blocco if
+        }// fine del blocco if
+
+        newVersione(CROCE_ROSSA_PONTETARO, 'Utenti', 'Eliminato utente .ospite.')
     }// fine del metodo
 
     def destroy = {

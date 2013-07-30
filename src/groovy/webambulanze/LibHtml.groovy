@@ -435,23 +435,33 @@ class LibHtml {
         return testoHtml
     }// fine del metodo
 
-    private static String lista(String nomeCampo, ArrayList listaValori, def valoreSelezionato, boolean richiesto, int pos) {
+    private static String lista(String nomeCampo, ArrayList lista, def valoreSelezionato, boolean richiesto, int pos) {
         String testoHtml = ''
         String tagSelected = 'selected="selected"'
         boolean isSelected
+        def key  =''
 
         testoHtml += CAPO
         testoHtml += nTab(pos)
         testoHtml += "<select name=\"${nomeCampo}\" id=\"\${nomeCampo}\">"
         testoHtml += CAPO
 
-        listaValori?.each {
+        if (!richiesto) {
+            testoHtml += "<option value=\"\"></option>"
+        }// fine del blocco if
+
+        lista?.each {
             isSelected = (it == valoreSelezionato)
             testoHtml += nTab(pos + 1)
+            try { // prova ad eseguire il codice
+                key = it.id
+            } catch (Exception unErrore) { // intercetta l'errore
+                key = it
+            }// fine del blocco try-catch
             if (isSelected) {
-                testoHtml += "<option value=\"${it}\" ${tagSelected}>${it}</option>"
+                testoHtml += "<option value=\"${key}\" ${tagSelected}>${it}</option>"
             } else {
-                testoHtml += "<option value=\"${it}\">${it}</option>"
+                testoHtml += "<option value=\"${key}\">${it}</option>"
             }// fine del blocco if-else
             testoHtml += CAPO
         } // fine del ciclo each

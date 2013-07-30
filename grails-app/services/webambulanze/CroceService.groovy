@@ -318,4 +318,19 @@ class CroceService {
         return isFlag(siglaCroce, Cost.PREF_usaModuloViaggi)
     }// fine del metodo
 
+    //--controlla il flag mantenuto nei Settings associati alla croce
+    public boolean isTabelloneSecured(String siglaCroce) {
+        return isFlag(siglaCroce, Cost.PREF_isTabelloneSecured)
+    }// fine del metodo
+
+    //--controlla il flag mantenuto nei Settings associati alla croce
+    public boolean isTurniSecured(String siglaCroce) {
+        return isFlag(siglaCroce, Cost.PREF_isTurniSecured)
+    }// fine del metodo
+
+    //--controlla il flag mantenuto nei Settings associati alla croce
+    public boolean mostraTabellonePartenza(String siglaCroce) {
+        return isFlag(siglaCroce, Cost.PREF_mostraTabellonePartenza)
+    }// fine del metodo
+
 } // end of Service Class

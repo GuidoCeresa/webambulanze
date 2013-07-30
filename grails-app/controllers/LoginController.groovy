@@ -38,7 +38,7 @@ class LoginController {
      */
     def index = {
         params.siglaCroce = session[Cost.COOKIE_SIGLA_CROCE]
-
+        def a = params
         if (springSecurityService.isLoggedIn()) {
             redirect uri: SpringSecurityUtils.securityConfig.successHandler.defaultTargetUrl
         } else {
@@ -95,9 +95,12 @@ class LoginController {
         }
         String view = 'auth'
         String postUrl = "${request.contextPath}${config.apf.filterProcessesUrl}"
-        render view: view, model: [postUrl: postUrl,
-                rememberMeParameter: config.rememberMe.parameter, listaUtenti: listaUtenti, listaUtentiNick: listaUtentiNick]
-    }
+        render view: view, model: [
+                postUrl: postUrl,
+                rememberMeParameter: config.rememberMe.parameter,
+                listaUtenti: listaUtenti,
+                listaUtentiNick: listaUtentiNick]
+    }// fine della closure
 
     /**
      * The redirect action for Ajax requests.

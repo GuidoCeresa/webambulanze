@@ -426,6 +426,60 @@
 <g:field name="numeroServiziEffettuati" type="number" value="${settingsInstance.numeroServiziEffettuati}" required=""/>
 </div>
 
+<div class="fieldcontain ${hasErrors(bean: settingsInstance, field: 'tabelloneSecured', 'error')} ">
+	<label for="tabelloneSecured">
+		<g:message code="settings.tabelloneSecured.labelform" default="Tabellone Secured" />
+		
+	</label>
+	
+
+
+
+
+
+
+
+
+
+<g:checkBox name="tabelloneSecured" value="${settingsInstance?.tabelloneSecured}" />
+</div>
+
+<div class="fieldcontain ${hasErrors(bean: settingsInstance, field: 'turniSecured', 'error')} ">
+	<label for="turniSecured">
+		<g:message code="settings.turniSecured.labelform" default="Turni Secured" />
+		
+	</label>
+	
+
+
+
+
+
+
+
+
+
+<g:checkBox name="turniSecured" value="${settingsInstance?.turniSecured}" />
+</div>
+
+<div class="fieldcontain ${hasErrors(bean: settingsInstance, field: 'mostraTabellonePartenza', 'error')} ">
+	<label for="mostraTabellonePartenza">
+		<g:message code="settings.mostraTabellonePartenza.labelform" default="Mostra Tabellone Partenza" />
+		
+	</label>
+	
+
+
+
+
+
+
+
+
+
+<g:checkBox name="mostraTabellonePartenza" value="${settingsInstance?.mostraTabellonePartenza}" />
+</div>
+
 <g:if test="${campiExtra}">
     <amb:extraSchedaForm rec="${settingsInstance}" campiExtra="${campiExtra}"></amb:extraSchedaForm>
 </g:if>

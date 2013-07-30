@@ -285,31 +285,32 @@ class ViaggioController {
 
         if (true) {
             //    if (tipoViaggio.equals('118')) {
-//            render(view: 'fillViaggio', model: [
-//                    // viaggioInstance: new Viaggio(params),
-//                    tipoForm: tipoForm,
-//                    tipoViaggio: TipoViaggio.auto118.toString(), //@todo provvisorio
-//                    automezzoId: params.automezzo.id,
-//                    turnoId: turnoId],
-//                    params: params)
-            render(view: 'create118', model: [
-                    viaggioInstance: new Viaggio(params),
-                    turnoId: turnoId,
-                    siglaTurno: siglaTurno,
-                    automezzoId: automezzoId,
-                    siglaAutomezzo: siglaAutomezzo,
-                    listaAutisti: listaAutisti,
-                    listaSocDae: listaSocDae,
-                    listaSoccorritori: listaSoccorritori,
-                    listaBarellieri: listaBarellieri,
-                    autistaTurno: autistaTurno],
+            render(view: 'fillViaggio', model: [
+                    // viaggioInstance: new Viaggio(params),
+                    tipoForm: tipoForm,
+                    tipoViaggio: TipoViaggio.auto118.toString(), //@todo provvisorio
+                    automezzoId: params.automezzo.id,
+                    turnoId: turnoId],
                     params: params)
+//            render(view: 'create118', model: [
+//                    viaggioInstance: new Viaggio(params),
+//                    turnoId: turnoId,
+//                    siglaTurno: siglaTurno,
+//                    automezzoId: automezzoId,
+//                    siglaAutomezzo: siglaAutomezzo,
+//                    listaAutisti: listaAutisti,
+//                    listaSocDae: listaSocDae,
+//                    listaSoccorritori: listaSoccorritori,
+//                    listaBarellieri: listaBarellieri,
+//                    autistaTurno: autistaTurno],
+//                    params: params)
         } else {
             render(view: 'selezionemancante', params: params)
         }// fine del blocco if-else
     } // fine del metodo
 
     def save() {
+        Milite milite = null
         if (params.list) {
             redirect(action: 'list')
             return
@@ -341,40 +342,52 @@ class ViaggioController {
         }// fine del blocco if
 
         if (params.codiceInvio) {
-         //   params.codiceInvio = CodiceInvio.getDaNome(params.codiceInvio)//@todo rimettere
+            params.codiceInvio = CodiceInvio.getDaNome(params.codiceInvio)//@todo rimettere
         }// fine del blocco if
 
         if (params.luogoEvento) {
-//            params.luogoEvento = LuogoEvento.getDaNome(params.luogoEvento)  //@todo rimettere
+            params.luogoEvento = LuogoEvento.getDaNome(params.luogoEvento)  //@todo rimettere
         }// fine del blocco if
 
         if (params.patologia) {
-          //  params.patologia = Patologia.getDaNome(params.patologia)  //@todo rimettere
+            params.patologia = Patologia.getDaNome(params.patologia)  //@todo rimettere
         }// fine del blocco if
 
         if (params.codiceRicovero) {
-//            params.codiceRicovero = CodiceRicovero.getDaNome(params.codiceRicovero) //@todo rimettere
+            params.codiceRicovero = CodiceRicovero.getDaNome(params.codiceRicovero) //@todo rimettere
         }// fine del blocco if
 
-        def pippoz2 = params
-
         if (params.chilometriPartenza) {
-            params.chilometriPartenza= Integer.decode(params.chilometriPartenza)
+            params.chilometriPartenza = Integer.decode(params.chilometriPartenza)
         }// fine del blocco if
 
         if (params.chilometriArrivo) {
-            params.chilometriArrivo= Integer.decode(params.chilometriArrivo)
+            params.chilometriArrivo = Integer.decode(params.chilometriArrivo)
         }// fine del blocco if
 
-        //@todo da modificare
-        if (!params.militeFunzione1) {
-            params.militeFunzione1 = Milite.get(1)
-        }// fine del blocco if
+        if (params.militeFunzione1) {
+            params.militeFunzione1 = Milite.findById(params.militeFunzione1)
+        } else {
+            params.militeFunzione1 = null
+        }// fine del blocco if-else
 
-        //@todo da modificare
-        if (!params.militeFunzione2) {
-            params.militeFunzione2 = Milite.get(1)
-        }// fine del blocco if
+        if (params.militeFunzione2) {
+            params.militeFunzione2 = Milite.findById(params.militeFunzione2)
+        } else {
+            params.militeFunzione2 = null
+        }// fine del blocco if-else
+
+        if (params.militeFunzione3) {
+            params.militeFunzione3 = Milite.findById(params.militeFunzione3)
+        } else {
+            params.militeFunzione3 = null
+        }// fine del blocco if-else
+
+        if (params.militeFunzione4) {
+            params.militeFunzione4 = Milite.findById(params.militeFunzione4)
+        } else {
+            params.militeFunzione4 = null
+        }// fine del blocco if-else
 
         def viaggioInstance = new Viaggio(params)
         Croce croce = croceService.getCroce(request)

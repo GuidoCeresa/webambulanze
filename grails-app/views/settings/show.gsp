@@ -39,6 +39,9 @@
         <li><g:link class="edit" action="edit" id="${settingsInstance?.id}">
             <g:message code="settings.edit.label" default="Modifica settings"/>
         </g:link></li>
+        <g:if test="${menuExtra}">
+            <li><amb:menuExtra menuExtra="${menuExtra}"></amb:menuExtra></li>
+        </g:if>
     </ul>
 </div>
 
@@ -264,6 +267,33 @@
             
             <span class="property-value" aria-labelledby="numeroServiziEffettuati-label"><g:fieldValue bean="${settingsInstance}"
                                                                                          field="numeroServiziEffettuati"/></span>
+            
+        </li>
+        
+        <li class="fieldcontain">
+            <span id="tabelloneSecured-label" class="property-label"><g:message
+                    code="settings.tabelloneSecured.labelform" default="Tabellone Secured"/></span>
+            
+            <span class="property-value" aria-labelledby="tabelloneSecured-label"><g:formatBoolean
+                    boolean="${settingsInstance?.tabelloneSecured}"/></span>
+            
+        </li>
+        
+        <li class="fieldcontain">
+            <span id="turniSecured-label" class="property-label"><g:message
+                    code="settings.turniSecured.labelform" default="Turni Secured"/></span>
+            
+            <span class="property-value" aria-labelledby="turniSecured-label"><g:formatBoolean
+                    boolean="${settingsInstance?.turniSecured}"/></span>
+            
+        </li>
+        
+        <li class="fieldcontain">
+            <span id="mostraTabellonePartenza-label" class="property-label"><g:message
+                    code="settings.mostraTabellonePartenza.labelform" default="Mostra Tabellone Partenza"/></span>
+            
+            <span class="property-value" aria-labelledby="mostraTabellonePartenza-label"><g:formatBoolean
+                    boolean="${settingsInstance?.mostraTabellonePartenza}"/></span>
             
         </li>
         

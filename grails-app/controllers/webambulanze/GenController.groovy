@@ -68,9 +68,39 @@ class GenController {
     //--chiamata dai menu delle liste e form
     //--va al menu base
     def home() {
-        params.siglaCroce = croceService.getSiglaCroce(request)
+//        params.siglaCroce = croceService.getSiglaCroce(request)
+//        render(controller: 'gen', view: 'home', params: params)
+        redirect(controller: 'accesso', action: 'home')
+    } // fine del metodo
 
-        render(controller: 'gen', view: 'home', params: params)
+    def seleziona() {
+        String siglaCroce = ''
+        boolean primaVolta
+        String startController
+
+        if (params.siglaCroce) {
+            siglaCroce = params.siglaCroce
+        }// fine del blocco if
+
+        //--regolazioni generali
+        primaVolta = selezionaCroceBase(siglaCroce)
+
+        startController = croceService.getStartController(siglaCroce)
+
+        if (primaVolta) {
+            redirect(url: '/' + siglaCroce)
+        } else {
+            if (startController) {
+                //--va alla schermata specifica
+                redirect(controller: startController, params: params)
+            } else {
+                //--va al menu base
+                render(controller: 'gen', view: 'home', params: params)
+            }// fine del blocco if-else
+        }// fine del blocco if-else
+
+
+        def stiop
     } // fine del metodo
 
     //--selezione iniziale della croce su cui operare
@@ -174,6 +204,7 @@ class GenController {
     //--seleziona la necessità del login
     //--regola la schermata iniziale
     def selezionaCroceDemo() {
+        def a = params
         //--regolazioni generali
         boolean primaVolta = selezionaCroceBase(Cost.CROCE_DEMO)
 
@@ -235,7 +266,7 @@ class GenController {
         } else {
             if (startController) {
                 //--va alla schermata specifica
-                redirect(controller: startController, params: params)
+                redirect(controller: startController, action: 'indexSecured', params: params)
             } else {
                 //--va al menu base
                 render(controller: 'gen', view: 'home', params: params)
@@ -263,7 +294,7 @@ class GenController {
         } else {
             if (startController) {
                 //--va alla schermata specifica
-                redirect(controller: startController, params: params)
+                redirect(controller: startController, action: 'index', params: params)
             } else {
                 //--va al menu base
                 render(controller: 'gen', view: 'home', params: params)

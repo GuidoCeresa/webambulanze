@@ -47,6 +47,9 @@ public interface Cost {
     public static String PREF_maxMinutiTrascorsiModifica = 'maxMinutiTrascorsiModifica'
     public static String PREF_usaModuloTurni = 'usaModuloTurni'
     public static String PREF_usaModuloViaggi = 'usaModuloViaggi'
+    public static String PREF_isTabelloneSecured = 'tabelloneSecured'
+    public static String PREF_isTurniSecured = 'turniSecured'
+    public static String PREF_mostraTabellonePartenza = 'mostraTabellonePartenza'
 
     //--spazio vuoto
     public static String SPAZIO_10 = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'
