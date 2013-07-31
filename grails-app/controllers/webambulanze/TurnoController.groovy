@@ -41,12 +41,12 @@ class TurnoController {
     static int giorniVisibili = 7
     static int delta = giorniVisibili - 1
 
-    def index() {
+    @Secured([Cost.ROLE_MILITE])
+    def indexSecured() {
         redirect(action: 'tabellone', params: params)
     } // fine del metodo
 
-    @Secured([Cost.ROLE_MILITE])
-    def indexSecured() {
+    def index() {
         redirect(action: 'tabellone', params: params)
     } // fine del metodo
 
@@ -57,7 +57,7 @@ class TurnoController {
         flash.listaErrori = null
         dataInizio = AmbulanzaTagLib.creaDataOggi()
         dataFine = (dataInizio + delta).toTimestamp()
-        def a=params
+        def a = params
         render(view: 'tabellone', model: [dataInizio: dataInizio, dataFine: dataFine], params: params)
     }// fine della closure
 
@@ -173,8 +173,13 @@ class TurnoController {
     @Secured([Cost.ROLE_MILITE])
     def newFillTurno(Turno turnoInstance, boolean nuovoTurno) {
         params.siglaCroce = croceService.getSiglaCroce(request)
+        boolean turniSecured = croceService.isTurniSecured(params.siglaCroce)
 
-        render(view: 'fillTurno', model: [turnoInstance: turnoInstance, nuovoTurno: nuovoTurno], params: params)
+        render(view: 'fillTurno', model: [
+                turnoInstance: turnoInstance,
+                nuovoTurno: nuovoTurno,
+                turniSecured: turniSecured
+        ], params: params)
     }// fine del metodo
 
     def uscitaSenzaModifiche = {
@@ -316,6 +321,10 @@ class TurnoController {
     } // fine del metodo
 
     @Secured([Cost.ROLE_MILITE])
+    def updateSecured(Long id, Long version) {
+        update(id, version)
+    } // update del metodo
+
     def update(Long id, Long version) {
         boolean nuovoTurno = false
         String value

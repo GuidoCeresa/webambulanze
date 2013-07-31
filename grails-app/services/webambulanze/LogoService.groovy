@@ -126,7 +126,7 @@ class LogoService {
 
         //--user della classe mia
         currUser = springSecurityService.getCurrentUser()
-        if (currUser instanceof Utente) {
+        if (currUser && currUser instanceof Utente) {
             utente = (Utente) currUser
         }// fine del blocco if
 

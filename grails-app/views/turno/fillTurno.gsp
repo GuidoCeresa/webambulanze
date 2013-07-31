@@ -48,11 +48,19 @@
         <g:hiddenField name="version" value="${turnoInstance?.version}"/>
         <g:hiddenField name="nuovoTurno" value="${nuovoTurno}"/>
         <fieldset class="form">
-            <amb:fillForm turnoInstance="${turnoInstance?.id}" nuovoTurno="${nuovoTurno}" ></amb:fillForm>
+            <amb:fillForm turnoInstance="${turnoInstance?.id}" nuovoTurno="${nuovoTurno}"></amb:fillForm>
         </fieldset>
         <fieldset class="buttons">
-            <g:actionSubmit class="save" action="update"
-                            value="${message(code: 'tabellone.registra.label', default: 'Update')}"/>
+
+            <g:if test="${turniSecured}">
+                <g:actionSubmit class="save" action="updateSecured"
+                                value="${message(code: 'tabellone.registra.label', default: 'Update')}"/>
+            </g:if>
+            <g:else>
+                <g:actionSubmit class="save" action="update"
+                                value="${message(code: 'tabellone.registra.label', default: 'Update')}"/>
+            </g:else>
+
             <g:actionSubmit class="cancel" action="uscitaSenzaModifiche"
                             value="${message(code: 'tabellone.annulla.label', default: 'Cancel')}"/>
             <sec:ifAnyGranted roles="ROLE_programmatore,ROLE_custode,ROLE_admin">

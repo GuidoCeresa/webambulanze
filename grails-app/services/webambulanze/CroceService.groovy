@@ -296,8 +296,10 @@ class CroceService {
                 }// fine del blocco if
             } // fine del ciclo each
 
-            min = (long) listaNumeri.min()
-            ruolo = Ruolo.get(min)
+            if (listaNumeri && listaNumeri.size() > 0) {
+                min = (long) listaNumeri.min()
+                ruolo = Ruolo.get(min)
+            }// fine del blocco if
         }// fine del blocco if
 
         return ruolo
