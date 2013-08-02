@@ -6,7 +6,7 @@
 </head>
 
 <body>
-<amb:titoloPagina></amb:titoloPagina>
+<amb:titoloPagina> </amb:titoloPagina>
 
 <g:if test="${flash.message}">
     <div class="message" role="status">${flash.message}</div>

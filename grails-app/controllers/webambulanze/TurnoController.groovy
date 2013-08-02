@@ -58,6 +58,8 @@ class TurnoController {
         dataInizio = AmbulanzaTagLib.creaDataOggi()
         dataFine = (dataInizio + delta).toTimestamp()
         def a = params
+        def user = springSecurityService.principal
+        def currUser = springSecurityService.getCurrentUser()
         render(view: 'tabellone', model: [dataInizio: dataInizio, dataFine: dataFine], params: params)
     }// fine della closure
 
@@ -146,6 +148,9 @@ class TurnoController {
             flash.message = message(code: 'turno.new.fallito.message', args: [tipoTurno.descrizione, giornoTxt])
         }// fine del blocco if-else
 
+        def user = springSecurityService.principal
+        def currUser = springSecurityService.getCurrentUser()
+
         newFillTurno(nuovoOppureEsistente, nuovoTurno)
     }// fine della closure
 
@@ -154,6 +159,16 @@ class TurnoController {
         String turnoIdTxt
         long turnoId
         Turno turnoInstance = null
+
+        def a=request
+        def b=request.contextPath
+        def c=request.pathInfo
+        def d=request.queryString
+        def e=request.remoteUser
+        def f= request.requestURI
+        def g= request.userPrincipal
+        def user = springSecurityService.principal
+        def currUser = springSecurityService.getCurrentUser()
 
         if (params.turnoId) {
             turnoIdTxt = params.turnoId
@@ -187,6 +202,14 @@ class TurnoController {
         boolean nuovoTurno = false
         String value
         String testo
+
+        def a=request
+        def b=request.contextPath
+        def c=request.pathInfo
+        def d=request.queryString
+        def e=request.remoteUser
+        def f= request.requestURI
+        def g= request.userPrincipal
 
         if (params.nuovoTurno) {
             value = params.nuovoTurno

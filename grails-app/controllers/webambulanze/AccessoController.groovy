@@ -55,7 +55,9 @@ class AccessoController {
             croce = Croce.findBySigla(possibileSiglaCroce)
             if (croce) {
                 siglaCroce = croce.sigla
-            }// fine del blocco if
+            } else {
+                def pippoz
+            }// fine del blocco if-else
         } else {
             render(view: '/error')
             return

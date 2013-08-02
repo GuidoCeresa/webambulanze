@@ -137,21 +137,23 @@ class AmbulanzaTagLib {
 
         if (croce) {
             nomeLink = croce.organizzazione.wiki
-            fileImmagine = croce.organizzazione.fileLogo
+            if (croce.organizzazione.fileLogo) {
+                fileImmagine = croce.organizzazione.fileLogo
+                if (fileImmagine) {
+                    testoLink += '<a href="'
+                    testoLink += nomeLink
+                    testoLink += '">'
+
+                    testoImmagine += '<img src="/webambulanze/images/'
+                    testoImmagine += fileImmagine
+                    testoImmagine += '"/>'
+
+                    testo += testoLink
+                    testo += testoImmagine
+                    testo += '</a>'
+                }// fine del blocco if
+            }// fine del blocco if
         }// fine del blocco if
-
-        testoLink += '<a href="'
-        testoLink += nomeLink
-        testoLink += '">'
-
-        testoImmagine += '<img src="/webambulanze/images/'
-        testoImmagine += fileImmagine
-        testoImmagine += '"/>'
-
-        testo += testoLink
-        testo += testoImmagine
-        testo += '</a>'
-
 
         return Lib.tagCellaTitolo(testo, Aspetto.titoloimmagine)
     }// fine del metodo
@@ -1504,7 +1506,8 @@ class AmbulanzaTagLib {
 //        testo = 'Algos© - v3.6 del 30 giugno 2013'
 //        testo = 'Algos© - v3.7 del 1 luglio 2013'
 //        testo = 'Algos© - v3.8 del 12 luglio 2013'
-        testo = 'Algos© - v3.9 del 30 luglio 2013'
+//        testo = 'Algos© - v3.9 del 30 luglio 2013'
+        testo = 'Algos© - v4.0 del 2 agosto 2013'
         testo = Lib.tagCella(testo, Aspetto.copyright)
         testoOut = Lib.tagTable(testo)
         return testoOut
