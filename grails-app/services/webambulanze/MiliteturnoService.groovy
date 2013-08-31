@@ -68,7 +68,7 @@ class MiliteturnoService {
 
     //--cancella tutti i records di Militeturno (dell'anno corrente)
     def cancellaMiliteTurno(Croce croce, Date primoGennaio) {
-        Militeturno.findAllByCroceAndGiornoGreaterThan(croce, primoGennaio)*.delete(flush: true)
+        Militeturno.findAllByCroceAndGiornoGreaterThan(croce, primoGennaio - 1)*.delete(flush: true)
     }// fine del metodo
 
     //--ricalcola tutti i turni e crea i records
