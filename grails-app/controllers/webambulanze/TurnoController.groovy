@@ -699,6 +699,9 @@ class TurnoController {
         String testoErrore = ''
         long actualTime
         long oldTime
+        long milliSecondiTrascorsi
+        long secondiTrascorsi
+        long    minutiTrascorsi
         String oldMiliteIdTxt
         String militeIdTxt
         String campo
@@ -708,7 +711,6 @@ class TurnoController {
         boolean modificatoMilite
         Timestamp tempo
         int maxMinutiTrascorsiModifica = croceService.maxMinutiTrascorsiModifica(request)
-        int minutiTrascorsi
         boolean tempoScaduto = false
 
         actualTime = new Date().time
@@ -734,9 +736,9 @@ class TurnoController {
                 if (tempo) {
                     oldTime = tempo.time
                 }// fine del blocco if
-                minutiTrascorsi = actualTime - oldTime
-                minutiTrascorsi = minutiTrascorsi / 1000
-                minutiTrascorsi = minutiTrascorsi / 60
+                milliSecondiTrascorsi = actualTime - oldTime
+                secondiTrascorsi = milliSecondiTrascorsi / 1000
+                minutiTrascorsi = secondiTrascorsi / 60
                 if (minutiTrascorsi > maxMinutiTrascorsiModifica) {
                     tempoScaduto = true
                 }// fine del blocco if
