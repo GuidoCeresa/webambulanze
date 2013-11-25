@@ -17,7 +17,8 @@ class BootStrap implements Cost {
 
     //--controllo di funzioni da utilizzare SOLAMENTE in fase di sviluppo
     private static boolean SVILUPPO_CROCE_ROSSA_FIDENZA = false;
-    private static boolean SVILUPPO_CROCE_ROSSA_PONTE_TARO = true;
+    private static boolean SVILUPPO_CROCE_ROSSA_PONTE_TARO = false;
+    private static boolean SVILUPPO_PUBBLICA_PIANORO = true;
 
     //--controllo di funzioni da utilizzare SOLAMENTE in fase di sviluppo
     private static boolean ESISTE_COLLEGAMENTO_INTERNET = true;
@@ -25,6 +26,7 @@ class BootStrap implements Cost {
     //--usato per controllare la creazione automatica delle password
     private static int numUtentiRossaFidenza = 0
     private static int numUtentiRossaPonteTaro = 0
+    private static int numUtentiPubblicaPianoro = 0
 
     //--variabili temporaneee per passare i riferimenti da una tavola all'altra
     private static ArrayList<Funzione> funzDemo = []
@@ -33,6 +35,7 @@ class BootStrap implements Cost {
     private static ArrayList<Funzione> funzAutomedicaCRF = []
     private static ArrayList<Funzione> funzAmbulanzaCRF = []
     private static ArrayList<Funzione> funzCRPT = []
+    private static ArrayList<Funzione> funzPAP = []
 
     // private static String DIR_PATH = '/Users/Gac/Documents/IdeaProjects/webambulanze/grails-app/webambulanze/'
     private static String DIR_PATH = 'http://77.43.32.198:80/ambulanze/'
@@ -278,6 +281,11 @@ class BootStrap implements Cost {
         //--eliminazione utente .ospite. (non più necessario)
         if (installaVersione(44)) {
             deleteOspite()
+        }// fine del blocco if
+
+        //--creazione nuova croce
+        if (installaVersione(45)) {
+            creaPianoro()
         }// fine del blocco if
 
         //--creazione dei record utenti per la pubblica castello
@@ -1052,7 +1060,6 @@ class BootStrap implements Cost {
             croce.settings = setting
             croce.save(failOnError: true)
         }// fine del blocco if
-
     }// fine del metodo
 
     //--creazione link interno ad ogni croce per riferirsi al proprio setting
@@ -1185,6 +1192,18 @@ class BootStrap implements Cost {
             String funzioniAutomatiche) {
 
         funzCRPT.add(newFunzione(CROCE_ROSSA_PONTETARO, siglaInterna, siglaVisibile, descrizione, ordine, funzioniAutomatiche))
+    }// fine del metodo
+
+    //--crea una funzione funzione per la croce
+    //--la crea SOLO se non esiste già
+    private static void newFunzPianoro(
+            String siglaInterna,
+            String siglaVisibile,
+            String descrizione,
+            int ordine,
+            String funzioniAutomatiche) {
+
+        funzPAP.add(newFunzione(CROCE_PUBBLICA_PIANORO, siglaInterna, siglaVisibile, descrizione, ordine, funzioniAutomatiche))
     }// fine del metodo
 
     //--crea una funzione funzione per la croce
@@ -1361,6 +1380,23 @@ class BootStrap implements Cost {
             boolean mult,
             int funzObb) {
         newTipoTurno(CROCE_ROSSA_PONTETARO, sigla, desc, ord, oraIni, oraFine, next, vis, orario, mult, funzObb, funzCRPT)
+    }// fine del metodo
+
+    //--regola il tipo di turno coi parametri indicati
+    //--registra il tipo di turno
+    //--lo crea SOLO se non esiste già
+    private static void newTipoTurnoPianoro(
+            String sigla,
+            String desc,
+            int ord,
+            int oraIni,
+            int oraFine,
+            boolean next,
+            boolean vis,
+            boolean orario,
+            boolean mult,
+            int funzObb) {
+        newTipoTurno(CROCE_PUBBLICA_PIANORO, sigla, desc, ord, oraIni, oraFine, next, vis, orario, mult, funzObb, funzPAP)
     }// fine del metodo
 
     //--regola il tipo di turno coi parametri indicati
@@ -3656,6 +3692,240 @@ class BootStrap implements Cost {
         }// fine del blocco if
 
         newVersione(CROCE_ROSSA_PONTETARO, 'Utenti', 'Eliminato utente .ospite.')
+    }// fine del metodo
+
+    //--creazione nuova croce
+    private void creaPianoro() {
+        if (SVILUPPO_PUBBLICA_PIANORO) {
+            resetCroce(CROCE_PUBBLICA_PIANORO)
+        }// fine del blocco if
+        creazionePubblicaPianoro()
+        configurazionePubblicaPianoro()
+        securitySetupPubblicaPianoro()
+        funzioniPubblicaPianoro()
+        tipiDiTurnoPubblicaPianoro()
+        militiPubblicaPianoro()
+        turniDicembrePianoro()
+        newVersione(CROCE_PUBBLICA_PIANORO, 'Creazione croce', 'Funzioni, tipiTurni, militi, utenti.')
+    }// fine del metodo
+
+    //--Pubblica Assistenza Pianoro
+    //--creazione inziale della croce
+    //--controlla SEMPRE
+    //--modifica le proprietà coi valori di default se sono stati svuotati
+    private static void creazionePubblicaPianoro() {
+        Croce croce = Croce.findBySigla(CROCE_PUBBLICA_PIANORO)
+
+        if (!croce) {
+            croce = new Croce(sigla: CROCE_PUBBLICA_PIANORO)
+        }// fine del blocco if
+
+        if (croce) {
+            if (!croce.organizzazione) {
+                croce.organizzazione = Organizzazione.anpas
+            }// fine del blocco if
+            if (!croce.descrizione) {
+                croce.descrizione = 'Pubblica Assistenza Pianoro'
+            }// fine del blocco if
+            if (!croce.presidente) {
+                croce.presidente = 'Riccardo Piloni'
+            }// fine del blocco if
+            if (!croce.riferimento) {
+                croce.riferimento = 'Silvano Piana'
+            }// fine del blocco if
+            if (!croce.indirizzo) {
+                croce.indirizzo = 'Via del Lavoro 15 - 40065 Pianoro (BO)'
+            }// fine del blocco if
+            if (!croce.telefono) {
+                croce.telefono = '051 774540'
+            }// fine del blocco if
+            if (!croce.email) {
+                croce.email = 'presidente@pubblicapianoro.it'
+            }// fine del blocco if
+            if (!croce.custode) {
+                croce.custode = 'Silvano Piana'
+            }// fine del blocco if
+            if (!croce.amministratori) {
+                croce.amministratori = 'Silvano Piana'
+            }// fine del blocco if
+            if (!croce.note) {
+                croce.note = ''
+            }// fine del blocco if
+            croce.save(failOnError: true)
+        }// fine del blocco if
+    }// fine del metodo
+
+    //--Pubblica Assistenza Pianoro
+    //--creazione record di configurazione (settings)
+    //--lo crea SOLO se non esiste già
+    //--controlla SEMPRE
+    private static void configurazionePubblicaPianoro() {
+        Croce croce = Croce.findBySigla(CROCE_PUBBLICA_PIANORO)
+        Settings setting
+
+        if (SVILUPPO_PUBBLICA_PIANORO && croce) {
+            setting = Settings.findByCroce(croce)
+            if (setting == null) {
+                setting = new Settings(croce: croce)
+                setting.startLogin = true
+                setting.startController = 'turno'
+                setting.allControllers = false
+                setting.controlli = ''
+                setting.mostraSoloMilitiFunzione = true
+                setting.mostraMilitiFunzioneAndAltri = false
+                setting.militePuoInserireAltri = false
+                setting.militePuoModificareAltri = false
+                setting.militePuoCancellareAltri = false
+                setting.tipoControlloModifica = ControlloTemporale.tempoMancante
+                setting.maxMinutiTrascorsiModifica = 0
+                setting.minGiorniMancantiModifica = 2
+                setting.tipoControlloCancellazione = ControlloTemporale.tempoMancante
+                setting.maxMinutiTrascorsiCancellazione = 0
+                setting.minGiorniMancantiCancellazione = 2
+                setting.isOrarioTurnoModificabileForm = false
+                setting.isCalcoloNotturnoStatistiche = false
+                setting.fissaLimiteMassimoSingoloTurno = false
+                setting.oreMassimeSingoloTurno = 0
+                setting.usaModuloViaggi = false
+                setting.numeroServiziEffettuati = 0
+                setting.tabelloneSecured = true
+                setting.turniSecured = true
+                setting.mostraTabellonePartenza = true
+                setting.save(failOnError: true)
+            }// fine del blocco if
+        }// fine del blocco if
+    }// fine del metodo
+
+    //--creazione accessi per la croce
+    //--occorre SEMPRE un accesso come admin
+    //--occorre SEMPRE un accesso come utente
+    //--li crea SOLO se non esistono già
+    private static void securitySetupPubblicaPianoro() {
+        Utente utente
+        String nick
+        String pass
+        Ruolo adminRole
+        Ruolo militeRole
+
+        if (SVILUPPO_PUBBLICA_PIANORO) {
+            adminRole = Ruolo.findOrCreateByAuthority(ROLE_ADMIN).save(failOnError: true)
+            militeRole = Ruolo.findOrCreateByAuthority(ROLE_MILITE).save(failOnError: true)
+
+            // custode
+            nick = 'Piana Silvano'
+            pass = 'piana987'
+            utente = newUtente(CROCE_PUBBLICA_PIANORO, ROLE_CUSTODE, nick, pass)
+            numUtentiPubblicaPianoro++
+            if (adminRole && militeRole && utente) {
+                UtenteRuolo.findOrCreateByRuoloAndUtente(adminRole, utente).save(failOnError: true)
+                UtenteRuolo.findOrCreateByRuoloAndUtente(militeRole, utente).save(failOnError: true)
+            }// fine del blocco if
+
+            // dipendente generico
+            // serve per permettere ai dipendenti di vedere i turni (bloccati per i senza password)
+            // senza potersi segnare
+            nick = 'dipendenti'
+            pass = 'dip987'
+            newUtente(CROCE_PUBBLICA_PIANORO, ROLE_MILITE, nick, pass)
+            numUtentiPubblicaPianoro++
+        }// fine del blocco if
+    }// fine del metodo
+
+    //--creazione funzioni per la pubblica assistenza Pianoro
+    //--ogni croce ha SEMPRE diverse funzioni
+    //--li crea SOLO se non esistono già
+    private static void funzioniPubblicaPianoro() {
+        if (SVILUPPO_PUBBLICA_PIANORO) {
+            newFunzPianoro(PAP_FUNZIONE_AUT, 'Aut', 'Autista', 1, PAP_FUNZIONE_SOC + ',' + PAP_FUNZIONE_BAR + ',' + PAP_FUNZIONE_BAR_2)
+            newFunzPianoro(PAP_FUNZIONE_SOC, 'Soc', 'Soccorritore', 2, PAP_FUNZIONE_BAR + ',' + PAP_FUNZIONE_BAR_2)
+            newFunzPianoro(PAP_FUNZIONE_BAR, 'Bar', 'Barelliere', 3, '')
+            newFunzPianoro(PAP_FUNZIONE_BAR_2, 'Bar2', 'Barelliere', 3, '')
+        }// fine del blocco if
+    }// fine del metodo
+
+    //--creazione delle tipologie di turni per la pubblica assistenza Pianoro
+    //--ogni croce può avere tipologie differenti
+    //--li crea SOLO se non esistono già
+    private static void tipiDiTurnoPubblicaPianoro() {
+        if (SVILUPPO_PUBBLICA_PIANORO) {
+            newTipoTurnoPianoro(PAP_TIPO_TURNO_LUNVEN_NOTTE, 'amb lun-ven notte', 1, 0, 7, false, true, true, false, 2)
+            newTipoTurnoPianoro(PAP_TIPO_TURNO_LUNVEN_MATTINA, 'amb lun-ven mattina', 2, 7, 14, false, true, true, false, 2)
+            newTipoTurnoPianoro(PAP_TIPO_TURNO_LUNVEN_POMERIGGIO, 'amb lun-ven pomeriggio', 3, 14, 17, false, true, true, false, 2)
+            newTipoTurnoPianoro(PAP_TIPO_TURNO_LUNVEN_POMERIGGIOSERA, 'amb lun-ven pom/sera', 4, 17, 20, false, true, true, false, 2)
+            newTipoTurnoPianoro(PAP_TIPO_TURNO_LUNVEN_SERA, 'amb lun-ven sera', 5, 20, 24, false, true, true, false, 2)
+            newTipoTurnoPianoro(PAP_TIPO_TURNO_SABDOM_NOTTE, 'amb sab-dom notte', 6, 0, 8, false, true, true, false, 2)
+            newTipoTurnoPianoro(PAP_TIPO_TURNO_SABDOM_MATTINA, 'amb sab-dom mattina', 7, 8, 13, false, true, true, false, 2)
+            newTipoTurnoPianoro(PAP_TIPO_TURNO_SABDOM_POMERIGGIO, 'amb sab-dom pomeriggio', 8, 13, 19, false, true, true, false, 2)
+            newTipoTurnoPianoro(PAP_TIPO_TURNO_SABDOM_SERA, 'amb sab-dom sera', 9, 19, 24, false, true, true, false, 2)
+        }// fine del blocco if
+    }// fine del metodo
+
+    //--aggiunta militi
+    //--controlla SEMPRE
+    private static void militiPubblicaPianoro() {
+        Croce croce = Croce.findBySigla(CROCE_PUBBLICA_PIANORO)
+        Milite milite
+        Funzione autista = Funzione.findByCroceAndSigla(croce, PAP_FUNZIONE_AUT)
+        Funzione soccorritore = Funzione.findByCroceAndSigla(croce, PAP_FUNZIONE_SOC)
+        Funzione barelliere = Funzione.findByCroceAndSigla(croce, PAP_FUNZIONE_BAR)
+        Funzione barelliere2 = Funzione.findByCroceAndSigla(croce, PAP_FUNZIONE_BAR_2)
+
+        if (croce && autista && soccorritore && barelliere) {
+            milite = Milite.findOrCreateByCroceAndNomeAndCognome(croce, 'Silvano', 'Piana').save(failOnError: true)
+            Militefunzione.findOrCreateByCroceAndMiliteAndFunzione(croce, milite, autista).save(failOnError: true)
+            Militefunzione.findOrCreateByCroceAndMiliteAndFunzione(croce, milite, soccorritore).save(failOnError: true)
+            Militefunzione.findOrCreateByCroceAndMiliteAndFunzione(croce, milite, barelliere).save(failOnError: true)
+            Militefunzione.findOrCreateByCroceAndMiliteAndFunzione(croce, milite, barelliere2).save(failOnError: true)
+        }// fine del blocco if
+    }// fine del metodo
+
+    //--creazione dei turni vuoti per dicembre 2013
+    //--li crea SOLO se non esistono già
+    private static void turniDicembrePianoro() {
+        Croce croce = Croce.findBySigla(CROCE_PUBBLICA_PIANORO)
+        int primoDicembre = 335
+
+        if (SVILUPPO_PUBBLICA_PIANORO && croce) {
+            creaTurnoVuotoPianoro(croce, 335)
+            for (int k = primoDicembre; k <= 365; k++) {
+                creaTurnoVuotoPianoro(croce, k)
+            } // fine del ciclo for
+        }// fine del blocco if
+    }// fine del metodo
+
+    private static creaTurnoVuotoPianoro(Croce croce, int delta) {
+        Date primoGennaio2013 = Lib.creaData1Gennaio()
+        Date giorno
+        int numGiornoSettimanale
+
+        giorno = primoGennaio2013 + delta - 1
+        numGiornoSettimanale = Lib.getNumSettimana(giorno)
+
+        //-- sabato: numGiornoSettimanale=7
+        //-- domenica: numGiornoSettimanale=1
+        //-- 8 dic: delta=342
+        //-- 25 dic: delta=359
+        //-- 26 dic: delta=360
+        if (numGiornoSettimanale == 7 || numGiornoSettimanale == 1 || delta == 342 || delta == 359 || delta == 360) {
+            creaTurnoVuotoFestivoPianoro(croce, giorno)
+        } else {
+            creaTurnoVuotoFerialePianoro(croce, giorno)
+        }// fine del blocco if-else
+    }// fine del metodo
+
+    private static creaTurnoVuotoFerialePianoro(Croce croce, Date giorno) {
+        Lib.creaTurno(croce, TipoTurno.findByCroceAndSigla(croce, PAP_TIPO_TURNO_LUNVEN_NOTTE), giorno)
+        Lib.creaTurno(croce, TipoTurno.findByCroceAndSigla(croce, PAP_TIPO_TURNO_LUNVEN_MATTINA), giorno)
+        Lib.creaTurno(croce, TipoTurno.findByCroceAndSigla(croce, PAP_TIPO_TURNO_LUNVEN_POMERIGGIO), giorno)
+        Lib.creaTurno(croce, TipoTurno.findByCroceAndSigla(croce, PAP_TIPO_TURNO_LUNVEN_POMERIGGIOSERA), giorno)
+        Lib.creaTurno(croce, TipoTurno.findByCroceAndSigla(croce, PAP_TIPO_TURNO_LUNVEN_SERA), giorno)
+    }// fine del metodo
+
+    private static creaTurnoVuotoFestivoPianoro(Croce croce, Date giorno) {
+        Lib.creaTurno(croce, TipoTurno.findByCroceAndSigla(croce, PAP_TIPO_TURNO_SABDOM_NOTTE), giorno)
+        Lib.creaTurno(croce, TipoTurno.findByCroceAndSigla(croce, PAP_TIPO_TURNO_SABDOM_MATTINA), giorno)
+        Lib.creaTurno(croce, TipoTurno.findByCroceAndSigla(croce, PAP_TIPO_TURNO_SABDOM_POMERIGGIO), giorno)
+        Lib.creaTurno(croce, TipoTurno.findByCroceAndSigla(croce, PAP_TIPO_TURNO_SABDOM_SERA), giorno)
     }// fine del metodo
 
     def destroy = {

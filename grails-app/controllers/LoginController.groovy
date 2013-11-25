@@ -80,7 +80,6 @@ class LoginController {
                 listaUtenti.add(utente.username)
                 listaUtentiNick.add(utente.nickname)
             }// fine del blocco if
-
         }// fine del blocco if
 
         //--aggiunge in fondo l'username del programmatore

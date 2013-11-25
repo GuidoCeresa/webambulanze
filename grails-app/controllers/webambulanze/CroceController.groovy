@@ -141,6 +141,14 @@ class CroceController {
 
         croceInstance.properties = params
 
+        //--@todo patch finchè non capisco come fare
+        if (croceInstance.telefono == null) {
+            croceInstance.telefono = ''
+        }// fine del blocco if
+        if (croceInstance.note == null) {
+            croceInstance.note = ''
+        }// fine del blocco if
+
         if (!croceInstance.save(flush: true)) {
             render(view: 'edit', model: [croceInstance: croceInstance], params: params)
             return

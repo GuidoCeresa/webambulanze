@@ -21,6 +21,7 @@ public interface Cost {
     public static String CROCE_PUBBLICA_CASTELLO = 'PAVT'
     public static String CROCE_ROSSA_FIDENZA = 'CRF'
     public static String CROCE_ROSSA_PONTETARO = 'CRPT'
+    public static String CROCE_PUBBLICA_PIANORO = 'PAP'
 
     //--codifica degli attributi dei cookies
     public static String COOKIE_SIGLA_CROCE = 'siglaCroce'
@@ -135,4 +136,21 @@ public interface Cost {
     public static String DEMO_TIPO_TURNO_AMBULANZA_POMERIGGIO = 'amb-pom'
     public static String DEMO_TIPO_TURNO_AMBULANZA_NOTTE = 'amb-notte'
     public static String DEMO_TIPO_TURNO_EXTRA = 'extra'
+
+    //--funzioni in pubblica assistenza pianoro
+    public static String PAP_FUNZIONE_AUT = 'aut'
+    public static String PAP_FUNZIONE_SOC = 'soc'
+    public static String PAP_FUNZIONE_BAR = 'bar'
+    public static String PAP_FUNZIONE_BAR_2 = 'bar2'
+
+    //--sigle dei tipi di turno in pubblica assistenza pianoro
+    public static String PAP_TIPO_TURNO_LUNVEN_NOTTE = 'msa-notte'
+    public static String PAP_TIPO_TURNO_LUNVEN_MATTINA = 'msa-mat'
+    public static String PAP_TIPO_TURNO_LUNVEN_POMERIGGIO = 'msa-pom'
+    public static String PAP_TIPO_TURNO_LUNVEN_POMERIGGIOSERA = 'msa-pomsera'
+    public static String PAP_TIPO_TURNO_LUNVEN_SERA = 'msa-sera'
+    public static String PAP_TIPO_TURNO_SABDOM_NOTTE = 'msa2-notte'
+    public static String PAP_TIPO_TURNO_SABDOM_MATTINA = 'msa2-mat'
+    public static String PAP_TIPO_TURNO_SABDOM_POMERIGGIO = 'msa2-pom'
+    public static String PAP_TIPO_TURNO_SABDOM_SERA = 'msa2-sera'
 } // fine della interfaccia
