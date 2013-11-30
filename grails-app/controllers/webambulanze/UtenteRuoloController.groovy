@@ -57,7 +57,14 @@ class UtenteRuoloController {
     } // fine del metodo
 
     def create() {
-        [utenteRuoloInstance: new UtenteRuolo(params)]
+        Croce croce = croceService.getCroce(request)
+        def listaUtenti = null
+
+        if (croce) {
+            listaUtenti = Utente.findAllByCroce(croce)
+        }// fine del blocco if
+
+        [utenteRuoloInstance: new UtenteRuolo(params), listaUtenti: listaUtenti]
     } // fine del metodo
 
     def save() {
@@ -72,7 +79,7 @@ class UtenteRuoloController {
     } // fine del metodo
 
     def show(Long id) {
-        def utenteRuoloInstance = UtenteRuolo.get(24)
+        def utenteRuoloInstance = UtenteRuolo.get(id)
         if (!utenteRuoloInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'utenteRuolo.label', default: 'UtenteRuolo'), id])
             redirect(action: "list")

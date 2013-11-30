@@ -55,6 +55,8 @@ class UtenteService {
         Croce croceUtente
 
         if (ruoloProg) {
+            def a=    UtenteRuolo.findAll()
+
             listaCompletaTutteLeCroci = UtenteRuolo.findAllByRuoloNotEqual(ruoloProg)
             if (listaCompletaTutteLeCroci) {
                 lista = new ArrayList()

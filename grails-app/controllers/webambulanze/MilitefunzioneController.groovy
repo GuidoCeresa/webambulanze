@@ -60,9 +60,21 @@ class MilitefunzioneController {
     } // fine del metodo
 
     def create() {
-        params.siglaCroce = croceService.getSiglaCroce(request)
+        Croce croce = croceService.getCroce(request)
+        params.siglaCroce = croce
+        def listaMiliti = null
+        def listaFunzioni = null
 
-        render(view: 'create', model: [militefunzioneInstance: new Militefunzione(params)], params: params)
+        if (croce) {
+            listaMiliti = Milite.findAllByCroce(croce, [sort: 'cognome'])
+            listaFunzioni = Funzione.findAllByCroce(croce, [sort: 'ordine'])
+        }// fine del blocco if
+
+        render(view: 'create', model: [
+                listaMiliti: listaMiliti,
+                listaFunzioni: listaFunzioni,
+                militefunzioneInstance: new Militefunzione(params)
+        ], params: params)
     } // fine del metodo
 
     def save() {

@@ -538,7 +538,12 @@ class AmbulanzaTagLib {
         ArrayList nomeFunzioniAttiveDelMilite = null
         def elementoLista
         String action
+        Croce croce
+        def a = args
 
+        if (params.siglaCroce) {
+            croce = Croce.findBySigla((String) params.siglaCroce)
+        }// fine del blocco if
         if (args.campiLista) {
             lista = args.campiLista
         }// fine del blocco if
@@ -560,8 +565,16 @@ class AmbulanzaTagLib {
             listaExtra = args.campiExtra
         }// fine del blocco if
 
-        if (rec && rec instanceof Milite) {
-            nomeFunzioniAttiveDelMilite = militeService.nomeFunzioniPerMilite(rec)
+        //--@todo PATCH per utenteRuolo
+        if (!id && croce && croce.sigla.equals(Cost.CROCE_PUBBLICA_PIANORO && cont.equals('UtenteRuolo'))) {
+            String utente = rec.utente
+            String ruolo = rec.ruolo
+            def stop
+        }// fine del blocco if
+
+
+        if (croce && rec && rec instanceof Milite) {
+            nomeFunzioniAttiveDelMilite = militeService.nomeFunzioniPerMilite(croce, rec)
         }// fine del blocco if
 
         if (cont && rec) {
@@ -636,7 +649,11 @@ class AmbulanzaTagLib {
         Milite milite = null
         String desc = ''
         Funzione funz = null
+        Croce croce
 
+        if (params.siglaCroce) {
+            croce = Croce.findBySigla((String) params.siglaCroce)
+        }// fine del blocco if
         if (args.rec) {
             milite = (Milite) args.rec
         }// fine del blocco if
@@ -644,15 +661,15 @@ class AmbulanzaTagLib {
             listaExtra = args.campiExtra
         }// fine del blocco if
 
-        if (milite) {
-            nomeFunzioniAttiveDelMilite = militeService.nomeFunzioniPerMilite(milite)
+        if (milite && croce) {
+            nomeFunzioniAttiveDelMilite = militeService.nomeFunzioniPerMilite(croce, milite)
         }// fine del blocco if
 
-        if (listaExtra) {
+        if (croce && listaExtra) {
             listaExtra?.each {
                 desc = ''
                 campo = it
-                funz = Funzione.findBySigla(campo)
+                funz = Funzione.findByCroceAndSigla(croce, campo)
                 if (funz) {
                     desc = funz.descrizione
                 }// fine del blocco if
@@ -679,7 +696,11 @@ class AmbulanzaTagLib {
         def value = null
         String desc = ''
         Funzione funz = null
+        Croce croce
 
+        if (params.siglaCroce) {
+            croce = Croce.findBySigla((String) params.siglaCroce)
+        }// fine del blocco if
         if (args.rec) {
             milite = (Milite) args.rec
         }// fine del blocco if
@@ -687,19 +708,19 @@ class AmbulanzaTagLib {
             listaExtra = args.campiExtra
         }// fine del blocco if
 
-        if (milite) {
+        if (croce && milite) {
             if (milite.id) {
-                nomeFunzioniAttiveDelMilite = militeService.nomeFunzioniPerMilite(milite)
+                nomeFunzioniAttiveDelMilite = militeService.nomeFunzioniPerMilite(croce, milite)
             } else {
                 nomeFunzioniAttiveDelMilite = []
             }// fine del blocco if-else
         }// fine del blocco if
 
-        if (listaExtra) {
+        if (croce && listaExtra) {
             listaExtra?.each {
                 desc = ''
                 campo = it
-                funz = Funzione.findBySigla(campo)
+                funz = Funzione.findByCroceAndSigla(croce, campo)
                 if (funz) {
                     desc = funz.descrizione
                 }// fine del blocco if
@@ -988,7 +1009,7 @@ class AmbulanzaTagLib {
             }// fine del blocco if
             if (militeService.isLoggatoCustodeOrMore()) {
                 testoOut += '<h2>Moduli disponibili al custode:</h2>'
-                testoOut += Lib.tagController('Utente', 'Password militi')
+                testoOut += Lib.tagController('Utente', 'Password utenti')
             }// fine del blocco if
             if (militeService.isLoggatoAdminOrMore()) {
                 testoOut += '<h2>Moduli disponibili agli admin:</h2>'

@@ -3838,8 +3838,8 @@ class BootStrap implements Cost {
         if (SVILUPPO_PUBBLICA_PIANORO) {
             newFunzPianoro(PAP_FUNZIONE_AUT, 'Aut', 'Autista', 1, PAP_FUNZIONE_SOC + ',' + PAP_FUNZIONE_BAR + ',' + PAP_FUNZIONE_BAR_2)
             newFunzPianoro(PAP_FUNZIONE_SOC, 'Soc', 'Soccorritore', 2, PAP_FUNZIONE_BAR + ',' + PAP_FUNZIONE_BAR_2)
-            newFunzPianoro(PAP_FUNZIONE_BAR, 'Bar', 'Barelliere', 3, '')
-            newFunzPianoro(PAP_FUNZIONE_BAR_2, 'Bar2', 'Barelliere', 3, '')
+            newFunzPianoro(PAP_FUNZIONE_BAR, 'Bar', 'Barelliere', 3, PAP_FUNZIONE_BAR_2)
+            newFunzPianoro(PAP_FUNZIONE_BAR_2, 'Bar2', 'Barelliere', 3, PAP_FUNZIONE_BAR)
         }// fine del blocco if
     }// fine del metodo
 

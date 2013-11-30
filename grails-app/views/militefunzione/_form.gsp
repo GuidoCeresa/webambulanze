@@ -17,17 +17,20 @@
 		<g:message code="militefunzione.milite.labelform" default="Milite" />
 		<span class="required-indicator">*</span>
 	</label>
-	
 
 
 
 
 
+    <g:if test="${listaMiliti}">
+        <g:select id="milite" name="milite.id" from="${listaMiliti}" optionKey="id" required="" value="${militefunzioneInstance?.milite?.id}" class="many-to-one"/>
+    </g:if>
+    <g:else>
+        <g:select id="milite" name="milite.id" from="${webambulanze.Milite.list()}" optionKey="id" required="" value="${militefunzioneInstance?.milite?.id}" class="many-to-one"/>
+    </g:else>
 
 
 
-
-<g:select id="milite" name="milite.id" from="${webambulanze.Milite.list()}" optionKey="id" required="" value="${militefunzioneInstance?.milite?.id}" class="many-to-one"/>
 </div>
 
 <div class="fieldcontain ${hasErrors(bean: militefunzioneInstance, field: 'funzione', 'error')} required">
@@ -35,17 +38,22 @@
 		<g:message code="militefunzione.funzione.labelform" default="Funzione" />
 		<span class="required-indicator">*</span>
 	</label>
-	
+
+
+
+
+    <g:if test="${listaFunzioni}">
+        <g:select id="funzione" name="funzione.id" from="${listaFunzioni}" optionKey="id" required="" value="${militefunzioneInstance?.funzione?.id}" class="many-to-one"/>
+    </g:if>
+    <g:else>
+        <g:select id="funzione" name="funzione.id" from="${webambulanze.Funzione.list()}" optionKey="id" required="" value="${militefunzioneInstance?.funzione?.id}" class="many-to-one"/>
+    </g:else>
 
 
 
 
 
 
-
-
-
-<g:select id="funzione" name="funzione.id" from="${webambulanze.Funzione.list()}" optionKey="id" required="" value="${militefunzioneInstance?.funzione?.id}" class="many-to-one"/>
 </div>
 
 <g:if test="${campiExtra}">

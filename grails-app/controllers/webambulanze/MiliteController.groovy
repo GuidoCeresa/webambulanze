@@ -172,7 +172,7 @@ class MiliteController {
 
         //--sicronizza le funzioni del milite nella tavola d'incrocio Militefunzione
         params.croce = militeInstance.croce
-        militeService.registraFunzioni(params)
+        militeService.registraFunzioni(params, militeInstance)
         militeService.regolaFunzioniAutomatiche(militeInstance)
 
         if (EDIT_VERSO_LISTA) {
@@ -261,7 +261,7 @@ class MiliteController {
 
         //--sicronizza le funzioni del milite nella tavola d'incrocio Militefunzione
         params.croce = militeInstance.croce
-        militeService.registraFunzioni(params)
+        militeService.registraFunzioni(params, militeInstance)
         militeService.regolaFunzioniAutomatiche(militeInstance)
 
         //  flash.message = message(code: 'default.updated.message', args: [message(code: 'milite.label', default: 'Milite'), militeInstance.id])

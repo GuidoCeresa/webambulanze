@@ -15,25 +15,25 @@ class MiliteService {
     def logoService
 
     //--recupera tutte le funzioni abilitate per il milite selezionato
-    def ArrayList funzioniPerMilite(Milite milite) {
+    def ArrayList funzioniPerMilite(Croce croce, Milite milite) {
         ArrayList funzioniAttiveDelMilite = null
 
         if (milite) {
-            funzioniAttiveDelMilite = Militefunzione.findAllByMilite(milite)
+            funzioniAttiveDelMilite = Militefunzione.findAllByCroceAndMilite(croce, milite)
         }// fine del blocco if
 
         return funzioniAttiveDelMilite
     }// fine del metodo
 
     //--recupera i nomi di tutte le funzioni abilitate per il milite selezionato
-    def ArrayList nomeFunzioniPerMilite(Milite milite) {
+    def ArrayList nomeFunzioniPerMilite(Croce croce, Milite milite) {
         ArrayList nomeFunzioniAttiveDelMilite = new ArrayList()
         ArrayList funzioniAttiveDelMilite
         Militefunzione milFunz = null
         String nome
 
         if (milite) {
-            funzioniAttiveDelMilite = this.funzioniPerMilite(milite)
+            funzioniAttiveDelMilite = this.funzioniPerMilite(croce, milite)
             if (funzioniAttiveDelMilite) {
                 funzioniAttiveDelMilite?.each {
                     milFunz = (Militefunzione) it
@@ -67,7 +67,7 @@ class MiliteService {
             funzione = (Funzione) it
             isAbilitataFunzionePerQuestoMilite = Militefunzione.findByMiliteAndFunzione(milite, funzione)
             if (isAbilitataFunzionePerQuestoMilite) {
-                funzioniDipendenti = this.funzioniDipendenti(funzione)
+                funzioniDipendenti = this.funzioniDipendenti(croce, funzione)
                 funzioniDipendenti?.each {
                     funzioneDipendente = (Funzione) it
                     Militefunzione.findOrCreateByCroceAndMiliteAndFunzione(croce, milite, funzioneDipendente).save(flush: true)
@@ -78,7 +78,7 @@ class MiliteService {
     }// fine del metodo
 
     //--recupera i nomi di tutte le funzioni automaticamente abilitate da quella selezionata
-    public ArrayList<Funzione> funzioniDipendenti(Funzione funzione) {
+    public ArrayList<Funzione> funzioniDipendenti(Croce croce, Funzione funzione) {
         ArrayList<Funzione> funzioniDipendenti = new ArrayList<Funzione>()
         String stringaNomiFunzioniDipendenti
         def listaNomiFunzioni
@@ -91,7 +91,7 @@ class MiliteService {
                 listaNomiFunzioni?.each {
                     siglaFunzione = it
                     siglaFunzione = siglaFunzione.trim()
-                    funzione = Funzione.findBySigla(siglaFunzione)
+                    funzione = Funzione.findByCroceAndSigla(croce, siglaFunzione)
                     if (funzione) {
                         funzioniDipendenti.add(funzione)
                     }// fine del blocco if
@@ -177,14 +177,14 @@ class MiliteService {
 
     //--registra lo stato delle funzioni abilitate (true, false) per il milite selezionato
     //--sincronizza la tavola d'incrocio
-    def registraFunzioni = { mappa ->
+    def registraFunzioni = { mappa, militeTmp ->
         String croceIdTxt
         long croceId
+        Milite milite
         Croce croce = null
         def campiExtraCroce
         String militeIdTxt
         long militeId
-        Milite milite
         String campo
         def value
         Funzione funzione
@@ -201,6 +201,9 @@ class MiliteService {
             militeId = Long.decode(militeIdTxt)
             milite = Milite.findById(militeId)
         }// fine del blocco if
+        if (milite == null) {
+            milite = militeTmp
+        }// fine del blocco if
 
         if (campiExtraCroce && milite && croce) {
             this.cancellaAllFunzioniMilite(milite)
@@ -208,8 +211,8 @@ class MiliteService {
                 campo = it
                 value = mappa."${campo}"
                 if (value) {
-                    funzione = Funzione.findBySigla(campo)
-                    new Militefunzione(croce: croce, milite: milite, funzione: funzione).save(failOnError: true)
+                    funzione = Funzione.findByCroceAndSigla(croce, campo)
+                    new Militefunzione(croce: croce, milite: milite, funzione: funzione).save(flush: true)
                 }// fine del blocco if
             } // fine del ciclo each
         }// fine del blocco if
