@@ -111,7 +111,15 @@ class MilitefunzioneController {
     } // fine del metodo
 
     def edit(Long id) {
+        Croce croce = croceService.getCroce(request)
         def militefunzioneInstance = Militefunzione.get(id)
+        def listaMiliti = null
+        def listaFunzioni = null
+
+        if (croce) {
+            listaMiliti = Milite.findAllByCroce(croce, [sort: 'cognome'])
+            listaFunzioni = Funzione.findAllByCroce(croce, [sort: 'ordine'])
+        }// fine del blocco if
 
         if (!militefunzioneInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'militefunzione.label', default: 'Militefunzione'), id])
@@ -120,7 +128,11 @@ class MilitefunzioneController {
         }// fine del blocco if
 
         params.siglaCroce = croceService.getSiglaCroce(request)
-        render(view: 'edit', model: [militefunzioneInstance: militefunzioneInstance], params: params)
+        render(view: 'edit', model: [
+                listaMiliti: listaMiliti,
+                listaFunzioni: listaFunzioni,
+                militefunzioneInstance: militefunzioneInstance
+        ], params: params)
     } // fine del metodo
 
     def update(Long id, Long version) {

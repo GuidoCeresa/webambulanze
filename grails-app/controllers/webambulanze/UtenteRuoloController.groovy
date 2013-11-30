@@ -24,6 +24,9 @@ class UtenteRuoloController {
     // il service viene iniettato automaticamente
     def croceService
 
+    static arrayUtenti = new ArrayList()
+    static arrayRuoli = new ArrayList()
+
     def index() {
         redirect(action: 'list', params: params)
     } // fine del metodo
@@ -53,18 +56,30 @@ class UtenteRuoloController {
             lista = utenteService.tuttiSenzaProgrammatore(params)
         }// fine del blocco if-else
 
+        long k = 0
+        arrayUtenti = new ArrayList()
+        arrayRuoli = new ArrayList()
+        lista?.each {
+            k++
+            arrayUtenti.add(it.utente)
+            arrayRuoli.add(it.ruolo)
+            it.id = k
+        } // fine del ciclo each
+
         render(view: 'list', model: [utenteRuoloInstanceList: lista, utenteRuoloInstanceTotal: 0, campiLista: campiLista], params: params)
     } // fine del metodo
 
     def create() {
         Croce croce = croceService.getCroce(request)
         def listaUtenti = null
+        def listaRuoli
 
         if (croce) {
             listaUtenti = Utente.findAllByCroce(croce)
         }// fine del blocco if
+        listaRuoli = Ruolo.findAllByAuthorityNotEqual('ROLE_prog')
 
-        [utenteRuoloInstance: new UtenteRuolo(params), listaUtenti: listaUtenti]
+        [utenteRuoloInstance: new UtenteRuolo(params), listaRuoli: listaRuoli, listaUtenti: listaUtenti]
     } // fine del metodo
 
     def save() {
@@ -75,62 +90,61 @@ class UtenteRuoloController {
         }
 
         flash.message = message(code: 'default.created.message', args: [message(code: 'utenteRuolo.label', default: 'UtenteRuolo'), utenteRuoloInstance.id])
-        redirect(action: "show", id: utenteRuoloInstance.id)
+        redirect(action: "list")
     } // fine del metodo
 
     def show(Long id) {
-        def utenteRuoloInstance = UtenteRuolo.get(id)
+        def utenteRuoloInstance = recuperaIstanza(id)
         if (!utenteRuoloInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'utenteRuolo.label', default: 'UtenteRuolo'), id])
             redirect(action: "list")
             return
         }
-
         [utenteRuoloInstance: utenteRuoloInstance]
     } // fine del metodo
 
     def edit(Long id) {
-        def utenteRuoloInstance = UtenteRuolo.get(id)
+        def listaUtenti = null
+        def listaRuoli
+        Croce croce = croceService.getCroce(request)
+
+        def utenteRuoloInstance = recuperaIstanza(id)
         if (!utenteRuoloInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'utenteRuolo.label', default: 'UtenteRuolo'), id])
             redirect(action: "list")
             return
         }
 
-        [utenteRuoloInstance: utenteRuoloInstance]
+        if (croce) {
+            listaUtenti = Utente.findAllByCroce(croce)
+        }// fine del blocco if
+        listaRuoli = Ruolo.findAllByAuthorityNotEqual('ROLE_prog')
+
+        [utenteRuoloInstance: utenteRuoloInstance, listaRuoli: listaRuoli, listaUtenti: listaUtenti]
     } // fine del metodo
 
-    def update(Long id, Long version) {
-        def utenteRuoloInstance = UtenteRuolo.get(id)
+    def update(Long id) {
+        def utenteRuoloInstance = recuperaIstanza(id)
         if (!utenteRuoloInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'utenteRuolo.label', default: 'UtenteRuolo'), id])
             redirect(action: "list")
             return
         }
-
-        if (version != null) {
-            if (utenteRuoloInstance.version > version) {
-                utenteRuoloInstance.errors.rejectValue("version", "default.optimistic.locking.failure",
-                        [message(code: 'utenteRuolo.label', default: 'UtenteRuolo')] as Object[],
-                        "Another user has updated this UtenteRuolo while you were editing")
-                render(view: "edit", model: [utenteRuoloInstance: utenteRuoloInstance])
-                return
-            }
-        }
-
-        utenteRuoloInstance.properties = params
-
+        utenteRuoloInstance.delete(flush: true)
+        utenteRuoloInstance = new UtenteRuolo(params)
+//        utenteRuoloInstance.properties = params
+//
         if (!utenteRuoloInstance.save(flush: true)) {
             render(view: "edit", model: [utenteRuoloInstance: utenteRuoloInstance])
             return
         }
 
         flash.message = message(code: 'default.updated.message', args: [message(code: 'utenteRuolo.label', default: 'UtenteRuolo'), utenteRuoloInstance.id])
-        redirect(action: "show", id: utenteRuoloInstance.id)
+        redirect(action: "list")
     } // fine del metodo
 
     def delete(Long id) {
-        def utenteRuoloInstance = UtenteRuolo.get(id)
+        def utenteRuoloInstance = recuperaIstanza(id)
         if (!utenteRuoloInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'utenteRuolo.label', default: 'UtenteRuolo'), id])
             redirect(action: "list")
@@ -146,6 +160,36 @@ class UtenteRuoloController {
             flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'utenteRuolo.label', default: 'UtenteRuolo'), id])
             redirect(action: "show", id: id)
         }
+    } // fine del metodo
+
+    private static UtenteRuolo recuperaIstanza(long id) {
+        UtenteRuolo istanza
+        long idUtente = 0
+        long idRuolo = 0
+        String nomeUtente
+        String nomeRuolo
+        Utente utente
+        Ruolo ruolo
+        int pos = id.intValue() - 1
+
+        nomeUtente = arrayUtenti[pos]
+        nomeRuolo = arrayRuoli[pos]
+        if (nomeUtente) {
+            utente = Utente.findByNickname(nomeUtente)
+            if (utente) {
+                idUtente = utente.id
+            }// fine del blocco if
+        }// fine del blocco if
+        if (nomeRuolo) {
+            nomeRuolo = 'ROLE_' + nomeRuolo
+            ruolo = Ruolo.findByAuthority(nomeRuolo)
+            if (ruolo) {
+                idRuolo = ruolo.id
+            }// fine del blocco if
+        }// fine del blocco if
+        istanza = UtenteRuolo.get(idUtente, idRuolo)
+        istanza.id = id
+        return istanza
     } // fine del metodo
 
 } // fine della controller classe
