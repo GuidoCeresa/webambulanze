@@ -44,6 +44,7 @@ class UtenteController {
         def campiLista = [
                 'nickname',
                 'pass',
+                'milite',
                 'enabled',
                 'accountExpired',
                 'accountLocked',

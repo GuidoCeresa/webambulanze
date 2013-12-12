@@ -176,6 +176,7 @@ class AmbulanzaTagLib {
         long utenteId
         Milite milite
         def user = springSecurityService.principal
+        def pippo = springSecurityService.getCurrentUser()
 
         if (user && user instanceof String && user.equals(tagAnonimo)) {
             testo = nomeAnonimo
@@ -194,7 +195,11 @@ class AmbulanzaTagLib {
                 if (milite) {
                     testo = 'Ciao, ' + milite.nome + ' ' + milite.cognome
                 } else {
-                    testo = 'Ciao, ' + user.username
+                    if (utente) {
+                        testo = 'Ciao, ' + utente.nickname
+                    } else {
+                        testo = 'Ciao, ' + user.username
+                    }// fine del blocco if-else
                 }// fine del blocco if-else
             }// fine del blocco if
         }// fine del blocco if-else
@@ -990,6 +995,7 @@ class AmbulanzaTagLib {
         String testoOut = ''
         String listaControlliTxt
         def lista
+        boolean usaModuloViaggi = croceService.usaModuloViaggi((String) params.siglaCroce)
 
         if (params.siglaCroce) {
             listaControlliTxt = croceService.getControlli((String) params.siglaCroce)
@@ -1009,7 +1015,7 @@ class AmbulanzaTagLib {
             }// fine del blocco if
             if (militeService.isLoggatoCustodeOrMore()) {
                 testoOut += '<h2>Moduli disponibili al custode:</h2>'
-                testoOut += Lib.tagController('Utente', 'Password utenti')
+                testoOut += Lib.tagController('Utente', 'Utenti e passwords')
             }// fine del blocco if
             if (militeService.isLoggatoAdminOrMore()) {
                 testoOut += '<h2>Moduli disponibili agli admin:</h2>'
@@ -1023,20 +1029,19 @@ class AmbulanzaTagLib {
             }// fine del blocco if
             if (militeService.isLoggatoMiliteOrMore()) {
                 testoOut += '<h2>Moduli disponibili ai militi:</h2>'
-                if (croceService.usaModuloViaggi((String) params.siglaCroce)) {
+                if (usaModuloViaggi) {
                     testoOut += Lib.tagController('Automezzo', 'Automezzi')
                 }// fine del blocco if
                 testoOut += Lib.tagController('Funzione', 'Funzioni')
                 testoOut += Lib.tagController('TipoTurno', 'Tipologia turni')
                 testoOut += Lib.tagController('Milite', 'Militi')
                 testoOut += Lib.tagController('Militestatistiche', 'Statistiche')
-                if (croceService.usaModuloViaggi((String) params.siglaCroce)) {
+                if (usaModuloViaggi) {
                     testoOut += Lib.tagController('Viaggio', 'Viaggi effettuati')
                 }// fine del blocco if
             }// fine del blocco if
             testoOut += '<h2>Moduli sempre visibili:</h2>'
             testoOut += Lib.tagController('Gen', 'Tabellone turni')
-
 
         }// fine del blocco if-else
 

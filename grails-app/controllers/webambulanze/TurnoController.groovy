@@ -22,18 +22,10 @@ class TurnoController {
     // utilizzo di un service con la businessLogic per l'elaborazione dei dati
     // il service viene iniettato automaticamente
     def springSecurityService
-
-    // utilizzo di un service con la businessLogic per l'elaborazione dei dati
-    // il service viene iniettato automaticamente
     def logoService
-
-    // utilizzo di un service con la businessLogic per l'elaborazione dei dati
-    // il service viene iniettato automaticamente
     def militeService
-
-    // utilizzo di un service con la businessLogic per l'elaborazione dei dati
-    // il service viene iniettato automaticamente
     def croceService
+    def turnoService
 
     static Date dataInizio
     static Date dataFine
@@ -41,7 +33,7 @@ class TurnoController {
     static int giorniVisibili = 7
     static int delta = giorniVisibili - 1
 
-    @Secured([Cost.ROLE_MILITE])
+    @Secured([Cost.ROLE_MILITE, Cost.ROLE_OSPITE])
     def indexSecured() {
         redirect(action: 'tabellone', params: params)
     } // fine del metodo
@@ -53,7 +45,6 @@ class TurnoController {
     def tabellone = {
         params.siglaCroce = croceService.getSiglaCroce(request)
         flash.message = ''
-        flash.errors = null
         flash.listaErrori = null
         dataInizio = AmbulanzaTagLib.creaDataOggi()
         dataFine = (dataInizio + delta).toTimestamp()
@@ -104,6 +95,7 @@ class TurnoController {
 
     @Secured([Cost.ROLE_MILITE])
     def newTurno = {
+        boolean continua = false
         String tipoTurnoTxt
         boolean nuovoTurno = false
         String giornoNum
@@ -113,6 +105,8 @@ class TurnoController {
         Date giorno = Lib.creaData1Gennaio()
         int offSet
         String giornoTxt = ''
+        def user = springSecurityService.principal
+        Utente currUser = (Utente) springSecurityService.getCurrentUser()
 
         if (params.giorno) {
             giornoNum = params.giorno
@@ -125,7 +119,15 @@ class TurnoController {
             tipoTurno = TipoTurno.findByCroceAndSigla(croce, tipoTurnoTxt)
         }// fine del blocco if
 
-        if (croce && giorno && tipoTurno) {
+        if (turnoService?.isPossibileCreareTurno(croce, giorno, tipoTurno)) {
+            continua = true
+        } else {
+            flash.errors = 'Non è possibile creare un turno per una data passata'
+            redirect(action: 'tabellone', model: [dataInizio: dataInizio, dataFine: dataFine], params: params)
+            return
+        }// fine del blocco if-else
+
+        if (continua && croce && giorno && tipoTurno) {
             nuovoOppureEsistente = Turno.findByCroceAndTipoTurnoAndGiorno(croce, tipoTurno, giorno)
             if (nuovoOppureEsistente) {
                 if (tipoTurno.multiplo) {
@@ -148,9 +150,6 @@ class TurnoController {
             flash.message = message(code: 'turno.new.fallito.message', args: [tipoTurno.descrizione, giornoTxt])
         }// fine del blocco if-else
 
-        def user = springSecurityService.principal
-        def currUser = springSecurityService.getCurrentUser()
-
         newFillTurno(nuovoOppureEsistente, nuovoTurno)
     }// fine della closure
 
@@ -160,13 +159,13 @@ class TurnoController {
         long turnoId
         Turno turnoInstance = null
 
-        def a=request
-        def b=request.contextPath
-        def c=request.pathInfo
-        def d=request.queryString
-        def e=request.remoteUser
-        def f= request.requestURI
-        def g= request.userPrincipal
+        def a = request
+        def b = request.contextPath
+        def c = request.pathInfo
+        def d = request.queryString
+        def e = request.remoteUser
+        def f = request.requestURI
+        def g = request.userPrincipal
         def user = springSecurityService.principal
         def currUser = springSecurityService.getCurrentUser()
 
@@ -203,13 +202,13 @@ class TurnoController {
         String value
         String testo
 
-        def a=request
-        def b=request.contextPath
-        def c=request.pathInfo
-        def d=request.queryString
-        def e=request.remoteUser
-        def f= request.requestURI
-        def g= request.userPrincipal
+        def a = request
+        def b = request.contextPath
+        def c = request.pathInfo
+        def d = request.queryString
+        def e = request.remoteUser
+        def f = request.requestURI
+        def g = request.userPrincipal
 
         if (params.nuovoTurno) {
             value = params.nuovoTurno
@@ -701,7 +700,7 @@ class TurnoController {
         long oldTime
         long milliSecondiTrascorsi
         long secondiTrascorsi
-        long    minutiTrascorsi
+        long minutiTrascorsi
         String oldMiliteIdTxt
         String militeIdTxt
         String campo

@@ -288,6 +288,36 @@ class BootStrap implements Cost {
             creaPianoro()
         }// fine del blocco if
 
+        //--modifica permessi dipendenti
+        if (installaVersione(46)) {
+            fixDipendentiPianoro()
+        }// fine del blocco if
+
+        //--aggiunta colonna dei militi corrispondenti, nella lista utenti
+        if (installaVersione(47)) {
+            listaUtentiAddColonnaMiliti()
+        }// fine del blocco if
+
+        //--fix legame utente Piana con milite Piana in pubblica assistenza pianoro
+        if (installaVersione(48)) {
+            fixUtentePiana()
+        }// fine del blocco if
+
+        //--fix funzioni dipendenti per barelliere in Pianoro
+        if (installaVersione(49)) {
+            fixFunzioniPianoro()
+        }// fine del blocco if
+
+        //--fix popup Militi in Utente per accettare valore nullo (modificata la view)
+        if (installaVersione(50)) {
+            fixViewFormUtente()
+        }// fine del blocco if
+
+        //--fix ordine delle funzioni in PAP
+        if (installaVersione(51)) {
+            fixOrdineFunzionePianoro()
+        }// fine del blocco if
+
         //--creazione dei record utenti per la pubblica castello
 //        if (installaVersione(99)) {
 //            utentiPubblicacastello()
@@ -3926,6 +3956,88 @@ class BootStrap implements Cost {
         Lib.creaTurno(croce, TipoTurno.findByCroceAndSigla(croce, PAP_TIPO_TURNO_SABDOM_MATTINA), giorno)
         Lib.creaTurno(croce, TipoTurno.findByCroceAndSigla(croce, PAP_TIPO_TURNO_SABDOM_POMERIGGIO), giorno)
         Lib.creaTurno(croce, TipoTurno.findByCroceAndSigla(croce, PAP_TIPO_TURNO_SABDOM_SERA), giorno)
+    }// fine del metodo
+
+    //--modifica permessi dipendenti
+    private static void fixDipendentiPianoro() {
+        Utente utente
+        String nick = PAP_NICK_DIPENDENTI
+        Croce croce = Croce.findBySigla(CROCE_PUBBLICA_PIANORO)
+        Ruolo militeRole = Ruolo.findByAuthority(ROLE_MILITE)
+        Ruolo ospiteRole = Ruolo.findByAuthority(ROLE_OSPITE)
+        UtenteRuolo utenteRuolo
+
+        if (SVILUPPO_PUBBLICA_PIANORO && croce && militeRole && ospiteRole) {
+            utente = Utente.findByCroceAndNickname(croce, nick)
+
+            if (utente) {
+                utenteRuolo = UtenteRuolo.findByRuoloAndUtente(militeRole, utente)
+            }// fine del blocco if
+            if (utenteRuolo) {
+                utenteRuolo.delete(flush: true)
+                new UtenteRuolo(utente: utente, ruolo: ospiteRole).save(flush: true)
+            }// fine del blocco if
+        }// fine del blocco if
+
+        newVersione(CROCE_PUBBLICA_PIANORO, 'Utenti', 'Modificato permessi dei dipendenti che adesso entrano come Ospiti')
+    }// fine del metodo
+
+    //--aggiunta colonna dei militi corrispondenti, nella lista utenti
+    private static void listaUtentiAddColonnaMiliti() {
+        newVersione(CROCE_ALGOS, 'Utenti', 'Aggiunta colonna Militi')
+    }// fine del metodo
+
+    //--fix legame utente Piana con milite Piana in pubblica assistenza pianoro
+    private static void fixUtentePiana() {
+        Croce croce = Croce.findBySigla(CROCE_PUBBLICA_PIANORO)
+        Utente utentePiana = Utente.findByNickname(PAP_NICK_CUSTODE)
+        Milite militePiana = Milite.findByCroceAndNomeAndCognome(croce, 'Silvano', 'Piana')
+
+        if (utentePiana && militePiana) {
+            utentePiana.milite = militePiana
+            utentePiana.save(flush: true)
+            newVersione(CROCE_PUBBLICA_PIANORO, 'Utenti', 'Fix errore utente Piana che aveva cancellato il corrispondente milite')
+        }// fine del blocco if
+    }// fine del metodo
+
+    //--fix funzioni dipendenti per barelliere in Pianoro
+    private static void fixFunzioniPianoro() {
+        Croce croce = Croce.findBySigla(CROCE_PUBBLICA_PIANORO)
+        Funzione funzioneBarelliere
+        Funzione funzioneBarelliere2
+
+        if (croce) {
+            funzioneBarelliere = Funzione.findByCroceAndSigla(croce, PAP_FUNZIONE_BAR)
+            funzioneBarelliere2 = Funzione.findByCroceAndSigla(croce, PAP_FUNZIONE_BAR_2)
+
+            if (funzioneBarelliere && funzioneBarelliere2) {
+                funzioneBarelliere.funzioniDipendenti = PAP_FUNZIONE_BAR_2
+                funzioneBarelliere2.funzioniDipendenti = PAP_FUNZIONE_BAR
+                funzioneBarelliere.save(flush: true)
+                funzioneBarelliere2.save(flush: true)
+                newVersione(CROCE_PUBBLICA_PIANORO, 'Funzioni', 'Funzione dipendente incrociata per Barelliere e per Barelliere2')
+            }// fine del blocco if
+        }// fine del blocco if
+    }// fine del blocco if
+
+    //--fix popup Militi in Utente per accettare valore nullo (modificata la view)
+    private static void fixViewFormUtente() {
+        newVersione(CROCE_ALGOS, 'Utenti', 'Popup Militi accetta valore nullo (modifcata la view)')
+    }// fine del metodo
+
+    //--fix ordine delle funzioni in PAP
+    private static void fixOrdineFunzionePianoro() {
+        Croce croce = Croce.findBySigla(CROCE_PUBBLICA_PIANORO)
+        Funzione funzioneBarelliere2
+
+        if (croce) {
+            funzioneBarelliere2 = Funzione.findByCroceAndSigla(croce, PAP_FUNZIONE_BAR_2)
+            if (funzioneBarelliere2) {
+                funzioneBarelliere2.ordine=4
+                funzioneBarelliere2.save(flush: true)
+                newVersione(CROCE_PUBBLICA_PIANORO, 'Funzioni','Corretto (4) ordine di presentazione Barelliere2')
+            }// fine del blocco if
+        }// fine del blocco if
     }// fine del metodo
 
     def destroy = {

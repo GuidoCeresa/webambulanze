@@ -132,8 +132,7 @@ class UtenteRuoloController {
         }
         utenteRuoloInstance.delete(flush: true)
         utenteRuoloInstance = new UtenteRuolo(params)
-//        utenteRuoloInstance.properties = params
-//
+
         if (!utenteRuoloInstance.save(flush: true)) {
             render(view: "edit", model: [utenteRuoloInstance: utenteRuoloInstance])
             return

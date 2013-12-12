@@ -114,6 +114,12 @@ class Settings {
     //--mostra il tabellone alla partenza; in caso contrario va alla home
     boolean mostraTabellonePartenza = true
 
+    //--il milite può creare un nuovo turno standard
+    boolean militePuoCreareTurnoStandard = false
+
+    //--il milite può creare un nuovo turno extra
+    boolean militePuoCreareTurnoExtra = true
+
     /**
      * regolazione delle proprietà di ogni campo
      * l'ordine con cui vengono elencati qui, viene rispettato nella lista e nella scheda standard
@@ -146,6 +152,8 @@ class Settings {
         tabelloneSecured()
         turniSecured()
         mostraTabellonePartenza()
+        militePuoCreareTurnoStandard()
+        militePuoCreareTurnoExtra()
     } // end of static constraints
 
     /*+

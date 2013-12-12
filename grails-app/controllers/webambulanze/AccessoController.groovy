@@ -70,7 +70,7 @@ class AccessoController {
             mostraTabellonePartenza = croceService.mostraTabellonePartenza(siglaCroce)
             isTabelloneSecured = croceService.isTabelloneSecured(siglaCroce)
         }// fine del blocco if
-
+          def a=params
         if (primaVolta) {
             redirect(url: '/' + siglaCroce)
         } else {

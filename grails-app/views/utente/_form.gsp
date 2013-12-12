@@ -26,8 +26,8 @@
 
 
 
-
-    <g:select id="milite" name="milite.id" from="${lista}" optionKey="id" value="${utenteInstance?.milite?.id}" class="many-to-one" /></div>
+<g:select id="milite" name="milite.id" from="${lista}" optionKey="id" value="${utenteInstance?.milite?.id}" class="many-to-one" noSelection="['null': '']"/>
+</div>
 
 <div class="fieldcontain ${hasErrors(bean: utenteInstance, field: 'nickname', 'error')} ">
 	<label for="nickname">

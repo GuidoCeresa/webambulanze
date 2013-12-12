@@ -399,6 +399,11 @@ class MiliteService {
         return this.isLoggatoMilite() || this.isLoggatoAdminOrMore()
     }// fine del metodo
 
+    //--controlla se l'utente attualmente loggato è un ospite
+    public boolean isLoggatoOspite() {
+        return this.isLoggatoNelRuolo(Cost.ROLE_OSPITE)
+    }// fine del metodo
+
     //--turni del milite effettuati a partire dal 1° gennaio anno corrente
     //--@todo manca controllo anno
     public int turniAnno(Milite milite) {
@@ -420,13 +425,26 @@ class MiliteService {
         return turni
     }// fine del metodo
 
-    //--recupera i nomi di tutti gli militi
+    //--recupera i nomi di tutti i militi
     //--in ordine alfabetico
     public ArrayList allMilitiDellaCroce(Croce croce) {
         ArrayList listaMiliti = new ArrayList()
 
         if (croce) {
             listaMiliti = Milite.findAllByCroce(croce, [sort: 'cognome'])
+        }// fine del blocco if
+
+        return listaMiliti
+    }// fine del metodo
+
+    //--recupera i nomi di tutti i militi
+    //--in ordine alfabetico
+    //--aggiunge la posssibilità del campo vuoto (valore  nullo se voglio creare l'accesso ad un non-milite)
+    public ArrayList allMilitiDellaCroceVuoto(Croce croce) {
+        ArrayList listaMiliti = allMilitiDellaCroce(croce)
+
+        if (listaMiliti) {
+            listaMiliti.add(new Milite(croce: croce, nome: 'nome', cognome: 'cognome'))
         }// fine del blocco if
 
         return listaMiliti

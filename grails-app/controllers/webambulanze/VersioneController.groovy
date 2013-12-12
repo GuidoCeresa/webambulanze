@@ -1,4 +1,3 @@
-
 /* Created by Algos s.r.l. */
 /* Date: mag 2012 */
 /* Questo file è stato installato dal plugin AlgosBase */
@@ -20,6 +19,8 @@ class VersioneController {
     // utilizzo di un service con la businessLogic per l'elaborazione dei dati
     // il service viene iniettato automaticamente
     def croceService
+    def utenteService
+    def springSecurityService
 
     def index() {
         redirect(action: "list", params: params)
@@ -28,6 +29,8 @@ class VersioneController {
     def list(Integer max) {
         def lista
         Croce croce = croceService.getCroce(request)
+        Utente currUser = (Utente) springSecurityService.getCurrentUser()
+
         def campiLista = [
                 'numero',
                 'giorno',
@@ -50,7 +53,12 @@ class VersioneController {
                 lista = Versione.findAll("from Versione order by croce_id")
                 campiLista = ['id', 'croce'] + campiLista
             } else {
-                lista = Versione.findAllByCroce(croce, params)
+                if (utenteService.isProgrammatore(currUser)) {
+                    lista = Versione.findAll()
+                    campiLista = ['id', 'croce'] + campiLista
+                } else {
+                    lista = Versione.findAllByCroce(croce, params)
+                }// fine del blocco if-else
             }// fine del blocco if-else
         } else {
             lista = Versione.findAll(params)

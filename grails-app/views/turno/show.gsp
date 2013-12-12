@@ -39,6 +39,12 @@
         <li><g:link class="edit" action="edit" id="${turnoInstance?.id}">
             <g:message code="turno.edit.label" default="Modifica turno"/>
         </g:link></li>
+        <sec:ifNotLoggedIn>
+            <li><g:link class="login" controller="login">Login</g:link></li>
+        </sec:ifNotLoggedIn>
+        <sec:ifLoggedIn>
+            <li><g:link class="logout" controller="logout">Logout</g:link></li>
+        </sec:ifLoggedIn>
     </ul>
 </div>
 

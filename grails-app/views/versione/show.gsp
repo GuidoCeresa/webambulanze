@@ -39,6 +39,12 @@
         <li><g:link class="edit" action="edit" id="${versioneInstance?.id}">
             <g:message code="versione.edit.label" default="Modifica versione"/>
         </g:link></li>
+        <sec:ifNotLoggedIn>
+            <li><g:link class="login" controller="login">Login</g:link></li>
+        </sec:ifNotLoggedIn>
+        <sec:ifLoggedIn>
+            <li><g:link class="logout" controller="logout">Logout</g:link></li>
+        </sec:ifLoggedIn>
     </ul>
 </div>
 

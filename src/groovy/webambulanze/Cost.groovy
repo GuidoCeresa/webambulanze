@@ -137,6 +137,10 @@ public interface Cost {
     public static String DEMO_TIPO_TURNO_AMBULANZA_NOTTE = 'amb-notte'
     public static String DEMO_TIPO_TURNO_EXTRA = 'extra'
 
+    //--sigla per accesso dipendenti pubblica assistenza pianoro
+    public static String PAP_NICK_DIPENDENTI = 'dipendenti'
+    public static String PAP_NICK_CUSTODE = 'Piana Silvano'
+
     //--funzioni in pubblica assistenza pianoro
     public static String PAP_FUNZIONE_AUT = 'aut'
     public static String PAP_FUNZIONE_SOC = 'soc'
