@@ -318,6 +318,16 @@ class BootStrap implements Cost {
             fixOrdineFunzionePianoro()
         }// fine del blocco if
 
+        //--controlloTemporale modificato per la Croce Rossa Ponte Taro
+        if (installaVersione(52)) {
+            rossaPonteTaroModificaBloccoSettimanale()
+        }// fine del blocco if
+
+        //--regolazione di tre nuovi flag dei Settings per le Croci esistenti
+        if (installaVersione(53)) {
+            addFlagSettingBlocchi()
+        }// fine del blocco if
+
         //--creazione dei record utenti per la pubblica castello
 //        if (installaVersione(99)) {
 //            utentiPubblicacastello()
@@ -3484,15 +3494,15 @@ class BootStrap implements Cost {
         if (croce) {
             settings = croce.settings
             if (settings) {
-                settings.tipoControlloModifica = ControlloTemporale.bloccoSettimanale
+                settings.tipoControlloModifica = ControlloTemporale.bloccoSettimanaleDomenica
                 settings.minGiorniMancantiModifica = 0
-                settings.tipoControlloCancellazione = ControlloTemporale.bloccoSettimanale
+                settings.tipoControlloCancellazione = ControlloTemporale.bloccoSettimanaleDomenica
                 settings.minGiorniMancantiCancellazione = 0
                 settings.save(flush: true)
             }// fine del blocco if
         }// fine del blocco if
 
-        newVersione(CROCE_ROSSA_PONTETARO, 'Controlli', 'Aggiunta controllo temporale bloccoSettimanale')
+        newVersione(CROCE_ROSSA_PONTETARO, 'Controlli', 'Aggiunta controllo temporale bloccoSettimanaleDomenica')
     }// fine del metodo
 
     //--modifica di un ruolo admin della croce rossa ponte taro
@@ -4033,12 +4043,79 @@ class BootStrap implements Cost {
         if (croce) {
             funzioneBarelliere2 = Funzione.findByCroceAndSigla(croce, PAP_FUNZIONE_BAR_2)
             if (funzioneBarelliere2) {
-                funzioneBarelliere2.ordine=4
+                funzioneBarelliere2.ordine = 4
                 funzioneBarelliere2.save(flush: true)
-                newVersione(CROCE_PUBBLICA_PIANORO, 'Funzioni','Corretto (4) ordine di presentazione Barelliere2')
+                newVersione(CROCE_PUBBLICA_PIANORO, 'Funzioni', 'Corretto (4) ordine di presentazione Barelliere2')
             }// fine del blocco if
         }// fine del blocco if
     }// fine del metodo
+
+    //--controlloTemporale modificato per la Croce Rossa Ponte Taro
+    private static void rossaPonteTaroModificaBloccoSettimanale() {
+        Croce croce = Croce.findBySigla(CROCE_ROSSA_PONTETARO)
+        Settings settings
+
+        if (croce) {
+            settings = croce.settings
+            if (settings) {
+                settings.tipoControlloModifica = ControlloTemporale.bloccoSettimanaleSabato
+                settings.minGiorniMancantiModifica = 0
+                settings.tipoControlloCancellazione = ControlloTemporale.bloccoSettimanaleSabato
+                settings.minGiorniMancantiCancellazione = 0
+                settings.save(flush: true)
+            }// fine del blocco if
+        }// fine del blocco if
+
+        newVersione(CROCE_ROSSA_PONTETARO, 'Controlli', 'Modificato controllo temporale bloccoSettimanaleSabato')
+    }// fine del metodo
+
+    //--regolazione base per una singola croce
+    private static void regolaFlagBlocchi(
+            String siglaCroce,
+            boolean bloccaSoloFunzioniObbligatorie,
+            boolean militePuoCreareTurnoStandard,
+            boolean militePuoCreareTurnoExtra) {
+        Croce croce
+        Settings settings
+
+        //--algos
+        croce = Croce.findBySigla(siglaCroce)
+        if (croce) {
+            settings = croce.settings
+        }// fine del blocco if
+
+        if (settings) {
+            settings.bloccaSoloFunzioniObbligatorie = bloccaSoloFunzioniObbligatorie
+            settings.militePuoCreareTurnoStandard = militePuoCreareTurnoStandard
+            settings.militePuoCreareTurnoExtra = militePuoCreareTurnoExtra
+            settings.save(flush: true)
+        }// fine del blocco if
+    }// fine del metodo
+
+    //--regolazione di tre nuovi flag dei Settings per le Croci esistenti
+    private static void addFlagSettingBlocchi() {
+
+        //--algos
+        regolaFlagBlocchi(CROCE_ALGOS, true, true, true)
+
+        //--demo
+        regolaFlagBlocchi(CROCE_DEMO, false, false, true)
+
+        //--castello
+        regolaFlagBlocchi(CROCE_PUBBLICA_CASTELLO, false, false, true)
+
+        //--fidenza
+        regolaFlagBlocchi(CROCE_ROSSA_FIDENZA, false, false, true)
+
+        //--pontetaro
+        regolaFlagBlocchi(CROCE_ROSSA_PONTETARO, false, false, false)
+
+        //--pianoro
+        regolaFlagBlocchi(CROCE_PUBBLICA_PIANORO, false, false, true)
+
+        newVersione(CROCE_ALGOS, 'Settings', 'Aggiunti tre flag per controllare il blocco dei turni')
+    }// fine del metodo
+
 
     def destroy = {
     }// fine della closure

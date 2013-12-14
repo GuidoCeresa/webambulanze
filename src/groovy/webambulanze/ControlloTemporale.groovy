@@ -6,5 +6,5 @@ package webambulanze
  * Time: 13:34
  */
 public enum ControlloTemporale {
-    nessuno, tempoTrascorso, tempoMancante, bloccoSettimanale
+    nessuno, tempoTrascorso, tempoMancante, bloccoSettimanale, bloccoSettimanaleDomenica, bloccoSettimanaleSabato
 }// fine della classe Enumeration

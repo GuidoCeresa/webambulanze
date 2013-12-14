@@ -627,7 +627,7 @@ class TurnoController {
     } // fine del metodo
 
     //--controlla che i dati siano ''accettabili''
-    private ArrayList esistonoErrori(Turno turno, mappa) {
+    private ArrayList esistonoErrori(Turno turno, Map mappa) {
         ArrayList listaErrori = new ArrayList()
         String testoErrore = ''
         int numMaxFunz = 4
@@ -666,9 +666,11 @@ class TurnoController {
 
                     break
                 case 3:
-                case ControlloTemporale.bloccoSettimanale:
-                    testoErrore = getErroreBloccoSettimanale(turno, 4, mappa)
-
+                case ControlloTemporale.bloccoSettimanaleDomenica:
+                    testoErrore = getErroreBloccoSettimanaleDomenica(turno, mappa)
+                    break
+                case ControlloTemporale.bloccoSettimanaleSabato:
+                    testoErrore = getErroreBloccoSettimanaleSabato(turno, mappa)
                     break
                 default: // caso non definito
                     break
@@ -751,23 +753,37 @@ class TurnoController {
         return testoErrore
     } // fine del metodo
 
-    private static String getErroreBloccoSettimanale(Turno turno, int numMaxFunz, mappa) {
-        String testoErrore = ''
-        long actualTime
-        long oldTime
+    //--controlla se sono stati modificati i militi assegnati al turno
+    //--a seconda del flag della croce, controlla solo i militi minimim obbligatori oppure tutti
+    //--se uno solo di quelli considerati è modificato, ritorna modificato
+    private boolean isModificatoMiliteFunzione(Turno turno, Map mappa) {
+        boolean modificatoMiliteTurno = false
+        boolean modificatoSingoloMilite
+        Croce croce
+        boolean bloccaSoloFunzioniObbligatorie = false
+        TipoTurno tipoTurno
+        int numMaxFunz = 4 //massimo hardcoded
+        int numFunzioniDaConsiderare = numMaxFunz
         String oldMiliteIdTxt
         String militeIdTxt
         String campo
         String milFunz
-        String modFunz
         Milite milite
-        boolean modificatoMilite
-        int settimanaCorrente
-        int settimanaTurno
-        boolean iniziataSettimanaCorrente = false
 
-        for (int k = 1; k <= numMaxFunz; k++) {
-            modificatoMilite = false
+        if (turno) {
+            croce = turno.croce
+            if (croce) {
+                bloccaSoloFunzioniObbligatorie = croceService.bloccaSoloFunzioniObbligatorie(croce)
+            }// fine del blocco if
+            if (bloccaSoloFunzioniObbligatorie) {
+                tipoTurno = turno.tipoTurno
+                if (tipoTurno) {
+                    numFunzioniDaConsiderare = tipoTurno.funzioniObbligatorie
+                }// fine del blocco if
+            }// fine del blocco if
+        }// fine del blocco if
+
+        for (int k = 1; k <= numFunzioniDaConsiderare; k++) {
             oldMiliteIdTxt = ''
             militeIdTxt = ''
             campo = 'militeFunzione' + k + '_id'
@@ -781,20 +797,130 @@ class TurnoController {
             }// fine del blocco if
 
             if (milite && milite.id) {
-                modificatoMilite = (!militeIdTxt.equals(oldMiliteIdTxt))
-            }// fine del blocco if
-
-            if (modificatoMilite) {
-                settimanaCorrente = Lib.getNumSettimanaOdierna()
-                settimanaTurno = Lib.getNumSettimanaTurno(turno)
-                if (settimanaCorrente >= settimanaTurno) {
-                    iniziataSettimanaCorrente = true
+                modificatoSingoloMilite = (!militeIdTxt.equals(oldMiliteIdTxt))
+                if (modificatoSingoloMilite) {
+                    modificatoMiliteTurno = true
                 }// fine del blocco if
             }// fine del blocco if
         } // fine del ciclo for
 
+        return modificatoMiliteTurno
+    } // fine del metodo
+
+    //--per ogni giorno della settimana, blocco alcuni giorni successivi fino ad arrivare a domenica
+    private String getErroreBloccoSettimanaleDomenica(Turno turno, Map mappa) {
+        String testoErrore = ''
+        Date dataTurno
+        String giornoCorrente = Lib.getGiornoSettimana()
+        int numGiorniBloccati
+        int numGiornoCorrente
+        int numGiornoTurno = 0
+        int giorniMancanti
+        boolean iniziataSettimanaCorrente = false
+        ArrayList giorniBloccati = null
+
+        switch (giornoCorrente) {
+            case 'lun':
+                giorniBloccati = ['lun', 'mar', 'mer', 'gio', 'ven', 'sab', 'dom']
+                break
+            case 'mar':
+                giorniBloccati = ['mar', 'mer', 'gio', 'ven', 'sab', 'dom']
+                break
+            case 'mer':
+                giorniBloccati = ['mer', 'gio', 'ven', 'sab', 'dom']
+                break
+            case 'gio':
+                giorniBloccati = ['gio', 'ven', 'sab', 'dom']
+                break
+            case 'ven':
+                giorniBloccati = ['ven', 'sab', 'dom']
+                break
+            case 'sab':
+                giorniBloccati = ['sab', 'dom']
+                break
+            case 'dom':
+                giorniBloccati = ['dom', 'lun', 'mar', 'mer', 'gio', 'ven', 'sab', 'dom']
+                break
+            default: // caso non definito
+                break
+        } // fine del blocco switch
+
+        if (turno) {
+            dataTurno = turno.giorno
+            numGiornoTurno = Lib.getNumGiorno(dataTurno)
+        }// fine del blocco if
+
+        if (isModificatoMiliteFunzione(turno, mappa)) {
+            numGiorniBloccati = giorniBloccati.size()
+            numGiornoCorrente = Lib.getNumGiorno(new Date())
+
+            giorniMancanti = numGiornoTurno - numGiornoCorrente
+            if (giorniMancanti < numGiorniBloccati) {
+                iniziataSettimanaCorrente = true
+            }// fine del blocco if
+        }// fine del blocco if
+
         if (iniziataSettimanaCorrente) {
-            testoErrore = 'Non puoi modificare il turno della settimana corrente'
+            testoErrore = 'A partire da domenica mattina, non puoi più modificare i militi già segnati per un turno della settimana successiva'
+        }// fine del blocco if
+
+        return testoErrore
+    } // fine del metodo
+
+    private String getErroreBloccoSettimanaleSabato(Turno turno, Map mappa) {
+        String testoErrore = ''
+        Date dataTurno
+        String giornoCorrente = Lib.getGiornoSettimana()
+        int numGiorniBloccati
+        int numGiornoCorrente
+        int numGiornoTurno = 0
+        int giorniMancanti
+        boolean iniziataSettimanaCorrente = false
+        ArrayList giorniBloccati = null
+
+        switch (giornoCorrente) {
+            case 'lun':
+                giorniBloccati = ['lun', 'mar', 'mer', 'gio', 'ven', 'sab']
+                break
+            case 'mar':
+                giorniBloccati = ['mar', 'mer', 'gio', 'ven', 'sab']
+                break
+            case 'mer':
+                giorniBloccati = ['mer', 'gio', 'ven', 'sab']
+                break
+            case 'gio':
+                giorniBloccati = ['gio', 'ven', 'sab']
+                break
+            case 'ven':
+                giorniBloccati = ['ven', 'sab']
+                break
+            case 'sab':
+                giorniBloccati = ['sab', 'dom', 'lun', 'mar', 'mer', 'gio', 'ven', 'sab']
+                break
+            case 'dom':
+                giorniBloccati = ['dom', 'lun', 'mar', 'mer', 'gio', 'ven', 'sab']
+                break
+            default: // caso non definito
+                break
+        } // fine del blocco switch
+
+        if (turno) {
+            dataTurno = turno.giorno
+            numGiornoTurno = Lib.getNumGiorno(dataTurno)
+        }// fine del blocco if
+
+        if (isModificatoMiliteFunzione(turno, mappa)) {
+            numGiorniBloccati = giorniBloccati.size()
+            numGiornoCorrente = Lib.getNumGiorno(new Date())
+
+            giorniMancanti = numGiornoTurno - numGiornoCorrente
+            if (giorniMancanti < numGiorniBloccati) {
+                iniziataSettimanaCorrente = true
+            }// fine del blocco if
+        }// fine del blocco if
+
+        if (iniziataSettimanaCorrente) {
+            testoErrore = 'A partire da sabato mattina, non puoi più modificare i militi già segnati per un turno della settimana successiva'
         }// fine del blocco if
 
         return testoErrore

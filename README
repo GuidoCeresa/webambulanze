@@ -1,1 +1,44 @@
-This file was created by IntelliJ IDEA 12.0.2 for binding GitHub repository
+//@todo Croce Rossa Pontetaro
+// Inserimento ripetitivo (settimanale o bisettimanale)
+// Creazione turni 2014
+// Bloccare note dopo domenica sera
+// Messaggio di posta come avviso per inserimento note (in prova)
+// Giorni trascorsi dall'ultimo turno in statistiche
+// Bloccare i nuovi turni extra per i Militi
+
+//@todo Pubblica Assistenza Pianoro
+1) le celle relative a turni passati non devono essere cliccabili, ora un normale milite riesce perfino a segnare presenza.
+2) le celle relative a turni non disponibili devono essere non cliccabili e possibilmente di colore scuro (es. grigio) ora un normale milite riesce perfino a segnare presenza, almeno fino al 31/12 (es. turni del weekend durante la settimana e viceversa)
+3) nella home anche i militi possono vedere alcuni moduli (funzioni, tipologia turni, militi e statistiche) anche se non modificabili, desidereremmo che non fossero neanche visibili, il milite dovrebbe accedere solo al tabellone turni.
+4) nell'elenco della "tavola incrocio  utente ruolo" non funziona l'ordinamento sulle colonne
+5) la funzione tempo mancante non funziona come mi aspettavo, un milite si segna oggi per domani, fa log-off poi dopo cinque minuti ci ripensa e rientra nel programma può cancellara la sua disponibilità, non dovrebbe essere possibile.
+6) le celle sono cliccabili solo per circa il 50% della larghezza sarebbe meglio lo fossero per la loro interezza.
+7) nella pagina di login l'elenco dei nominativi dovrebbe essere ordinato per cognome dei volontari
+8) nella settimana dal 30 dic al 5 gennaio ha come label Dicembre-febbraio 2013
+
+
+1) ci guardo
+2) non posso cambiare il colore delle celle sul tabellone; non ho ben capito quali sono i turni ‘’non disponibili’’ ?
+3) i militi possono vedere alcuni moduli in sola visione. Non riesco a modificare il programma senza inserire un livello (non previsto) di milite che può solo vedere il tabellone. Si tratta comunque di informazioni largamente note e conosciute ai tuoi militi (presumo). Le statistiche sono accessibili solo singolarmente.
+4) hai ragione; non è indispensabile essendo una videata di servizio ma vedo comunque di sistemarlo
+5) forse mi sono spiegato male :-) le possibilità di blocco successive all’inserimento di un turno da parte del milite sono 3:
+5.1 nessun blocco
+5.2 blocco secondo il tempo intercorso dopo l’inserimento (esempio mezz’ora)
+5.3 blocco secondo il tempo che manca all’esecuzione del turno (esempio fino al giorno precedente)
+dimmi pure quello che preferisci
+6) è vero; dipende dalla larghezza del testo/caratteri inseriti. Se riesci a suggerirmi (HTLM) il modo di rendere sensibile al click  tutta la larghezza della cella e non il solo testo mi faresti un favore; io non ci sono riuscito ma magari si può.
+7) dovrebbe esserlo; controllo; in ogni modo per ordine di nickname (che di solito dovrebbe coincidere col cognome)
+8) ci guardo
+
+
+punto 2) i turni del weekend sono quelli più in basso nella pagina, però se mi sbaglio posso segnarmi anche nella cella in alto (es. la domenica mattina posso segnare un volontario nel turno 7-14 (che è valido solo infrasettimanale) al posto di segnarlo nel turno (8-13) presente più in basso nella colonna; mi servirebbe quindi che i sabati domenica e festivi i turni "infrasettimanali" non fossero cliccabili poi il colore sarebbe utile ma non strettamente indispensabile e analogamente per quanto riguarda i turni del weekend sui  giorni infrasettimanali.
+
+punto 5) mi serve il blocco 5.3 con tempo 2 giorni  (cioè se il volontario X si segna ora 02/12/2013 h 10.30 per un qualsia turno di dopo-domani (4/12) appena ha fatto il salvataggio, non gli sia più permessa la cancellazione (possibile, ovviamente agli utenti di ruolo admin)
+
+
+il punto 6) ovviamente io riesco solo a vedere l'html prodotto in pagina e non il sorgente da cui è generato, comunque noto che viene composto in questo modo:
+<td class="turnocritico"><a href="/webambulanze/turno/fillTurno?turnoId=4714">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></td>
+<td class="turnocritico"><a href="/webambulanze/turno/fillTurno?turnoId=4714"> <div style=width = 100%>&nbsp;</div></a></td>
+in pratica potresti provare a sostituire la sfilza di &nbsp; con un div che ne contiene almeno uno che però ha una larchezza pari al 100% del suo contenitore (la cella)
+
+il punto 7) va bene così com'è ora.

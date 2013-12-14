@@ -1,6 +1,7 @@
 package webambulanze
 
 import java.sql.Timestamp
+import java.text.DateFormatSymbols
 
 /**
  * Created with IntelliJ IDEA.
@@ -1050,6 +1051,29 @@ class Lib {
 
         return giorni
     }// fine del metodo
+
+    // for the current Locale
+    public static String getGiornoSettimana() {
+        return getGiornoSettimana(creaDataOggi())
+    }// fine del metodo
+
+    // for the current Locale
+    public static String getGiornoSettimana(Date giorno) {
+        String giornoSettimana = ''
+        int numSettimana
+        Calendar cal = Calendar.getInstance()
+        DateFormatSymbols symbols = new DateFormatSymbols()
+        String[] dayNames
+
+        dayNames = symbols.getShortWeekdays()
+
+        cal.setTime(giorno)
+        numSettimana = cal.get(Calendar.DAY_OF_WEEK)
+        giornoSettimana = dayNames[numSettimana]
+
+        return giornoSettimana
+    }// fine del metodo
+
 
     public static int getNumMese(Date giornoIn) {
         int mese

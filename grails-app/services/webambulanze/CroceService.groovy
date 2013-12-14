@@ -155,6 +155,21 @@ class CroceService {
         return getInt(getCroce(request), Cost.PREF_maxMinutiTrascorsiModifica)
     }// fine del metodo
 
+    //--controlla il flag mantenuto nei Settings associati alla croce corrente
+    public boolean bloccaSoloFunzioniObbligatorie(Croce croce) {
+        return isFlag(croce, Cost.PREF_bloccaSoloFunzioniObbligatorie)
+    }// fine del metodo
+
+    //--controlla il flag mantenuto nei Settings associati alla croce corrente
+    public boolean militePuoCreareTurnoStandard(Croce croce) {
+        return isFlag(croce, Cost.PREF_militePuoCreareTurnoStandard)
+    }// fine del metodo
+
+    //--controlla il flag mantenuto nei Settings associati alla croce corrente
+    public boolean militePuoCreareTurnoExtra(Croce croce) {
+        return isFlag(croce, Cost.PREF_militePuoCreareTurnoExtra)
+    }// fine del metodo
+
     //--controlla il parametro mantenuto nei Settings associati alla croce corrente
     public ControlloTemporale getControlloModifica(def request) {
         ControlloTemporale tipoControlloModifica = null

@@ -114,6 +114,9 @@ class Settings {
     //--mostra il tabellone alla partenza; in caso contrario va alla home
     boolean mostraTabellonePartenza = true
 
+    //--i blocchi si applicano solo alle funzioni dei militi obbligatori (2 o 3) piuttosto che a tutti (4)
+    boolean bloccaSoloFunzioniObbligatorie = false
+
     //--il milite può creare un nuovo turno standard
     boolean militePuoCreareTurnoStandard = false
 
@@ -152,6 +155,7 @@ class Settings {
         tabelloneSecured()
         turniSecured()
         mostraTabellonePartenza()
+        bloccaSoloFunzioniObbligatorie()
         militePuoCreareTurnoStandard()
         militePuoCreareTurnoExtra()
     } // end of static constraints
