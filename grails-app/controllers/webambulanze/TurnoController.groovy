@@ -122,7 +122,7 @@ class TurnoController {
         if (turnoService?.isPossibileCreareTurno(croce, giorno, tipoTurno)) {
             continua = true
         } else {
-            flash.errors = 'Non è possibile creare un turno per una data passata'
+            flash.errors = 'Non è possibile creare questo turno'
             redirect(action: 'tabellone', model: [dataInizio: dataInizio, dataFine: dataFine], params: params)
             return
         }// fine del blocco if-else
@@ -587,11 +587,11 @@ class TurnoController {
     } // fine del metodo
 
     private boolean isEsistonoErrori(Turno turno) {
-        boolean isEsistonoErrori = false
+        boolean esistonoErrori = false
         ArrayList listaErrori = this.esistonoErrori(turno, params)
 
         if (listaErrori && listaErrori.size() > 0) {
-            isEsistonoErrori = true
+            esistonoErrori = true
             logoService.setWarn(Evento.turnoModificato, turno)
             flash.message = ''
             if (listaErrori.size() == 1) {
@@ -603,7 +603,7 @@ class TurnoController {
             flash.message = message(code: 'turno.not.modified.message', args: descGiorno(turno))
         }// fine del blocco if-else
 
-        return isEsistonoErrori
+        return esistonoErrori
     } // fine del metodo
 
     private void controllaAnomalie(Turno turno, boolean nuovoTurno) {
@@ -632,10 +632,30 @@ class TurnoController {
         String testoErrore = ''
         int numMaxFunz = 4
         String campo
+        Date giornoTurno
+        int numGiornoCorrente
+        int numGiornoTurno
         ArrayList listaTmp = new ArrayList()
         HashMap mapTmp = new HashMap()
         boolean isAdmin = militeService.isLoggatoAdminOrMore()
         ControlloTemporale controlloModifica = croceService.getControlloModifica(request)
+        boolean turnoStorico = false
+
+        //--turni passati loggato come milite
+        if (turno) {
+            giornoTurno=turno.giorno
+            numGiornoTurno = Lib.getNumGiorno(giornoTurno)
+            numGiornoCorrente = Lib.getNumGiorno(new Date())
+            if (numGiornoTurno < numGiornoCorrente) {
+                turnoStorico = true
+            }// fine del blocco if
+        }// fine del blocco if
+
+        if (!isAdmin && turnoStorico) {
+            testoErrore = 'Non puoi modificare un turno storico'
+            listaErrori.add(testoErrore)
+            return listaErrori
+        }// fine del blocco if
 
         //--le funzioni hardcoded sono al massimo 4
         for (int k = 1; k <= numMaxFunz; k++) {
@@ -663,7 +683,7 @@ class TurnoController {
                     break
                 case 2:
                 case ControlloTemporale.tempoMancante:
-
+                    testoErrore = getErroreTempoMancante(turno, mappa)
                     break
                 case 3:
                 case ControlloTemporale.bloccoSettimanaleDomenica:
@@ -694,63 +714,6 @@ class TurnoController {
         }// fine del blocco if
 
         return listaErrori
-    } // fine del metodo
-
-    private String getErroreTempoTrascorso(Turno turno, int numMaxFunz, mappa) {
-        String testoErrore = ''
-        long actualTime
-        long oldTime
-        long milliSecondiTrascorsi
-        long secondiTrascorsi
-        long minutiTrascorsi
-        String oldMiliteIdTxt
-        String militeIdTxt
-        String campo
-        String milFunz
-        String modFunz
-        Milite milite
-        boolean modificatoMilite
-        Timestamp tempo
-        int maxMinutiTrascorsiModifica = croceService.maxMinutiTrascorsiModifica(request)
-        boolean tempoScaduto = false
-
-        actualTime = new Date().time
-        for (int k = 1; k <= numMaxFunz; k++) {
-            oldMiliteIdTxt = ''
-            militeIdTxt = ''
-            oldTime = actualTime
-            campo = 'militeFunzione' + k + '_id'
-            milFunz = 'militeFunzione' + k
-            modFunz = 'modificaFunzione' + k
-            milite = turno."${milFunz}"
-            if (milite) {
-                oldMiliteIdTxt = milite.id.toString()
-            }// fine del blocco if
-            if (mappa."${campo}") {
-                militeIdTxt = mappa."${campo}"
-            }// fine del blocco if
-
-            modificatoMilite = (!militeIdTxt.equals(oldMiliteIdTxt))
-
-            if (modificatoMilite) {
-                tempo = turno."${modFunz}"
-                if (tempo) {
-                    oldTime = tempo.time
-                }// fine del blocco if
-                milliSecondiTrascorsi = actualTime - oldTime
-                secondiTrascorsi = milliSecondiTrascorsi / 1000
-                minutiTrascorsi = secondiTrascorsi / 60
-                if (minutiTrascorsi > maxMinutiTrascorsiModifica) {
-                    tempoScaduto = true
-                }// fine del blocco if
-            }// fine del blocco if
-        } // fine del ciclo for
-
-        if (tempoScaduto) {
-            testoErrore = 'Non puoi modificare il turno dopo che sono passati più di ' + maxMinutiTrascorsiModifica + ' minuti da quando ti sei segnato'
-        }// fine del blocco if
-
-        return testoErrore
     } // fine del metodo
 
     //--controlla se sono stati modificati i militi assegnati al turno
@@ -805,6 +768,92 @@ class TurnoController {
         } // fine del ciclo for
 
         return modificatoMiliteTurno
+    } // fine del metodo
+
+    //--controlla, per ogni singola funzione, che non sia trascorso troppo tempo
+    private String getErroreTempoTrascorso(Turno turno, int numMaxFunz, mappa) {
+        String testoErrore = ''
+        long actualTime
+        long oldTime
+        long milliSecondiTrascorsi
+        long secondiTrascorsi
+        long minutiTrascorsi
+        String oldMiliteIdTxt
+        String militeIdTxt
+        String campo
+        String milFunz
+        String modFunz
+        Milite milite
+        boolean modificatoMilite
+        Timestamp tempo
+        int maxMinutiTrascorsiModifica = croceService.maxMinutiTrascorsiModifica(request)
+        boolean tempoScaduto = false
+
+        actualTime = new Date().time
+        for (int k = 1; k <= numMaxFunz; k++) {
+            oldMiliteIdTxt = ''
+            militeIdTxt = ''
+            oldTime = actualTime
+            campo = 'militeFunzione' + k + '_id'
+            milFunz = 'militeFunzione' + k
+            modFunz = 'modificaFunzione' + k
+            milite = turno."${milFunz}"
+            if (milite) {
+                oldMiliteIdTxt = milite.id.toString()
+            }// fine del blocco if
+            if (mappa."${campo}") {
+                militeIdTxt = mappa."${campo}"
+            }// fine del blocco if
+
+            modificatoMilite = (!militeIdTxt.equals(oldMiliteIdTxt))
+
+            if (modificatoMilite) {
+                tempo = turno."${modFunz}"
+                if (tempo) {
+                    oldTime = tempo.time
+                }// fine del blocco if
+                milliSecondiTrascorsi = actualTime - oldTime
+                secondiTrascorsi = milliSecondiTrascorsi / 1000
+                minutiTrascorsi = secondiTrascorsi / 60
+                if (minutiTrascorsi > maxMinutiTrascorsiModifica) {
+                    tempoScaduto = true
+                }// fine del blocco if
+            }// fine del blocco if
+        }// fine del blocco for
+
+        if (tempoScaduto) {
+            testoErrore = 'Non puoi modificare il turno dopo che sono passati più di ' + maxMinutiTrascorsiModifica + ' minuti da quando ti sei segnato'
+        }// fine del blocco if
+
+        return testoErrore
+    } // fine del metodo
+
+    //--controlla che non manchi meno del tempo previsto
+    private String getErroreTempoMancante(Turno turno, Map mappa) {
+        String testoErrore = ''
+        Date dataTurno
+        int numGiornoCorrente = 0
+        int numGiornoTurno = 0
+        int giorniMancanti
+        int minGiorniMancantiModifica = croceService.minGiorniMancantiModifica(request)
+        boolean tempoMancante = false
+
+        if (turno) {
+            dataTurno = turno.giorno
+            numGiornoTurno = Lib.getNumGiorno(dataTurno)
+            numGiornoCorrente = Lib.getNumGiorno(new Date())
+        }// fine del blocco if
+
+        giorniMancanti = numGiornoTurno - numGiornoCorrente
+        if (giorniMancanti <= minGiorniMancantiModifica) {
+            tempoMancante = true
+        }// fine del blocco if
+
+        if (tempoMancante) {
+            testoErrore = "Non puoi più cancellarti dal turno quando mancano ${minGiorniMancantiModifica} o meno di ${minGiorniMancantiModifica} giorni al turno stesso"
+        }// fine del blocco if
+
+        return testoErrore
     } // fine del metodo
 
     //--per ogni giorno della settimana, blocco alcuni giorni successivi fino ad arrivare a domenica

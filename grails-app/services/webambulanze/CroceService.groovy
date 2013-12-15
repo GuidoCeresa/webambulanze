@@ -156,6 +156,11 @@ class CroceService {
     }// fine del metodo
 
     //--controlla il flag mantenuto nei Settings associati alla croce corrente
+    public int minGiorniMancantiModifica(def request) {
+        return getInt(getCroce(request), Cost.PREF_minGiorniMancantiModifica)
+    }// fine del metodo
+
+    //--controlla il flag mantenuto nei Settings associati alla croce corrente
     public boolean bloccaSoloFunzioniObbligatorie(Croce croce) {
         return isFlag(croce, Cost.PREF_bloccaSoloFunzioniObbligatorie)
     }// fine del metodo

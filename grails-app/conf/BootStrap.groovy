@@ -4105,7 +4105,7 @@ class BootStrap implements Cost {
         regolaFlagBlocchi(CROCE_PUBBLICA_CASTELLO, false, false, true)
 
         //--fidenza
-        regolaFlagBlocchi(CROCE_ROSSA_FIDENZA, false, false, true)
+        regolaFlagBlocchi(CROCE_ROSSA_FIDENZA, false, true, true)
 
         //--pontetaro
         regolaFlagBlocchi(CROCE_ROSSA_PONTETARO, false, false, false)

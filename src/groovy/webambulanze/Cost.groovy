@@ -46,6 +46,7 @@ public interface Cost {
     public static String PREF_fissaLimiteMassimoSingoloTurno = 'fissaLimiteMassimoSingoloTurno'
     public static String PREF_oreMassimeSingoloTurno = 'oreMassimeSingoloTurno'
     public static String PREF_maxMinutiTrascorsiModifica = 'maxMinutiTrascorsiModifica'
+    public static String PREF_minGiorniMancantiModifica = 'minGiorniMancantiModifica'
     public static String PREF_usaModuloTurni = 'usaModuloTurni'
     public static String PREF_usaModuloViaggi = 'usaModuloViaggi'
     public static String PREF_isTabelloneSecured = 'tabelloneSecured'

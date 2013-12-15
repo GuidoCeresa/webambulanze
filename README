@@ -42,3 +42,12 @@ il punto 6) ovviamente io riesco solo a vedere l'html prodotto in pagina e non i
 in pratica potresti provare a sostituire la sfilza di &nbsp; con un div che ne contiene almeno uno che però ha una larchezza pari al 100% del suo contenitore (la cella)
 
 il punto 7) va bene così com'è ora.
+
+
+1) risolto: le celle relative a turni passati sono cliccabili in modo da poterle vedere, ma non si possono registrare modifiche
+2) parzialmente risolto: ho bloccato completamente la creazione dei nuovi turni ai militi; solo gli admin possono creare nuovi turni; per il colore da mettere in grigio me lo sono segnato come modifica con priorità più bassa :-)
+3) non modificabile
+4) non ancora risolto: me lo sono segnato con priorità media
+5) risolto
+6) non ancora risolto: me lo sono segnato con priorità media
+7) risolto
