@@ -1091,7 +1091,7 @@ class AmbulanzaTagLib {
 
         if (inizio && fine) {
             testoTurni = 'Turni di servizio '
-            testoMese = this.getMeseCorrente(inizio);
+            testoMese = getMeseCorrente(inizio);
             testoOut = Lib.tagCellaTitolo(testoTurni + testoMese, Aspetto.titolilegenda, colonneLegendaSinistra)
         }// end of if
 
@@ -2240,7 +2240,8 @@ class AmbulanzaTagLib {
                 mese = Mese.getShort(pos)
                 mese += ' / '
                 if (pos == 12) {
-                    pos = 1
+                    pos = 0
+                    anno++
                 }// fine del blocco if
 
                 mese += Mese.getShort(pos + 1)
