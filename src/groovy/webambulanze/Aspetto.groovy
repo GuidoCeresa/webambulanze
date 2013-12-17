@@ -17,7 +17,7 @@ public enum Aspetto {
     turnoassegnato,
     turnolibero,
     turnocritico,
-    turnobloccato,
+    turnobloccato, //non usato
     turnoeffettuato,
     footercella,
     turnoorario,

@@ -51,3 +51,25 @@ il punto 7) va bene così com'è ora.
 5) risolto
 6) non ancora risolto: me lo sono segnato con priorità media
 7) risolto
+8) risolto
+
+
+REPLICA
+punto 2) un milite normale riesce a segnarsi sul turno di 0-7 di domenica (mentre invece deve utilizzare il turno 0-8 che è in basso nel foglio)
+punto 5) ora un milite non riesce neppure a segnarsi nelle 48 ore immediatamente successive (mentre il messaggio dice che non può cancellarsi)
+
+
+
+9) quando si entra (clicca) su un turno dell'anno 2014 per segnarsi, nella pagina il turno stesso è indicato con 2013 ed è corrispondentemente errato il giorno della settimana
+(es. 02/01/2014 è indicato come mercoledì, 2-gen-2013)
+
+10) con ruolo custode non posso cancellare un utente --> obiettivo non mostrare l'untente nella combo di login
+
+11) nella pagina Modifica turno, se un volontario deve smontare mezz'ora prima, e vuole segnare 6:30 ore anzichè 7 (es turno notturno 0-7)
+qual'è il formato giusto? ho messo 6:30 e va in errore e mi mostra una pagina che non saprei definire in cui sono presenti menu a tendina con nominativi di volontari  sia miei
+che di altre associazioni mescolati
+
+
+RISPOSTA
+2) basta non creare il turno (e se c'è cancellarlo) ed il milite non può segnarsi
+5) risolto: hai ragione, avevo bloccato erroneamente anche il nuovo inserimento

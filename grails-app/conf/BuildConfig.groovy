@@ -50,7 +50,7 @@ grails.project.dependency.resolution = {
         compile ':cache:1.0.1'
 
         runtime ":resources:1.2.RC2"
-        compile ":quartz:1.0-RC5"
+        compile ":quartz:1.0.1"
 
         //--security
         compile ":mail:1.0"

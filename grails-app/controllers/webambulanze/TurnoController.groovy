@@ -627,11 +627,14 @@ class TurnoController {
     } // fine del metodo
 
     //--controlla che i dati siano ''accettabili''
+    //--se sono loggato come milite, tutto il passato non può essere modificato
+    //--controlla che non vengano inseriti nomi doppi (lo stesso milite in due funzioni)
     private ArrayList esistonoErrori(Turno turno, Map mappa) {
         ArrayList listaErrori = new ArrayList()
         String testoErrore = ''
         int numMaxFunz = 4
         String campo
+        String campo2
         Date giornoTurno
         int numGiornoCorrente
         int numGiornoTurno
@@ -640,10 +643,11 @@ class TurnoController {
         boolean isAdmin = militeService.isLoggatoAdminOrMore()
         ControlloTemporale controlloModifica = croceService.getControlloModifica(request)
         boolean turnoStorico = false
+        boolean tentativoDiCancellazione = false
 
         //--turni passati loggato come milite
         if (turno) {
-            giornoTurno=turno.giorno
+            giornoTurno = turno.giorno
             numGiornoTurno = Lib.getNumGiorno(giornoTurno)
             numGiornoCorrente = Lib.getNumGiorno(new Date())
             if (numGiornoTurno < numGiornoCorrente) {
@@ -658,6 +662,7 @@ class TurnoController {
         }// fine del blocco if
 
         //--le funzioni hardcoded sono al massimo 4
+        //--nella lista entrano anche i doppi, mentre nella mappa no
         for (int k = 1; k <= numMaxFunz; k++) {
             campo = 'militeFunzione' + k + '_id'
             if (mappa."${campo}") {
@@ -667,16 +672,28 @@ class TurnoController {
         } // fine del ciclo for
 
         //--nomi doppi
+        //--nella lista entrano anche i doppi, mentre nella mappa no
         if (listaTmp.size() != mapTmp.size()) {
             testoErrore = 'Non puoi segnare un milite due volte nello stesso turno'
             listaErrori.add(testoErrore)
         }// fine del blocco if
 
+        //--le funzioni hardcoded sono al massimo 4
+        //--se prima esisteva e adesso manca ... = ... tentativoDiCancellazione
+        for (int k = 1; k <= numMaxFunz; k++) {
+            campo = 'militeFunzione' + k + '_id'
+            campo2 = 'militeFunzione' + k + 'Id'
+            if (turno."${campo2}" && !mappa."${campo}") {
+                tentativoDiCancellazione = true
+            }// fine del blocco if
+        } // fine del ciclo for
+
+        //--solo se è stato cancellato un nome, controlla. Aggiungerlo è sempre permesso
         //--controllo che non sia un admin
-        //--controllo che ci sia il flag dei settings
         //--controllo del tempo trascorso
+        //--controllo del tempo mancante
         //--controllo del blocco settimanale
-        if (!isAdmin) {
+        if (!isAdmin && tentativoDiCancellazione) {
             switch (controlloModifica) {
                 case ControlloTemporale.tempoTrascorso:
                     testoErrore = getErroreTempoTrascorso(turno, 4, mappa)

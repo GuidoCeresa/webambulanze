@@ -1249,10 +1249,20 @@ class AmbulanzaTagLib {
         Milite milite
         int numFunzioni
         Aspetto aspetto
+        boolean sempreCreabile = false
+
+        //--serve per colorare di grigio i turni non creabili quando sono collegato come Milite
+//        if (militeService?.isLoggatoAdminOrMore()) {
+//            sempreCreabile = true
+//        }// fine del blocco if
 
         if (turno == null) {
             html = htmlNew
-            cella = Aspetto.turnovuoto
+            if (sempreCreabile) {
+                cella = Aspetto.turnovuoto
+            } else {
+                cella = Aspetto.turnovuoto
+            }// fine del blocco if-else
             nomeMilite = testoVuoto
         } else {
             numFunzioni = turno.tipoTurno.numFunzioni()
@@ -1537,7 +1547,8 @@ class AmbulanzaTagLib {
 //        testo = 'Algos© - v4.2 del 15 ottobre 2013'
 //        testo = 'Algos© - v4.3 del 26 novembre 2013'
 //        testo = 'Algos© - v4.4 del 30 novembre 2013'
-        testo = 'Algos© - v4.5 del 17 dicembre 2013'
+//        testo = 'Algos© - v4.5 del 17 dicembre 2013'
+        testo = 'Algos© - v4.6 del 18 dicembre 2013'
         testo = Lib.tagCella(testo, Aspetto.copyright)
         testoOut = Lib.tagTable(testo)
         return testoOut
