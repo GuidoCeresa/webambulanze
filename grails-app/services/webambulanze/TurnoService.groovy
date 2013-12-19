@@ -110,8 +110,8 @@ class TurnoService {
 
         //--nel giorno corrente i militi non possono mai creare nuovi turni standard
         //--nel giorno corrente i militi possono creare nuovi turni extra (sa hanno il flag della croce abilitato)
-        numGiornoNuovoTurno = Lib.getNumGiorno(giornoNuovoTurno)
-        numGiornoCorrente = Lib.getNumGiorno(new Date())
+        numGiornoNuovoTurno = Lib.getNumGiornoAssoluto(giornoNuovoTurno)
+        numGiornoCorrente = Lib.getNumGiornoAssoluto(new Date())
         if (tipoTurno.multiplo) {
             if (numGiornoNuovoTurno < numGiornoCorrente) {
                 giornoBloccato = true

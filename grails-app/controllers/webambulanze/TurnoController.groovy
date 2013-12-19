@@ -104,10 +104,15 @@ class TurnoController {
         Croce croce = croceService.getCroce(request)
         Date giorno = Lib.creaData1Gennaio()
         int offSet
+        String anno
         String giornoTxt = ''
         def user = springSecurityService.principal
         Utente currUser = (Utente) springSecurityService.getCurrentUser()
 
+        if (params.anno) {
+            anno = params.anno
+            giorno = Lib.creaData1Gennaio(anno)
+        }// fine del blocco if
         if (params.giorno) {
             giornoNum = params.giorno
             offSet = Integer.decode(giornoNum) - 1
@@ -648,8 +653,8 @@ class TurnoController {
         //--turni passati loggato come milite
         if (turno) {
             giornoTurno = turno.giorno
-            numGiornoTurno = Lib.getNumGiorno(giornoTurno)
-            numGiornoCorrente = Lib.getNumGiorno(new Date())
+            numGiornoTurno = Lib.getNumGiornoAssoluto(giornoTurno)
+            numGiornoCorrente = Lib.getNumGiornoAssoluto(new Date())
             if (numGiornoTurno < numGiornoCorrente) {
                 turnoStorico = true
             }// fine del blocco if
@@ -857,8 +862,8 @@ class TurnoController {
 
         if (turno) {
             dataTurno = turno.giorno
-            numGiornoTurno = Lib.getNumGiorno(dataTurno)
-            numGiornoCorrente = Lib.getNumGiorno(new Date())
+            numGiornoTurno = Lib.getNumGiornoAssoluto(dataTurno)
+            numGiornoCorrente = Lib.getNumGiornoAssoluto(new Date())
         }// fine del blocco if
 
         giorniMancanti = numGiornoTurno - numGiornoCorrente
@@ -913,12 +918,12 @@ class TurnoController {
 
         if (turno) {
             dataTurno = turno.giorno
-            numGiornoTurno = Lib.getNumGiorno(dataTurno)
+            numGiornoTurno = Lib.getNumGiornoAssoluto(dataTurno)
         }// fine del blocco if
 
         if (isModificatoMiliteFunzione(turno, mappa)) {
             numGiorniBloccati = giorniBloccati.size()
-            numGiornoCorrente = Lib.getNumGiorno(new Date())
+            numGiornoCorrente = Lib.getNumGiornoAssoluto(new Date())
 
             giorniMancanti = numGiornoTurno - numGiornoCorrente
             if (giorniMancanti < numGiorniBloccati) {
@@ -972,12 +977,12 @@ class TurnoController {
 
         if (turno) {
             dataTurno = turno.giorno
-            numGiornoTurno = Lib.getNumGiorno(dataTurno)
+            numGiornoTurno = Lib.getNumGiornoAssoluto(dataTurno)
         }// fine del blocco if
 
         if (isModificatoMiliteFunzione(turno, mappa)) {
             numGiorniBloccati = giorniBloccati.size()
-            numGiornoCorrente = Lib.getNumGiorno(new Date())
+            numGiornoCorrente = Lib.getNumGiornoAssoluto(new Date())
 
             giorniMancanti = numGiornoTurno - numGiornoCorrente
             if (giorniMancanti < numGiorniBloccati) {
@@ -1012,9 +1017,9 @@ class TurnoController {
 
         //--prepara i dati
         if (giorno && inizio && fine) {
-            numGiorno = Lib.getNumGiorno(giorno)
-            numInizio = Lib.getNumGiorno(inizio)
-            numFine = Lib.getNumGiorno(fine)
+            numGiorno = Lib.getNumGiornoAssoluto(giorno)
+            numInizio = Lib.getNumGiornoAssoluto(inizio)
+            numFine = Lib.getNumGiornoAssoluto(fine)
         }// fine del blocco if
 
         //--inizio deve essere nello stesso giorno

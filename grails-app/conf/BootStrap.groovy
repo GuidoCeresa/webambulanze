@@ -4203,23 +4203,93 @@ class BootStrap implements Cost {
         } // fine del ciclo for
     }// fine del metodo
 
+    //--creazione dei turni vuoti per la croce Fidenza
+    //--li crea SOLO se non esistono già
+    //--logica
+    //--    automedica  mattina -> tutti i giorni
+    //--    automedica  pomeriggio -> tutti i giorni
+    //--    automedica  notte -> tutti i giorni
+    //--    ambulanza  mattina -> solo sabato e domenica
+    //--    ambulanza  pomeriggio -> solo sabato e domenica
+    //--    ambulanza  notte -> tutti i giorni
+    //--    extra -> mai
+    private static void nuoviTurniAnnualiFidenza(String anno) {
+        Croce croce = Croce.findBySigla(CROCE_ROSSA_FIDENZA)
+        Date primoGennaio = Lib.creaData1Gennaio(anno)
+        Date giorno
+        TipoTurno msamat = TipoTurno.findByCroceAndSigla(croce, CRF_TIPO_TURNO_AUTOMEDICA_MATTINO)
+        TipoTurno msapom = TipoTurno.findByCroceAndSigla(croce, CRF_TIPO_TURNO_AUTOMEDICA_POMERIGGIO)
+        TipoTurno msanotte = TipoTurno.findByCroceAndSigla(croce, CRF_TIPO_TURNO_AUTOMEDICA_NOTTE)
+        TipoTurno ambmat = TipoTurno.findByCroceAndSigla(croce, CRF_TIPO_TURNO_AMBULANZA_MATTINO)
+        TipoTurno ambpom = TipoTurno.findByCroceAndSigla(croce, CRF_TIPO_TURNO_AMBULANZA_POMERIGGIO)
+        TipoTurno ambnotte = TipoTurno.findByCroceAndSigla(croce, CRF_TIPO_TURNO_AMBULANZA_NOTTE)
+
+        for (int k = 0; k < 365; k++) {
+            giorno = primoGennaio + k
+            Lib.creaTurno(croce, msamat, giorno)
+            Lib.creaTurno(croce, msapom, giorno)
+            Lib.creaTurno(croce, msanotte, giorno)
+            if (Lib.isFestivo(giorno)) {
+                Lib.creaTurno(croce, ambmat, giorno)
+                Lib.creaTurno(croce, ambpom, giorno)
+            }// fine del blocco if
+            Lib.creaTurno(croce, ambnotte, giorno)
+        } // fine del ciclo for
+    }// fine del metodo
+
+    //--creazione dei turni vuoti per la croce Pontetaro
+    //--li crea SOLO se non esistono già
+    //--logica
+    //--    automedica  mattina -> tutti i giorni
+    //--    automedica  pomeriggio -> tutti i giorni
+    //--    automedica  notte -> tutti i giorni
+    //--    ambulanza  mattina -> solo sabato e domenica
+    //--    ambulanza  pomeriggio -> solo sabato e domenica
+    //--    ambulanza  notte -> tutti i giorni
+    //--    extra -> mai
+    private static void nuoviTurniAnnualiPontetaro(String anno) {
+        Croce croce = Croce.findBySigla(CROCE_ROSSA_FIDENZA)
+        Date primoGennaio = Lib.creaData1Gennaio(anno)
+        Date giorno
+        TipoTurno msamat = TipoTurno.findByCroceAndSigla(croce, CRF_TIPO_TURNO_AUTOMEDICA_MATTINO)
+        TipoTurno msapom = TipoTurno.findByCroceAndSigla(croce, CRF_TIPO_TURNO_AUTOMEDICA_POMERIGGIO)
+        TipoTurno msanotte = TipoTurno.findByCroceAndSigla(croce, CRF_TIPO_TURNO_AUTOMEDICA_NOTTE)
+        TipoTurno ambmat = TipoTurno.findByCroceAndSigla(croce, CRF_TIPO_TURNO_AMBULANZA_MATTINO)
+        TipoTurno ambpom = TipoTurno.findByCroceAndSigla(croce, CRF_TIPO_TURNO_AMBULANZA_POMERIGGIO)
+        TipoTurno ambnotte = TipoTurno.findByCroceAndSigla(croce, CRF_TIPO_TURNO_AMBULANZA_NOTTE)
+
+        for (int k = 0; k < 365; k++) {
+            giorno = primoGennaio + k
+            Lib.creaTurno(croce, msamat, giorno)
+            Lib.creaTurno(croce, msapom, giorno)
+            Lib.creaTurno(croce, msanotte, giorno)
+            if (Lib.isFestivo(giorno)) {
+                Lib.creaTurno(croce, ambmat, giorno)
+                Lib.creaTurno(croce, ambpom, giorno)
+            }// fine del blocco if
+            Lib.creaTurno(croce, ambnotte, giorno)
+        } // fine del ciclo for
+    }// fine del metodo
+
     //--creazione nuovi turni anno 2014 per Demo
     //--li crea SOLO se non esistono già
     private static void nuoviTurni2014Demo() {
         nuoviTurniAnnualiDemo('2014')
-        newVersione(CROCE_DEMO, 'Turni', 'Creati turni vuoti 2014')
+//        newVersione(CROCE_DEMO, 'Turni', 'Creati turni vuoti 2014')
     }// fine del metodo
 
     //--creazione nuovi turni anno 2014 per Fidenza
     //--li crea SOLO se non esistono già
     private static void nuoviTurni2014Fidenza() {
-
+//        nuoviTurniAnnualiFidenza('2014')
+//        newVersione(CROCE_ROSSA_FIDENZA, 'Turni', 'Creati turni vuoti 2014')
     }// fine del metodo
 
     //--creazione nuovi turni anno 2014 per Pontetaro
     //--li crea SOLO se non esistono già
     private static void nuoviTurni2014Pontetaro() {
-
+//        nuoviTurniAnnualiPontetaro('2014')
+//        newVersione(CROCE_ROSSA_PONTETARO, 'Turni', 'Creati turni vuoti 2014')
     }// fine del metodo
 
     //--creazione nuovi turni anno 2014 per Pianoro

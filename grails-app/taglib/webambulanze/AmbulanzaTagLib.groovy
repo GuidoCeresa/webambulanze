@@ -1275,6 +1275,7 @@ class AmbulanzaTagLib {
         String testoCella = '<a href="http://designshack.net/" class="buttonamb">Click Me</a>'
         String testoCellaVuota = '<a href="http://designshack.net/" class="buttonamb">&nbsp;</a>'
         String tagTurno = 'turnoId'
+        String tagAnno = 'anno'
         String tagGiorno = 'giorno'
         String tagTipoTurno = 'tipoTurno'
         String tagFunzione = 'funzione'
@@ -1282,6 +1283,7 @@ class AmbulanzaTagLib {
         String tipoTurnoTxt = ''
         String funzioneTxt = funzioneDellaRiga.sigla
         def giornoTxt = Lib.getNumGiorno(giorno)
+        String annoTxt = Lib.getAnno(giorno)
         tipoTurnoTxt = tipoTurno.sigla
         Funzione funzioneDelTurno
         Milite milite
@@ -1325,7 +1327,7 @@ class AmbulanzaTagLib {
         if (turno) {
             testoCella += "?${tagTurno}=${turnoId}"
         } else {
-            testoCella += "?${tagGiorno}=${giornoTxt}&${tagTipoTurno}=${tipoTurnoTxt}"
+            testoCella += "?${tagAnno}=${annoTxt}&${tagGiorno}=${giornoTxt}&${tagTipoTurno}=${tipoTurnoTxt}"
         }// fine del blocco if-else
         testoCella += '">'
         testoCella += nomeMilite

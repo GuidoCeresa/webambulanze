@@ -634,12 +634,12 @@ class Lib {
 
     public static Turno creaTurno(Croce croce, TipoTurno tipoTurno, Date giorno) {
         Turno turno = null
-        Date primoGennaio2013 = creaData1Gennaio()
+        Date primoGennaio = creaData1Gennaio(giorno)
         Date inizio
         Date fine
         int offSet = getNumGiorno(giorno) - 1
-        inizio = primoGennaio2013 + offSet
-        fine = primoGennaio2013 + offSet
+        inizio = primoGennaio + offSet
+        fine = primoGennaio + offSet
         String funz
 
         inizio = setOra(inizio, tipoTurno.oraInizio)
@@ -876,12 +876,12 @@ class Lib {
      */
     public static Date creaData1Gennaio() {
         /* variabili e costanti locali di lavoro */
-        Date giorno = new Date()
+        Date primoGennaio = new Date()
         Calendar cal
 
         try { // prova ad eseguire il codice
             cal = Calendar.getInstance()
-            cal.setTime(giorno)
+            cal.setTime(primoGennaio)
             cal.set(Calendar.MONTH, 0)
             cal.set(Calendar.DAY_OF_MONTH, 1)
             cal.set(Calendar.HOUR_OF_DAY, 0)
@@ -889,28 +889,22 @@ class Lib {
             cal.set(Calendar.SECOND, 0)
             cal.set(Calendar.MILLISECOND, 0)
 
-            giorno = new java.util.Date(cal.getTime().getTime());
+            primoGennaio = new Date(cal.getTime().getTime());
 
         } catch (Exception unErrore) { // intercetta l'errore
         }// fine del blocco try-catch
 
         /* valore di ritorno */
-        return giorno
+        return primoGennaio
     }// fine del metodo
 
     /**
-     * Crea la data del primo gennaio anno indicato.
-     * <p/>
-     *
-     * @param giorno il giorno del mese (1 per il primo)
-     * @param mese il mese dell'anno (1 per gennaio)
-     * @param anno l'anno
-     *
-     * @return la data creata
+     * Crea la data del primo gennaio dell'anno indicato.
+     * @return 1° gennaio dell'anno indicato
      */
     public static Date creaData1Gennaio(String anno) {
         /* variabili e costanti locali di lavoro */
-        Date giorno
+        Date primoGennaio
         Calendar cal
 
         cal = Calendar.getInstance()
@@ -922,10 +916,18 @@ class Lib {
         cal.set(Calendar.SECOND, 0)
         cal.set(Calendar.MILLISECOND, 0)
 
-        giorno = new Date(cal.getTime().getTime());
+        primoGennaio = new Date(cal.getTime().getTime());
 
         /* valore di ritorno */
-        return giorno
+        return primoGennaio
+    }// fine del metodo
+
+    /**
+     * Crea la data del primo gennaio del giorno indicato.
+     * @return 1° gennaio dell'anno a cui appartiene il giorno indicato
+     */
+    public static Date creaData1Gennaio(Date giorno) {
+        return creaData1Gennaio(getAnno(giorno))
     }// fine del metodo
 
     /**
@@ -1045,6 +1047,7 @@ class Lib {
         String anno
         Calendar cal = Calendar.getInstance()
 
+        cal.setTime(giorno)
         anno = cal.get(Calendar.YEAR)
 
         return anno
@@ -1058,6 +1061,21 @@ class Lib {
         giorno = cal.get(Calendar.DAY_OF_YEAR)
 
         return giorno
+    }// fine del metodo
+
+    //--tiene conto anche dell'anno
+    public static int getNumGiornoAssoluto(Date giornoIn) {
+        int annoGiorno
+        int anno
+        int giorno
+        Calendar cal = Calendar.getInstance()
+
+        cal.setTime(giornoIn)
+        anno = cal.get(Calendar.YEAR)
+        giorno = cal.get(Calendar.DAY_OF_YEAR)
+
+        annoGiorno = anno * 1000 + giorno
+        return annoGiorno
     }// fine del metodo
 
     public static int getNumGiornoMese(Date giornoIn) {
