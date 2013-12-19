@@ -363,6 +363,11 @@ class BootStrap implements Cost {
             nuoviTurni2014Pianoro()
         }// fine del blocco if
 
+        //--fix tipoturno di Pontetaro
+        if (installaVersione(61)) {
+            fixTipoturnoPontetaro()
+        }// fine del blocco if
+
         //--creazione dei record utenti per la pubblica castello
 //        if (installaVersione(99)) {
 //            utentiPubblicacastello()
@@ -4240,34 +4245,84 @@ class BootStrap implements Cost {
     //--creazione dei turni vuoti per la croce Pontetaro
     //--li crea SOLO se non esistono già
     //--logica
-    //--    automedica  mattina -> tutti i giorni
-    //--    automedica  pomeriggio -> tutti i giorni
-    //--    automedica  notte -> tutti i giorni
-    //--    ambulanza  mattina -> solo sabato e domenica
-    //--    ambulanza  pomeriggio -> solo sabato e domenica
+    //--    ambulanza  mattina -> tutti i giorni
+    //--    ambulanza  pomeriggio -> tutti i giorni
     //--    ambulanza  notte -> tutti i giorni
+    //--    dialisi uno andata -> mai
+    //--    dialisi uno ritorno -> mai
+    //--    dialisi due andata -> mai
+    //--    dialisi due ritorno -> mai
+    //--    ordinario singolo -> mai
+    //--    ordinario doppio -> mai
     //--    extra -> mai
+    //--    servizi -> mai
     private static void nuoviTurniAnnualiPontetaro(String anno) {
-        Croce croce = Croce.findBySigla(CROCE_ROSSA_FIDENZA)
+        Croce croce = Croce.findBySigla(CROCE_ROSSA_PONTETARO)
         Date primoGennaio = Lib.creaData1Gennaio(anno)
         Date giorno
-        TipoTurno msamat = TipoTurno.findByCroceAndSigla(croce, CRF_TIPO_TURNO_AUTOMEDICA_MATTINO)
-        TipoTurno msapom = TipoTurno.findByCroceAndSigla(croce, CRF_TIPO_TURNO_AUTOMEDICA_POMERIGGIO)
-        TipoTurno msanotte = TipoTurno.findByCroceAndSigla(croce, CRF_TIPO_TURNO_AUTOMEDICA_NOTTE)
-        TipoTurno ambmat = TipoTurno.findByCroceAndSigla(croce, CRF_TIPO_TURNO_AMBULANZA_MATTINO)
-        TipoTurno ambpom = TipoTurno.findByCroceAndSigla(croce, CRF_TIPO_TURNO_AMBULANZA_POMERIGGIO)
-        TipoTurno ambnotte = TipoTurno.findByCroceAndSigla(croce, CRF_TIPO_TURNO_AMBULANZA_NOTTE)
+        TipoTurno ambmat = TipoTurno.findByCroceAndSigla(croce, CRPT_TIPO_TURNO_AMBULANZA_MATTINO)
+        TipoTurno ambpom = TipoTurno.findByCroceAndSigla(croce, CRPT_TIPO_TURNO_AMBULANZA_POMERIGGIO)
+        TipoTurno ambnotte = TipoTurno.findByCroceAndSigla(croce, CRPT_TIPO_TURNO_AMBULANZA_NOTTE)
+        TipoTurno diaunoand = TipoTurno.findByCroceAndSigla(croce, CRPT_TIPO_TURNO_DIALISI_UNO_ANDATA)
+        TipoTurno diaunorit = TipoTurno.findByCroceAndSigla(croce, CRPT_TIPO_TURNO_DIALISI_UNO_RITORNO)
+        TipoTurno diadueand = TipoTurno.findByCroceAndSigla(croce, CRPT_TIPO_TURNO_DIALISI_DUE_ANDATA)
+        TipoTurno diaduerit = TipoTurno.findByCroceAndSigla(croce, CRPT_TIPO_TURNO_DIALISI_DUE_RITORNO)
+        TipoTurno ordsin = TipoTurno.findByCroceAndSigla(croce, CRPT_TIPO_TURNO_ORDINARIO_SINGOLO)
+        TipoTurno orddop = TipoTurno.findByCroceAndSigla(croce, CRPT_TIPO_TURNO_ORDINARIO_DOPPIO)
+        TipoTurno extra = TipoTurno.findByCroceAndSigla(croce, CRPT_TIPO_TURNO_EXTRA)
+        TipoTurno servizi = TipoTurno.findByCroceAndSigla(croce, CRPT_TIPO_TURNO_SERVIZI)
+
 
         for (int k = 0; k < 365; k++) {
             giorno = primoGennaio + k
-            Lib.creaTurno(croce, msamat, giorno)
-            Lib.creaTurno(croce, msapom, giorno)
-            Lib.creaTurno(croce, msanotte, giorno)
-            if (Lib.isFestivo(giorno)) {
-                Lib.creaTurno(croce, ambmat, giorno)
-                Lib.creaTurno(croce, ambpom, giorno)
-            }// fine del blocco if
+            Lib.creaTurno(croce, ambmat, giorno)
+            Lib.creaTurno(croce, ambpom, giorno)
             Lib.creaTurno(croce, ambnotte, giorno)
+        } // fine del ciclo for
+    }// fine del metodo
+
+    //--creazione dei turni vuoti per la croce Pianoro
+    //--li crea SOLO se non esistono già
+    //--logica
+    //--    ambulanza  notte 0-7 -> da lunedi a venerdi
+    //--    ambulanza  mattina 7-14 -> da lunedi a venerdi
+    //--    ambulanza  pomeriggio 14-17 -> da lunedi a venerdi
+    //--    ambulanza  pomeriggio sera 17-20 -> da lunedi a venerdi
+    //--    ambulanza  sera 20-24 -> da lunedi a venerdi
+    //--    ambulanza  notte 0-8 -> sabato e domenica
+    //--    ambulanza  mattina 8-13 -> sabato e domenica
+    //--    ambulanza  pomeriggio 13-19 -> sabato e domenica
+    //--    ambulanza  sera 19-24 -> sabato e domenica
+    private static void nuoviTurniAnnualiPianoro(String anno) {
+        Croce croce = Croce.findBySigla(CROCE_PUBBLICA_PIANORO)
+        Date primoGennaio = Lib.creaData1Gennaio(anno)
+        Date giorno
+        TipoTurno msanotte = TipoTurno.findByCroceAndSigla(croce, PAP_TIPO_TURNO_LUNVEN_NOTTE)
+        TipoTurno msamat = TipoTurno.findByCroceAndSigla(croce, PAP_TIPO_TURNO_LUNVEN_MATTINA)
+        TipoTurno msapom = TipoTurno.findByCroceAndSigla(croce, PAP_TIPO_TURNO_LUNVEN_POMERIGGIO)
+        TipoTurno msapomsera = TipoTurno.findByCroceAndSigla(croce, PAP_TIPO_TURNO_LUNVEN_POMERIGGIOSERA)
+        TipoTurno msasera = TipoTurno.findByCroceAndSigla(croce, PAP_TIPO_TURNO_LUNVEN_SERA)
+        TipoTurno msa2notte = TipoTurno.findByCroceAndSigla(croce, PAP_TIPO_TURNO_SABDOM_NOTTE)
+        TipoTurno msa2mat = TipoTurno.findByCroceAndSigla(croce, PAP_TIPO_TURNO_SABDOM_MATTINA)
+        TipoTurno msa2pom = TipoTurno.findByCroceAndSigla(croce, PAP_TIPO_TURNO_SABDOM_POMERIGGIO)
+        TipoTurno msa2sera = TipoTurno.findByCroceAndSigla(croce, PAP_TIPO_TURNO_SABDOM_SERA)
+
+
+        for (int k = 0; k < 365; k++) {
+            giorno = primoGennaio + k
+            if (Lib.isFeriale(giorno)) {
+                Lib.creaTurno(croce, msanotte, giorno)
+                Lib.creaTurno(croce, msamat, giorno)
+                Lib.creaTurno(croce, msapom, giorno)
+                Lib.creaTurno(croce, msapomsera, giorno)
+                Lib.creaTurno(croce, msasera, giorno)
+            }// fine del blocco if
+            if (Lib.isFestivo(giorno)) {
+                Lib.creaTurno(croce, msa2notte, giorno)
+                Lib.creaTurno(croce, msa2mat, giorno)
+                Lib.creaTurno(croce, msa2pom, giorno)
+                Lib.creaTurno(croce, msa2sera, giorno)
+            }// fine del blocco if
         } // fine del ciclo for
     }// fine del metodo
 
@@ -4275,34 +4330,47 @@ class BootStrap implements Cost {
     //--li crea SOLO se non esistono già
     private static void nuoviTurni2014Demo() {
         nuoviTurniAnnualiDemo('2014')
-//        newVersione(CROCE_DEMO, 'Turni', 'Creati turni vuoti 2014')
+        newVersione(CROCE_DEMO, 'Turni', 'Creati turni vuoti 2014')
     }// fine del metodo
 
     //--creazione nuovi turni anno 2014 per Fidenza
     //--li crea SOLO se non esistono già
     private static void nuoviTurni2014Fidenza() {
-//        nuoviTurniAnnualiFidenza('2014')
-//        newVersione(CROCE_ROSSA_FIDENZA, 'Turni', 'Creati turni vuoti 2014')
+        nuoviTurniAnnualiFidenza('2014')
+        newVersione(CROCE_ROSSA_FIDENZA, 'Turni', 'Creati turni vuoti 2014')
     }// fine del metodo
 
     //--creazione nuovi turni anno 2014 per Pontetaro
     //--li crea SOLO se non esistono già
     private static void nuoviTurni2014Pontetaro() {
-//        nuoviTurniAnnualiPontetaro('2014')
-//        newVersione(CROCE_ROSSA_PONTETARO, 'Turni', 'Creati turni vuoti 2014')
+        nuoviTurniAnnualiPontetaro('2014')
+        newVersione(CROCE_ROSSA_PONTETARO, 'Turni', 'Creati turni vuoti 2014')
     }// fine del metodo
 
     //--creazione nuovi turni anno 2014 per Pianoro
     //--li crea SOLO se non esistono già
     private static void nuoviTurni2014Pianoro() {
-//        Croce croce = Croce.findBySigla(CROCE_PUBBLICA_PIANORO)
-//        int primoDicembre = 335
-//
-//        creaTurnoVuotoPianoro(croce, 335)
-//        for (int k = primoDicembre; k <= 365; k++) {
-//            creaTurnoVuotoPianoro(croce, k)
-//        } // fine del ciclo for
+        nuoviTurniAnnualiPianoro('2014')
+        newVersione(CROCE_PUBBLICA_PIANORO, 'Turni', 'Creati turni vuoti 2014')
+    }// fine del metodo
 
+    //--fix tipoturno di Pontetaro
+    private static void fixTipoturnoPontetaro() {
+        Croce croce = Croce.findBySigla(CROCE_ROSSA_PONTETARO)
+        TipoTurno tipoTurnoSingolo
+        TipoTurno tipoTurnoDoppio
+
+        if (croce) {
+            tipoTurnoSingolo = TipoTurno.findByCroceAndSigla(croce, CRPT_TIPO_TURNO_ORDINARIO_SINGOLO)
+            tipoTurnoDoppio = TipoTurno.findByCroceAndSigla(croce, CRPT_TIPO_TURNO_ORDINARIO_DOPPIO)
+            if (tipoTurnoSingolo && tipoTurnoDoppio) {
+                tipoTurnoSingolo.multiplo = false
+                tipoTurnoSingolo.save(flush: true)
+                tipoTurnoDoppio.multiplo = false
+                tipoTurnoDoppio.save(flush: true)
+                newVersione(CROCE_ROSSA_PONTETARO, 'Tipoturno', 'Due tipiturni ordinari non multipli')
+            }// fine del blocco if
+        }// fine del blocco if
     }// fine del metodo
 
     def destroy = {
