@@ -224,6 +224,9 @@ class AmbulanzaTagLib {
         Croce croce = null
         Date inizio = null
         Date fine = null
+        boolean sempreCreabile = false
+        boolean militePuoCreareTurnoStandard = false
+        boolean militePuoCreareTurnoExtra = false
 
         if (params.siglaCroce) {
             croce = Croce.findBySigla((String) params.siglaCroce)
@@ -235,9 +238,16 @@ class AmbulanzaTagLib {
             fine = (Date) mappa.dataFine
         }// fine del blocco if
 
+        //--serve per colorare di grigio i turni non creabili quando sono collegato come Milite
+        if (militeService?.isLoggatoAdminOrMore()) {
+            sempreCreabile = true
+        }// fine del blocco if
+        militePuoCreareTurnoStandard = croceService.militePuoCreareTurnoStandard(croce)
+        militePuoCreareTurnoExtra = croceService.militePuoCreareTurnoExtra(croce)
+
 //        testo += this.captionTabella(params)
         testo += titoliTabella(inizio, fine)
-        testo += corpoTabella(croce, inizio, fine)
+        testo += corpoTabella(croce, inizio, fine, sempreCreabile, militePuoCreareTurnoStandard, militePuoCreareTurnoExtra)
         testo += rigaBordo()
         testo += legenda()
         testo += copyright()
@@ -255,7 +265,13 @@ class AmbulanzaTagLib {
      * @param fine :   giorno finale del periodo da considerare
      * @return testo del tag
      */
-    private static String corpoTabella(Croce croce, Date inizio, Date fine) {
+    private static String corpoTabella(
+            Croce croce,
+            Date inizio,
+            Date fine,
+            boolean sempreCreabile,
+            boolean militePuoCreareTurnoStandard,
+            boolean militePuoCreareTurnoExtra) {
         String testoBody = ''
         def tipiTurno = null
         int pariDispari = 0
@@ -276,13 +292,13 @@ class AmbulanzaTagLib {
                 if (it.primo) {
                     testoBody += rigaBordo()
                 }// fine del blocco if
-                testoBody += righeDiUnTurno(it, inizio, fine, pariDispari, numExtra)
+                testoBody += righeDiUnTurno(it, inizio, fine, pariDispari, numExtra, sempreCreabile, militePuoCreareTurnoStandard, militePuoCreareTurnoExtra)
 
                 if (it.multiplo) {
                     while (esisteUnTurnoNellaUltimaRiga(it, inizio, fine, numExtra)) {
                         pariDispari++
                         numExtra++
-                        testoBody += righeDiUnTurno(it, inizio, fine, pariDispari, numExtra)
+                        testoBody += righeDiUnTurno(it, inizio, fine, pariDispari, numExtra, sempreCreabile, militePuoCreareTurnoStandard, militePuoCreareTurnoExtra)
                     }// fine del blocco while
                 }// fine del blocco if
             }// end of each
@@ -299,7 +315,15 @@ class AmbulanzaTagLib {
      * @param dataFine :   giorno finale del periodo da considerare
      * @return testo del tag
      */
-    private static String righeDiUnTurno(TipoTurno tipoTurno, Date inizio, Date fine, int pariDispari, int numExtra) {
+    private static String righeDiUnTurno(
+            TipoTurno tipoTurno,
+            Date inizio,
+            Date fine,
+            int pariDispari,
+            int numExtra,
+            boolean sempreCreabile,
+            boolean militePuoCreareTurnoStandard,
+            boolean militePuoCreareTurnoExtra) {
         String testoRiga = ''
         LinkedHashMap<Date, Turno> mappaTurniDiUnTipo = creaMappaTurniDiUnTipo(tipoTurno, inizio, fine, numExtra)
         ArrayList listaTurni = listaTurni(tipoTurno, inizio, fine)
@@ -328,7 +352,7 @@ class AmbulanzaTagLib {
 //                } else {
 //                    testoRiga += this.rigaTurno(mappaTurniDiUnTipo, (Funzione) it, tipoTurno, false)
 //                }// fine del blocco if-else
-                testoRiga += rigaTurno(mappaTurniDiUnTipo, (Funzione) it, tipoTurno)
+                testoRiga += rigaTurno(mappaTurniDiUnTipo, (Funzione) it, tipoTurno, sempreCreabile, militePuoCreareTurnoStandard, militePuoCreareTurnoExtra)
             } // fine del ciclo each
 
 //            for (int k = 0; k < max; k++) {
@@ -1200,7 +1224,14 @@ class AmbulanzaTagLib {
     //--per ogni funzione prevista, crea una riga
     //--la prima cella è il nome della funzione
     //--seguono sette celle di turno
-    private static String rigaTurno(LinkedHashMap<Date, Turno> mappaTurni, Funzione funzione, TipoTurno tipoTurno) {
+    private static String rigaTurno(
+            LinkedHashMap<Date,
+            Turno> mappaTurni,
+            Funzione funzione,
+            TipoTurno tipoTurno,
+            boolean sempreCreabile,
+            boolean militePuoCreareTurnoStandard,
+            boolean militePuoCreareTurnoExtra) {
         String testoOut
         String testoRiga = ''
         Turno turno
@@ -1214,7 +1245,7 @@ class AmbulanzaTagLib {
             mappaTurni.keySet().each {
                 giorno = it
                 turno = mappaTurni.get(it)
-                testoRiga += cellaTurno(giorno, turno, funzione, tipoTurno)
+                testoRiga += cellaTurno(giorno, turno, funzione, tipoTurno, sempreCreabile, militePuoCreareTurnoStandard, militePuoCreareTurnoExtra)
             }// end of each
         }// fine del blocco if
 
@@ -1223,7 +1254,14 @@ class AmbulanzaTagLib {
     }// fine del metodo
 
     //--singola cella del turno, vuoto o pieno
-    private static String cellaTurno(Date giorno, Turno turno, Funzione funzioneDellaRiga, TipoTurno tipoTurno) {
+    private static String cellaTurno(
+            Date giorno,
+            Turno turno,
+            Funzione funzioneDellaRiga,
+            TipoTurno tipoTurno,
+            boolean sempreCreabile,
+            boolean militePuoCreareTurnoStandard,
+            boolean militePuoCreareTurnoExtra) {
         String testoOut = ''
         String htmlPrefix = '/webambulanze/turno/'
         String htmlNew = htmlPrefix + 'newTurno'
@@ -1249,12 +1287,6 @@ class AmbulanzaTagLib {
         Milite milite
         int numFunzioni
         Aspetto aspetto
-        boolean sempreCreabile = false
-
-        //--serve per colorare di grigio i turni non creabili quando sono collegato come Milite
-//        if (militeService?.isLoggatoAdminOrMore()) {
-//            sempreCreabile = true
-//        }// fine del blocco if
 
         if (turno == null) {
             html = htmlNew
@@ -1277,7 +1309,7 @@ class AmbulanzaTagLib {
             }// fine del blocco if-else
         }// fine del blocco if-else
 
-        aspetto = calcolaAspetto(turno)
+        aspetto = calcolaAspetto(turno, tipoTurno, sempreCreabile, militePuoCreareTurnoStandard, militePuoCreareTurnoExtra)
 
         if (numFunzioni) {
             for (int k = 1; k <= numFunzioni; k++) {
@@ -1304,13 +1336,36 @@ class AmbulanzaTagLib {
         return testoOut
     }// fine del metodo
 
-    private static Aspetto calcolaAspetto(Turno turno) {
+    private static Aspetto calcolaAspetto(
+            Turno turno,
+            TipoTurno tipoTurno,
+            boolean sempreCreabile,
+            boolean militePuoCreareTurnoStandard,
+            boolean militePuoCreareTurnoExtra) {
         Aspetto aspetto
         Date giornoCorrente = Lib.creaDataOggi()
         Date giornoTurno
         int delta
 
-        aspetto = Aspetto.turnovuoto
+        //--admin può sempre creare
+        //--milite dipende dal tipo di turno e dai flag della croce
+        if (sempreCreabile) {
+            aspetto = Aspetto.turnovuoto
+        } else {
+            if (tipoTurno.multiplo) {
+                if (militePuoCreareTurnoExtra) {
+                    aspetto = Aspetto.turnovuoto
+                } else {
+                    aspetto = Aspetto.turnoeffettuato
+                }// fine del blocco if-else
+            } else {
+                if (militePuoCreareTurnoStandard) {
+                    aspetto = Aspetto.turnovuoto
+                } else {
+                    aspetto = Aspetto.turnoeffettuato
+                }// fine del blocco if-else
+            }// fine del blocco if-else
+        }// fine del blocco if-else
 
         if (turno) {
             giornoTurno = turno.giorno
@@ -1493,7 +1548,7 @@ class AmbulanzaTagLib {
 
         testo += Lib.tagCella('Legenda', Aspetto.footerlegenda)
         testo += Lib.tagCella('', Aspetto.turnoeffettuato)
-        testo += Lib.tagCella('Turno già effettuato', Aspetto.footercella)
+        testo += Lib.tagCella('Turno bloccato', Aspetto.footercella)
 //        testo += Lib.tagCella('', Aspetto.turnobloccato)
 //        testo += Lib.tagCella('Turno assegnato bloccato e non più modificabile')
         testo += Lib.tagCella('', Aspetto.turnocritico)
