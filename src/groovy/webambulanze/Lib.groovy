@@ -634,16 +634,16 @@ class Lib {
 
     public static Turno creaTurno(Croce croce, TipoTurno tipoTurno, Date giorno) {
         Turno turno = null
-        Date primoGennaio2013 = Lib.creaData1Gennaio()
+        Date primoGennaio2013 = creaData1Gennaio()
         Date inizio
         Date fine
-        int offSet = Lib.getNumGiorno(giorno) - 1
+        int offSet = getNumGiorno(giorno) - 1
         inizio = primoGennaio2013 + offSet
         fine = primoGennaio2013 + offSet
         String funz
 
-        inizio = Lib.setOra(inizio, tipoTurno.oraInizio)
-        fine = Lib.setOra(fine, tipoTurno.oraFine)
+        inizio = setOra(inizio, tipoTurno.oraInizio)
+        fine = setOra(fine, tipoTurno.oraFine)
         if (tipoTurno.fineGiornoSuccessivo) {
             fine = fine + 1
         }// fine del blocco if
@@ -893,6 +893,36 @@ class Lib {
 
         } catch (Exception unErrore) { // intercetta l'errore
         }// fine del blocco try-catch
+
+        /* valore di ritorno */
+        return giorno
+    }// fine del metodo
+
+    /**
+     * Crea la data del primo gennaio anno indicato.
+     * <p/>
+     *
+     * @param giorno il giorno del mese (1 per il primo)
+     * @param mese il mese dell'anno (1 per gennaio)
+     * @param anno l'anno
+     *
+     * @return la data creata
+     */
+    public static Date creaData1Gennaio(String anno) {
+        /* variabili e costanti locali di lavoro */
+        Date giorno
+        Calendar cal
+
+        cal = Calendar.getInstance()
+        cal.set(Calendar.YEAR, Integer.decode(anno))
+        cal.set(Calendar.MONTH, 0)
+        cal.set(Calendar.DAY_OF_MONTH, 1)
+        cal.set(Calendar.HOUR_OF_DAY, 0)
+        cal.set(Calendar.MINUTE, 0)
+        cal.set(Calendar.SECOND, 0)
+        cal.set(Calendar.MILLISECOND, 0)
+
+        giorno = new Date(cal.getTime().getTime());
 
         /* valore di ritorno */
         return giorno
@@ -1303,5 +1333,148 @@ class Lib {
         // valore di ritorno
         return formattato
     }
+
+    //--controlla se il giorno della settimana è quello richiesto
+    //--i giorni della settimana partono da domenica
+    //--domenica=1
+    public static boolean isGiornoSettimana(Date giorno, int numSettimana) {
+        boolean giornoSettimana = false
+        int settimana = getNumSettimana(giorno)
+
+        if (settimana == numSettimana) {
+            giornoSettimana = true
+        }// fine del blocco if
+
+        return giornoSettimana
+    } // fine del metodo statico
+
+    //--controlla se il giorno è domenica (1)
+    public static boolean isDomenica(Date giorno) {
+        return isGiornoSettimana(giorno, 1)
+    } // fine del metodo statico
+
+    //--controlla se il giorno è lunedi (2)
+    public static boolean isLunedi(Date giorno) {
+        return isGiornoSettimana(giorno, 2)
+    } // fine del metodo statico
+
+    //--controlla se il giorno è martedi (3)
+    public static boolean isMartedi(Date giorno) {
+        return isGiornoSettimana(giorno, 3)
+    } // fine del metodo statico
+
+    //--controlla se il giorno è mercoledi (4)
+    public static boolean isMercoledi(Date giorno) {
+        return isGiornoSettimana(giorno, 4)
+    } // fine del metodo statico
+
+    //--controlla se il giorno è giovedi (5)
+    public static boolean isGiovedi(Date giorno) {
+        return isGiornoSettimana(giorno, 5)
+    } // fine del metodo statico
+
+    //--controlla se il giorno è venerdi (6)
+    public static boolean isVenerdi(Date giorno) {
+        return isGiornoSettimana(giorno, 6)
+    } // fine del metodo statico
+
+    //--controlla se il giorno è sabato (7)
+    public static boolean isSabato(Date giorno) {
+        return isGiornoSettimana(giorno, 7)
+    } // fine del metodo statico
+
+    //--controlla se il giorno è feriale
+    //--si intendono i giorni compresi tra lunedi e venerdi
+    //--lunedì=2 e venerdi=6
+    public static boolean isFeriale(Date giorno) {
+        boolean feriale = false
+        def feriali = [2, 3, 4, 5, 6]
+        int settimana = getNumSettimana(giorno)
+
+        //-- lunedì(2) e sabato(7)
+        if (settimana in feriali) {
+            feriale = true
+        }// fine del blocco if
+
+        return feriale
+    } // fine del metodo statico
+
+    //--controlla se il giorno è feriale
+    //--si intendono i giorni compresi tra lunedi e venerdi
+    //--comunque non festivo
+    public static boolean isFerialeAnno(Date giorno, ArrayList festivi) {
+        boolean feriale = false
+        int progressivo = getNumGiorno(giorno)
+
+        if (isFeriale(giorno) && !(progressivo in festivi)) {
+            feriale = true
+        }// fine del blocco if
+
+        return feriale
+    } // fine del metodo statico
+
+    //--controlla se il giorno è feriale
+    //--si intendono i giorni compresi tra lunedi e venerdi
+    //--comunque non festivo per l'anno indicato
+    public static boolean isFerialeAnno(Date giorno, String anno) {
+        return isFerialeAnno(giorno, Festivi.all(anno))
+    } // fine del metodo statico
+
+    //--controlla se il giorno è festivo
+    //--si intendono i giorni di sabato e domenica
+    //--sabato=7 e domenica=1
+    public static boolean isFestivo(Date giorno) {
+        boolean festivo = false
+        def festivi = [1, 7]
+        int settimana = getNumSettimana(giorno)
+
+        //--sabato(7) e domenica(1)
+        if (settimana in festivi) {
+            festivo = true
+        }// fine del blocco if
+
+        return festivo
+    } // fine del metodo statico
+
+    //--controlla se il giorno è sabato, domenica o comunque festivo
+    public static boolean isFestivoAnno(Date giorno, ArrayList festivi) {
+        boolean festivo = false
+        int progressivo = getNumGiorno(giorno)
+
+        if (isFestivo(giorno) || (progressivo in festivi)) {
+            festivo = true
+        }// fine del blocco if
+
+        return festivo
+    } // fine del metodo statico
+
+    //--controlla se il giorno è sabato, domenica o comunque festivo per l'anno indicato
+    public static boolean isFestivoAnno(Date giorno, String anno) {
+        return isFestivoAnno(giorno, Festivi.all(anno))
+    } // fine del metodo statico
+
+    //--controlla se il giorno è prefestivo
+    //--si intendono i giorni di venerdi e sabato
+    //--venerdi=6 e sabato=7
+    public static boolean isPreFestivo(Date giorno) {
+        return isFestivo(giorno + 1)
+    } // fine del metodo statico
+
+    //--controlla se il giorno è venerdi, sabato o comunque prefestivo
+    public static boolean isPreFestivoAnno(Date giorno, ArrayList festivi) {
+        boolean festivo = false
+        int progressivo = getNumGiorno(giorno) + 1
+
+        if (isPreFestivo(giorno) || (progressivo in festivi)) {
+            festivo = true
+        }// fine del blocco if
+
+        return festivo
+    } // fine del metodo statico
+
+    //--controlla se il giorno è venerdì, sabato o comunque prefestivo per l'anno indicato
+    public static boolean isPreFestivoAnno(Date giorno, String anno) {
+        return isPreFestivoAnno(giorno, Festivi.all(anno))
+    } // fine del metodo statico
 
 } // fine della classe

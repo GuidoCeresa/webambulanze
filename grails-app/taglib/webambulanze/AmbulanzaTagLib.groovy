@@ -1548,7 +1548,7 @@ class AmbulanzaTagLib {
 
         testo += Lib.tagCella('Legenda', Aspetto.footerlegenda)
         testo += Lib.tagCella('', Aspetto.turnoeffettuato)
-        testo += Lib.tagCella('Turno bloccato', Aspetto.footercella)
+        testo += Lib.tagCella('Turno effettuato o non creabile', Aspetto.footercella)
 //        testo += Lib.tagCella('', Aspetto.turnobloccato)
 //        testo += Lib.tagCella('Turno assegnato bloccato e non più modificabile')
         testo += Lib.tagCella('', Aspetto.turnocritico)
@@ -1560,7 +1560,7 @@ class AmbulanzaTagLib {
         testo += Lib.tagCella('', Aspetto.turnoprevisto)
         testo += Lib.tagCella('Turno previsto e non ancora completamente assegnato', Aspetto.footercella)
         testo += Lib.tagCella('', Aspetto.turnovuoto)
-        testo += Lib.tagCella('Turno non previsto', Aspetto.footercella)
+        testo += Lib.tagCella('Turno creabile', Aspetto.footercella)
 
         testo = Lib.tagRiga(testo)
         testo = Lib.tagTable(testo)

@@ -480,6 +480,60 @@
 <g:checkBox name="mostraTabellonePartenza" value="${settingsInstance?.mostraTabellonePartenza}" />
 </div>
 
+<div class="fieldcontain ${hasErrors(bean: settingsInstance, field: 'bloccaSoloFunzioniObbligatorie', 'error')} ">
+	<label for="bloccaSoloFunzioniObbligatorie">
+		<g:message code="settings.bloccaSoloFunzioniObbligatorie.labelform" default="Blocca Solo Funzioni Obbligatorie" />
+		
+	</label>
+	
+
+
+
+
+
+
+
+
+
+<g:checkBox name="bloccaSoloFunzioniObbligatorie" value="${settingsInstance?.bloccaSoloFunzioniObbligatorie}" />
+</div>
+
+<div class="fieldcontain ${hasErrors(bean: settingsInstance, field: 'militePuoCreareTurnoStandard', 'error')} ">
+	<label for="militePuoCreareTurnoStandard">
+		<g:message code="settings.militePuoCreareTurnoStandard.labelform" default="Milite Puo Creare Turno Standard" />
+		
+	</label>
+	
+
+
+
+
+
+
+
+
+
+<g:checkBox name="militePuoCreareTurnoStandard" value="${settingsInstance?.militePuoCreareTurnoStandard}" />
+</div>
+
+<div class="fieldcontain ${hasErrors(bean: settingsInstance, field: 'militePuoCreareTurnoExtra', 'error')} ">
+	<label for="militePuoCreareTurnoExtra">
+		<g:message code="settings.militePuoCreareTurnoExtra.labelform" default="Milite Puo Creare Turno Extra" />
+		
+	</label>
+	
+
+
+
+
+
+
+
+
+
+<g:checkBox name="militePuoCreareTurnoExtra" value="${settingsInstance?.militePuoCreareTurnoExtra}" />
+</div>
+
 <g:if test="${campiExtra}">
     <amb:extraSchedaForm rec="${settingsInstance}" campiExtra="${campiExtra}"></amb:extraSchedaForm>
 </g:if>

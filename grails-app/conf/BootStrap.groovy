@@ -16,9 +16,9 @@ class BootStrap implements Cost {
     static boolean SONO_PROPRIO_SICURO_DI_CANCELLARE_TUTTO = false
 
     //--controllo di funzioni da utilizzare SOLAMENTE in fase di sviluppo
-    private static boolean SVILUPPO_CROCE_ROSSA_FIDENZA = false;
-    private static boolean SVILUPPO_CROCE_ROSSA_PONTE_TARO = false;
-    private static boolean SVILUPPO_PUBBLICA_PIANORO = true;
+    private static boolean SVILUPPO_CROCE_ROSSA_FIDENZA = false
+    private static boolean SVILUPPO_CROCE_ROSSA_PONTE_TARO = false
+    private static boolean SVILUPPO_PUBBLICA_PIANORO = false
 
     //--controllo di funzioni da utilizzare SOLAMENTE in fase di sviluppo
     private static boolean ESISTE_COLLEGAMENTO_INTERNET = true;
@@ -326,6 +326,41 @@ class BootStrap implements Cost {
         //--regolazione di tre nuovi flag dei Settings per le Croci esistenti
         if (installaVersione(53)) {
             addFlagSettingBlocchi()
+        }// fine del blocco if
+
+        //--modifica al flag per controllo creazione nuovi turni Demo
+        if (installaVersione(54)) {
+            fixFlagSettingBlocchiDemo()
+        }// fine del blocco if
+
+        //--modifica al flag per controllo creazione nuovi turni di Fidenza
+        if (installaVersione(55)) {
+            fixFlagSettingBlocchiFidenza()
+        }// fine del blocco if
+
+        //--modifica al flag per controllo creazione nuovi turni di Pontetaro
+        if (installaVersione(56)) {
+            fixFlagSettingBlocchiPontetaro()
+        }// fine del blocco if
+
+        //--creazione nuovi turni anno 2014 per Demo
+        if (installaVersione(57)) {
+            nuoviTurni2014Demo()
+        }// fine del blocco if
+
+        //--creazione nuovi turni anno 2014 per Fidenza
+        if (installaVersione(58)) {
+            nuoviTurni2014Fidenza()
+        }// fine del blocco if
+
+        //--creazione nuovi turni anno 2014 per Pontetaro
+        if (installaVersione(59)) {
+            nuoviTurni2014Pontetaro()
+        }// fine del blocco if
+
+        //--creazione nuovi turni anno 2014 per Pianoro
+        if (installaVersione(60)) {
+            nuoviTurni2014Pianoro()
         }// fine del blocco if
 
         //--creazione dei record utenti per la pubblica castello
@@ -4105,7 +4140,7 @@ class BootStrap implements Cost {
         regolaFlagBlocchi(CROCE_PUBBLICA_CASTELLO, false, false, true)
 
         //--fidenza
-        regolaFlagBlocchi(CROCE_ROSSA_FIDENZA, false, true, true)
+        regolaFlagBlocchi(CROCE_ROSSA_FIDENZA, false, false, true)
 
         //--pontetaro
         regolaFlagBlocchi(CROCE_ROSSA_PONTETARO, false, false, false)
@@ -4116,6 +4151,89 @@ class BootStrap implements Cost {
         newVersione(CROCE_ALGOS, 'Settings', 'Aggiunti tre flag per controllare il blocco dei turni')
     }// fine del metodo
 
+    //--modifica al flag per controllo creazione nuovi turni Demo
+    private static void fixFlagSettingBlocchiDemo() {
+        regolaFlagBlocchi(CROCE_DEMO, false, true, true)
+        newVersione(CROCE_DEMO, 'Settings', 'Modificato flag per controllo creazione nuovi turni')
+    }// fine del metodo
+
+    //--modifica al flag per controllo creazione nuovi turni di Fidenza
+    private static void fixFlagSettingBlocchiFidenza() {
+        regolaFlagBlocchi(CROCE_ROSSA_FIDENZA, false, true, true)
+        newVersione(CROCE_ROSSA_FIDENZA, 'Settings', 'Modificato flag per controllo creazione nuovi turni')
+    }// fine del metodo
+
+    //--modifica al flag per controllo creazione nuovi turni di Pontetaro
+    private static void fixFlagSettingBlocchiPontetaro() {
+        regolaFlagBlocchi(CROCE_ROSSA_PONTETARO, false, true, false)
+        newVersione(CROCE_ROSSA_PONTETARO, 'Settings', 'Modificato flag per controllo creazione nuovi turni')
+    }// fine del metodo
+
+    //--creazione dei turni vuoti per la croce Demo
+    //--li crea SOLO se non esistono già
+    //--logica
+    //--    automedica  mattina -> tutti i giorni
+    //--    automedica  pomeriggio -> tutti i giorni
+    //--    automedica  notte -> venerdi, sabato e prefestivi
+    //--    ambulanza  mattina -> da lunedi a sabato
+    //--    ambulanza  pomeriggio -> da lunedi a sabato
+    //--    ambulanza  notte -> mai
+    //--    extra -> mai
+    private static void nuoviTurniAnnualiDemo(String anno) {
+        Croce croce = Croce.findBySigla(CROCE_DEMO)
+        Date primoGennaio = Lib.creaData1Gennaio(anno)
+        Date giorno
+        TipoTurno autmat = TipoTurno.findByCroceAndSigla(croce, DEMO_TIPO_TURNO_AUTOMEDICA_MATTINO)
+        TipoTurno autpom = TipoTurno.findByCroceAndSigla(croce, DEMO_TIPO_TURNO_AUTOMEDICA_POMERIGGIO)
+        TipoTurno autnotte = TipoTurno.findByCroceAndSigla(croce, DEMO_TIPO_TURNO_AUTOMEDICA_NOTTE)
+        TipoTurno ambmat = TipoTurno.findByCroceAndSigla(croce, DEMO_TIPO_TURNO_AMBULANZA_MATTINO)
+        TipoTurno ambpom = TipoTurno.findByCroceAndSigla(croce, DEMO_TIPO_TURNO_AMBULANZA_POMERIGGIO)
+
+        for (int k = 0; k < 365; k++) {
+            giorno = primoGennaio + k
+            Lib.creaTurno(croce, autmat, giorno)
+            Lib.creaTurno(croce, autpom, giorno)
+            if (Lib.isPreFestivoAnno(giorno, Festivi.all(anno))) {
+                Lib.creaTurno(croce, autnotte, giorno)
+            }// fine del blocco if
+            if (Lib.isFerialeAnno(giorno, Festivi.all(anno))) {
+                Lib.creaTurno(croce, ambmat, giorno)
+                Lib.creaTurno(croce, ambpom, giorno)
+            }// fine del blocco if
+        } // fine del ciclo for
+    }// fine del metodo
+
+    //--creazione nuovi turni anno 2014 per Demo
+    //--li crea SOLO se non esistono già
+    private static void nuoviTurni2014Demo() {
+        nuoviTurniAnnualiDemo('2014')
+        newVersione(CROCE_DEMO, 'Turni', 'Creati turni vuoti 2014')
+    }// fine del metodo
+
+    //--creazione nuovi turni anno 2014 per Fidenza
+    //--li crea SOLO se non esistono già
+    private static void nuoviTurni2014Fidenza() {
+
+    }// fine del metodo
+
+    //--creazione nuovi turni anno 2014 per Pontetaro
+    //--li crea SOLO se non esistono già
+    private static void nuoviTurni2014Pontetaro() {
+
+    }// fine del metodo
+
+    //--creazione nuovi turni anno 2014 per Pianoro
+    //--li crea SOLO se non esistono già
+    private static void nuoviTurni2014Pianoro() {
+//        Croce croce = Croce.findBySigla(CROCE_PUBBLICA_PIANORO)
+//        int primoDicembre = 335
+//
+//        creaTurnoVuotoPianoro(croce, 335)
+//        for (int k = primoDicembre; k <= 365; k++) {
+//            creaTurnoVuotoPianoro(croce, k)
+//        } // fine del ciclo for
+
+    }// fine del metodo
 
     def destroy = {
     }// fine della closure
