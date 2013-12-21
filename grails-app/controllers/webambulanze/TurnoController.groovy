@@ -48,9 +48,9 @@ class TurnoController {
         flash.listaErrori = null
         dataInizio = AmbulanzaTagLib.creaDataOggi()
         dataFine = (dataInizio + delta).toTimestamp()
-        def a = params
-        def user = springSecurityService.principal
-        def currUser = springSecurityService.getCurrentUser()
+
+//        def user = springSecurityService.principal
+//        def currUser = springSecurityService.getCurrentUser()
         render(view: 'tabellone', model: [dataInizio: dataInizio, dataFine: dataFine], params: params)
     }// fine della closure
 
@@ -164,16 +164,6 @@ class TurnoController {
         long turnoId
         Turno turnoInstance = null
 
-        def a = request
-        def b = request.contextPath
-        def c = request.pathInfo
-        def d = request.queryString
-        def e = request.remoteUser
-        def f = request.requestURI
-        def g = request.userPrincipal
-        def user = springSecurityService.principal
-        def currUser = springSecurityService.getCurrentUser()
-
         if (params.turnoId) {
             turnoIdTxt = params.turnoId
             turnoId = Long.decode(turnoIdTxt)
@@ -206,14 +196,6 @@ class TurnoController {
         boolean nuovoTurno = false
         String value
         String testo
-
-        def a = request
-        def b = request.contextPath
-        def c = request.pathInfo
-        def d = request.queryString
-        def e = request.remoteUser
-        def f = request.requestURI
-        def g = request.userPrincipal
 
         if (params.nuovoTurno) {
             value = params.nuovoTurno
@@ -376,7 +358,9 @@ class TurnoController {
                 turnoInstance.errors.rejectValue("version", "default.optimistic.locking.failure",
                         [message(code: 'turno.label', default: 'Turno')] as Object[],
                         "Another user has updated this Turno while you were editing")
-                render(view: 'edit', model: [turnoInstance: turnoInstance], params: params)
+//                render(view: 'edit', model: [turnoInstance: turnoInstance], params: params)
+                flash.errors = 'Non è possibile registrare questo turno'
+                redirect(action: 'tabellone', model: [dataInizio: dataInizio, dataFine: dataFine], params: params)
                 return
             }// fine del blocco if
         }// fine del blocco if
@@ -406,7 +390,9 @@ class TurnoController {
         //--di solito c'è un giro solo, ma andava in errore per valori NULL del campo oreMilite1/2/3/4
         if (!turnoInstance.save(flush: true)) {
             if (!turnoInstance.save(flush: true)) {
-                render(view: 'edit', model: [turnoInstance: turnoInstance], params: params)
+//                render(view: 'edit', model: [turnoInstance: turnoInstance], params: params)
+                flash.errors = 'Non è possibile registrare questo turno'
+                redirect(action: 'tabellone', model: [dataInizio: dataInizio, dataFine: dataFine], params: params)
                 return
             }// fine del blocco if
         }// fine del blocco if
@@ -499,6 +485,7 @@ class TurnoController {
         String oreMilFunz = 'oreMilite' + pos
         int oreMilite = 0
         int durataTurno = 1000 //un numero grande a piacere :-)
+        String durata
 
         if (turno && pos > 0) {
             if (params."${milFunzId}") {
@@ -519,10 +506,15 @@ class TurnoController {
                     if (params."${probFunz}") {
                         durataTurno = Lib.getDurataOre(turno.inizio, turno.fine)
                         if (params."${oreMilFunz}") {
-                            oreMilite = Integer.decode(params."${oreMilFunz}")
+                            durata = params."${oreMilFunz}"
+                            try { // prova ad eseguire il codice
+                                oreMilite = Integer.decode(durata)
+                            } catch (Exception unErrore) { // intercetta l'errore
+                                flash.error =  'Pippoz'
+                                    log.error unErrore
+                            }// fine del blocco try-catch
                         }// fine del blocco if
-
-                        if (oreMilite >= durataTurno) {
+                        if (oreMilite && (oreMilite >= durataTurno)) {
                             assegnata = true
                         }// fine del blocco if
                     } else {

@@ -1330,7 +1330,7 @@ class AmbulanzaTagLib {
             testoCella += "?${tagAnno}=${annoTxt}&${tagGiorno}=${giornoTxt}&${tagTipoTurno}=${tipoTurnoTxt}"
         }// fine del blocco if-else
         testoCella += '">'
-        testoCella += nomeMilite
+        testoCella += "<div>${nomeMilite}</div>"
         testoCella += '</a>'
 
         testoOut += Lib.tagCella(testoCella, aspetto)

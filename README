@@ -73,3 +73,26 @@ che di altre associazioni mescolati
 RISPOSTA
 2) basta non creare il turno (e se c'è cancellarlo) ed il milite non può segnarsi
 5) risolto: hai ragione, avevo bloccato erroneamente anche il nuovo inserimento
+
+RISPOSTA
+1) chiuso
+2) risolto: colore messo in grigio
+3) chiuso
+4) non ancora risolto: me lo sono segnato con priorità media
+5) chiuso
+6) non ancora risolto: me lo sono segnato con priorità media
+7) chiuso
+8) chiuso
+9) risolto
+10) risolto: non puoi mai cancellare un utente;
+    se vuoi che compaia nella combo di login ma non possa accedere cambia il flag accountLocked;
+    se invece non vuoi più farlo vedere nella combo, cambia il flag accountExpired
+11) risolto:
+    errore probabilmente eliminato;
+    non sono sicuro perché dopo la modifica fatico a riprodurlo;
+    rimane l'uso dei numeri interi per la durata del turno
+
+Legenda:
+risolto=ritengo di aver risolto
+chiuso=me ne hai dato conferma
+

@@ -4284,15 +4284,15 @@ class BootStrap implements Cost {
     //--creazione dei turni vuoti per la croce Pianoro
     //--li crea SOLO se non esistono già
     //--logica
-    //--    ambulanza  notte 0-7 -> da lunedi a venerdi
-    //--    ambulanza  mattina 7-14 -> da lunedi a venerdi
-    //--    ambulanza  pomeriggio 14-17 -> da lunedi a venerdi
-    //--    ambulanza  pomeriggio sera 17-20 -> da lunedi a venerdi
-    //--    ambulanza  sera 20-24 -> da lunedi a venerdi
-    //--    ambulanza  notte 0-8 -> sabato e domenica
-    //--    ambulanza  mattina 8-13 -> sabato e domenica
-    //--    ambulanza  pomeriggio 13-19 -> sabato e domenica
-    //--    ambulanza  sera 19-24 -> sabato e domenica
+    //--    ambulanza  notte 0-7 -> feriali da lunedi a venerdi
+    //--    ambulanza  mattina 7-14 -> feriali da lunedi a venerdi
+    //--    ambulanza  pomeriggio 14-17 -> feriali da lunedi a venerdi
+    //--    ambulanza  pomeriggio sera 17-20 -> feriali da lunedi a venerdi
+    //--    ambulanza  sera 20-24 -> feriali da lunedi a venerdi
+    //--    ambulanza  notte 0-8 -> sabato e domenica più festivi dell'anno
+    //--    ambulanza  mattina 8-13 -> sabato e domenica più festivi dell'anno
+    //--    ambulanza  pomeriggio 13-19 -> sabato e domenica più festivi dell'anno
+    //--    ambulanza  sera 19-24 -> sabato e domenica più festivi dell'anno
     private static void nuoviTurniAnnualiPianoro(String anno) {
         Croce croce = Croce.findBySigla(CROCE_PUBBLICA_PIANORO)
         Date primoGennaio = Lib.creaData1Gennaio(anno)
@@ -4310,14 +4310,14 @@ class BootStrap implements Cost {
 
         for (int k = 0; k < 365; k++) {
             giorno = primoGennaio + k
-            if (Lib.isFeriale(giorno)) {
+            if (Lib.isFerialeAnno(giorno, Festivi.all(anno))) {
                 Lib.creaTurno(croce, msanotte, giorno)
                 Lib.creaTurno(croce, msamat, giorno)
                 Lib.creaTurno(croce, msapom, giorno)
                 Lib.creaTurno(croce, msapomsera, giorno)
                 Lib.creaTurno(croce, msasera, giorno)
             }// fine del blocco if
-            if (Lib.isFestivo(giorno)) {
+            if (Lib.isFestivoAnno(giorno, Festivi.all(anno))) {
                 Lib.creaTurno(croce, msa2notte, giorno)
                 Lib.creaTurno(croce, msa2mat, giorno)
                 Lib.creaTurno(croce, msa2pom, giorno)
