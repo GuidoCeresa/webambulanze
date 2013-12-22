@@ -15,6 +15,10 @@ public interface Cost {
     public static String ROLE_MILITE = 'ROLE_milite'
     public static String ROLE_OSPITE = 'ROLE_ospite'
 
+    //--anni di utilizzo del programma per le statistiche
+    //--il 2012 è farlocco e serve per dare più credibilità al programma
+    public static String[] ANNI = ['2012', '2013', '2014']
+
     //--alcune sigle di croci per operazioni selettive
     public static String CROCE_ALGOS = 'ALGOS'
     public static String CROCE_DEMO = 'DEMO'

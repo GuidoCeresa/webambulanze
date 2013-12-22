@@ -5,59 +5,22 @@ class MiliteturnoService {
     // utilizzo di un service con la businessLogic per l'elaborazione dei dati
     // il service viene iniettato automaticamente
     def croceService
-
-    // utilizzo di un service con la businessLogic per l'elaborazione dei dati
-    // il service viene iniettato automaticamente
     def funzioneService
-
-    // utilizzo di un service con la businessLogic per l'elaborazione dei dati
-    // il service viene iniettato automaticamente
     def logoService
 
-    //--cancella tutti i records di Militeturno (dell'anno corrente)
-    //--ricalcola tutti i turni
-    //--crea i records di MiliteTurno
-    //--cancella tutti i records di Militestatistiche (dell'anno corrente)
-    //--crea i records di Militestatistiche
-    //--opera sulla croce indicata
-    def calcola(Croce croce) {
-        Date oggi = Lib.creaDataOggi()
-        Date primoGennaio = Lib.creaData1Gennaio()
-
-        cancellaMiliteTurno(croce, primoGennaio)
-        ricalcolaMiliteTurno(croce, primoGennaio, oggi)
-        aggiornaMiliti(croce, primoGennaio)
-        cancellaMiliteStatistiche(croce)
-        ricalcolaMiliteStatistiche(croce)
-        logoService.setInfo(croce, Evento.statistiche)
-    }// fine del metodo
-
-    //--cancella tutti i records di Militeturno (dell'anno corrente)
-    //--ricalcola tutti i turni
-    //--crea i records di MiliteTurno
-    //--cancella tutti i records di Militestatistiche (dell'anno corrente)
-    //--crea i records di Militestatistiche
-    //--chiamato da CalcolaJob, opera su tutte le croci (col flag abilitato)
-    def calcola() {
-        Croce croce
-        def listaCroci = Croce.findAll()
-
-        if (listaCroci) {
-            listaCroci?.each {
-                croce = (Croce) it
-                if (croceService.isCalcoloNotturnoStatistiche(croce)) {
-                    calcola(croce)
-                }// fine del blocco if
-            } // fine del ciclo each
-        }// fine del blocco if
-    }// fine del metodo
-
-    //--cancella tutti i records di Militeturno (dell'anno corrente)
-    //--ricalcola tutti i turni
-    //--crea i records di MiliteTurno
-    //--cancella tutti i records di Militestatistiche (dell'anno corrente)
-    //--crea i records di Militestatistiche
-    //--opera sulla croce della sessione corrente (se ha il flag abilitato)
+    /**
+     * Elabora le statistiche dei turni effettuati da ciascun Milite di una croce
+     *
+     * Chiamato da MilitestatisticheController
+     * Opera sulla croce della sessione corrente
+     * Opera su tutti gli anni previsti
+     *
+     * Cancella tutti i records di Militeturno
+     * Ricalcola tutti i turni
+     * Crea i records di Militeturno
+     * Cancella tutti i records di Militestatistiche
+     * Crea i records di Militestatistiche
+     */
     def calcola(request) {
         Croce croce = croceService.getCroce(request)
 
@@ -66,24 +29,171 @@ class MiliteturnoService {
         }// fine del blocco if
     }// fine del metodo
 
-    //--cancella tutti i records di Militeturno (dell'anno corrente)
-    def cancellaMiliteTurno(Croce croce, Date primoGennaio) {
-        Militeturno.findAllByCroceAndGiornoGreaterThan(croce, primoGennaio - 1)*.delete(flush: true)
+    /**
+     * Elabora le statistiche dei turni effettuati da ciascun Milite di una croce
+     *
+     * Opera sulla croce della sessione corrente
+     * Opera su tutti gli anni previsti
+     *
+     * Cancella tutti i records di Militeturno
+     * Ricalcola tutti i turni
+     * Crea i records di Militeturno
+     * Cancella tutti i records di Militestatistiche
+     * Crea i records di Militestatistiche
+     *
+     * @param croce selezionata
+     */
+    public void calcola(Croce croce) {
+        String[] anni = Cost.ANNI
+
+        anni?.each {
+            calcola(croce, it)
+        } // fine del ciclo each
     }// fine del metodo
 
-    //--ricalcola tutti i turni e crea i records
-    def ricalcolaMiliteTurno(Croce croce, Date primoGennaio, Date oggi) {
-        Militeturno militeturno
+    /**
+     * Elabora le statistiche dei turni effettuati da ciascun Milite di una croce
+     *
+     * Opera sulla croce della sessione corrente
+     * Opera sui records dell'anno corrente
+     *
+     * Cancella tutti i records di Militeturno
+     * Ricalcola tutti i turni
+     * Crea i records di Militeturno
+     * Cancella tutti i records di Militestatistiche
+     * Crea i records di Militestatistiche
+     *
+     * @param croce selezionata
+     * @param anno selezionato
+     */
+    public void calcola(Croce croce, String anno) {
+        Date inizio = Lib.creaData1Gennaio(anno)
+        Date fine = Lib.creaData31Dicembre(anno)
+
+        calcola(croce, anno, inizio, fine)
+    }// fine del metodo
+
+    /**
+     * Elabora le statistiche dei turni effettuati da ciascun Milite
+     *
+     * Chiamato da CalcolaJob
+     * Opera su tutte le croci che hanno il flag abilitato
+     * Opera sui records dell'anno corrente
+     *
+     * Cancella tutti i records di Militeturno
+     * Ricalcola tutti i turni
+     * Crea i records di Militeturno
+     * Cancella tutti i records di Militestatistiche
+     * Crea i records di Militestatistiche
+     */
+    public void calcola() {
+        Croce croce
+        ArrayList listaCroci = Croce.findAll()
+
+        listaCroci?.each {
+            croce = (Croce) it
+            if (croceService.isCalcoloNotturnoStatistiche(croce)) {
+                calcolaCorrente(croce)
+            }// fine del blocco if
+        } // fine del ciclo each
+    }// fine del metodo
+
+    /**
+     * Elabora le statistiche dei turni effettuati da ciascun Milite di una croce
+     *
+     * Opera sui records dell'anno corrente
+     *
+     * Cancella tutti i records di Militeturno
+     * Ricalcola tutti i turni
+     * Crea i records di Militeturno
+     * Cancella tutti i records di Militestatistiche
+     * Crea i records di Militestatistiche
+     *
+     * @param croce selezionata
+     */
+    public void calcolaCorrente(Croce croce) {
+        Date inizio = Lib.creaData1Gennaio()
+        Date fine = Lib.creaDataOggi()
+        String anno = Lib.getAnno(inizio)
+
+        calcola(croce, anno, inizio, fine)
+        logoService.setInfo(croce, Evento.statistiche)
+    }// fine del metodo
+
+    /**
+     * Elabora le statistiche dei turni effettuati da ciascun Milite di una croce nel periodo
+     *
+     * Cancella tutti i records di Militeturno
+     * Ricalcola tutti i turni
+     * Crea i records di Militeturno
+     * Cancella tutti i records di Militestatistiche
+     * Crea i records di Militestatistiche
+     *
+     * @param croce selezionata
+     * @param anno selezionato
+     * @param inizio del periodo da considerare - di solito il 1° gennaio
+     * @param fine del periodo da considerare:
+     *      la data corrente per l'anno in corso
+     *      il 31 dicembre per gli anni passati
+     */
+    public void calcola(Croce croce, String anno, Date inizio, Date fine) {
+        //--Opera per un periodo (intervallo di tempo)
+        cancellaMiliteTurno(croce, inizio, fine)
+        ricalcolaMiliteTurno(croce, inizio, fine)
+        aggiornaMiliti(croce, inizio, fine)
+
+        //--Opera per un anno intero
+        cancellaMiliteStatistiche(croce, anno)
+        ricalcolaMiliteStatistiche(croce, anno, inizio, fine)
+    }// fine del metodo
+
+    /**
+     * Cancella tutti i records di Militeturno per la croce selezionata e per il periodo
+     * Opera per un periodo (intervallo di tempo)
+     *
+     * @param croce selezionata
+     * @param inizio del periodo da considerare - di solito il 1° gennaio
+     * @param fine del periodo da considerare:
+     *      la data corrente per l'anno in corso
+     *      il 31 dicmbre per gli anni passati
+     */
+    private static void cancellaMiliteTurno(Croce croce, Date inizio, Date fine) {
+//        Militeturno.findAllByCroceAndGiornoBetween(croce, inizio, fine)*.delete(flush: true)
+        def lista = Militeturno.findAllByCroceAndGiornoBetween(croce, inizio, fine)
+
+        lista?.each {
+            it.delete()
+        } // fine del ciclo each
+    }// fine del metodo
+
+    /**
+     * Ricalcola tutti i turni effettuati dai Militi della croce nel periodo
+     * Crea i records di Militeturno
+     * Opera per un periodo (intervallo di tempo)
+     *
+     * @param croce selezionata
+     * @param inizio del periodo da considerare - di solito il 1° gennaio
+     * @param fine del periodo da considerare:
+     *      la data corrente per l'anno in corso
+     *      il 31 dicmbre per gli anni passati
+     */
+    private static void ricalcolaMiliteTurno(Croce croce, Date inizio, Date fine) {
+        ArrayList listaTurni
+        ArrayList listaTurni1
+        ArrayList listaTurni2
+        ArrayList listaTurni3
+        ArrayList listaTurni4
         Milite milite
-        HashMap mappa
         Turno turno
         Date giorno
         Funzione funzione
         String dettaglio
-        String nomeMilite
-        String nomeOreMilite
         int ore
-        def listaTurni = Turno.findAllByCroceAndGiornoBetween(croce, primoGennaio, oggi)
+        listaTurni1 = Turno.findAllByCroceAndGiornoBetweenAndMiliteFunzione1IsNotNull(croce, inizio, fine)
+        listaTurni2 = Turno.findAllByCroceAndGiornoBetweenAndMiliteFunzione2IsNotNull(croce, inizio, fine)
+        listaTurni3 = Turno.findAllByCroceAndGiornoBetweenAndMiliteFunzione3IsNotNull(croce, inizio, fine)
+        listaTurni4 = Turno.findAllByCroceAndGiornoBetweenAndMiliteFunzione4IsNotNull(croce, inizio, fine)
+        listaTurni = listaTurni1 + listaTurni2 + listaTurni3 + listaTurni4
 
         listaTurni?.each {
             turno = (Turno) it
@@ -152,12 +262,21 @@ class MiliteturnoService {
                 dettaglio += ', ' + turno.militeFunzione3.toString()
             }// fine del blocco if
             registra(croce, milite, giorno, turno, funzione, ore, dettaglio)
-
         } // fine del ciclo each
     }// fine del metodo
 
-    def registra(Croce croce, Milite milite, Date giorno, Turno turno, Funzione funzione, int ore, String dettaglio) {
-        Militeturno.findOrCreateByCroceAndMiliteAndGiornoAndTurnoAndFunzioneAndOreAndDettaglio(
+    /**
+     * Crea il singolo record di Militeturno
+     */
+    private static Militeturno registra(Croce croce,
+                                        Milite milite,
+                                        Date giorno,
+                                        Turno turno,
+                                        Funzione funzione,
+                                        int ore,
+                                        String dettaglio) {
+        Militeturno militeturno
+        militeturno = Militeturno.findOrCreateByCroceAndMiliteAndGiornoAndTurnoAndFunzioneAndOreAndDettaglio(
                 croce,
                 milite,
                 giorno,
@@ -165,12 +284,24 @@ class MiliteturnoService {
                 funzione,
                 ore,
                 dettaglio).save(flush: true)
+
+        return militeturno
     }// fine del metodo
 
-    //--aggiorna i records dei Militi
-    //--recupera per ogni milite tutti i records di Militeturno
-    //--aggiorna i valori di ore e turni
-    def aggiornaMiliti(Croce croce, Date primoGennaio) {
+    /**
+     * Aggiorna i records dei Militi della croce nel periodo
+     * Opera per un periodo (intervallo di tempo)
+     *
+     * Recupera per ogni milite tutti i records di Militeturno
+     * Aggiorna i valori di ore e turni
+     *
+     * @param croce selezionata
+     * @param inizio del periodo da considerare - di solito il 1° gennaio
+     * @param fine del periodo da considerare:
+     *      la data corrente per l'anno in corso
+     *      il 31 dicmbre per gli anni passati
+     */
+    private static void aggiornaMiliti(Croce croce, Date inizio, Date fine) {
         def listaMiliti = null
         Milite milite
         def listaTurni
@@ -186,7 +317,7 @@ class MiliteturnoService {
             milite = (Milite) it
             contTurni = 0
             contOre = 0
-            listaTurni = Militeturno.findAllByCroceAndMiliteAndGiornoGreaterThan(croce, milite, primoGennaio)
+            listaTurni = Militeturno.findAllByCroceAndMiliteAndGiornoBetween(croce, milite, inizio, fine)
             listaTurni?.each {
                 militeTurno = (Militeturno) it
                 contTurni++
@@ -196,30 +327,48 @@ class MiliteturnoService {
             milite.oreAnno = contOre
             milite.save(flush: true)
         } // fine del ciclo each
-
     }// fine del metodo
 
-    //--cancella tutti i records di Militestatistiche (dell'anno corrente)
-    def cancellaMiliteStatistiche(Croce croce) {
-        def lista = Militestatistiche.findAllByCroce(croce)
+    /**
+     * Cancella tutti i records di Militestatistiche per la croce selezionata e per l'anno
+     * Opera per un anno intero
+     *
+     * @param croce selezionata
+     * @param anno selezionato
+     */
+    private static void cancellaMiliteStatistiche(Croce croce, String anno) {
+//        Militestatistiche.findAllByCroceAndAnno(croce, anno)*.delete(flush: true)
+        def lista = Militestatistiche.findAllByCroceAndAnno(croce, anno)
 
         lista?.each {
             it.delete()
         } // fine del ciclo each
     }// fine del metodo
 
-    //--crea i records di Militestatistiche (1 per Milite) in base a quelli di MiliteTurno
-    //--controlla la frequenza (2 al mese) e mette in verde od in rosso il numero di turni
-    def ricalcolaMiliteStatistiche(Croce croce) {
-        Militeturno militeturno
+    /**
+     * Ricalcola le statistiche dei Militi di una croce per l'anno
+     * Opera per un anno intero
+     *
+     * Crea i records di Militestatistiche (1 per Milite) in base a quelli di Militeturno
+     * Controlla la frequenza (2 al mese) e mette in verde od in rosso il numero di turni
+     *
+     * @param croce selezionata
+     * @param anno selezionato
+     * @param inizio del periodo da considerare - di solito il 1° gennaio
+     * @param fine del periodo da considerare:
+     *      la data corrente per l'anno in corso
+     *      il 31 dicmbre per gli anni passati
+     */
+    private void ricalcolaMiliteStatistiche(Croce croce, String anno, Date inizio, Date fine) {
         Militestatistiche militestatistiche
         Milite milite
-        HashMap mappa
-        Turno turno
-        Date giorno
+        Date ultimoTurno = Lib.creaData1Gennaio(anno)
+        Date dataCorrente = new Date()
+        int delta = 0
+        int numUltimoTurno
+        int numDataCorrente
         Funzione funzione
         String siglaFunzione
-        String nickMilite
         int turni
         int ore
         int oreFunz
@@ -228,13 +377,18 @@ class MiliteturnoService {
         LinkedHashMap mappaSiglaFunzioni = funzioneService.mappaSiglaFunzioni(croce)
         String nome
         int cont
+        int numAnnoCorrente = Integer.decode(Lib.getAnno(dataCorrente))
+        int numAnnoSelezionato = Integer.decode(anno)
+        boolean annoCorrente = (numAnnoSelezionato == numAnnoCorrente)
 
         listaMiliti?.each {
             milite = (Milite) it
+            delta = 0
             turni = 0
             ore = 0
             oreFunz = 0
-            listaMiliteTurni = Militeturno.findAllByCroceAndMilite(croce, milite)
+            listaMiliteTurni = Militeturno.findAllByCroceAndMiliteAndGiornoBetween(croce, milite, inizio, fine, [sort: 'giorno', order: 'asc'])
+
             mappaSiglaFunzioni?.each {
                 it.value = 0
             } // fine del ciclo each
@@ -248,11 +402,24 @@ class MiliteturnoService {
                     oreFunz = it.ore + (int) mappaSiglaFunzioni.get(siglaFunzione)
                     mappaSiglaFunzioni.put(siglaFunzione, oreFunz)
                 }// fine del blocco if
+                if (it.giorno < dataCorrente) {
+                    ultimoTurno = it.giorno
+                }// fine del blocco if
             } // fine del ciclo each
+
+            //--controllo delle date
+            if (annoCorrente) {
+                numDataCorrente = Lib.getNumGiornoAssoluto(dataCorrente)
+                numUltimoTurno = Lib.getNumGiornoAssoluto(ultimoTurno)
+                delta = (numDataCorrente - numUltimoTurno)
+            }// fine del blocco if
 
             militestatistiche = new Militestatistiche()
             militestatistiche.croce = croce
+            militestatistiche.anno = anno
             militestatistiche.milite = milite
+            militestatistiche.ultimo = ultimoTurno
+            militestatistiche.delta = delta
             militestatistiche.oreExtra = milite.oreExtra
             militestatistiche.status = turni < Lib.turniNecessari(milite.oreExtra) ? Cost.STATUS_ROSSO : Cost.STATUS_VERDE
             militestatistiche.turni = turni
@@ -268,7 +435,6 @@ class MiliteturnoService {
             } // fine del ciclo each
             militestatistiche.save(flush: true)
         } // fine del ciclo each
-
     }// fine del metodo
 
     //--mappa (vuota) per ogni militi con i campi necessari

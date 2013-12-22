@@ -39,7 +39,6 @@
 </div>
 
 <div id="list-settings" class="content scaffold-list" role="main">
-    <h1><g:message code="settings.list.label" default="Elenco settings"/></h1>
     <g:if test="${flash.message}">
         <div class="message" role="status">${flash.message}</div>
     </g:if>
@@ -53,11 +52,19 @@
     <g:if test="${flash.listaErrori}">
         <ul><g:each in="${flash.listaErrori}" var="errore"><li class="errors"><div>${errore}</div></li></g:each></ul>
     </g:if>
+
+    <g:if test="${titoloLista}">
+        <h1>${titoloLista}</h1>
+    </g:if>
+    <g:else>
+        <h1><g:message code="settings.list.label" default="Elenco settings"/></h1>
+    </g:else>
+
     <table>
         <thead>
-        <amb:titoliLista campiLista="${campiLista}"></amb:titoliLista>
+        <amb:titoliLista campiLista="${campiLista}"> </amb:titoliLista>
         <g:if test="${campiExtra}">
-            <amb:titoliExtraLista campiExtra="${campiExtra}"></amb:titoliExtraLista>
+            <amb:titoliExtraLista campiExtra="${campiExtra}"> </amb:titoliExtraLista>
         </g:if>
         </thead>
         <tbody>

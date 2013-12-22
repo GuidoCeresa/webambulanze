@@ -923,6 +923,30 @@ class Lib {
     }// fine del metodo
 
     /**
+     * Crea la data dell'ultimo dell'anno indicato.
+     * @return 31 dicembre dell'anno indicato
+     */
+    public static Date creaData31Dicembre(String anno) {
+        /* variabili e costanti locali di lavoro */
+        Date trentunDicembre
+        Calendar cal
+
+        cal = Calendar.getInstance()
+        cal.set(Calendar.YEAR, Integer.decode(anno))
+        cal.set(Calendar.MONTH, 11)
+        cal.set(Calendar.DAY_OF_MONTH, 31)
+        cal.set(Calendar.HOUR_OF_DAY, 0)
+        cal.set(Calendar.MINUTE, 0)
+        cal.set(Calendar.SECOND, 0)
+        cal.set(Calendar.MILLISECOND, 0)
+
+        trentunDicembre = new Date(cal.getTime().getTime());
+
+        /* valore di ritorno */
+        return trentunDicembre
+    }// fine del metodo
+
+    /**
      * Crea la data del primo gennaio del giorno indicato.
      * @return 1° gennaio dell'anno a cui appartiene il giorno indicato
      */

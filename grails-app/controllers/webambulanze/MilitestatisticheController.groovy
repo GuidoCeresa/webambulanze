@@ -11,34 +11,47 @@
 package webambulanze
 
 import grails.plugins.springsecurity.Secured
+import org.hibernate.FlushMode
+import org.hibernate.SessionFactory
+import org.hibernate.classic.Session
 import org.springframework.dao.DataIntegrityViolationException
+import org.springframework.orm.hibernate3.SessionFactoryUtils
 
 @Secured([Cost.ROLE_MILITE])
 class MilitestatisticheController {
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
+    private static String PREFIX = 'anno'
 
     // utilizzo di un service con la businessLogic per l'elaborazione dei dati
     // il service viene iniettato automaticamente
     def militeService
-
-    // utilizzo di un service con la businessLogic per l'elaborazione dei dati
-    // il service viene iniettato automaticamente
     def funzioneService
-
-    // utilizzo di un service con la businessLogic per l'elaborazione dei dati
-    // il service viene iniettato automaticamente
     def militeturnoService
-
-    // utilizzo di un service con la businessLogic per l'elaborazione dei dati
-    // il service viene iniettato automaticamente
     def croceService
-
-    // utilizzo di un service con la businessLogic per l'elaborazione dei dati
-    // il service viene iniettato automaticamente
     def utenteService
 
     def index() {
+        redirect(action: 'list', params: params)
+    } // fine del metodo
+
+    def anno2012() {
+        params.anno = '2012'
+        redirect(action: 'list', params: params)
+    } // fine del metodo
+
+    def anno2013() {
+        params.anno = '2013'
+        redirect(action: 'list', params: params)
+    } // fine del metodo
+
+    def anno2014() {
+        params.anno = '2014'
+        redirect(action: 'list', params: params)
+    } // fine del metodo
+
+    def anno2015() {
+        params.anno = '2015'
         redirect(action: 'list', params: params)
     } // fine del metodo
 
@@ -46,17 +59,36 @@ class MilitestatisticheController {
         def lista = null
         Croce croce = croceService.getCroce(request)
         Milite milite
+        ArrayList menuExtra
+        String anno = '2013'
         HashMap mappa = new HashMap()
+        String titoloLista = "Turni effettuati dai militi nell'anno 2013"
         mappa.put('titolo', 'nomignolo')
         mappa.put('campo', 'database')
+
+        //--selezione dei menu extra
+        //--solo azione e di default controller=questo; classe e titolo vengono uguali
+        //--mappa con [cont:'controller', action:'metodo', icon:'iconaImmagine', title:'titoloVisibile']
+        menuExtra = new ArrayList()
+        Cost.ANNI?.each {
+            menuExtra.add(PREFIX + it)
+        } // fine del ciclo each
+
+        // fine della definizione
+
         def campiLista = [[:],
                 'milite',
+                'ultimo',
+                'delta',
                 'status',
                 'turni',
                 'ore',
                 'oreExtra']
         def campiExtra
 
+        if (params.anno) {
+            anno = params.anno
+        }// fine del blocco if
         if (params.order) {
             if (params.order == 'asc') {
                 params.order = 'desc'
@@ -70,21 +102,26 @@ class MilitestatisticheController {
             params.sort = 'milite.cognome'
         }// fine del blocco if
 
+        //--modifica del titolo in funzione dell'anno
+        if (anno) {
+            titoloLista = "Turni effettuati dai militi nell'anno ${anno}"
+        }// fine del blocco if
+
         if (croce) {
             params.siglaCroce = croce.sigla
             if (params.siglaCroce.equals(Cost.CROCE_ALGOS)) {
-                lista = Militestatistiche.findAll("from Militestatistiche order by croce_id,milite_id")
+                lista = Militestatistiche.findAll("from Militestatistiche where anno=2013 order by croce_id,milite_id")
                 campiLista = ['id', 'croce'] + campiLista
             } else {
                 if (!params.sort) {
                     params.sort = 'milite'
                 }// fine del blocco if-else
                 if (militeService.isLoggatoAdminOrMore()) {
-                    lista = Militestatistiche.findAllByCroce(croce, params)
+                    lista = Militestatistiche.findAllByCroceAndAnno(croce, anno, params)
                 } else {
                     milite = militeService.militeLoggato
                     if (milite) {
-                        lista = Militestatistiche.findByMilite(milite)
+                        lista = Militestatistiche.findByMiliteAndAnno(milite, anno)
                     }// fine del blocco if
                 }// fine del blocco if-else
                 campiExtra = funzioneService.campiExtraPerCroce(croce)
@@ -103,7 +140,14 @@ class MilitestatisticheController {
         //--elimina il primo elemento della lista che serviva solo per evitare che fosse una lista di stringhe
         campiLista.remove([:])
 
-        render(view: 'list', model: [militestatisticheInstanceList: lista, militestatisticheInstanceTotal: 0, campiLista: campiLista, campiExtra: null], params: params)
+        render(view: 'list', model: [
+                militestatisticheInstanceList: lista,
+                militestatisticheInstanceTotal: 0,
+                menuExtra: menuExtra,
+                titoloLista: titoloLista,
+                campiLista: campiLista,
+                campiExtra: null],
+                params: params)
     } // fine del metodo
 
     def calcola() {

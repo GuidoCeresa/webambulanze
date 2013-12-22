@@ -30,6 +30,9 @@
             <g:message code="militestatistiche.new.label"
                        default="Nuovo militestatistiche"/>
         </g:link></li>
+        <g:if test="${menuExtra}">
+            <amb:menuExtra menuExtra="${menuExtra}"> </amb:menuExtra>
+        </g:if>
         <sec:ifNotLoggedIn>
             <li><g:link class="login" controller="login">Login</g:link></li>
         </sec:ifNotLoggedIn>
@@ -40,7 +43,6 @@
 </div>
 
 <div id="list-militestatistiche" class="content scaffold-list" role="main">
-    <h1><g:message code="militestatistiche.list.label" default="Elenco militestatistiche"/></h1>
     <g:if test="${flash.message}">
         <div class="message" role="status">${flash.message}</div>
     </g:if>
@@ -53,6 +55,14 @@
     <g:if test="${flash.listaErrori}">
         <ul><g:each in="${flash.listaErrori}" var="errore"><li class="errors"><div>${errore}</div></li></g:each></ul>
     </g:if>
+
+    <g:if test="${titoloLista}">
+        <h1>${titoloLista}</h1>
+    </g:if>
+    <g:else>
+        <h1><g:message code="militestatistiche.list.label" default="Elenco militestatistiche"/></h1>
+    </g:else>
+
     <table>
         <thead>
         <amb:titoliLista campiLista="${campiLista}"></amb:titoliLista>

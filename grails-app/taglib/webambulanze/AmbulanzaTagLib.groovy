@@ -384,8 +384,89 @@ class AmbulanzaTagLib {
         return testo
     }// fine del metodo
 
-    //--disegna i menu aggiuntivi (oltre a quelli standard del GPS tipico)
+    //--disegna i menu extra aggiuntivi a quelli standard dei templates
+    //--stringa solo azione e di default controller=questo; classe e titolo vengono uguali
+    //--mappa con [cont:'controller', action:'metodo', icon:'iconaImmagine', title:'titoloVisibile']
     def menuExtra = { args ->
+        String testoOut = ''
+        ArrayList lista = null
+        def elementoLista
+        String app = 'webambulanze'
+        String contQuesto
+        String cont
+        String action
+        String icon
+        String title
+
+        if (args.menuExtra) {
+            lista = args.menuExtra
+        }// fine del blocco if
+        if (params.controller) {
+            contQuesto = params.controller
+        }// fine del blocco if
+
+        lista?.each {
+            elementoLista = it
+            action = ''
+            if (elementoLista instanceof String) {
+                if (elementoLista) {
+                    cont = contQuesto
+                    action = elementoLista
+                    icon = action
+                    title = action
+//                    title = LibTesto.primaMaiuscola(title)
+                }// fine del blocco if
+            } else {
+                if (elementoLista instanceof Map && elementoLista.action) {
+                    cont = contQuesto
+                    if (elementoLista.cont) {
+                        cont = elementoLista.cont
+                    }// fine del blocco if
+                    action = ''
+                    if (elementoLista.action) {
+                        action = elementoLista.action
+                    }// fine del blocco if
+                    icon = action
+                    if (elementoLista.icon) {
+                        icon = elementoLista.icon
+                    }// fine del blocco if
+                    title = action
+//                    title = LibTesto.primaMaiuscola(title)
+                    if (elementoLista.title) {
+                        title = elementoLista.title
+                    }// fine del blocco if
+                } else { // emergency error
+                    cont = contQuesto
+                    action = 'list'
+                    icon = action
+                    title = 'error'
+                }// fine del blocco if-else
+            }// fine del blocco if-else
+            if (action) {
+                testoOut += getRigaMenu(app, cont, action, icon, title)
+            }// fine del blocco if
+        } // fine del ciclo each
+
+        out << testoOut
+    }// fine della closure
+
+    String getRigaMenu(app, cont, action, icon, title) {
+        String testoOut = ''
+
+        testoOut += "<li>"
+        testoOut += "<a "
+        testoOut += "href=\"/${app}/${cont}/${action}\" "
+        testoOut += "class=\"${action}\""
+        testoOut += ">"
+        testoOut += title
+        testoOut += "</a>"
+        testoOut += "</li>"
+
+       return testoOut
+    }// fine della closure
+
+    //--disegna i menu aggiuntivi (oltre a quelli standard del GPS tipico)
+    def menuExtraOld = { args ->
         String testoOut = ''
         def menuExtra
         String className
@@ -2410,7 +2491,7 @@ class AmbulanzaTagLib {
 
     private static boolean esisteUnTurnoNellaUltimaRiga(TipoTurno tipoTurno, Date inizio, Date fine, int riga) {
         boolean esiste = false
-        LinkedHashMap<Date, Turno> mappaTurniDiUnTipo = this.creaMappaTurniDiUnTipo(tipoTurno, inizio, fine, riga)
+        LinkedHashMap<Date, Turno> mappaTurniDiUnTipo = creaMappaTurniDiUnTipo(tipoTurno, inizio, fine, riga)
 
         mappaTurniDiUnTipo?.each {
             if (it.value) {

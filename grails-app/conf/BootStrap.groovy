@@ -28,7 +28,7 @@ class BootStrap implements Cost {
     private static int numUtentiRossaPonteTaro = 0
     private static int numUtentiPubblicaPianoro = 0
 
-    //--variabili temporaneee per passare i riferimenti da una tavola all'altra
+    //--variabili temporanee per passare i riferimenti da una tavola all'altra
     private static ArrayList<Funzione> funzDemo = []
     private static ArrayList<Funzione> funzOrdinarioPAVT = []
     private static ArrayList<Funzione> funz118PAVT = []
@@ -366,6 +366,10 @@ class BootStrap implements Cost {
         //--fix tipoturno di Pontetaro
         if (installaVersione(61)) {
             fixTipoturnoPontetaro()
+        }// fine del blocco if
+
+        if (installaVersione(62)) {
+            creaGapsCastello()
         }// fine del blocco if
 
         //--creazione dei record utenti per la pubblica castello
@@ -4369,6 +4373,105 @@ class BootStrap implements Cost {
                 tipoTurnoDoppio.multiplo = false
                 tipoTurnoDoppio.save(flush: true)
                 newVersione(CROCE_ROSSA_PONTETARO, 'Tipoturno', 'Due tipiturni ordinari non multipli')
+            }// fine del blocco if
+        }// fine del blocco if
+    }// fine del metodo
+
+    //--creazione nuova croce
+    private void creaGapsCastello() {
+        creazioneGapsCastello()
+        configurazioneGapsCastello()
+        securitySetupGapsCastello()
+        funzioniGapsCastello()
+        tipiDiTurnoGapsCastello()
+        militiGapsCastello()
+        turni2014GapsCastello()
+//        newVersione(CROCE_PUBBLICA_PIANORO, 'Creazione croce', 'Funzioni, tipiTurni, militi, utenti.')
+    }// fine del metodo
+
+    //--GAPS Castel San Giovanni
+    //--creazione inziale della croce
+    //--controlla SEMPRE
+    //--modifica le proprietà coi valori di default se sono stati svuotati
+    private static void creazioneGapsCastello() {
+        Croce croce = Croce.findBySigla('GAPS')
+
+        if (!croce) {
+            croce = new Croce(sigla: 'GAPS')
+        }// fine del blocco if
+
+        if (croce) {
+            if (!croce.organizzazione) {
+                croce.organizzazione = Organizzazione.nessuna
+            }// fine del blocco if
+            if (!croce.descrizione) {
+                croce.descrizione = 'Gruppo Accoglienza Pronto Soccorso'
+            }// fine del blocco if
+            if (!croce.presidente) {
+                croce.presidente = 'Laura Groppi'
+            }// fine del blocco if
+            if (!croce.riferimento) {
+                croce.riferimento = 'Guido Ceresa'
+            }// fine del blocco if
+            if (!croce.indirizzo) {
+                croce.indirizzo = 'Via del Lavoro 15 - 40065 Pianoro (BO)'
+            }// fine del blocco if
+            if (!croce.telefono) {
+                croce.telefono = '051 774540'
+            }// fine del blocco if
+            if (!croce.email) {
+                croce.email = 'presidente@pubblicapianoro.it'
+            }// fine del blocco if
+            if (!croce.custode) {
+                croce.custode = 'Guido Ceresa'
+            }// fine del blocco if
+            if (!croce.amministratori) {
+                croce.amministratori = 'Guido Ceresa'
+            }// fine del blocco if
+            if (!croce.note) {
+                croce.note = ''
+            }// fine del blocco if
+            croce.save(failOnError: true)
+        }// fine del blocco if
+    }// fine del metodo
+
+    //--GAPS Castel San Giovanni
+    //--creazione record di configurazione (settings)
+    //--lo crea SOLO se non esiste già
+    //--controlla SEMPRE
+    private static void configurazioneGapsCastello() {
+        Croce croce = Croce.findBySigla('GAPS')
+        Settings setting
+
+        if ( croce) {
+            setting = Settings.findByCroce(croce)
+            if (setting == null) {
+                setting = new Settings(croce: croce)
+                setting.startLogin = true
+                setting.startController = 'turno'
+                setting.allControllers = false
+                setting.controlli = ''
+                setting.mostraSoloMilitiFunzione = true
+                setting.mostraMilitiFunzioneAndAltri = false
+                setting.militePuoInserireAltri = false
+                setting.militePuoModificareAltri = false
+                setting.militePuoCancellareAltri = false
+                setting.tipoControlloModifica = ControlloTemporale.tempoMancante
+                setting.maxMinutiTrascorsiModifica = 0
+                setting.minGiorniMancantiModifica = 2
+                setting.tipoControlloCancellazione = ControlloTemporale.tempoMancante
+                setting.maxMinutiTrascorsiCancellazione = 0
+                setting.minGiorniMancantiCancellazione = 2
+                setting.isOrarioTurnoModificabileForm = false
+                setting.isCalcoloNotturnoStatistiche = false
+                setting.fissaLimiteMassimoSingoloTurno = false
+                setting.oreMassimeSingoloTurno = 0
+                setting.usaModuloViaggi = false
+                setting.numeroServiziEffettuati = 0
+                setting.tabelloneSecured = true
+                setting.turniSecured = true
+                setting.mostraTabellonePartenza = true
+                setting.save(failOnError: true)
             }// fine del blocco if
         }// fine del blocco if
     }// fine del metodo
