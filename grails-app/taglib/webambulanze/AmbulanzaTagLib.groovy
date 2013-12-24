@@ -35,19 +35,8 @@ class AmbulanzaTagLib {
     // utilizzo di un service con la businessLogic per l'elaborazione dei dati
     // il service viene iniettato automaticamente
     def militeService
-
-    // utilizzo di un service con la businessLogic per l'elaborazione dei dati
-    // il service viene iniettato automaticamente
     def croceService
-
     def springSecurityService
-
-    // capodanno(1.1), epifania(6.1), carnevale(6.3), pasqua(24.4), pasquetta(25.4), liberazione(25.4), lavoro(1.5),
-    // repubblica(2.6), ferragosto(15.8), santi(1.11), immacolata(8.12), natale(25.12), santo stefano(26.12)
-    static festivi11 = [1, 6, 65, 114, 115, 115, 121, 153, 227, 305, 342, 359, 360]
-    // capodanno(1.1), epifania(6.1), carnevale(19.2), pasqua(8.4), pasquetta(9.4), liberazione(25.4), lavoro(1.5),
-    // repubblica(2.6), ferragosto(15.8), santi(1.11), immacolata(8.12), natale(25.12), santo stefano(26.12)
-    static festivi12 = [1, 6, 50, 99, 100, 116, 122, 154, 228, 306, 343, 360, 361]
 
     public static String titoli = '440044'
     private static String turnoLiberoLontano = 'FFCC66'
@@ -227,8 +216,10 @@ class AmbulanzaTagLib {
         boolean sempreCreabile = false
         boolean militePuoCreareTurnoStandard = false
         boolean militePuoCreareTurnoExtra = false
+        boolean usaNomeCognome = false
 
         if (params.siglaCroce) {
+            usaNomeCognome = croceService.usaNomeCognome(params.siglaCroce)
             croce = Croce.findBySigla((String) params.siglaCroce)
         }// fine del blocco if
         if (mappa.dataInizio && mappa.dataInizio instanceof Date) {
@@ -247,7 +238,7 @@ class AmbulanzaTagLib {
 
 //        testo += this.captionTabella(params)
         testo += titoliTabella(inizio, fine)
-        testo += corpoTabella(croce, inizio, fine, sempreCreabile, militePuoCreareTurnoStandard, militePuoCreareTurnoExtra)
+        testo += corpoTabella(croce, inizio, fine, sempreCreabile, militePuoCreareTurnoStandard, militePuoCreareTurnoExtra, usaNomeCognome)
         testo += rigaBordo()
         testo += legenda()
         testo += copyright()
@@ -271,7 +262,8 @@ class AmbulanzaTagLib {
             Date fine,
             boolean sempreCreabile,
             boolean militePuoCreareTurnoStandard,
-            boolean militePuoCreareTurnoExtra) {
+            boolean militePuoCreareTurnoExtra,
+            boolean usaNomeCognome) {
         String testoBody = ''
         def tipiTurno = null
         int pariDispari = 0
@@ -292,13 +284,13 @@ class AmbulanzaTagLib {
                 if (it.primo) {
                     testoBody += rigaBordo()
                 }// fine del blocco if
-                testoBody += righeDiUnTurno(it, inizio, fine, pariDispari, numExtra, sempreCreabile, militePuoCreareTurnoStandard, militePuoCreareTurnoExtra)
+                testoBody += righeDiUnTurno(it, inizio, fine, pariDispari, numExtra, sempreCreabile, militePuoCreareTurnoStandard, militePuoCreareTurnoExtra, usaNomeCognome)
 
                 if (it.multiplo) {
                     while (esisteUnTurnoNellaUltimaRiga(it, inizio, fine, numExtra)) {
                         pariDispari++
                         numExtra++
-                        testoBody += righeDiUnTurno(it, inizio, fine, pariDispari, numExtra, sempreCreabile, militePuoCreareTurnoStandard, militePuoCreareTurnoExtra)
+                        testoBody += righeDiUnTurno(it, inizio, fine, pariDispari, numExtra, sempreCreabile, militePuoCreareTurnoStandard, militePuoCreareTurnoExtra, usaNomeCognome)
                     }// fine del blocco while
                 }// fine del blocco if
             }// end of each
@@ -323,7 +315,8 @@ class AmbulanzaTagLib {
             int numExtra,
             boolean sempreCreabile,
             boolean militePuoCreareTurnoStandard,
-            boolean militePuoCreareTurnoExtra) {
+            boolean militePuoCreareTurnoExtra,
+            boolean usaNomeCognome) {
         String testoRiga = ''
         LinkedHashMap<Date, Turno> mappaTurniDiUnTipo = creaMappaTurniDiUnTipo(tipoTurno, inizio, fine, numExtra)
         ArrayList listaTurni = listaTurni(tipoTurno, inizio, fine)
@@ -352,7 +345,7 @@ class AmbulanzaTagLib {
 //                } else {
 //                    testoRiga += this.rigaTurno(mappaTurniDiUnTipo, (Funzione) it, tipoTurno, false)
 //                }// fine del blocco if-else
-                testoRiga += rigaTurno(mappaTurniDiUnTipo, (Funzione) it, tipoTurno, sempreCreabile, militePuoCreareTurnoStandard, militePuoCreareTurnoExtra)
+                testoRiga += rigaTurno(mappaTurniDiUnTipo, (Funzione) it, tipoTurno, sempreCreabile, militePuoCreareTurnoStandard, militePuoCreareTurnoExtra, usaNomeCognome)
             } // fine del ciclo each
 
 //            for (int k = 0; k < max; k++) {
@@ -462,7 +455,7 @@ class AmbulanzaTagLib {
         testoOut += "</a>"
         testoOut += "</li>"
 
-       return testoOut
+        return testoOut
     }// fine della closure
 
     //--disegna i menu aggiuntivi (oltre a quelli standard del GPS tipico)
@@ -1166,8 +1159,8 @@ class AmbulanzaTagLib {
         String testoGiorni
 
         if (inizio && fine) {
-            testoLegenda = this.titoliTabellaLegenda(inizio, fine)
-            testoGiorni = this.titoliTabellaGiorni(inizio, fine)
+            testoLegenda = titoliTabellaLegenda(inizio, fine)
+            testoGiorni = titoliTabellaGiorni(inizio, fine)
             testoOut += testoLegenda
             testoOut += testoGiorni
         }// end of if
@@ -1222,7 +1215,7 @@ class AmbulanzaTagLib {
             giorni = fine - inizio
             for (int k = 0; k <= giorni; k++) {
                 giorno = inizio + k
-                testoRigaTitolo += this.titoloGiorno(giorno)
+                testoRigaTitolo += titoloGiorno(giorno)
             } // fine del ciclo for
             testoOut = testoRigaTitolo
         }// end of if
@@ -1240,7 +1233,11 @@ class AmbulanzaTagLib {
      *        key: giorno
      *        value: turno (eventualmente nullo)
      */
-    private static LinkedHashMap<Date, Turno> creaMappaTurniDiUnTipo(TipoTurno tipoTurno, Date inizio, Date fine, int riga) {
+    private static LinkedHashMap<Date, Turno> creaMappaTurniDiUnTipo(
+            TipoTurno tipoTurno,
+            Date inizio,
+            Date fine,
+            int riga) {
         LinkedHashMap<Date, Turno> mappaTurniDiUnTipo = new LinkedHashMap<Date, Turno>()
         int giorni
         def giorno
@@ -1296,7 +1293,6 @@ class AmbulanzaTagLib {
                     listaTurni.add(null)
                 }// fine del blocco if-else
             } // fine del ciclo for
-
         }// end of if
 
         return listaTurni
@@ -1312,7 +1308,8 @@ class AmbulanzaTagLib {
             TipoTurno tipoTurno,
             boolean sempreCreabile,
             boolean militePuoCreareTurnoStandard,
-            boolean militePuoCreareTurnoExtra) {
+            boolean militePuoCreareTurnoExtra,
+            boolean usaNomeCognome) {
         String testoOut
         String testoRiga = ''
         Turno turno
@@ -1326,7 +1323,7 @@ class AmbulanzaTagLib {
             mappaTurni.keySet().each {
                 giorno = it
                 turno = mappaTurni.get(it)
-                testoRiga += cellaTurno(giorno, turno, funzione, tipoTurno, sempreCreabile, militePuoCreareTurnoStandard, militePuoCreareTurnoExtra)
+                testoRiga += cellaTurno(giorno, turno, funzione, tipoTurno, sempreCreabile, militePuoCreareTurnoStandard, militePuoCreareTurnoExtra, usaNomeCognome)
             }// end of each
         }// fine del blocco if
 
@@ -1342,7 +1339,8 @@ class AmbulanzaTagLib {
             TipoTurno tipoTurno,
             boolean sempreCreabile,
             boolean militePuoCreareTurnoStandard,
-            boolean militePuoCreareTurnoExtra) {
+            boolean militePuoCreareTurnoExtra,
+            boolean usaNomeCognome) {
         String testoOut = ''
         String htmlPrefix = '/webambulanze/turno/'
         String htmlNew = htmlPrefix + 'newTurno'
@@ -1396,7 +1394,7 @@ class AmbulanzaTagLib {
 
         if (numFunzioni) {
             for (int k = 1; k <= numFunzioni; k++) {
-                nome = nomeMiliteCella(turno, funzioneDellaRiga, k)
+                nome = nomeMiliteCella(turno, funzioneDellaRiga, k, usaNomeCognome)
                 if (nome) {
                     nomeMilite = nome
                 }// fine del blocco if
@@ -1485,13 +1483,12 @@ class AmbulanzaTagLib {
         return aspetto
     }// fine del metodo
 
-    private static String nomeMiliteCella(Turno turno, Funzione funzioneDellaRiga, int numFunzione) {
+    private static String nomeMiliteCella(Turno turno, Funzione funzioneDellaRiga, int numFunzione, boolean usaNomeCognome) {
         String nomeMilite = ''
         Milite milite
         Funzione funzioneDelTurno
         String nomeProprio
         boolean aggiungiNota = false
-        boolean aggiungiNomeProprio = true
         String milFunz = 'militeFunzione' + numFunzione
         String funz = 'funzione' + numFunzione
         String nota = 'problemiFunzione' + numFunzione
@@ -1512,14 +1509,11 @@ class AmbulanzaTagLib {
                 if (turno."${funz}") {
                     funzioneDelTurno = turno."${funz}"
                     if (funzioneDelTurno == funzioneDellaRiga) {
-                        nomeMilite = milite.cognome
-                        if (aggiungiNomeProprio) {
-                            nomeProprio = milite.nome
-                            nomeProprio = Lib.primaMaiuscola(nomeProprio)
-                            nomeProprio = nomeProprio.substring(0, 1)
-                            nomeProprio += '.'
-                            nomeMilite += ' ' + nomeProprio
-                        }// fine del blocco if
+                        if (usaNomeCognome) {
+                            nomeMilite = milite.getNomeCognomePuntato()
+                        } else {
+                            nomeMilite = milite.getCognomeNomePuntato()
+                        }// fine del blocco if-else
                         if (aggiungiNota) {
                             nomeMilite = tagNota + nomeMilite
                             //nomeMilite = '<font color="#FF6666">' + nomeMilite + '</font>'
@@ -1581,12 +1575,22 @@ class AmbulanzaTagLib {
      */
     private static String cellaOrario(TipoTurno tipoTurno) {
         String testoOut
-        String testo = 'Manca'
+        String testoInizio
+        String testoFine
+        String testo
         boolean mostraOrario = true
 
         if (tipoTurno && tipoTurno.orario) {
             if (mostraOrario) {
-                testo = tipoTurno.oraInizio + '-' + tipoTurno.oraFine
+                testoInizio = tipoTurno.oraInizio
+                if (tipoTurno.minutiInizio && tipoTurno.minutiInizio > 0) {
+                    testoInizio += ':' + tipoTurno.minutiInizio
+                }// fine del blocco if
+                testoFine = tipoTurno.oraFine
+                if (tipoTurno.minutiFine && tipoTurno.minutiFine > 0) {
+                    testoFine += ':' + tipoTurno.minutiFine
+                }// fine del blocco if
+                testo = testoInizio + '-' + testoFine
             } else {
                 testo = '(orario)'
             }// fine del blocco if-else
@@ -1703,8 +1707,8 @@ class AmbulanzaTagLib {
      */
     def fillForm = { mappa ->
         String testoOut = ''
-        Croce croce
-        String testoRiga
+        Croce croce = null
+        String testoRiga = ''
         Turno turno = null
         String turnoIdTxt
         long turnoId
@@ -1714,8 +1718,11 @@ class AmbulanzaTagLib {
         boolean nuovoTurno = false
         boolean mostraOreSingoloMilite = false
         boolean isTurnoExtra = false
+        boolean isTurnoSettimanale = false
+        boolean inserimento = true //true se admin oppure se milite non è già segnato nel turno
 
         if (params.siglaCroce) {
+            isTurnoSettimanale = croceService.isTurnoSettimanale(params.siglaCroce)
             croce = Croce.findBySigla((String) params.siglaCroce)
         }// fine del blocco if
         if (mappa.turnoInstance) {
@@ -1751,14 +1758,34 @@ class AmbulanzaTagLib {
             testoOut += formRiga('Fine', formData(croce, tipoTurno, turno.fine, 'fine'))
             testoOut += formLegenda('Orario di fine turno (eventualmente modificabile)')
             if (isTurnoExtra) {
-                testoOut += formRiga('Titolo', Lib.tagCella('mario'))
-                testoOut += formRiga('Località', Lib.presentaDataCompleta(turno.giorno))
+//                testoOut += formRiga('Titolo', Lib.tagCella('mario'))
+//                testoOut += formRiga('Località', Lib.presentaDataCompleta(turno.giorno))
             }// fine del blocco if
             for (int k = 1; k <= numFunzioni; k++) {
                 testoOut += formRigaFunzione(turno, mostraOreSingoloMilite, k)
                 testoOut += formLegenda('Lista (in ordine alfabetico) di tutti i militi')
             } // fine del ciclo for
             testoOut += formRiga('Note', formNote(turno.note))
+            if (isTurnoSettimanale && inserimento) {
+                String testoRiga2 = ''
+                String testoRiga3 = ''
+                String label = 'numeroSettimane'
+                String nomeCampo = '12'
+                testoRiga = formRadio(turno, 'problemiFunzione1', 'Vuoi ripetere il turno settimanale?')
+                testoRiga = Lib.tag('td', testoRiga, Aspetto.formlabelleft.toString(), 'col', 1)
+                testoRiga2 += formRadio(turno, 'problemiFunzione2', 'Ogni 7 gg')
+                testoRiga2 += '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'
+                testoRiga2 += formRadio(turno, 'problemiFunzione3', 'Ogni 14 gg')
+//                testoRiga2 += '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'
+                testoRiga2 += Lib.tagCella('per', Aspetto.formlabelleft)
+                testoRiga2 += Lib.tagCella('<input type=\"text\" name=\"${label}\" value=\"3\" style=\"width: 30px\" id=\"${label}\"/>', Aspetto.formlabelleft)
+                testoRiga2 += Lib.tagCella('volte', Aspetto.formlabelleft)
+                testoRiga2 = Lib.tag('td', testoRiga2, Aspetto.formeditleft.toString(), 'col', 1)
+
+//                testoRiga3 = Lib.tag('td', testoRiga3, Aspetto.formlabelleft.toString(), 'col', 1)
+                testoOut += Lib.tagRiga(testoRiga + testoRiga2)
+            }// fine del blocco if
+
         }// fine del blocco if
 
         testoOut = Lib.tagTable(testoOut, Aspetto.formtable)
@@ -2149,12 +2176,13 @@ class AmbulanzaTagLib {
         Croce croce = turno.croce
         boolean isMostraSoloMilitiFunzione = croceService.isMostraSoloMilitiFunzione(croce)
         boolean isMostraMilitiFunzioneAndAltri = croceService.isMostraMilitiFunzioneAndAltri(croce)
+        boolean usaNomeCognome = croceService.usaNomeCognome(croce.sigla)
         Funzione funzione = getFunzione(turno, riga)
         ArrayList listaMiliti
         def militeId = ''
         def obj
         Milite milite
-        String nomeMiliteDelTurnoPerLaFunzione = getNomeMiliteForFunzione(turno, riga)
+        String nomeMiliteDelTurnoPerLaFunzione = getNomeMiliteForFunzione(turno, riga, usaNomeCognome)
         String nomeMiliteRigaCorrente = ''
 
         if (isMostraSoloMilitiFunzione) {
@@ -2177,7 +2205,11 @@ class AmbulanzaTagLib {
                 if (obj instanceof Milite) {
                     milite = (Milite) obj
                     militeId = milite.id
-                    nomeMiliteRigaCorrente = milite.toString()
+                    if (usaNomeCognome) {
+                        nomeMiliteRigaCorrente = milite.getNomeCognome()
+                    } else {
+                        nomeMiliteRigaCorrente = milite.getCognomeNome()
+                    }// fine del blocco if-else
                 } else {
                     if (obj instanceof String) {
                         militeId = ''
@@ -2275,7 +2307,7 @@ class AmbulanzaTagLib {
         return testo
     }// fine del metodo
 
-    private static String getNomeMiliteForFunzione(Turno turno, int numFunzione) {
+    private static String getNomeMiliteForFunzione(Turno turno, int numFunzione, boolean usaNomeCognome) {
         String nomeMilite = ''
         Milite milite
         String num = 'militeFunzione' + numFunzione
@@ -2283,7 +2315,11 @@ class AmbulanzaTagLib {
         milite = turno."${num}"
 
         if (milite) {
-            nomeMilite = milite.toString()
+            if (usaNomeCognome) {
+                nomeMilite = milite.getNomeCognome()
+            } else {
+                nomeMilite = milite.getCognomeNome()
+            }// fine del blocco if-else
         }// fine del blocco if
 
         return nomeMilite
@@ -2324,6 +2360,22 @@ class AmbulanzaTagLib {
         }// fine del blocco if
         testo += " name=\"${label}\" id=\"${label}\"/>"
         testo += tagNota
+
+        return testo
+    }
+
+    private static String formRadio(Turno turno, String campo, String label) {
+        String testo = ''
+        String tagSpazio = '  '
+        String value = turno."${campo}"
+        String tag = ' checked="checked"'
+
+        testo += "<input type=\"hidden\" name=\"_${campo}\"/><input type=\"checkbox\""
+        if (value == 'true') {
+            testo += tag
+        }// fine del blocco if
+        testo += " name=\"${campo}\" id=\"${campo}\"/>"
+        testo += tagSpazio + label
 
         return testo
     }

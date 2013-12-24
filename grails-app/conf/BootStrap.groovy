@@ -36,6 +36,7 @@ class BootStrap implements Cost {
     private static ArrayList<Funzione> funzAmbulanzaCRF = []
     private static ArrayList<Funzione> funzCRPT = []
     private static ArrayList<Funzione> funzPAP = []
+    private static ArrayList<Funzione> funzGAPS = []
 
     // private static String DIR_PATH = '/Users/Gac/Documents/IdeaProjects/webambulanze/grails-app/webambulanze/'
     private static String DIR_PATH = 'http://77.43.32.198:80/ambulanze/'
@@ -368,9 +369,21 @@ class BootStrap implements Cost {
             fixTipoturnoPontetaro()
         }// fine del blocco if
 
+        //--aggiunto flag per creazione turno settimanale ripetitivo
         if (installaVersione(62)) {
+            addFlagTurnoSettimanale()
+        }// fine del blocco if
+
+        //--aggiunto flag per presentazione secondo nome o cognome
+        if (installaVersione(63)) {
+            addFlagNomeCognome()
+        }// fine del blocco if
+
+        //--creazione nuova croce
+        if (installaVersione(64)) {
             creaGapsCastello()
         }// fine del blocco if
+
 
         //--creazione dei record utenti per la pubblica castello
 //        if (installaVersione(99)) {
@@ -1319,6 +1332,7 @@ class BootStrap implements Cost {
 
             funzione.save(failOnError: true)
         }// fine del blocco if
+
         return funzione
     }// fine del metodo
 
@@ -1344,7 +1358,7 @@ class BootStrap implements Cost {
         newTipoTurno118PAVT('118-ser', '118 sera/notte', 5, 7, 14, true, true, true, false, 2)
         newTipoTurnoOrdPAVT('avis', 'avis', 6, 0, 0, false, true, false, false, 1)
         newTipoTurnoOrdPAVT('cent', 'centralino', 7, 0, 0, false, false, false, false, 1)
-        newTipoTurnoOrdPAVT(Cost.EXTRA, 'extra/manifestazione', 8, 7, 14, false, true, false, true, 2)
+        newTipoTurnoOrdPAVT(EXTRA, 'extra/manifestazione', 8, 7, 14, false, true, false, true, 2)
     }// fine del metodo
 
     //--creazione delle tipologie di turni per la croce rossa fidenza
@@ -4377,16 +4391,114 @@ class BootStrap implements Cost {
         }// fine del blocco if
     }// fine del metodo
 
+    //--aggiunto flag per creazione turno settimanale ripetitivo
+    private static void addFlagTurnoSettimanale() {
+        newVersione(CROCE_ALGOS, 'Settings', 'Aggiunto flag per creazione turno settimanale ripetitivo')
+    }// fine del metodo
+
+    //--aggiunto flag per presentazione secondo nome o cognome
+    private static void addFlagNomeCognome() {
+        newVersione(CROCE_ALGOS, 'Settings', 'Aggiunto flag per presentazione secondo nome o cognome')
+    }// fine del metodo
+
+    //--regola il tipo di turno coi parametri indicati
+    //--registra il tipo di turno
+    //--lo crea SOLO se non esiste già
+    private static TipoTurno newTipoTurno(
+            String siglaCroce,
+            String sigla,
+            String descrizione,
+            int ordine,
+            int oraInizio,
+            int minutiInizio,
+            int oraFine,
+            int minutiFine,
+            boolean fineGiornoSuccessivo,
+            boolean visibile,
+            boolean orario,
+            boolean multiplo,
+            int funzioniObbligatorie,
+            Funzione funz1,
+            Funzione funz2,
+            Funzione funz3,
+            Funzione funz4) {
+        TipoTurno tipo = null
+        Croce croce = Croce.findBySigla(siglaCroce)
+        String funz
+
+        if (croce) {
+            tipo = TipoTurno.findOrCreateByCroceAndSigla(croce, sigla).save(failOnError: true)
+            tipo.descrizione = descrizione
+            tipo.ordine = ordine
+            tipo.oraInizio = oraInizio
+            tipo.minutiInizio = minutiInizio
+            tipo.oraFine = oraFine
+            tipo.minutiFine = minutiFine
+            tipo.fineGiornoSuccessivo = fineGiornoSuccessivo
+            tipo.visibile = visibile
+            tipo.orario = orario
+            tipo.multiplo = multiplo
+            tipo.funzioniObbligatorie = funzioniObbligatorie
+            if (funz1) {
+                tipo.funzione1 = funz1
+            }// fine del blocco if
+            if (funz2) {
+                tipo.funzione2 = funz2
+            }// fine del blocco if
+            if (funz3) {
+                tipo.funzione3 = funz3
+            }// fine del blocco if
+            if (funz4) {
+                tipo.funzione4 = funz4
+            }// fine del blocco if
+
+            tipo.save(failOnError: true)
+        }// fine del blocco if
+
+        return tipo
+    }// fine del metodo
+
+    //--aggiunge un milite alla croce
+    private static Milite newMilite(
+            String siglaCroce,
+            String nome,
+            String cognome,
+            Funzione funzione1,
+            Funzione funzione2,
+            Funzione funzione3,
+            Funzione funzione4) {
+        Milite milite = null
+        Croce croce = Croce.findBySigla(siglaCroce)
+
+        if (croce && nome && cognome && funzione1) {
+            milite = Milite.findOrCreateByCroceAndNomeAndCognome(croce, nome, cognome).save(failOnError: true)
+            Militefunzione.findOrCreateByCroceAndMiliteAndFunzione(croce, milite, funzione1).save(failOnError: true)
+            if (funzione2) {
+                Militefunzione.findOrCreateByCroceAndMiliteAndFunzione(croce, milite, funzione2).save(failOnError: true)
+                if (funzione3) {
+                    Militefunzione.findOrCreateByCroceAndMiliteAndFunzione(croce, milite, funzione3).save(failOnError: true)
+                    if (funzione4) {
+                        Militefunzione.findOrCreateByCroceAndMiliteAndFunzione(croce, milite, funzione4).save(failOnError: true)
+                    }// fine del blocco if
+                }// fine del blocco if
+            }// fine del blocco if
+        }// fine del blocco if
+
+        return milite
+    }// fine del metodo
+
     //--creazione nuova croce
-    private void creaGapsCastello() {
+    private static void creaGapsCastello() {
         creazioneGapsCastello()
         configurazioneGapsCastello()
-        securitySetupGapsCastello()
+//        securitySetupGapsCastello()
         funzioniGapsCastello()
         tipiDiTurnoGapsCastello()
         militiGapsCastello()
+        utentiGapsCastello()
+        turni2013GapsCastello()
         turni2014GapsCastello()
-//        newVersione(CROCE_PUBBLICA_PIANORO, 'Creazione croce', 'Funzioni, tipiTurni, militi, utenti.')
+        newVersione(GAPS_CASTELLO, 'Creazione croce', 'Funzioni, tipiTurni, militi, utenti.')
     }// fine del metodo
 
     //--GAPS Castel San Giovanni
@@ -4394,10 +4506,10 @@ class BootStrap implements Cost {
     //--controlla SEMPRE
     //--modifica le proprietà coi valori di default se sono stati svuotati
     private static void creazioneGapsCastello() {
-        Croce croce = Croce.findBySigla('GAPS')
+        Croce croce = Croce.findBySigla(GAPS_CASTELLO)
 
         if (!croce) {
-            croce = new Croce(sigla: 'GAPS')
+            croce = new Croce(sigla: GAPS_CASTELLO)
         }// fine del blocco if
 
         if (croce) {
@@ -4414,13 +4526,13 @@ class BootStrap implements Cost {
                 croce.riferimento = 'Guido Ceresa'
             }// fine del blocco if
             if (!croce.indirizzo) {
-                croce.indirizzo = 'Via del Lavoro 15 - 40065 Pianoro (BO)'
+                croce.indirizzo = 'Piacenza'
             }// fine del blocco if
             if (!croce.telefono) {
-                croce.telefono = '051 774540'
+                croce.telefono = '0523'
             }// fine del blocco if
             if (!croce.email) {
-                croce.email = 'presidente@pubblicapianoro.it'
+                croce.email = 'presidente@gapspiacenza.it'
             }// fine del blocco if
             if (!croce.custode) {
                 croce.custode = 'Guido Ceresa'
@@ -4440,41 +4552,189 @@ class BootStrap implements Cost {
     //--lo crea SOLO se non esiste già
     //--controlla SEMPRE
     private static void configurazioneGapsCastello() {
-        Croce croce = Croce.findBySigla('GAPS')
+        Croce croce = Croce.findBySigla(GAPS_CASTELLO)
         Settings setting
 
-        if ( croce) {
+        if (croce) {
             setting = Settings.findByCroce(croce)
             if (setting == null) {
                 setting = new Settings(croce: croce)
-                setting.startLogin = true
+                setting.startLogin = false
                 setting.startController = 'turno'
                 setting.allControllers = false
                 setting.controlli = ''
-                setting.mostraSoloMilitiFunzione = true
-                setting.mostraMilitiFunzioneAndAltri = false
-                setting.militePuoInserireAltri = false
-                setting.militePuoModificareAltri = false
-                setting.militePuoCancellareAltri = false
+                setting.mostraSoloMilitiFunzione = false
+                setting.mostraMilitiFunzioneAndAltri = true
+                setting.militePuoInserireAltri = true
+                setting.militePuoModificareAltri = true
+                setting.militePuoCancellareAltri = true
                 setting.tipoControlloModifica = ControlloTemporale.tempoMancante
                 setting.maxMinutiTrascorsiModifica = 0
-                setting.minGiorniMancantiModifica = 2
+                setting.minGiorniMancantiModifica = 1
                 setting.tipoControlloCancellazione = ControlloTemporale.tempoMancante
                 setting.maxMinutiTrascorsiCancellazione = 0
-                setting.minGiorniMancantiCancellazione = 2
+                setting.minGiorniMancantiCancellazione = 1
                 setting.isOrarioTurnoModificabileForm = false
                 setting.isCalcoloNotturnoStatistiche = false
+                setting.isDisabilitazioneAutomaticaLogin = false
                 setting.fissaLimiteMassimoSingoloTurno = false
                 setting.oreMassimeSingoloTurno = 0
                 setting.usaModuloViaggi = false
                 setting.numeroServiziEffettuati = 0
-                setting.tabelloneSecured = true
-                setting.turniSecured = true
+                setting.tabelloneSecured = false
+                setting.turniSecured = false
                 setting.mostraTabellonePartenza = true
+                setting.bloccaSoloFunzioniObbligatorie = false
+                setting.militePuoCreareTurnoStandard = true
+                setting.militePuoCreareTurnoExtra = true
+                setting.isTurnoSettimanale = false
+                setting.usaNomeCognome = true
                 setting.save(failOnError: true)
             }// fine del blocco if
         }// fine del blocco if
     }// fine del metodo
+
+    //--GAPS Castel San Giovanni
+    //--creazione accessi per la croce
+    //--occorre SEMPRE un accesso come admin
+    //--occorre SEMPRE un accesso come utente
+    //--li crea SOLO se non esistono già
+    private static void securitySetupGapsCastello() {
+        Utente utente
+        String nick
+        String pass
+        Ruolo custodeRole
+        Ruolo adminRole
+        Ruolo militeRole
+
+        custodeRole = Ruolo.findOrCreateByAuthority(ROLE_CUSTODE).save(failOnError: true)
+        adminRole = Ruolo.findOrCreateByAuthority(ROLE_ADMIN).save(failOnError: true)
+        militeRole = Ruolo.findOrCreateByAuthority(ROLE_MILITE).save(failOnError: true)
+
+        // custode
+        nick = 'Gac'
+        pass = 'fulvia'
+        utente = newUtente(GAPS_CASTELLO, ROLE_PROG, nick, pass)
+
+        if (utente && custodeRole && adminRole && militeRole) {
+            UtenteRuolo.findOrCreateByRuoloAndUtente(custodeRole, utente).save(failOnError: true)
+            UtenteRuolo.findOrCreateByRuoloAndUtente(adminRole, utente).save(failOnError: true)
+            UtenteRuolo.findOrCreateByRuoloAndUtente(militeRole, utente).save(failOnError: true)
+        }// fine del blocco if
+    }// fine del metodo
+
+    //--GAPS Castel San Giovanni
+    //--creazione funzioni per la croce
+    //--ogni croce ha SEMPRE diverse funzioni
+    //--li crea SOLO se non esistono già
+    private static void funzioniGapsCastello() {
+        funzGAPS.add(newFunzione(GAPS_CASTELLO, GAPS_FUNZIONE_VOLONTARIO, 'Volontario', 'Volontario', 1, GAPS_FUNZIONE_VOLONTARIO_2))
+        funzGAPS.add(newFunzione(GAPS_CASTELLO, GAPS_FUNZIONE_VOLONTARIO_2, 'Volontario2', 'Volontario2', 2, GAPS_FUNZIONE_VOLONTARIO))
+        funzGAPS.add(newFunzione(GAPS_CASTELLO, GAPS_FUNZIONE_TIROCINANTE, 'Tirocinante', 'Tirocinante', 3, ''))
+        funzGAPS.add(newFunzione(GAPS_CASTELLO, GAPS_FUNZIONE_TUTOR, 'Tutor', 'Tutor', 4, GAPS_FUNZIONE_VOLONTARIO + ',' + GAPS_FUNZIONE_VOLONTARIO_2))
+    }// fine del metodo
+
+    //--GAPS Castel San Giovanni
+    //--creazione delle tipologie di turni per la croce
+    //--ogni croce può avere tipologie differenti
+    //--li crea SOLO se non esistono già
+    private static void tipiDiTurnoGapsCastello() {
+        newTipoTurno(GAPS_CASTELLO, GAPS_TIPO_TURNO_MATTINA, 'Mattina', 1, 9, 30, 12, 30, false, true, true, false, 1, funzGAPS[0], funzGAPS[1], funzGAPS[2], null)
+        newTipoTurno(GAPS_CASTELLO, GAPS_TIPO_TURNO_PRANZO, 'Pranzo ', 2, 12, 30, 16, 0, false, true, true, false, 1, funzGAPS[0], funzGAPS[1], funzGAPS[2], null)
+        newTipoTurno(GAPS_CASTELLO, GAPS_TIPO_TURNO_POMERIGGIO, 'Pomeriggio', 3, 16, 0, 19, 0, false, true, true, false, 1, funzGAPS[0], funzGAPS[1], funzGAPS[2], null)
+    }// fine del metodo
+
+    //--GAPS Castel San Giovanni
+    //--creazione dei militi per la croce
+    //--ogni croce può avere tipologie differenti
+    //--li crea SOLO se non esistono già
+    private static void militiGapsCastello() {
+        Croce croce = Croce.findBySigla(GAPS_CASTELLO)
+        Milite militeGac
+        Milite militeAnna
+
+        newMilite(GAPS_CASTELLO, 'Marisa', 'Abelli', funzGAPS[0], funzGAPS[1], null, null)
+        newMilite(GAPS_CASTELLO, 'Michele', 'Albano', funzGAPS[0], funzGAPS[1], null, null)
+        newMilite(GAPS_CASTELLO, 'Rosa', 'Arselli', funzGAPS[0], funzGAPS[1], null, null)
+        newMilite(GAPS_CASTELLO, 'Annapaola', 'Bordaini', funzGAPS[0], funzGAPS[1], null, null)
+        militeGac = newMilite(GAPS_CASTELLO, 'Guido', 'Ceresa', funzGAPS[0], funzGAPS[1], null, funzGAPS[3])
+        newMilite(GAPS_CASTELLO, 'Enrico', 'Delfanti', funzGAPS[0], funzGAPS[1], null, null)
+        newMilite(GAPS_CASTELLO, 'Giuliana', 'Garani', funzGAPS[0], funzGAPS[1], null, null)
+        newMilite(GAPS_CASTELLO, 'Franca', 'Perolari', funzGAPS[0], funzGAPS[1], null, null)
+        newMilite(GAPS_CASTELLO, 'Daniela', 'Nume', funzGAPS[0], funzGAPS[1], null, null)
+        newMilite(GAPS_CASTELLO, 'Rino', 'Olivieri', funzGAPS[0], funzGAPS[1], null, null)
+        newMilite(GAPS_CASTELLO, 'Rita', 'Parmeggiani', funzGAPS[0], funzGAPS[1], null, null)
+        newMilite(GAPS_CASTELLO, 'Anabela', 'Pinto', funzGAPS[0], funzGAPS[1], null, null)
+        newMilite(GAPS_CASTELLO, 'Brigitte', 'Rossetti', funzGAPS[0], funzGAPS[1], null, null)
+        militeAnna = newMilite(GAPS_CASTELLO, 'Anna', 'Subacchi', funzGAPS[0], funzGAPS[1], null, funzGAPS[3])
+        newMilite(GAPS_CASTELLO, 'Annarosa', 'Scavo', funzGAPS[0], funzGAPS[1], null, null)
+        newMilite(GAPS_CASTELLO, 'Ondina', 'Valla', funzGAPS[0], funzGAPS[1], null, null)
+
+        //--tutor
+        Militefunzione.findOrCreateByCroceAndMiliteAndFunzione(croce, militeGac, funzGAPS[3]).save(failOnError: true)
+        Militefunzione.findOrCreateByCroceAndMiliteAndFunzione(croce, militeAnna, funzGAPS[3]).save(failOnError: true)
+
+    }// fine del metodo
+
+    //--GAPS Castel San Giovanni
+    //--creazione degli utenti per la croce
+    //--ogni croce può avere tipologie differenti
+    //--li crea SOLO se non esistono già
+    private static void utentiGapsCastello() {
+        Croce croce = Croce.findBySigla(GAPS_CASTELLO)
+        ArrayList<Milite> militi = Milite.findAllByCroce(croce)
+        Milite milite
+        String nick
+        String pass
+
+        militi?.each {
+            milite = it
+            nick = milite.getNomeCognome()
+            pass = milite.nome.toLowerCase() + 123
+            newUtente(GAPS_CASTELLO, ROLE_MILITE, nick, pass, milite)
+        } // fine del ciclo each
+
+    }// fine del metodo
+
+    //--GAPS Castel San Giovanni
+    //--creazione dei turni vuoti per la croce
+    //--li crea SOLO se non esistono già
+    //--logica
+    //--    mattina 9:30/12:30 -> feriali da lunedi a sabato
+    //--    pranzo 9:30/12:30 -> mai
+    //--    pomeriggio 9:30/12:30 -> feriali da lunedi a sabato
+    private static void nuoviTurniAnnualiCastello(String anno) {
+        Croce croce = Croce.findBySigla(GAPS_CASTELLO)
+        Date primoGennaio = Lib.creaData1Gennaio(anno)
+        Date giorno
+        TipoTurno mattina = TipoTurno.findByCroceAndSigla(croce, GAPS_TIPO_TURNO_MATTINA)
+        TipoTurno pranzo = TipoTurno.findByCroceAndSigla(croce, GAPS_TIPO_TURNO_PRANZO)
+        TipoTurno pomeriggio = TipoTurno.findByCroceAndSigla(croce, GAPS_TIPO_TURNO_POMERIGGIO)
+
+        for (int k = 0; k < 365; k++) {
+            giorno = primoGennaio + k
+            if (Lib.isFeriale(giorno)) {
+                Lib.creaTurno(croce, mattina, giorno)
+                Lib.creaTurno(croce, pomeriggio, giorno)
+            }// fine del blocco if
+            if (Lib.isSabato(giorno)) {
+                Lib.creaTurno(croce, mattina, giorno)
+            }// fine del blocco if
+        } // fine del ciclo for
+    }// fine del metodo
+
+    //--creazione nuovi turni anno 2013 per Castello
+    //--li crea SOLO se non esistono già
+    private static void turni2013GapsCastello() {
+        nuoviTurniAnnualiCastello('2013')
+    }// fine del metodo
+
+    //--creazione nuovi turni anno 2014 per Castello
+    //--li crea SOLO se non esistono già
+    private static void turni2014GapsCastello() {
+        nuoviTurniAnnualiCastello('2014')
+    }// fine del metodo
+
 
     def destroy = {
     }// fine della closure

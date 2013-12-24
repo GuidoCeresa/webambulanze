@@ -123,6 +123,13 @@ class Settings {
     //--il milite può creare un nuovo turno extra
     boolean militePuoCreareTurnoExtra = true
 
+    //--flag per inserire un turno ripetitivo ogni settimana
+    boolean isTurnoSettimanale = false
+
+    //--flag per presentare i militi secondo nome e cognome
+    //--di default falso: si presenta secondo il cognome
+    boolean usaNomeCognome = false
+
     /**
      * regolazione delle proprietà di ogni campo
      * l'ordine con cui vengono elencati qui, viene rispettato nella lista e nella scheda standard
@@ -158,6 +165,8 @@ class Settings {
         bloccaSoloFunzioniObbligatorie()
         militePuoCreareTurnoStandard()
         militePuoCreareTurnoExtra()
+        isTurnoSettimanale()
+        usaNomeCognome()
     } // end of static constraints
 
     /*+

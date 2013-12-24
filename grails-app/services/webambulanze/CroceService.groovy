@@ -355,4 +355,21 @@ class CroceService {
         return isFlag(siglaCroce, Cost.PREF_mostraTabellonePartenza)
     }// fine del metodo
 
+    //--controlla il flag mantenuto nei Settings associati alla croce
+    public boolean isTurnoSettimanale(siglaCroce) {
+        if (siglaCroce instanceof String) {
+            return isFlag(siglaCroce, Cost.PREF_isTurnoSettimanale)
+        } else {
+            return false
+        }// fine del blocco if-else
+    }// fine del metodo
+
+    //--controlla il flag mantenuto nei Settings associati alla croce
+    public boolean usaNomeCognome(siglaCroce) {
+        if (siglaCroce instanceof String) {
+            return isFlag(siglaCroce, Cost.PREF_usaNomeCognome)
+        } else {
+            return false
+        }// fine del blocco if-else
+    }// fine del metodo
 } // end of Service Class

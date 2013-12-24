@@ -8,6 +8,7 @@
 <!--regola a true il flag di controllo flagOverwrite©-->
 <!--flagOverwrite = false-->
 
+<% import grails.persistence.Event %>
 <%=packageName%>
 <!DOCTYPE html>
 <html>

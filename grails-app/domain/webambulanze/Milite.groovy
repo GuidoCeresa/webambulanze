@@ -72,6 +72,45 @@ class Milite {
         cognome + ' ' + nome
     } // end of toString
 
+    String getCognomeNome() {
+        cognome + ' ' + nome
+    } // end of toString
+
+    String getNomeCognome() {
+        nome + ' ' + cognome
+    } // end of toString
+
+
+    String getCognomeNomePuntato() {
+        String base = cognome
+        String aggiunta
+
+        if (nome) {
+            aggiunta = nome
+            aggiunta = Lib.primaMaiuscola(aggiunta)
+            aggiunta = aggiunta.substring(0, 1)
+            base += '.'
+            base += aggiunta
+        }// fine del blocco if
+
+        return base
+    } // end of toString
+
+    String getNomeCognomePuntato() {
+        String base = nome
+        String aggiunta
+
+        if (cognome) {
+            aggiunta = cognome
+            aggiunta = Lib.primaMaiuscola(aggiunta)
+            aggiunta = aggiunta.substring(0, 1)
+            base += '.'
+            base += aggiunta
+        }// fine del blocco if
+
+        return base
+    } // end of toString
+
     /**
      * metodo chiamato automaticamente da Grails
      * prima di creare un nuovo record

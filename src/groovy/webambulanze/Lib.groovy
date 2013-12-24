@@ -643,7 +643,9 @@ class Lib {
         String funz
 
         inizio = setOra(inizio, tipoTurno.oraInizio)
+        inizio = setMinuto(inizio, tipoTurno.minutiInizio)
         fine = setOra(fine, tipoTurno.oraFine)
+        fine = setMinuto(fine, tipoTurno.minutiFine)
         if (tipoTurno.fineGiornoSuccessivo) {
             fine = fine + 1
         }// fine del blocco if
@@ -829,10 +831,10 @@ class Lib {
         GregorianCalendar cal = new GregorianCalendar()
         String settimana = getGiorno(data)
         def mese
-        int numOra = Lib.getNumOra(data)
-        int numMinuti = Lib.getNumMinuti(data)
-        int numGiorno = Lib.getNumGiornoMese(data)
-        int numMese = Lib.getNumMese(data)
+        int numOra = getNumOra(data)
+        int numMinuti = getNumMinuti(data)
+        int numGiorno = getNumGiornoMese(data)
+        int numMese = getNumMese(data)
         String numOraTxt
         String numMinutiTxt
 
@@ -1045,7 +1047,7 @@ class Lib {
             cal.set(Calendar.SECOND, 0)
             cal.set(Calendar.MILLISECOND, 0)
 
-            data = new java.util.Date(cal.getTime().getTime());
+            data = new Date(cal.getTime().getTime());
 
         } catch (Exception unErrore) { // intercetta l'errore
         }// fine del blocco try-catch
@@ -1062,7 +1064,19 @@ class Lib {
         cal.setTime(giornoIn)
         cal.set(Calendar.HOUR_OF_DAY, ora)
 
-        giornoOut = new java.util.Date(cal.getTime().getTime());
+        giornoOut = new Date(cal.getTime().getTime());
+
+        return giornoOut
+    }// fine del metodo
+
+    public static Date setMinuto(Date giornoIn, int minuto) {
+        Date giornoOut
+        Calendar cal = Calendar.getInstance()
+
+        cal.setTime(giornoIn)
+        cal.set(Calendar.MINUTE, minuto)
+
+        giornoOut = new Date(cal.getTime().getTime());
 
         return giornoOut
     }// fine del metodo

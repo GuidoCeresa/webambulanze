@@ -18,15 +18,6 @@
 		<span class="required-indicator">*</span>
 	</label>
 	
-
-
-
-
-
-
-
-
-
 <g:select id="croce" name="croce.id" from="${webambulanze.Croce.list()}" optionKey="id" required="" value="${settingsInstance?.croce?.id}" class="many-to-one"/>
 </div>
 
@@ -36,15 +27,6 @@
 		
 	</label>
 	
-
-
-
-
-
-
-
-
-
 <g:checkBox name="startLogin" value="${settingsInstance?.startLogin}" />
 </div>
 
@@ -54,15 +36,6 @@
 		
 	</label>
 	
-
-
-
-
-
-
-
-
-
 <g:textField name="startController" value="${settingsInstance?.startController}"/>
 </div>
 
@@ -72,15 +45,6 @@
 		
 	</label>
 	
-
-
-
-
-
-
-
-
-
 <g:checkBox name="allControllers" value="${settingsInstance?.allControllers}" />
 </div>
 
@@ -90,15 +54,6 @@
 		
 	</label>
 	
-
-
-
-
-
-
-
-
-
 <g:textField name="controlli" value="${settingsInstance?.controlli}"/>
 </div>
 
@@ -108,15 +63,6 @@
 		
 	</label>
 	
-
-
-
-
-
-
-
-
-
 <g:checkBox name="mostraSoloMilitiFunzione" value="${settingsInstance?.mostraSoloMilitiFunzione}" />
 </div>
 
@@ -126,15 +72,6 @@
 		
 	</label>
 	
-
-
-
-
-
-
-
-
-
 <g:checkBox name="mostraMilitiFunzioneAndAltri" value="${settingsInstance?.mostraMilitiFunzioneAndAltri}" />
 </div>
 
@@ -144,15 +81,6 @@
 		
 	</label>
 	
-
-
-
-
-
-
-
-
-
 <g:checkBox name="militePuoInserireAltri" value="${settingsInstance?.militePuoInserireAltri}" />
 </div>
 
@@ -162,15 +90,6 @@
 		
 	</label>
 	
-
-
-
-
-
-
-
-
-
 <g:checkBox name="militePuoModificareAltri" value="${settingsInstance?.militePuoModificareAltri}" />
 </div>
 
@@ -180,15 +99,6 @@
 		
 	</label>
 	
-
-
-
-
-
-
-
-
-
 <g:checkBox name="militePuoCancellareAltri" value="${settingsInstance?.militePuoCancellareAltri}" />
 </div>
 
@@ -198,15 +108,6 @@
 		<span class="required-indicator">*</span>
 	</label>
 	
-
-
-
-
-
-
-
-
-
 <g:select name="tipoControlloModifica" from="${webambulanze.ControlloTemporale?.values()}" keys="${webambulanze.ControlloTemporale.values()*.name()}" required="" value="${settingsInstance?.tipoControlloModifica?.name()}"/>
 </div>
 
@@ -216,15 +117,6 @@
 		<span class="required-indicator">*</span>
 	</label>
 	
-
-
-
-
-
-
-
-
-
 <g:field name="maxMinutiTrascorsiModifica" type="number" value="${settingsInstance.maxMinutiTrascorsiModifica}" required=""/>
 </div>
 
@@ -234,15 +126,6 @@
 		<span class="required-indicator">*</span>
 	</label>
 	
-
-
-
-
-
-
-
-
-
 <g:field name="minGiorniMancantiModifica" type="number" value="${settingsInstance.minGiorniMancantiModifica}" required=""/>
 </div>
 
@@ -252,15 +135,6 @@
 		<span class="required-indicator">*</span>
 	</label>
 	
-
-
-
-
-
-
-
-
-
 <g:select name="tipoControlloCancellazione" from="${webambulanze.ControlloTemporale?.values()}" keys="${webambulanze.ControlloTemporale.values()*.name()}" required="" value="${settingsInstance?.tipoControlloCancellazione?.name()}"/>
 </div>
 
@@ -270,15 +144,6 @@
 		<span class="required-indicator">*</span>
 	</label>
 	
-
-
-
-
-
-
-
-
-
 <g:field name="maxMinutiTrascorsiCancellazione" type="number" value="${settingsInstance.maxMinutiTrascorsiCancellazione}" required=""/>
 </div>
 
@@ -288,15 +153,6 @@
 		<span class="required-indicator">*</span>
 	</label>
 	
-
-
-
-
-
-
-
-
-
 <g:field name="minGiorniMancantiCancellazione" type="number" value="${settingsInstance.minGiorniMancantiCancellazione}" required=""/>
 </div>
 
@@ -306,15 +162,6 @@
 		
 	</label>
 	
-
-
-
-
-
-
-
-
-
 <g:checkBox name="isOrarioTurnoModificabileForm" value="${settingsInstance?.isOrarioTurnoModificabileForm}" />
 </div>
 
@@ -324,15 +171,6 @@
 		
 	</label>
 	
-
-
-
-
-
-
-
-
-
 <g:checkBox name="isCalcoloNotturnoStatistiche" value="${settingsInstance?.isCalcoloNotturnoStatistiche}" />
 </div>
 
@@ -342,15 +180,6 @@
 		
 	</label>
 	
-
-
-
-
-
-
-
-
-
 <g:checkBox name="isDisabilitazioneAutomaticaLogin" value="${settingsInstance?.isDisabilitazioneAutomaticaLogin}" />
 </div>
 
@@ -360,15 +189,6 @@
 		
 	</label>
 	
-
-
-
-
-
-
-
-
-
 <g:checkBox name="fissaLimiteMassimoSingoloTurno" value="${settingsInstance?.fissaLimiteMassimoSingoloTurno}" />
 </div>
 
@@ -378,15 +198,6 @@
 		<span class="required-indicator">*</span>
 	</label>
 	
-
-
-
-
-
-
-
-
-
 <g:field name="oreMassimeSingoloTurno" type="number" value="${settingsInstance.oreMassimeSingoloTurno}" required=""/>
 </div>
 
@@ -396,15 +207,6 @@
 		
 	</label>
 	
-
-
-
-
-
-
-
-
-
 <g:checkBox name="usaModuloViaggi" value="${settingsInstance?.usaModuloViaggi}" />
 </div>
 
@@ -414,15 +216,6 @@
 		<span class="required-indicator">*</span>
 	</label>
 	
-
-
-
-
-
-
-
-
-
 <g:field name="numeroServiziEffettuati" type="number" value="${settingsInstance.numeroServiziEffettuati}" required=""/>
 </div>
 
@@ -432,15 +225,6 @@
 		
 	</label>
 	
-
-
-
-
-
-
-
-
-
 <g:checkBox name="tabelloneSecured" value="${settingsInstance?.tabelloneSecured}" />
 </div>
 
@@ -450,15 +234,6 @@
 		
 	</label>
 	
-
-
-
-
-
-
-
-
-
 <g:checkBox name="turniSecured" value="${settingsInstance?.turniSecured}" />
 </div>
 
@@ -468,15 +243,6 @@
 		
 	</label>
 	
-
-
-
-
-
-
-
-
-
 <g:checkBox name="mostraTabellonePartenza" value="${settingsInstance?.mostraTabellonePartenza}" />
 </div>
 
@@ -486,15 +252,6 @@
 		
 	</label>
 	
-
-
-
-
-
-
-
-
-
 <g:checkBox name="bloccaSoloFunzioniObbligatorie" value="${settingsInstance?.bloccaSoloFunzioniObbligatorie}" />
 </div>
 
@@ -504,15 +261,6 @@
 		
 	</label>
 	
-
-
-
-
-
-
-
-
-
 <g:checkBox name="militePuoCreareTurnoStandard" value="${settingsInstance?.militePuoCreareTurnoStandard}" />
 </div>
 
@@ -522,16 +270,25 @@
 		
 	</label>
 	
-
-
-
-
-
-
-
-
-
 <g:checkBox name="militePuoCreareTurnoExtra" value="${settingsInstance?.militePuoCreareTurnoExtra}" />
+</div>
+
+<div class="fieldcontain ${hasErrors(bean: settingsInstance, field: 'isTurnoSettimanale', 'error')} ">
+	<label for="isTurnoSettimanale">
+		<g:message code="settings.isTurnoSettimanale.labelform" default="Is Turno Settimanale" />
+		
+	</label>
+	
+<g:checkBox name="isTurnoSettimanale" value="${settingsInstance?.isTurnoSettimanale}" />
+</div>
+
+<div class="fieldcontain ${hasErrors(bean: settingsInstance, field: 'usaNomeCognome', 'error')} ">
+	<label for="usaNomeCognome">
+		<g:message code="settings.usaNomeCognome.labelform" default="Usa Nome Cognome" />
+		
+	</label>
+	
+<g:checkBox name="usaNomeCognome" value="${settingsInstance?.usaNomeCognome}" />
 </div>
 
 <g:if test="${campiExtra}">

@@ -99,7 +99,7 @@ class UtenteService {
         return listaUtenti
     }// fine del metodo
 
-    //--aggiunge in fondo l'username del programmatore
+    //--aggiunge in fondo il nickname del programmatore
     public ArrayList addNicknameProg(ArrayList listaUtenti) {
         Utente utente
 

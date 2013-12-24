@@ -26,6 +26,7 @@ public interface Cost {
     public static String CROCE_ROSSA_FIDENZA = 'CRF'
     public static String CROCE_ROSSA_PONTETARO = 'CRPT'
     public static String CROCE_PUBBLICA_PIANORO = 'PAP'
+    public static String GAPS_CASTELLO = 'GAPS'
 
     //--codifica degli attributi dei cookies
     public static String COOKIE_SIGLA_CROCE = 'siglaCroce'
@@ -59,6 +60,8 @@ public interface Cost {
     public static String PREF_bloccaSoloFunzioniObbligatorie = 'bloccaSoloFunzioniObbligatorie'
     public static String PREF_militePuoCreareTurnoStandard = 'militePuoCreareTurnoStandard'
     public static String PREF_militePuoCreareTurnoExtra = 'militePuoCreareTurnoExtra'
+    public static String PREF_isTurnoSettimanale = 'isTurnoSettimanale'
+    public static String PREF_usaNomeCognome = 'usaNomeCognome'
 
     //--spazio vuoto
     public static String SPAZIO_10 = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'
@@ -165,4 +168,15 @@ public interface Cost {
     public static String PAP_TIPO_TURNO_SABDOM_MATTINA = 'msa2-mat'
     public static String PAP_TIPO_TURNO_SABDOM_POMERIGGIO = 'msa2-pom'
     public static String PAP_TIPO_TURNO_SABDOM_SERA = 'msa2-sera'
+
+    //--funzioni in gaps castello
+    public static String GAPS_FUNZIONE_VOLONTARIO = 'vol'
+    public static String GAPS_FUNZIONE_VOLONTARIO_2 = 'vol2'
+    public static String GAPS_FUNZIONE_TIROCINANTE = 'tir'
+    public static String GAPS_FUNZIONE_TUTOR = 'tut'
+
+    //--funzioni in gaps castello
+    public static String GAPS_TIPO_TURNO_MATTINA = 'mat'
+    public static String GAPS_TIPO_TURNO_PRANZO = 'pra'
+    public static String GAPS_TIPO_TURNO_POMERIGGIO = 'pom'
 } // fine della interfaccia
