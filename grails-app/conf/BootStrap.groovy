@@ -384,6 +384,10 @@ class BootStrap implements Cost {
             creaGapsCastello()
         }// fine del blocco if
 
+        //--controllo di tutti i NULL che mi fanno casino
+        if (installaVersione(65)) {
+            fixNull()
+        }// fine del blocco if
 
         //--creazione dei record utenti per la pubblica castello
 //        if (installaVersione(99)) {
@@ -4735,6 +4739,21 @@ class BootStrap implements Cost {
         nuoviTurniAnnualiCastello('2014')
     }// fine del metodo
 
+    //--controllo di tutti i NULL che mi fanno casino
+    //--tutti i parametri stringa vengono messi a '' quando sono nulli - sia in beforeInsert che in beforeUpdate
+    //--Settings: controlli
+    //--Turno: note
+    private static void fixNull() {
+        String query
+
+        query = "ALTER TABLE 'amb'.'settings' MODIFY COLUMN 'controlli' VARCHAR(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL;"
+        //@todo devi modificare con MSQLQueryBrowser
+
+        query = "ALTER TABLE 'amb'.'turno' MODIFY COLUMN 'note' LONGTEXT CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL;"
+        //@todo devi modificare con MSQLQueryBrowser
+
+        newVersione(CROCE_ALGOS, 'Database', 'Controllo di alcuni NULL che mi fanno casino.')
+    }// fine del metodo
 
     def destroy = {
     }// fine della closure

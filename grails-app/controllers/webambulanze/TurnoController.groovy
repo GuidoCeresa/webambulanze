@@ -49,8 +49,6 @@ class TurnoController {
         dataInizio = AmbulanzaTagLib.creaDataOggi()
         dataFine = (dataInizio + delta).toTimestamp()
 
-//        def user = springSecurityService.principal
-//        def currUser = springSecurityService.getCurrentUser()
         render(view: 'tabellone', model: [dataInizio: dataInizio, dataFine: dataFine], params: params)
     }// fine della closure
 
@@ -390,9 +388,11 @@ class TurnoController {
         //--di solito c'è un giro solo, ma andava in errore per valori NULL del campo oreMilite1/2/3/4
         if (!turnoInstance.save(flush: true)) {
             if (!turnoInstance.save(flush: true)) {
-//                render(view: 'edit', model: [turnoInstance: turnoInstance], params: params)
-                flash.errors = 'Non è possibile registrare questo turno'
-                redirect(action: 'tabellone', model: [dataInizio: dataInizio, dataFine: dataFine], params: params)
+                flash.errors = 'Non è stato possibile registrare il turno richiesto'
+
+                redirect(action: 'tabellone',
+                        model: [dataInizio: dataInizio, dataFine: dataFine],
+                        params: [action: 'tabellone', controller: params.controller])
                 return
             }// fine del blocco if
         }// fine del blocco if
@@ -510,8 +510,8 @@ class TurnoController {
                             try { // prova ad eseguire il codice
                                 oreMilite = Integer.decode(durata)
                             } catch (Exception unErrore) { // intercetta l'errore
-                                flash.error =  'Pippoz'
-                                    log.error unErrore
+                                flash.error = 'Pippoz'
+                                log.error unErrore
                             }// fine del blocco try-catch
                         }// fine del blocco if
                         if (oreMilite && (oreMilite >= durataTurno)) {

@@ -94,7 +94,7 @@ class Turno {
         problemiFunzione4()
         titoloExtra(nullable: false, blank: true)
         localitàExtra(nullable: false, blank: true)
-        note(widget: 'textarea', nullable: false, blank: true)
+        note(widget: 'textarea', nullable: true, blank: true)
         assegnato()
     } // end of static constraints
 
@@ -141,6 +141,10 @@ class Turno {
                 this."${modFunz}" = new Date().toTimestamp()
             }// fine del blocco if
         } // fine del ciclo for
+
+        if (!note) {
+            note = ''
+        }// fine del blocco if
     } // end of def beforeInsert
 
     /**
@@ -164,6 +168,10 @@ class Turno {
                 }// fine del blocco if-else
             }// fine del blocco if
         } // fine del ciclo for
+
+        if (!note) {
+            note = ''
+        }// fine del blocco if
     } // end of def beforeUpdate
 
     /**

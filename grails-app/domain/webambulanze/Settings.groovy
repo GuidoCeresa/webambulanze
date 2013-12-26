@@ -140,7 +140,7 @@ class Settings {
         startLogin()
         startController()
         allControllers()
-        controlli()
+        controlli(nullable: true, blank: true)
         mostraSoloMilitiFunzione()
         mostraMilitiFunzioneAndAltri()
         militePuoInserireAltri()
@@ -188,6 +188,9 @@ class Settings {
      * prima di creare un nuovo record
      */
     def beforeInsert = {
+        if (!controlli) {
+            controlli = ''
+        }// fine del blocco if
     } // end of def beforeInsert
 
     /**
@@ -195,6 +198,9 @@ class Settings {
      * prima di registrare un record esistente
      */
     def beforeUpdate = {
+        if (!controlli) {
+            controlli = ''
+        }// fine del blocco if
     } // end of def beforeUpdate
 
     /**

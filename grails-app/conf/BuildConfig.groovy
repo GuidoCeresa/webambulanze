@@ -43,27 +43,33 @@ grails.project.dependency.resolution = {
     }
 
     plugins {
-        // sempre presenti
-        build ":tomcat:$grailsVersion"
-        runtime ":hibernate:$grailsVersion"
-        build ":release:2.2.0"
-        compile ':cache:1.0.1'
+        // plugins for the build system only
+        build ":tomcat:7.0.47"
+//        build ":release:2.2.0"
 
-        runtime ":resources:1.2.RC2"
+        // plugins for the compile step
+        compile ":scaffolding:2.0.1"
+        compile ':cache:1.1.1'
         compile ":quartz:1.0.1"
 
-        //--security
-        compile ":mail:1.0"
-        compile ":jquery:1.8.3"
-        compile ":jquery-ui:1.8.7"
-        compile ":famfamfam:1.0"
+        // plugins needed at runtime but not for compilation
+        runtime ":hibernate:3.6.10.6" // or ":hibernate4:4.1.11.6"
+        runtime ":database-migration:1.3.8"
+        runtime ":jquery:1.10.2.2"
+        runtime ":jquery-ui:1.10.3"
+        runtime ":resources:1.2.1"
+
+        //--altro
+        compile ":mail:1.0.1" {
+            excludes 'spring-test'
+        }
+
+        compile ":famfamfam:1.0.1"
         compile ":spring-security-core:1.2.7.1"
         compile ":spring-security-ui:0.2"
 
         // runtime ":algosbase:latest.integration"
         // runtime ":algospref:latest.integration"
-
-        runtime ":database-migration:1.2.1"
     }
 
     grails.project.repos.algosRepo.url = "http://77.43.32.198:8080/artifactory/plugins-release-local/"
