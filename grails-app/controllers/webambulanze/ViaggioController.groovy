@@ -199,7 +199,8 @@ class ViaggioController {
         Date giorno = new Date()
         Timestamp inizio = giorno.toTimestamp()
         Timestamp fine = giorno.toTimestamp()
-        Funzione funzAut = Funzione.findByCroceAndSigla(croce, Cost.CRPT_FUNZIONE_AUT_118)  //@todo ASSOLUTAMENTE PROVVISORIO
+        Funzione funzAut = Funzione.findByCroceAndSigla(croce, Cost.CRPT_FUNZIONE_AUT_118)
+        //@todo ASSOLUTAMENTE PROVVISORIO
         Funzione funzSocDae = Funzione.findByCroceAndSigla(croce, Cost.CRPT_FUNZIONE_DAE)
         Funzione funzSoc = Funzione.findByCroceAndSigla(croce, Cost.CRPT_FUNZIONE_SOC)
         Funzione funzBar = Funzione.findByCroceAndSigla(croce, Cost.CRPT_FUNZIONE_BAR)
@@ -268,6 +269,7 @@ class ViaggioController {
 //            return
         }// fine del blocco if-else
         def a = params
+
         //--valori suggeriti
         if (true) {
             params.tipoViaggio = TipoViaggio.auto118
@@ -281,6 +283,16 @@ class ViaggioController {
             params.giorno = giorno
             //params.inizio = inizio
             //params.fine = fine
+        }// fine del blocco if
+
+        //--valori suggeriti
+        //--equipaggio
+        if (true) {
+            params.tipoViaggio = TipoViaggio.auto118
+            params.codiceInvio = CodiceInvio.verde
+            params.luogoEvento = LuogoEvento.Z
+            params.codiceRicovero = CodiceRicovero.normale
+            params.patologia = Patologia.C20
         }// fine del blocco if
 
         if (true) {
@@ -311,11 +323,18 @@ class ViaggioController {
 
     def save() {
         Milite milite = null
+        Turno turno
+
         if (params.list) {
             redirect(action: 'list')
             return
         }// fine del blocco if
         def pippoz = params
+
+        if (params.turnoId) {
+            turno = Turno.findById(params.turnoId)
+        }// fine del blocco if
+
         params.tipoViaggio = TipoViaggio.auto118   //@todo ASSOLUTAMENTE PROVVISORIO
 
         if (params.tipoViaggio) {
@@ -368,25 +387,25 @@ class ViaggioController {
         if (params.militeFunzione1) {
             params.militeFunzione1 = Milite.findById(params.militeFunzione1)
         } else {
-            params.militeFunzione1 = null
+            params.militeFunzione1 = Milite.get(1)
         }// fine del blocco if-else
 
         if (params.militeFunzione2) {
             params.militeFunzione2 = Milite.findById(params.militeFunzione2)
         } else {
-            params.militeFunzione2 = null
+            params.militeFunzione2 = Milite.get(1)
         }// fine del blocco if-else
 
         if (params.militeFunzione3) {
             params.militeFunzione3 = Milite.findById(params.militeFunzione3)
         } else {
-            params.militeFunzione3 = null
+            params.militeFunzione3 = Milite.get(1)
         }// fine del blocco if-else
 
         if (params.militeFunzione4) {
             params.militeFunzione4 = Milite.findById(params.militeFunzione4)
         } else {
-            params.militeFunzione4 = null
+            params.militeFunzione4 = Milite.get(1)
         }// fine del blocco if-else
 
         def viaggioInstance = new Viaggio(params)

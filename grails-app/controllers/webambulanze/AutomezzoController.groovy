@@ -93,14 +93,17 @@ class AutomezzoController {
 
     def show(Long id) {
         def automezzoInstance = Automezzo.get(id)
+
         if (!automezzoInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'automezzo.label', default: 'Automezzo'), id])
             redirect(action: "list")
             return
         }
-        def menuExtra = [class: 'list', controller: 'viaggio', action: 'listaMezzo', message: 'Viaggi del mezzo']
+//        ArrayList menuExtra = new ArrayList()
+//        menuExtra.add([class: 'list', controller: 'viaggio', action: 'listaMezzo', message: 'Viaggi del mezzo'])
+//        [automezzoInstance: automezzoInstance, menuExtra: menuExtra]
 
-        [automezzoInstance: automezzoInstance, menuExtra: menuExtra]
+        render(view: 'show', model: [automezzoInstance: automezzoInstance], params: params)
     } // fine del metodo
 
     @Secured([Cost.ROLE_ADMIN])

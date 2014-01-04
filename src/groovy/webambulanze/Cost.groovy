@@ -62,6 +62,8 @@ public interface Cost {
     public static String PREF_militePuoCreareTurnoExtra = 'militePuoCreareTurnoExtra'
     public static String PREF_isTurnoSettimanale = 'isTurnoSettimanale'
     public static String PREF_usaNomeCognome = 'usaNomeCognome'
+    public static String PREF_usaListaMilitiViaggi = 'usaListaMilitiViaggi'
+    public static String PREF_suggerisceKilometroViaggio = 'suggerisceKilometroViaggio'
 
     //--spazio vuoto
     public static String SPAZIO_10 = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'
@@ -96,6 +98,12 @@ public interface Cost {
     //--identificatore delle numero di turni valido o meno per le statistiche
     public static String STATUS_VERDE = 'ok'
     public static String STATUS_ROSSO = 'rosso'
+
+    //--identificatori di alcuni campi tra TagLib e Controller
+    public static String CAMPO_RIPETIZIONE_TURNO = 'ripetizioneTurno'
+    public static String CAMPO_FREQUENZA_RIPETIZIONE = 'frequenzaRipetizione'
+    public static String CAMPO_NUMERO_RIPETIZIONI = 'numeroRipetizioni'
+    public static ArrayList VALORI_FREQUENZA = ['ogni 7gg', 'ogni 14gg', 'ogni 21 gg', 'ogni 28gg']
 
     //--sigle dei tipi di turno in croce rossa fidenza
     public static String CRF_TIPO_TURNO_AUTOMEDICA_MATTINO = 'msa-mat'

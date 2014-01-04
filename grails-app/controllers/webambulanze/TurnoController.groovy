@@ -335,12 +335,34 @@ class TurnoController {
     def update(Long id, Long version) {
         boolean nuovoTurno = false
         String value
+        String ripetizione = Cost.CAMPO_RIPETIZIONE_TURNO
+        boolean isRipetizione = false
+        ArrayList valori = Cost.VALORI_FREQUENZA
+        String frequenza = Cost.CAMPO_FREQUENZA_RIPETIZIONE
+        String valoreFrequenzaTxt
+        int valoreFrequenzaInt
+        def numVolte
+
+        def a = params
 
         if (params.nuovoTurno) {
             value = params.nuovoTurno
             if (value.equals('true')) {
                 nuovoTurno = true
             }// fine del blocco if
+        }// fine del blocco if
+
+        if (params."${ripetizione}") {
+            value = params."${ripetizione}"
+            if (value.equals('on')) {
+                isRipetizione = true
+            }// fine del blocco if
+        }// fine del blocco if
+
+        if (params."${frequenza}") {
+            valoreFrequenzaTxt = params."${frequenza}"
+            valoreFrequenzaInt = Integer.decode(valoreFrequenzaTxt)
+            def stop
         }// fine del blocco if
 
         def turnoInstance = Turno.get(id)

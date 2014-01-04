@@ -382,14 +382,14 @@ class AmbulanzaTagLib {
     //--mappa con [cont:'controller', action:'metodo', icon:'iconaImmagine', title:'titoloVisibile']
     def menuExtra = { args ->
         String testoOut = ''
-        ArrayList lista = null
+        def lista = null
         def elementoLista
         String app = 'webambulanze'
-        String contQuesto
-        String cont
-        String action
-        String icon
-        String title
+        String contQuesto = ''
+        String cont = ''
+        String action = ''
+        String icon = ''
+        String title = ''
 
         if (args.menuExtra) {
             lista = args.menuExtra
@@ -1770,23 +1770,7 @@ class AmbulanzaTagLib {
             } // fine del ciclo for
             testoOut += formRiga('Note', formNote(turno.note))
             if (isTurnoSettimanale && inserimento) {
-                String testoRiga2 = ''
-                String testoRiga3 = ''
-                String label = 'numeroSettimane'
-                String nomeCampo = '12'
-                testoRiga = formRadio(turno, 'problemiFunzione1', 'Vuoi ripetere il turno settimanale?')
-                testoRiga = Lib.tag('td', testoRiga, Aspetto.formlabelleft.toString(), 'col', 1)
-                testoRiga2 += formRadio(turno, 'problemiFunzione2', 'Ogni 7 gg')
-                testoRiga2 += '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'
-                testoRiga2 += formRadio(turno, 'problemiFunzione3', 'Ogni 14 gg')
-//                testoRiga2 += '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'
-                testoRiga2 += Lib.tagCella('per', Aspetto.formlabelleft)
-                testoRiga2 += Lib.tagCella('<input type=\"text\" name=\"${label}\" value=\"3\" style=\"width: 30px\" id=\"${label}\"/>', Aspetto.formlabelleft)
-                testoRiga2 += Lib.tagCella('volte', Aspetto.formlabelleft)
-                testoRiga2 = Lib.tag('td', testoRiga2, Aspetto.formeditleft.toString(), 'col', 1)
-
-//                testoRiga3 = Lib.tag('td', testoRiga3, Aspetto.formlabelleft.toString(), 'col', 1)
-                testoOut += Lib.tagRiga(testoRiga + testoRiga2)
+                testoOut += getRipetizioneTurno(turno)
             }// fine del blocco if
 
         }// fine del blocco if
@@ -1795,6 +1779,40 @@ class AmbulanzaTagLib {
         out << testoOut
     }// fine della closure
 
+    //--presenta la riga di ripetizione settimanale del turno
+    //--se è admin sempre (in update controlla se sia valido l'inserimento, qui è solo presentato)
+    //--solo se il milite non è già segnato
+    //--solo se ci sono funzioni ancora disponibili
+    //--solo se il milite è abilitato per le funzioni disponibili
+    //--solo se il turno non è bloccato (storico, scaduto o imminente)
+    //--sempre nella creazione di un nuovo turno
+    private static String getRipetizioneTurno(Turno turno) {
+        String testoOut = ''
+        boolean inserimento = true //true se admin oppure se milite non è già segnato nel turno
+        String inputTxt = ''
+        String testoUno
+        String testoDue
+        ArrayList valori = Cost.VALORI_FREQUENZA
+        String label = Cost.CAMPO_NUMERO_RIPETIZIONI
+        int numSuggerito = 2
+
+        testoUno = formRadio(Cost.CAMPO_RIPETIZIONE_TURNO, 'Vuoi ripetere il turno settimanale?', false)
+        testoUno = Lib.tag('td', testoUno, Aspetto.formlabelleft.toString(), 'col', 1)
+        testoDue = formSelect(Cost.CAMPO_FREQUENZA_RIPETIZIONE, valori, 1)
+        testoDue += Lib.tagCella('per', Aspetto.formlabelleft)
+        inputTxt += "<input type=\"text\" name="
+        inputTxt += label
+        inputTxt += " value="
+        inputTxt += numSuggerito
+        inputTxt += " style=\"width: 30px\" id=\"${label}\"/>"
+        testoDue += Lib.tagCella(inputTxt, Aspetto.formlabelleft)
+        testoDue += Lib.tagCella('volte', Aspetto.formlabelleft)
+        testoDue = Lib.tag('td', testoDue, Aspetto.formeditleft.toString(), 'col', 1)
+
+        testoOut += Lib.tagRiga(testoUno + testoDue)
+        return testoOut
+    }// fine del metodo
+
     /**
      * Form del singolo viaggio <br>
      *
@@ -1802,7 +1820,7 @@ class AmbulanzaTagLib {
      */
     def fillViaggio = { mappa ->
         String testoOut = ''
-        Croce croce
+        Croce croce = null
         String descrizioneTurno = 'turno non specificato'
         Automezzo mezzo = null
         String targaMezzo = 'mezzo non specificato'
@@ -1839,7 +1857,11 @@ class AmbulanzaTagLib {
                 mezzoId = mezzo.id
                 targaMezzo = mezzo.targa
                 chilometriPartenza = mezzo.chilometriTotaliPercorsi
-                chilometriArrivo = 0
+                if (croceService.suggerisceKilometroViaggio(croce)) {
+                    chilometriArrivo = 0
+                } else {
+                    chilometriArrivo = chilometriPartenza + 1
+                }// fine del blocco if-else
             }// fine del blocco if
         }// fine del blocco if
         if (mappa.turnoId) {
@@ -1859,7 +1881,7 @@ class AmbulanzaTagLib {
             testoOut += LibHtml.field(Field.testoLink, 'Turno', descrizioneTurno, "turno/fillTurno?turnoId=${turnoId}")
             testoOut += LibHtml.field(Field.testoLink, 'Automezzo utilizzato', targaMezzo, "automezzo/show/${mezzoId}")
             testoOut += LibHtml.field(Field.testoObbEdit, 'Chilometri alla partenza', chilometriPartenza, 'chilometriPartenza')
-            testoOut += LibHtml.field(Field.testoObbEdit, "Chilometri all'arrivo", '', 'chilometriArrivo')
+            testoOut += LibHtml.field(Field.testoObbEdit, "Chilometri all'arrivo", chilometriArrivo, 'chilometriArrivo')
             testoOut += LibHtml.field(Field.oraMin, "Orario di chiamata", oggi, 'inizio')
             testoOut += LibHtml.fieldLista("Codice invio", 'codiceInvio', listaInvio, CodiceInvio.get(), true)
             testoOut += LibHtml.fieldLista("Luogo evento", 'luogoEvento', listaLuogo, LuogoEvento.get(), true)
@@ -1876,35 +1898,44 @@ class AmbulanzaTagLib {
             testoOut += LibHtml.field(Field.testoObbEdit, 'numeroBolla')
             testoOut += LibHtml.field(Field.testoObbEdit, 'numeroServizio')
             testoOut += LibHtml.field(Field.testoObbEdit, 'numeroViaggio')
-            testoOut += listaMilitiFunzioni(turno)
+            testoOut += listaMilitiFunzioni(croce, turno)
         }// fine del blocco if
 
         out << testoOut
     }// fine della closure
 
-    private String listaMilitiFunzioni(Turno turno) {
+    private String listaMilitiFunzioni(Croce croce, Turno turno) {
         String testoOut = ''
         int max = 4
 
         for (int k = 1; k <= max; k++) {
-            testoOut += listaMiliteFunzioni(turno, k)
+            testoOut += listaMiliteFunzioni(croce, turno, k)
         } // fine del ciclo for
 
         return testoOut
     }// fine del metodo
 
-    private String listaMiliteFunzioni(Turno turno, int pos) {
+    private String listaMiliteFunzioni(Croce croce, Turno turno, int pos) {
         String testoOut = ''
         Funzione funz
-        Milite milite
+        Milite milite = getMiliteForFunzione(turno, pos)
+        boolean usaListaMilitiViaggi = croceService.usaListaMilitiViaggi(croce)
 
-        funz = getFunzione(turno, pos)
-        if (funz) {
-            milite = getMiliteForFunzione(turno, pos)
-            if (milite) {
+        if (usaListaMilitiViaggi) {
+            funz = getFunzione(turno, pos)
+            if (funz) {
                 testoOut += listaMiliti(funz, milite, pos)
             }// fine del blocco if
-        }// fine del blocco if
+        } else {
+            funz = getFunzione(turno, pos)
+            if (funz) {
+                if (milite) {
+                    testoOut += LibHtml.field(Field.testo, funz.descrizione, milite.cognomeNome, "")
+                } else {
+                    testoOut += LibHtml.field(Field.testo, funz.descrizione, '...', "")
+                }// fine del blocco if-else
+            }// fine del blocco if
+        }// fine del blocco if-else
 
         return testoOut
     }// fine del metodo
@@ -2116,6 +2147,29 @@ class AmbulanzaTagLib {
                 testo += "<option value=\"${k}\" selected=\"selected\">${mese}</option>\n"
             } else {
                 testo += "<option value=\"${k}\">${mese}</option>\n"
+            }// fine del blocco if-else
+        } // fine del ciclo for
+        testo += '</select>\n'
+
+        return testo
+    }// fine del metodo
+
+    private static String formSelect(String nome, ArrayList valori) {
+        return formSelect(nome, valori, 0)
+    }// fine del metodo
+
+    private static String formSelect(String nome, ArrayList valori, int selected) {
+        String testo = ''
+        int max = valori.size()
+        String valore
+        testo += "<select name=\"${nome}\" id=\"${nome}\">\n"
+
+        for (int k = 1; k <= max; k++) {
+            valore = valori.get(k - 1)
+            if (k == selected) {
+                testo += "<option value=\"${k}\" selected=\"selected\">${valore}</option>\n"
+            } else {
+                testo += "<option value=\"${k}\">${valore}</option>\n"
             }// fine del blocco if-else
         } // fine del ciclo for
         testo += '</select>\n'
@@ -2382,6 +2436,22 @@ class AmbulanzaTagLib {
 
         return testo
     }
+
+    private static String formRadio(String nome, String label, boolean spuntato) {
+        String testoOut = ''
+        String tagSpazio = '  '
+        String tag = ' checked="checked"'
+
+//        testoOut += "<input type=\"hidden\" name=\"${nome}\"/><input type=\"checkbox\""
+        testoOut += "<input type=\"checkbox\""
+        if (spuntato) {
+            testoOut += tag
+        }// fine del blocco if
+        testoOut += " name=\"${nome}\" id=\"${nome}\"/>"
+        testoOut += tagSpazio + label
+
+        return testoOut
+    }// fine del metodo
 
     private static String formOreMilite(Turno turno, boolean mostraOreSingoloMilite, int numFunzione) {
         String testo = ''

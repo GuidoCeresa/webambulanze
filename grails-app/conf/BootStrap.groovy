@@ -389,6 +389,18 @@ class BootStrap implements Cost {
             fixNull()
         }// fine del blocco if
 
+        //--aggiunto flag per presentazione o meno liste di Militi nei nuovi viaggi
+        if (installaVersione(66)) {
+            addFlagMilitiNuoviViaggi()
+        }// fine del blocco if
+
+        //--aggiunto flag per suggerire un incremento di 1 kilometro in un nuovo viaggio
+        if (installaVersione(67)) {
+            addFlagSuggerisceKilometroNuoviViaggi()
+        }// fine del blocco if
+
+
+
         //--creazione dei record utenti per la pubblica castello
 //        if (installaVersione(99)) {
 //            utentiPubblicacastello()
@@ -4753,6 +4765,16 @@ class BootStrap implements Cost {
         //@todo devi modificare con MSQLQueryBrowser
 
         newVersione(CROCE_ALGOS, 'Database', 'Controllo di alcuni NULL che mi fanno casino.')
+    }// fine del metodo
+
+    //--aggiunto flag per presentazione o meno liste di Militi nei nuovi viaggi
+    private static void addFlagMilitiNuoviViaggi() {
+        newVersione(CROCE_ALGOS, 'Settings', 'Aggiunto flag per presentare o meno liste di Militi nei nuovi viaggi')
+    }// fine del metodo
+
+    //--aggiunto flag per suggerire un incremento di 1 kilometro in un nuovo viaggio
+    private static void addFlagSuggerisceKilometroNuoviViaggi() {
+        newVersione(CROCE_ALGOS, 'Settings', 'Aggiunto flag per suggerire un incremento di 1 kilometro in un nuovo viaggio')
     }// fine del metodo
 
     def destroy = {

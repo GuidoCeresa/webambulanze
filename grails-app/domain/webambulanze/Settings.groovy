@@ -130,6 +130,13 @@ class Settings {
     //--di default falso: si presenta secondo il cognome
     boolean usaNomeCognome = false
 
+    //--flag per presentare una lista di militi nel nuovo viaggio, con selezionato quello in turno
+    //--di default falso: si presenta solo il milite in turno (se esiste) per nome e cognome
+    boolean usaListaMilitiViaggi = false
+
+    //--flag per suggerire il kilometraggio in un nuovo viaggio incrementato di 1
+    boolean suggerisceKilometroViaggio = false
+
     /**
      * regolazione delle proprietà di ogni campo
      * l'ordine con cui vengono elencati qui, viene rispettato nella lista e nella scheda standard
@@ -167,6 +174,8 @@ class Settings {
         militePuoCreareTurnoExtra()
         isTurnoSettimanale()
         usaNomeCognome()
+        usaListaMilitiViaggi()
+        suggerisceKilometroViaggio()
     } // end of static constraints
 
     /*+

@@ -372,4 +372,23 @@ class CroceService {
             return false
         }// fine del blocco if-else
     }// fine del metodo
+
+    //--controlla il flag mantenuto nei Settings associati alla croce
+    public boolean usaListaMilitiViaggi(siglaCroce) {
+        if (siglaCroce instanceof String) {
+            return isFlag(siglaCroce, Cost.PREF_usaListaMilitiViaggi)
+        } else {
+            return false
+        }// fine del blocco if-else
+    }// fine del metodo
+
+    //--controlla il flag mantenuto nei Settings associati alla croce
+    public boolean suggerisceKilometroViaggio(siglaCroce) {
+        if (siglaCroce instanceof String) {
+            return isFlag(siglaCroce, Cost.PREF_suggerisceKilometroViaggio)
+        } else {
+            return false
+        }// fine del blocco if-else
+    }// fine del metodo
+
 } // end of Service Class
