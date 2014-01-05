@@ -40,6 +40,20 @@ class CroceService {
         return value
     }// fine del metodo
 
+    //--regola il valore mantenuto nei Settings associati alla croce indicata
+    private static void setInt(Croce croce, codice, int valore) {
+        Settings settings
+
+        if (croce) {
+            settings = croce.settings
+        }// fine del blocco if
+
+        if (settings) {
+            settings."${codice}" = valore
+            settings.save(flush: true)
+        }// fine del blocco if
+    }// fine del metodo
+
     //--controlla il flag mantenuto nei Settings associati alla croce indicata
     private boolean isFlag(request, codice) {
         boolean flag = false
@@ -356,7 +370,7 @@ class CroceService {
     }// fine del metodo
 
     //--controlla il flag mantenuto nei Settings associati alla croce
-    public boolean isTurnoSettimanale(siglaCroce) {
+    public boolean isTurnoSettimanale(String siglaCroce) {
         if (siglaCroce instanceof String) {
             return isFlag(siglaCroce, Cost.PREF_isTurnoSettimanale)
         } else {
@@ -365,7 +379,7 @@ class CroceService {
     }// fine del metodo
 
     //--controlla il flag mantenuto nei Settings associati alla croce
-    public boolean usaNomeCognome(siglaCroce) {
+    public boolean usaNomeCognome(String siglaCroce) {
         if (siglaCroce instanceof String) {
             return isFlag(siglaCroce, Cost.PREF_usaNomeCognome)
         } else {
@@ -374,7 +388,7 @@ class CroceService {
     }// fine del metodo
 
     //--controlla il flag mantenuto nei Settings associati alla croce
-    public boolean usaListaMilitiViaggi(siglaCroce) {
+    public boolean usaListaMilitiViaggi(String siglaCroce) {
         if (siglaCroce instanceof String) {
             return isFlag(siglaCroce, Cost.PREF_usaListaMilitiViaggi)
         } else {
@@ -383,12 +397,28 @@ class CroceService {
     }// fine del metodo
 
     //--controlla il flag mantenuto nei Settings associati alla croce
-    public boolean suggerisceKilometroViaggio(siglaCroce) {
+    public boolean suggerisceKilometroViaggio(String siglaCroce) {
         if (siglaCroce instanceof String) {
             return isFlag(siglaCroce, Cost.PREF_suggerisceKilometroViaggio)
         } else {
             return false
         }// fine del blocco if-else
+    }// fine del metodo
+
+    //--controlla il flag mantenuto nei Settings associati alla croce corrente
+    public int getNumeroServiziEffettuati(Croce croce) {
+        return getInt(croce, Cost.PREF_numeroServiziEffettuati)
+    }// fine del metodo
+
+    //--regola il flag mantenuto nei Settings associati alla croce corrente
+    public void setNumeroServiziEffettuati(Croce croce, int valore) {
+        setInt(croce, Cost.PREF_numeroServiziEffettuati, valore)
+    }// fine del metodo
+
+    //--regola il flag mantenuto nei Settings associati alla croce corrente
+    //--incrementa di uno
+    public void addNumeroServiziEffettuati(Croce croce) {
+        setInt(croce, Cost.PREF_numeroServiziEffettuati, getInt(croce, Cost.PREF_numeroServiziEffettuati) + 1)
     }// fine del metodo
 
 } // end of Service Class

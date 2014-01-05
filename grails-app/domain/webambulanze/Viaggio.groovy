@@ -8,6 +8,9 @@ class Viaggio {
     TipoViaggio tipoViaggio
 
     //--automezzo utilizzato
+    Turno turno
+
+    //--automezzo utilizzato
     Automezzo automezzo
 
     //--giorno di svolgimento del viaggio (giorno iniziale se termina il mattino dopo)
@@ -60,6 +63,9 @@ class Viaggio {
      */
     static constraints = {
         croce(nullable: false, blank: false, display: false)
+        tipoViaggio(nullable: false)
+        turno(nullable: false)
+        automezzo(nullable: false)
         giorno()
         inizio()
         fine()
@@ -69,8 +75,8 @@ class Viaggio {
         etaPaziente(nullable: true)
         prelievo(nullable: true)
         ricovero(nullable: true)
-        militeFunzione1(nullable: false)
-        militeFunzione2(nullable: false)
+        militeFunzione1(nullable: true)
+        militeFunzione2(nullable: true)
         militeFunzione3(nullable: true)
         militeFunzione4(nullable: true)
     } // end of static constraints
@@ -91,6 +97,7 @@ class Viaggio {
      * prima di creare un nuovo record
      */
     def beforeInsert = {
+        checkNull()
         beforeRegolaChilometri()
     } // end of def beforeInsert
 
@@ -99,6 +106,7 @@ class Viaggio {
      * prima di registrare un record esistente
      */
     def beforeUpdate = {
+        checkNull()
         beforeRegolaChilometri()
     } // end of def beforeUpdate
 
@@ -109,6 +117,31 @@ class Viaggio {
         if (chilometriPartenza && chilometriArrivo) {
             chilometriPercorsi = chilometriArrivo - chilometriPartenza
         }// fine del blocco if
+    } // fine del metodo
+
+    /**
+     * metodo chiamato prima di creare o modificare un record
+     */
+    private checkNull() {
+        if (!nomePaziente) {
+            nomePaziente = ''
+        }// fine del blocco if
+        if (!indirizzoPaziente) {
+            indirizzoPaziente = ''
+        }// fine del blocco if
+        if (!cittaPaziente) {
+            cittaPaziente = ''
+        }// fine del blocco if
+        if (!etaPaziente) {
+            etaPaziente = ''
+        }// fine del blocco if
+        if (!prelievo) {
+            prelievo = ''
+        }// fine del blocco if
+        if (!ricovero) {
+            ricovero = ''
+        }// fine del blocco if
+
     } // fine del metodo
 
     /**

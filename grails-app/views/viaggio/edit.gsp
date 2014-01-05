@@ -8,7 +8,7 @@
 <!--regola a true il flag di controllo flagOverwrite©-->
 <!--flagOverwrite = false-->
 
-<%@ page import="webambulanze.Viaggio" %>
+<%@ page import="org.springframework.validation.FieldError; webambulanze.Viaggio" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -20,7 +20,7 @@
 <body>
 <amb:titoloPagina></amb:titoloPagina>
 <a href="#edit-viaggio" class="skip" tabindex="-1"><g:message code="default.link.skip.label"
-                                                                                  default="Skip to content&hellip;"/></a>
+                                                              default="Skip to content&hellip;"/></a>
 
 <div class="nav" role="navigation">
     <ul>
@@ -44,25 +44,28 @@
     <g:hasErrors bean="${viaggioInstance}">
         <ul class="errors" role="alert">
             <g:eachError bean="${viaggioInstance}" var="error">
-                <li <g:if test="${error in org.springframework.validation.FieldError}">data-field-id="${error.field}"</g:if>><g:message
+                <li <g:if test="${error in FieldError}">data-field-id="${error.field}"</g:if>><g:message
                         error="${error}"/></li>
             </g:eachError>
         </ul>
     </g:hasErrors>
-    <g:form method="post" >
-    <g:hiddenField name="id" value="${viaggioInstance?.id}"/>
-    <g:hiddenField name="version" value="${viaggioInstance?.version}"/>
-    <fieldset class="form">
-        <g:render template="form"/>
-    </fieldset>
-    <fieldset class="buttons">
-        <g:actionSubmit class="save" action="update"
-                        value="${message(code: 'default.button.update.label', default: 'Update')}"/>
-        <g:actionSubmit class="delete" action="delete"
-                        value="${message(code: 'default.button.delete.label', default: 'Delete')}"
-                        formnovalidate=""
-                        onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');"/>
-    </fieldset>
+    <g:form method="post">
+        <g:hiddenField name="id" value="${viaggioInstance?.id}"/>
+        <g:hiddenField name="version" value="${viaggioInstance?.version}"/>
+        <fieldset class="form">
+            <amb:editViaggio> </amb:editViaggio>
+        </fieldset>
+        <fieldset class="buttons">
+            <g:actionSubmit class="save" action="update"
+                            value="${message(code: 'default.button.update.label', default: 'Update')}"/>
+            <g:submitButton name="list" class="list" annulla=""
+                            formnovalidate=""
+                            value="${message(code: 'default.button.cancel.label', default: 'Annulla')}"/>
+            <g:actionSubmit class="delete" action="delete"
+                            value="${message(code: 'default.button.delete.label', default: 'Delete')}"
+                            formnovalidate=""
+                            onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Sei sicuro?')}');"/>
+        </fieldset>
     </g:form>
 </div>
 </body>

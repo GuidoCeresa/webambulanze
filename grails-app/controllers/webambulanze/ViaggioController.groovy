@@ -285,19 +285,10 @@ class ViaggioController {
             //params.fine = fine
         }// fine del blocco if
 
-        //--valori suggeriti
-        //--equipaggio
-        if (true) {
-            params.tipoViaggio = TipoViaggio.auto118
-            params.codiceInvio = CodiceInvio.verde
-            params.luogoEvento = LuogoEvento.Z
-            params.codiceRicovero = CodiceRicovero.normale
-            params.patologia = Patologia.C20
-        }// fine del blocco if
-
         if (true) {
             //    if (tipoViaggio.equals('118')) {
-            render(view: 'fillViaggio', model: [
+//            render(view: 'fillViaggio', model: [
+            render(view: 'create', model: [
                     // viaggioInstance: new Viaggio(params),
                     tipoForm: tipoForm,
                     tipoViaggio: TipoViaggio.auto118.toString(), //@todo provvisorio
@@ -323,7 +314,7 @@ class ViaggioController {
 
     def save() {
         Milite milite = null
-        Turno turno
+        Turno turno = null
 
         if (params.list) {
             redirect(action: 'list')
@@ -361,19 +352,19 @@ class ViaggioController {
         }// fine del blocco if
 
         if (params.codiceInvio) {
-            params.codiceInvio = CodiceInvio.getDaNome(params.codiceInvio)//@todo rimettere
+            params.codiceInvio = CodiceInvio.getDaNome(params.codiceInvio)
         }// fine del blocco if
 
         if (params.luogoEvento) {
-            params.luogoEvento = LuogoEvento.getDaNome(params.luogoEvento)  //@todo rimettere
+            params.luogoEvento = LuogoEvento.getDaNome(params.luogoEvento)
         }// fine del blocco if
 
         if (params.patologia) {
-            params.patologia = Patologia.getDaNome(params.patologia)  //@todo rimettere
+            params.patologia = Patologia.getDaNome(params.patologia)
         }// fine del blocco if
 
         if (params.codiceRicovero) {
-            params.codiceRicovero = CodiceRicovero.getDaNome(params.codiceRicovero) //@todo rimettere
+            params.codiceRicovero = CodiceRicovero.getDaNome(params.codiceRicovero)
         }// fine del blocco if
 
         if (params.chilometriPartenza) {
@@ -387,25 +378,33 @@ class ViaggioController {
         if (params.militeFunzione1) {
             params.militeFunzione1 = Milite.findById(params.militeFunzione1)
         } else {
-            params.militeFunzione1 = Milite.get(1)
+            if (turno) {
+                params.militeFunzione1 = AmbulanzaTagLib.getMiliteForFunzione(turno, 1)
+            }// fine del blocco if
         }// fine del blocco if-else
 
         if (params.militeFunzione2) {
             params.militeFunzione2 = Milite.findById(params.militeFunzione2)
         } else {
-            params.militeFunzione2 = Milite.get(1)
+            if (turno) {
+                params.militeFunzione2 = AmbulanzaTagLib.getMiliteForFunzione(turno, 2)
+            }// fine del blocco if
         }// fine del blocco if-else
 
         if (params.militeFunzione3) {
             params.militeFunzione3 = Milite.findById(params.militeFunzione3)
         } else {
-            params.militeFunzione3 = Milite.get(1)
+            if (turno) {
+                params.militeFunzione3 = AmbulanzaTagLib.getMiliteForFunzione(turno, 3)
+            }// fine del blocco if
         }// fine del blocco if-else
 
         if (params.militeFunzione4) {
             params.militeFunzione4 = Milite.findById(params.militeFunzione4)
         } else {
-            params.militeFunzione4 = Milite.get(1)
+            if (turno) {
+                params.militeFunzione4 = AmbulanzaTagLib.getMiliteForFunzione(turno, 4)
+            }// fine del blocco if
         }// fine del blocco if-else
 
         def viaggioInstance = new Viaggio(params)
@@ -416,6 +415,10 @@ class ViaggioController {
             if (!viaggioInstance.croce) {
                 viaggioInstance.croce = croce
             }// fine del blocco if
+        }// fine del blocco if
+
+        if (turno) {
+            viaggioInstance.turno = turno
         }// fine del blocco if
 
         //--controllo chilometraggio
@@ -472,8 +475,6 @@ class ViaggioController {
     def update(Long id, Long version) {
         def viaggioInstance = Viaggio.get(id)
 
-        def pippoz = params
-
         if (!viaggioInstance) {
             flash.message = message(code: 'default.not.found.message', args: [message(code: 'viaggio.label', default: 'Viaggio'), id])
             redirect(action: 'list')
@@ -489,6 +490,22 @@ class ViaggioController {
                 return
             }
         }
+
+        if (params.codiceInvio) {
+            params.codiceInvio = CodiceInvio.getDaNome(params.codiceInvio)
+        }// fine del blocco if
+
+        if (params.luogoEvento) {
+            params.luogoEvento = LuogoEvento.getDaNome(params.luogoEvento)
+        }// fine del blocco if
+
+        if (params.patologia) {
+            params.patologia = Patologia.getDaNome(params.patologia)
+        }// fine del blocco if
+
+        if (params.codiceRicovero) {
+            params.codiceRicovero = CodiceRicovero.getDaNome(params.codiceRicovero)
+        }// fine del blocco if
 
         viaggioInstance.properties = params
 

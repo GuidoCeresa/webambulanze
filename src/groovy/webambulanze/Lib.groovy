@@ -18,6 +18,11 @@ class Lib {
     private static String colBack = 'ff4444'
     private static String colText = '444444'
 
+    /**
+     * tag per il valore falso per una posizione
+     */
+    public static final int INT_NULLO = -1
+
     static String getTitoloPagina(String testoIn) {
         String testoOut = ''
         int alt = 40
@@ -1336,13 +1341,17 @@ class Lib {
         String num9
         String num12
 
+        if (numero instanceof Integer || numero instanceof Long) {
+            numero = (String) numero
+        }// fine del blocco if
+
         // controllo di congruità
-        if (numero in String || numero in Integer || numero in Double || numero in BigDecimal) {
+        if (numero instanceof String || numero instanceof Integer || numero instanceof Double || numero instanceof BigDecimal) {
             formattato = ''
 
-            if (numero in String) {
-                numero = levaVirgole(numero)
-                numero = levaPunti(numero)
+            if (numero instanceof String) {
+                numero = levaTesto(numero,',')
+                numero = levaTesto(numero,'.')
                 formattato = numero
 
                 try { // prova ad eseguire il codice
@@ -1376,11 +1385,15 @@ class Lib {
                 }// fine del blocco try-catch
             }// fine del blocco if
 
-            if (numero in Integer) {
+            if (numero instanceof Integer) {
                 formattato = formatNum(numero.toString())
             }// fine del blocco if
 
-            if (numero in BigDecimal) {
+            if (numero instanceof Double) {
+                formattato = formatNum(numero.toString())
+            }// fine del blocco if
+
+            if (numero instanceof BigDecimal) {
                 formattato = formatNum(numero.toString())
             }// fine del blocco if
 
@@ -1388,7 +1401,68 @@ class Lib {
 
         // valore di ritorno
         return formattato
-    }
+    } // fine del metodo
+
+    /**
+     * Elimina tutti i caratteri contenuti nella stringa.
+     * Esegue solo se il testo è valido
+     *
+     * @param testoIn in ingresso
+     * @param subStringa da eliminare
+     * @return testoOut stringa convertita
+     */
+    public static levaTesto(def testoIn, String subStringa) {
+        // variabili e costanti locali di lavoro
+        def testoOut = testoIn
+
+        if (testoIn && testoIn instanceof String) {
+            testoOut = testoIn.trim()
+            if (testoOut.contains(subStringa)) {
+                testoOut = sostituisce(testoOut, subStringa, '')
+            }// fine del blocco if
+        }// fine del blocco if
+
+        // valore di ritorno
+        return testoOut
+    } // fine del metodo
+
+    /**
+     * Sostituisce tutte le occorrenze.
+     * Esegue solo se il testo è valido
+     * Se arriva un oggetto non stringa, restituisce l'oggetto
+     *
+     * @param testoIn in ingresso
+     * @param oldStringa da eliminare
+     * @param newStringa da sostituire
+     * @return testoOut convertito
+     */
+    public static sostituisce(def testoIn, String oldStringa, String newStringa) {
+        // variabili e costanti locali di lavoro
+        def testoOut = testoIn
+        int pos = 0
+        String prima = ''
+
+        if (testoIn && testoIn instanceof String && oldStringa && newStringa instanceof String) {
+            testoOut = testoIn.trim()
+            if (testoIn.contains(oldStringa)) {
+
+                while (pos != INT_NULLO) {
+                    pos = testoIn.indexOf(oldStringa)
+                    if (pos != INT_NULLO) {
+                        prima += testoIn.substring(0, pos)
+                        prima += newStringa
+                        pos += oldStringa.length()
+                        testoIn = testoIn.substring(pos)
+                    }// fine del blocco if
+                }// fine di while
+
+                testoOut = prima + testoIn
+            }// fine del blocco if
+        }// fine del blocco if
+
+        // valore di ritorno
+        return testoOut
+    } // fine del metodo
 
     //--controlla se il giorno della settimana è quello richiesto
     //--i giorni della settimana partono da domenica

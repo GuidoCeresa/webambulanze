@@ -66,59 +66,33 @@
     <g:datePicker name="fine" precision="day"  value="${viaggioInstance?.fine}"  />
 </div>
 
+
 <div class="fieldcontain ${hasErrors(bean: viaggioInstance, field: 'militeFunzione1', 'error')} required">
     <label for="militeFunzione1">
         <g:message code="viaggio.militeFunzione1.labelform" default="Autista Emergenza" />
         <span class="required-indicator">*</span>
     </label>
-
-
-
-
-
-
-
-
-
-
-    <g:select id="militeFunzione1" name="militeFunzione1.id" from="${webambulanze.Milite.list()}" optionKey="id" required="" value="${viaggioInstance?.militeFunzione1?.id}" class="many-to-one"/>
+    <g:select id="militeFunzione1" name="militeFunzione1.id" from="${listaMiliteFunzione1}" optionKey="id" required="" value="${viaggioInstance?.militeFunzione1?.id}" class="many-to-one"/>
 </div>
+
 
 <div class="fieldcontain ${hasErrors(bean: viaggioInstance, field: 'militeFunzione2', 'error')} required">
     <label for="militeFunzione2">
         <g:message code="viaggio.militeFunzione2.labelform" default="Soccorritore Dae" />
         <span class="required-indicator">*</span>
     </label>
-
-
-
-
-
-
-
-
-
-
-    <g:select id="militeFunzione2" name="militeFunzione2.id" from="${webambulanze.Milite.list()}" optionKey="id" required="" value="${viaggioInstance?.militeFunzione2?.id}" class="many-to-one"/>
+    <g:select id="militeFunzione2" name="militeFunzione2.id" from="${listaMiliteFunzione2}" optionKey="id" required="" value="${viaggioInstance?.militeFunzione2?.id}" class="many-to-one"/>
 </div>
+
 
 <div class="fieldcontain ${hasErrors(bean: viaggioInstance, field: 'militeFunzione3', 'error')} ">
     <label for="militeFunzione3">
         <g:message code="viaggio.militeFunzione3.labelform" default="Soccorritore" />
 
     </label>
-
-
-
-
-
-
-
-
-
-
-    <g:select id="militeFunzione3" name="militeFunzione3.id" from="${webambulanze.Milite.list()}" optionKey="id" value="${viaggioInstance?.militeFunzione3?.id}" class="many-to-one" noSelection="['null': '']"/>
+    <g:select id="militeFunzione3" name="militeFunzione3.id" from="${listaMiliteFunzione3}" optionKey="id" value="${viaggioInstance?.militeFunzione3?.id}" class="many-to-one" noSelection="['null': '']"/>
 </div>
+
 
 <div class="fieldcontain ${hasErrors(bean: viaggioInstance, field: 'militeFunzione4', 'error')} ">
     <label for="militeFunzione4">
@@ -135,7 +109,7 @@
 
 
 
-    <g:select id="militeFunzione4" name="militeFunzione4.id" from="${webambulanze.Milite.list()}" optionKey="id" value="${viaggioInstance?.militeFunzione4?.id}" class="many-to-one" noSelection="['null': '']"/>
+    <g:select id="militeFunzione4" name="militeFunzione4.id" from="${listaMiliteFunzione4}" optionKey="id" value="${viaggioInstance?.militeFunzione4?.id}" class="many-to-one" noSelection="['null': '']"/>
 </div>
 
 <div class="fieldcontain ${hasErrors(bean: viaggioInstance, field: 'automezzo', 'error')} required">
@@ -143,7 +117,7 @@
         <g:message code="viaggio.automezzo.labelform" default="Automezzo" />
         <span class="required-indicator">*</span>
     </label>
-    <g:select id="automezzo" name="automezzo.id" from="${webambulanze.Automezzo.list()}" optionKey="id" required="" value="${viaggioInstance?.automezzo?.id}" class="many-to-one"/>
+    <g:select id="automezzo" name="automezzo.id" from="${listaAutomezzi}" optionKey="id" required="" value="${viaggioInstance?.automezzo?.id}" class="many-to-one"/>
 </div>
 
 <div class="fieldcontain ${hasErrors(bean: viaggioInstance, field: 'chilometriArrivo', 'error')} required">

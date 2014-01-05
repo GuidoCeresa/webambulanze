@@ -451,7 +451,7 @@ class LibHtml {
         }// fine del blocco if
 
         lista?.each {
-            isSelected = (it == valoreSelezionato)
+            isSelected = (it.toString().equals(valoreSelezionato))
             testoHtml += nTab(pos + 1)
             try { // prova ad eseguire il codice
                 key = it.id

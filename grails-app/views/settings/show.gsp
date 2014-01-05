@@ -338,16 +338,34 @@
                     boolean="${settingsInstance?.isTurnoSettimanale}"/></span>
             
         </li>
-        
-        <li class="fieldcontain">
-            <span id="usaNomeCognome-label" class="property-label"><g:message
-                    code="settings.usaNomeCognome.labelform" default="Usa Nome Cognome"/></span>
-            
-            <span class="property-value" aria-labelledby="usaNomeCognome-label"><g:formatBoolean
-                    boolean="${settingsInstance?.usaNomeCognome}"/></span>
-            
-        </li>
-        
+
+    <li class="fieldcontain">
+        <span id="usaNomeCognome-label" class="property-label"><g:message
+                code="settings.usaNomeCognome.labelform" default="Usa Nome Cognome"/></span>
+
+        <span class="property-value" aria-labelledby="usaNomeCognome-label"><g:formatBoolean
+                boolean="${settingsInstance?.usaNomeCognome}"/></span>
+
+    </li>
+
+    <li class="fieldcontain">
+        <span id="usaListaMilitiViaggi-label" class="property-label"><g:message
+                code="settings.usaListaMilitiViaggi.labelform" default="Usa Lista Militi Viaggi"/></span>
+
+        <span class="property-value" aria-labelledby="usaListaMilitiViaggi-label"><g:formatBoolean
+                boolean="${settingsInstance?.usaListaMilitiViaggi}"/></span>
+
+    </li>
+
+    <li class="fieldcontain">
+        <span id="suggerisceKilometroViaggio-label" class="property-label"><g:message
+                code="settings.suggerisceKilometroViaggio.labelform" default="Suggerisce Kilometro Viaggio"/></span>
+
+        <span class="property-value" aria-labelledby="suggerisceKilometroViaggio-label"><g:formatBoolean
+                boolean="${settingsInstance?.suggerisceKilometroViaggio}"/></span>
+
+    </li>
+
     </ol>
 
     <g:if test="${campiExtra}">

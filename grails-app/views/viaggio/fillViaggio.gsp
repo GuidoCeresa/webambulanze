@@ -52,13 +52,14 @@
         <g:hiddenField name="automezzoId" value="${automezzoId}"/>
         <g:hiddenField name="turnoId" value="${turnoId}"/>
         <fieldset class="form">
-            <amb:fillViaggio tipoViaggio="${tipoViaggio}" automezzoId="${automezzoId}"
-                             turnoId="${turnoId}"> </amb:fillViaggio>
+            <amb:newViaggio tipoViaggio="${tipoViaggio}" automezzoId="${automezzoId}"
+                             turnoId="${turnoId}"> </amb:newViaggio>
         </fieldset>
         <fieldset class="buttons">
             <g:submitButton name="create" class="save"
                             value="${message(code: 'default.button.confirm.label', default: 'Create')}"/>
             <g:submitButton name="list" class="list" annulla=""
+                            formnovalidate=""
                             value="${message(code: 'default.button.cancel.label', default: 'Annulla')}"/>
         </fieldset>
     </g:form>

@@ -20,7 +20,7 @@
 <body>
 <amb:titoloPagina></amb:titoloPagina>
 <a href="#create-viaggio" class="skip" tabindex="-1"><g:message code="default.link.skip.label"
-                                                                                    default="Skip to content&hellip;"/></a>
+                                                                default="Skip to content&hellip;"/></a>
 
 <div class="nav" role="navigation">
     <ul>
@@ -45,14 +45,21 @@
             </g:eachError>
         </ul>
     </g:hasErrors>
-    <g:form action="save" >
-    <fieldset class="form">
-        <g:render template="form"/>
-    </fieldset>
-    <fieldset class="buttons">
-        <g:submitButton name="create" class="save"
-                        value="${message(code: 'default.button.create.label', default: 'Create')}"/>
-    </fieldset>
+    <g:form action="save">
+        <g:hiddenField name="tipoViaggio" value="${tipoViaggio}"/>
+        <g:hiddenField name="automezzoId" value="${automezzoId}"/>
+        <g:hiddenField name="turnoId" value="${turnoId}"/>
+        <fieldset class="form">
+            <amb:newViaggio tipoViaggio="${tipoViaggio}" automezzoId="${automezzoId}"
+                             turnoId="${turnoId}"> </amb:newViaggio>
+        </fieldset>
+        <fieldset class="buttons">
+            <g:submitButton name="create" class="save"
+                            value="${message(code: 'default.button.confirm.label', default: 'Create')}"/>
+            <g:submitButton name="list" class="list" annulla=""
+                            formnovalidate=""
+                            value="${message(code: 'default.button.cancel.label', default: 'Annulla')}"/>
+        </fieldset>
     </g:form>
 </div>
 </body>
