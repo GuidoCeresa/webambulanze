@@ -362,7 +362,8 @@ class MiliteturnoService {
     private void ricalcolaMiliteStatistiche(Croce croce, String anno, Date inizio, Date fine) {
         Militestatistiche militestatistiche
         Milite milite
-        Date ultimoTurno = Lib.creaData1Gennaio(anno)
+//        Date ultimoTurno = Lib.creaData1Gennaio(anno)
+        Date ultimoTurno = null
         Date dataCorrente = new Date()
         int delta = 0
         int numUltimoTurno
@@ -383,6 +384,7 @@ class MiliteturnoService {
 
         listaMiliti?.each {
             milite = (Milite) it
+            ultimoTurno = null
             delta = 0
             turni = 0
             ore = 0
@@ -410,8 +412,12 @@ class MiliteturnoService {
             //--controllo delle date
             if (annoCorrente) {
                 numDataCorrente = Lib.getNumGiornoAssoluto(dataCorrente)
-                numUltimoTurno = Lib.getNumGiornoAssoluto(ultimoTurno)
-                delta = (numDataCorrente - numUltimoTurno)
+                if (ultimoTurno) {
+                    numUltimoTurno = Lib.getNumGiornoAssoluto(ultimoTurno)
+                    delta = (numDataCorrente - numUltimoTurno)
+                } else {
+                    delta = 0
+                }// fine del blocco if-else
             }// fine del blocco if
 
             militestatistiche = new Militestatistiche()

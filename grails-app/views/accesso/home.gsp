@@ -98,7 +98,7 @@
 </head>
 
 <body>
-<amb:titoloPagina></amb:titoloPagina>
+<amb:titoloPagina> </amb:titoloPagina>
 
 <g:if test="${application.loginObbligatorio}">
     <sec:ifNotLoggedIn>
@@ -111,7 +111,7 @@
 
 <div id="page-body" role="main">
     <div id="controller-list" role="navigation">
-        <amb:listaControllers></amb:listaControllers>
+        <amb:listaControllers> </amb:listaControllers>
     </div>
 </div>
 

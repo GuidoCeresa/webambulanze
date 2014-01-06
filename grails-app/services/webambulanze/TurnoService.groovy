@@ -7,6 +7,46 @@ class TurnoService {
     def militeService
     def croceService
 
+    //--recupera i turni dell'anno in corso
+    public static ArrayList getTurniAnno(Croce croce) {
+        ArrayList listaTurni = null
+        def turni
+        Date oggi = new Date()
+        Date primoGennaio = Lib.creaData1Gennaio()
+
+        turni = Turno.findAllByCroceAndGiornoBetween(croce, primoGennaio, oggi)
+
+        if (turni) {
+            listaTurni = new ArrayList()
+            turni?.each {
+                listaTurni.add(it.toString())
+            } // fine del ciclo each
+        }// fine del blocco if
+
+        return listaTurni
+    }// fine del metodo
+
+    //--recupera i turni dell'anno in corso
+    public static ArrayList getTurniAnnoId(Croce croce) {
+        ArrayList listaTurniId = null
+        def turni
+        Turno turno
+        Date oggi = new Date()
+        Date primoGennaio = Lib.creaData1Gennaio()
+
+        turni = Turno.findAllByCroceAndGiornoBetween(croce, primoGennaio, oggi)
+
+        if (turni) {
+            listaTurniId = new ArrayList()
+            turni?.each {
+                turno = (Turno) it
+                listaTurniId.add(turno.id)
+            } // fine del ciclo each
+        }// fine del blocco if
+
+        return listaTurniId
+    }// fine del metodo
+
     //--recupera i turni degli ultimi due giorni
     public static ArrayList getLastTwoDays(Croce croce) {
         ArrayList listaTurni = null
@@ -158,40 +198,5 @@ class TurnoService {
         return possibileCreareTurno
     }// fine del metodo
 
-    //--recupera i tipi di turno possibili per la croce
-    public static ArrayList getTipiTurno(Croce croce) {
-        ArrayList listaTurni = null
-        def turni
-
-        turni = Turno.findAllByCroce(croce)
-
-        if (turni) {
-            listaTurni = new ArrayList()
-            turni?.each {
-                listaTurni.add(it.toString())
-            } // fine del ciclo each
-        }// fine del blocco if
-
-        return listaTurni
-    }// fine del metodo
-
-    //--recupera i tipi di turno possibili per la croce
-    public static ArrayList getTipiTurnoId(Croce croce) {
-        ArrayList listaTurniId = null
-        def turni
-        Turno turno
-
-        turni = Turno.findAllByCroce(croce)
-
-        if (turni) {
-            listaTurniId = new ArrayList()
-            turni?.each {
-                turno = (Turno) it
-                listaTurniId.add(turno.id)
-            } // fine del ciclo each
-        }// fine del blocco if
-
-        return listaTurniId
-    }// fine del metodo
 
 } // end of Service Class

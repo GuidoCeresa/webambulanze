@@ -141,11 +141,17 @@ class ViaggioController {
         params.siglaCroce = croceService.getSiglaCroce(request)
         ArrayList listaTipologieViaggi = TipoViaggio.getListaNomi()
         ArrayList listaAutomezzi = automezzoService.getAllTarga(croce)
-        ArrayList listaUltimiTurni = turnoService.getLastTwoDays(croce)
-        ArrayList listaUltimiTurniId = turnoService.getLastTwoDaysId(croce)
+        ArrayList listaTurni
+        ArrayList listaTurniId
         String tipoSelezionato
-        ArrayList listaTipiTurno = turnoService.getTipiTurno(croce)
-        ArrayList listaTipiTurnoId = turnoService.getTipiTurnoId(croce)
+
+        if (militeService.isLoggatoAdminOrMore()) {
+            listaTurni = turnoService.getTurniAnno(croce)
+            listaTurniId = turnoService.getTurniAnnoId(croce)
+        } else {
+            listaTurni = turnoService.getLastTwoDays(croce)
+            listaTurniId = turnoService.getLastTwoDaysId(croce)
+        }// fine del blocco if-else
 
         //--selezione suggerita
         tipoSelezionato = listaTipologieViaggi[0]
@@ -158,11 +164,8 @@ class ViaggioController {
                 listaTipologieViaggi: listaTipologieViaggi,
                 tipoSelezionato: tipoSelezionato,
                 listaAutomezzi: listaAutomezzi,
-                listaUltimiTurni: listaUltimiTurni,
-                listaUltimiTurniId: listaUltimiTurniId,
-                listaTipiTurno: listaTipiTurno,
-                listaTipiTurnoId: listaTipiTurnoId
-        ],
+                listaTurni: listaTurni,
+                listaTurniId: listaTurniId],
                 params: params)
     } // fine del metodo
 

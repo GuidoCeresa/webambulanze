@@ -34,7 +34,7 @@ class GenController {
 
     //--selezione della croce su cui ritornare
     def logoutSelection() {
-        String siglaCroce = GenController.SIGLA_CROCE
+        String siglaCroce = SIGLA_CROCE
 
         if (siglaCroce.equals(Cost.CROCE_ALGOS) || siglaCroce.equals('nessuna')) {
             redirect(action: 'selezionaCroce')

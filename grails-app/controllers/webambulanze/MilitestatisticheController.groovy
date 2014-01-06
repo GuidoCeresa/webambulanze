@@ -60,7 +60,7 @@ class MilitestatisticheController {
         Croce croce = croceService.getCroce(request)
         Milite milite
         ArrayList menuExtra
-        String anno = '2013'
+        String anno = '2014'
         HashMap mappa = new HashMap()
         String titoloLista = "Turni effettuati dai militi nell'anno 2013"
         mappa.put('titolo', 'nomignolo')

@@ -63,7 +63,6 @@ public interface Cost {
     public static String PREF_isTurnoSettimanale = 'isTurnoSettimanale'
     public static String PREF_usaNomeCognome = 'usaNomeCognome'
     public static String PREF_usaListaMilitiViaggi = 'usaListaMilitiViaggi'
-    public static String PREF_suggerisceKilometroViaggio = 'suggerisceKilometroViaggio'
     public static String PREF_numeroServiziEffettuati = 'numeroServiziEffettuati'
 
     //--spazio vuoto

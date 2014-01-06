@@ -394,12 +394,6 @@ class BootStrap implements Cost {
             addFlagMilitiNuoviViaggi()
         }// fine del blocco if
 
-        //--aggiunto flag per suggerire un incremento di 1 kilometro in un nuovo viaggio
-        if (installaVersione(67)) {
-            addFlagSuggerisceKilometroNuoviViaggi()
-        }// fine del blocco if
-
-
 
         //--creazione dei record utenti per la pubblica castello
 //        if (installaVersione(99)) {
@@ -4772,10 +4766,6 @@ class BootStrap implements Cost {
         newVersione(CROCE_ALGOS, 'Settings', 'Aggiunto flag per presentare o meno liste di Militi nei nuovi viaggi')
     }// fine del metodo
 
-    //--aggiunto flag per suggerire un incremento di 1 kilometro in un nuovo viaggio
-    private static void addFlagSuggerisceKilometroNuoviViaggi() {
-        newVersione(CROCE_ALGOS, 'Settings', 'Aggiunto flag per suggerire un incremento di 1 kilometro in un nuovo viaggio')
-    }// fine del metodo
 
     def destroy = {
     }// fine della closure

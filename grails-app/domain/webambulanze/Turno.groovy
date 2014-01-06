@@ -107,7 +107,8 @@ class Turno {
      */
     String toString() {
 //        return tipoTurno.sigla + '/' + Lib.presentaDataNum(giorno)
-        return tipoTurno.descrizione + ' - ' + Lib.presentaDataCompleta(giorno)
+//        return tipoTurno.descrizione + ' - ' + Lib.presentaDataCompleta(giorno)
+        return Lib.presentaDataCompleta(giorno) + ' - ' + tipoTurno.descrizione
     } // end of toString
 
     //--pacchetto di funzioni previste in questo turno

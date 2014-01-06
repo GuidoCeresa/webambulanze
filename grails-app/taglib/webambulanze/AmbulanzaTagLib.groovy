@@ -1694,7 +1694,8 @@ class AmbulanzaTagLib {
 //        testo = 'Algos© - v4.6 del 18 dicembre 2013'
 //        testo = 'Algos© - v4.7 del 21 dicembre 2013'
 //        testo = 'Algos© - v4.8 del 26 dicembre 2013'
-        testo = 'Algos© - v4.9 del 27 dicembre 2013'
+//        testo = 'Algos© - v4.9 del 27 dicembre 2013'
+        testo = 'Algos© - v5.0 del 7 gennaio 2014'
         testo = Lib.tagCella(testo, Aspetto.copyright)
         testoOut = Lib.tagTable(testo)
         return testoOut
@@ -1826,7 +1827,6 @@ class AmbulanzaTagLib {
         String targaMezzo = 'mezzo non specificato'
         long mezzoId = 0
         long chilometriPartenza = 0
-        String chilometriPartenzaTxt = ''
         long chilometriArrivo = 0
         String testoRiga
         Turno turno = null
@@ -1861,10 +1861,6 @@ class AmbulanzaTagLib {
                 mezzoId = mezzo.id
                 targaMezzo = mezzo.targa
                 chilometriPartenza = mezzo.chilometriTotaliPercorsi
-                if (croceService.suggerisceKilometroViaggio(croce.sigla)) {
-                    chilometriArrivo = chilometriPartenza
-                }// fine del blocco if
-                chilometriPartenzaTxt = Lib.formatNum(chilometriPartenza)
                 numeroViaggio = mezzo.numeroViaggiEffettuati + 1
             }// fine del blocco if
         }// fine del blocco if
@@ -1885,8 +1881,8 @@ class AmbulanzaTagLib {
             testoOut += LibHtml.field(Field.testoLink, 'giorno', Lib.presentaDataCompleta(turno.giorno), "turno/fillTurno?turnoId=${turnoId}")
             testoOut += LibHtml.field(Field.testoLink, 'turno', descrizioneTurno, "turno/fillTurno?turnoId=${turnoId}")
             testoOut += LibHtml.field(Field.testoLink, 'automezzo utilizzato', targaMezzo, "automezzo/show/${mezzoId}")
-            testoOut += LibHtml.field(Field.testoLink, 'chilometri alla partenza', chilometriPartenzaTxt, "automezzo/show/${mezzoId}")
-            testoOut += LibHtml.field(Field.testoObbEdit, "chilometri all'arrivo", chilometriArrivo, 'chilometriArrivo')
+            testoOut += LibHtml.field(Field.testoLink, 'chilometri alla partenza', chilometriPartenza, "automezzo/show/${mezzoId}")
+            testoOut += LibHtml.field(Field.testoObbEdit, "chilometri all'arrivo", '', 'chilometriArrivo')
             testoOut += LibHtml.field(Field.oraMin, "orario di chiamata", oggi, 'inizio')
             testoOut += LibHtml.fieldLista("codice invio", 'codiceInvio', listaInvio, CodiceInvio.get(), true)
             testoOut += LibHtml.fieldLista("luogo evento", 'luogoEvento', listaLuogo, LuogoEvento.get(), true)
