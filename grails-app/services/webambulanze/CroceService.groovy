@@ -415,10 +415,4 @@ class CroceService {
         setInt(croce, Cost.PREF_numeroServiziEffettuati, valore)
     }// fine del metodo
 
-    //--regola il flag mantenuto nei Settings associati alla croce corrente
-    //--incrementa di uno
-    public void addNumeroServiziEffettuati(Croce croce) {
-        setInt(croce, Cost.PREF_numeroServiziEffettuati, getInt(croce, Cost.PREF_numeroServiziEffettuati) + 1)
-    }// fine del metodo
-
 } // end of Service Class

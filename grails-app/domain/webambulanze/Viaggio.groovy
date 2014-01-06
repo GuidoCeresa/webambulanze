@@ -35,8 +35,8 @@ class Viaggio {
     String ricovero = ''
 
     String numeroCartellino         // senza automatismo - viene dalla CO
-    int numeroBolla                 // senza automatismo - si legge dal blocchetto
-    int numeroServizio              // progressivo della croce
+    int numeroBolla = 0          // senza automatismo - si legge dal blocchetto
+    int numeroServizio = 0            // progressivo della croce
     int numeroViaggio = 0           // progressivo dell'automezzo
 
     //--Suggerito automaticamente quando si seleziona l'automezzo.

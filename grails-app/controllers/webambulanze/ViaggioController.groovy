@@ -84,7 +84,7 @@ class ViaggioController {
             lista = Viaggio.findAll(params)
         }// fine del blocco if-else
 
-        flash.errors = ''
+//        flash.errors = ''
         render(view: 'list', model: [titoloLista: 'prot', viaggioInstanceList: lista, viaggioInstanceTotal: 0, campiLista: campiLista], params: params)
     } // fine del metodo
 
@@ -144,17 +144,25 @@ class ViaggioController {
         ArrayList listaUltimiTurni = turnoService.getLastTwoDays(croce)
         ArrayList listaUltimiTurniId = turnoService.getLastTwoDaysId(croce)
         String tipoSelezionato
+        ArrayList listaTipiTurno = turnoService.getTipiTurno(croce)
+        ArrayList listaTipiTurnoId = turnoService.getTipiTurnoId(croce)
 
         //--selezione suggerita
         tipoSelezionato = listaTipologieViaggi[0]
 
+        Date giorno = new Date()
+
         //        render(view: 'selezionetipo', params: params)
         render(view: 'selezione', model: [
+                giorno: giorno,
                 listaTipologieViaggi: listaTipologieViaggi,
                 tipoSelezionato: tipoSelezionato,
                 listaAutomezzi: listaAutomezzi,
                 listaUltimiTurni: listaUltimiTurni,
-                listaUltimiTurniId: listaUltimiTurniId],
+                listaUltimiTurniId: listaUltimiTurniId,
+                listaTipiTurno: listaTipiTurno,
+                listaTipiTurnoId: listaTipiTurnoId
+        ],
                 params: params)
     } // fine del metodo
 
@@ -264,9 +272,9 @@ class ViaggioController {
                 }// fine del blocco if
             }// fine del blocco if
         } else {
-//            flash.errors = "Devi selezionare un turno, prima di proseguire"
-//            redirect(action: 'create')
-//            return
+            flash.errors = "Devi selezionare un turno, prima di proseguire. Se manca, puoi creare un turno extra odierno. Per turni precedenti occorre loggarsi come admin."
+            redirect(action: 'create')
+            return
         }// fine del blocco if-else
         def a = params
 
@@ -375,6 +383,10 @@ class ViaggioController {
             params.chilometriArrivo = Integer.decode(params.chilometriArrivo)
         }// fine del blocco if
 
+        if (params.chilometriPartenza && params.chilometriArrivo) {
+            params.chilometriPercorsi = params.chilometriArrivo - params.chilometriPartenza
+        }// fine del blocco if
+
         if (params.militeFunzione1) {
             params.militeFunzione1 = Milite.findById(params.militeFunzione1)
         } else {
@@ -421,22 +433,33 @@ class ViaggioController {
             viaggioInstance.turno = turno
         }// fine del blocco if
 
+        if (params.automezzo) {
+            viaggioInstance.chilometriPartenza = params.automezzo.chilometriTotaliPercorsi
+        }// fine del blocco if
+
         //--controllo chilometraggio
         if (true) {
+            if (viaggioInstance.chilometriArrivo == 0) {
+                flash.errors = "Viaggio non registrato - Non hai segnato i chilometri all'arrivo"
+                redirect(action: 'list')
+                return
+            }// fine del blocco if
             if (viaggioInstance.chilometriArrivo == viaggioInstance.chilometriPartenza) {
                 flash.errors = "Viaggio non registrato - Ti sei dimenticato di modificare i chilometri all'arrivo"
-                render(view: 'create118', model: [viaggioInstance: viaggioInstance])
+                redirect(action: 'list')
                 return
             }// fine del blocco if
             if (viaggioInstance.chilometriArrivo < viaggioInstance.chilometriPartenza) {
                 flash.errors = "Viaggio non registrato - I chilometri all'arrivo non possono essere minori di quelli alla partenza"
-                render(view: 'create118', model: [viaggioInstance: viaggioInstance])
+                redirect(action: 'list')
                 return
             }// fine del blocco if
         }// fine del blocco if
 
         if (!viaggioInstance.save(flush: true)) {
-            render(view: "create", model: [viaggioInstance: viaggioInstance])
+            flash.errors = "Viaggio non registrato - Si è verificato un errore"
+//            render(view: "create", model: [viaggioInstance: viaggioInstance])
+            redirect(action: 'list')
             return
         }// fine del blocco if
 

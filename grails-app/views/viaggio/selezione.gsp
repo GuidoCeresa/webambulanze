@@ -113,7 +113,7 @@
 </head>
 
 <body>
-<amb:titoloPagina></amb:titoloPagina>
+<amb:titoloPagina> </amb:titoloPagina>
 
 <g:if test="${flash.message}">
     <div class="message" role="status">${flash.message}</div>
@@ -154,6 +154,7 @@
     <g:hiddenField name="id" value="${viaggioInstance?.id}"/>
     <g:hiddenField name="version" value="${viaggioInstance?.version}"/>
     <g:hiddenField name="tipoViaggio" value="${tipoViaggio}"/>
+    <g:hiddenField name="giorno" value="${giorno}"/>
 
     <fieldset class="form">
         <h2>Nuovo viaggio</h2>
@@ -167,9 +168,21 @@
         <g:select name="auto" from="${listaAutomezzi}" required="" noSelection="['null': '']"/>
         <h3>(Recupera i chilometri ed i viaggi effettuati dal mezzo)</h3>
 
-        <label class="algoslabel">Turno di riferimento:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-        <g:select name="turno" keys="${listaUltimiTurniId}" from="${listaUltimiTurni}" noSelection="['null': '']"/>
-        <h3>(Recupera i militi presenti nel turno)</h3>
+        <sec:ifNotGranted roles="ROLE_programmatore,ROLE_custode,ROLE_admin">
+            <label class="algoslabel">Turno di riferimento:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+            <g:select name="turno" keys="${listaUltimiTurniId}" from="${listaUltimiTurni}" noSelection="['null': '']"/>
+            <h3>(Recupera i militi presenti nel turno)</h3>
+        </sec:ifNotGranted>
+
+        <sec:ifAnyGranted roles="ROLE_programmatore,ROLE_custode,ROLE_admin">
+            <label class="algoslabel">Giorno del viaggio:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+            <amb:editGiorno giorno="${giorno}"> </amb:editGiorno>
+            <h3>(Giorno di effettuazione del turno)</h3>
+
+            <label class="algoslabel">Tipologia turni:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+            <g:select name="tipoturno" keys="${listaTipiTurnoId}" from="${listaTipiTurno}" noSelection="['null': '']"/>
+            <h3>(Tipo di turno del giorno selezionato)</h3>
+        </sec:ifAnyGranted>
 
     </fieldset>
 

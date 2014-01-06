@@ -158,4 +158,40 @@ class TurnoService {
         return possibileCreareTurno
     }// fine del metodo
 
+    //--recupera i tipi di turno possibili per la croce
+    public static ArrayList getTipiTurno(Croce croce) {
+        ArrayList listaTurni = null
+        def turni
+
+        turni = Turno.findAllByCroce(croce)
+
+        if (turni) {
+            listaTurni = new ArrayList()
+            turni?.each {
+                listaTurni.add(it.toString())
+            } // fine del ciclo each
+        }// fine del blocco if
+
+        return listaTurni
+    }// fine del metodo
+
+    //--recupera i tipi di turno possibili per la croce
+    public static ArrayList getTipiTurnoId(Croce croce) {
+        ArrayList listaTurniId = null
+        def turni
+        Turno turno
+
+        turni = Turno.findAllByCroce(croce)
+
+        if (turni) {
+            listaTurniId = new ArrayList()
+            turni?.each {
+                turno = (Turno) it
+                listaTurniId.add(turno.id)
+            } // fine del ciclo each
+        }// fine del blocco if
+
+        return listaTurniId
+    }// fine del metodo
+
 } // end of Service Class

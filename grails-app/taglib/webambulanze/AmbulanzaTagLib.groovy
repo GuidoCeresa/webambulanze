@@ -1845,9 +1845,12 @@ class AmbulanzaTagLib {
         ArrayList listaLuogo = LuogoEvento.getAll()
         ArrayList listaPatologia = Patologia.getAll()
         ArrayList listaRicovero = CodiceRicovero.getAll()
+        int numeroServiziEffettuati = 0
+        int numeroViaggio = 0
 
         if (params.siglaCroce) {
             croce = Croce.findBySigla((String) params.siglaCroce)
+            numeroServiziEffettuati = croceService.getNumeroServiziEffettuati(croce) + 1
         }// fine del blocco if
         if (mappa.tipoViaggio) {
             a = mappa.tipoViaggio
@@ -1859,9 +1862,10 @@ class AmbulanzaTagLib {
                 targaMezzo = mezzo.targa
                 chilometriPartenza = mezzo.chilometriTotaliPercorsi
                 if (croceService.suggerisceKilometroViaggio(croce.sigla)) {
-                    chilometriArrivo = chilometriPartenza + 1
+                    chilometriArrivo = chilometriPartenza
                 }// fine del blocco if
                 chilometriPartenzaTxt = Lib.formatNum(chilometriPartenza)
+                numeroViaggio = mezzo.numeroViaggiEffettuati + 1
             }// fine del blocco if
         }// fine del blocco if
 
@@ -1878,17 +1882,17 @@ class AmbulanzaTagLib {
                 descrizioneTurno = tipoTurno.descrizione
             }// fine del blocco if
 
-            testoOut += LibHtml.field(Field.testoLink, 'Giorno', Lib.presentaDataCompleta(turno.giorno), "turno/fillTurno?turnoId=${turnoId}")
-            testoOut += LibHtml.field(Field.testoLink, 'Turno', descrizioneTurno, "turno/fillTurno?turnoId=${turnoId}")
-            testoOut += LibHtml.field(Field.testoLink, 'Automezzo utilizzato', targaMezzo, "automezzo/show/${mezzoId}")
-            testoOut += LibHtml.field(Field.testoLink, 'Chilometri alla partenza', chilometriPartenzaTxt, "automezzo/show/${mezzoId}")
-            testoOut += LibHtml.field(Field.testoObbEdit, "Chilometri all'arrivo", chilometriArrivo, 'chilometriArrivo')
-            testoOut += LibHtml.field(Field.oraMin, "Orario di chiamata", oggi, 'inizio')
-            testoOut += LibHtml.fieldLista("Codice invio", 'codiceInvio', listaInvio, CodiceInvio.get(), true)
-            testoOut += LibHtml.fieldLista("Luogo evento", 'luogoEvento', listaLuogo, LuogoEvento.get(), true)
-            testoOut += LibHtml.fieldLista("Patologia segnalata", 'patologia', listaPatologia, Patologia.get(), true)
-            testoOut += LibHtml.fieldLista("Codice ricovero", 'codiceRicovero', listaRicovero, CodiceRicovero.get(), true)
-            testoOut += LibHtml.field(Field.oraMin, "Orario di rientro", oggi, 'rientro')
+            testoOut += LibHtml.field(Field.testoLink, 'giorno', Lib.presentaDataCompleta(turno.giorno), "turno/fillTurno?turnoId=${turnoId}")
+            testoOut += LibHtml.field(Field.testoLink, 'turno', descrizioneTurno, "turno/fillTurno?turnoId=${turnoId}")
+            testoOut += LibHtml.field(Field.testoLink, 'automezzo utilizzato', targaMezzo, "automezzo/show/${mezzoId}")
+            testoOut += LibHtml.field(Field.testoLink, 'chilometri alla partenza', chilometriPartenzaTxt, "automezzo/show/${mezzoId}")
+            testoOut += LibHtml.field(Field.testoObbEdit, "chilometri all'arrivo", chilometriArrivo, 'chilometriArrivo')
+            testoOut += LibHtml.field(Field.oraMin, "orario di chiamata", oggi, 'inizio')
+            testoOut += LibHtml.fieldLista("codice invio", 'codiceInvio', listaInvio, CodiceInvio.get(), true)
+            testoOut += LibHtml.fieldLista("luogo evento", 'luogoEvento', listaLuogo, LuogoEvento.get(), true)
+            testoOut += LibHtml.fieldLista("patologia segnalata", 'patologia', listaPatologia, Patologia.get(), true)
+            testoOut += LibHtml.fieldLista("codice ricovero", 'codiceRicovero', listaRicovero, CodiceRicovero.get(), true)
+            testoOut += LibHtml.field(Field.oraMin, "orario di rientro", oggi, 'rientro')
             testoOut += LibHtml.field(Field.testoObbEdit, "Cartellino 118", '', 'numeroCartellino')
             testoOut += LibHtml.field('nomePaziente')
             testoOut += LibHtml.field('indirizzoPaziente')
@@ -1897,8 +1901,8 @@ class AmbulanzaTagLib {
             testoOut += LibHtml.field('prelievo')
             testoOut += LibHtml.field('ricovero')
             testoOut += LibHtml.field(Field.testoObbEdit, 'numeroBolla')
-            testoOut += LibHtml.field(Field.testoObbEdit, 'numeroServizio')
-            testoOut += LibHtml.field(Field.testoObbEdit, 'numeroViaggio')
+            testoOut += LibHtml.field(Field.testoObbEdit, 'numero servizio globale', numeroServiziEffettuati, 'numeroServizio')
+            testoOut += LibHtml.field(Field.testoObbEdit, 'numero viaggio del mezzo', numeroViaggio, 'numeroViaggio')
             testoOut += listaMilitiFunzioni(croce, turno)
         }// fine del blocco if
 
@@ -1986,6 +1990,19 @@ class AmbulanzaTagLib {
         testoOut += LibHtml.field(Field.testoObbEdit, 'Numero del servizio', numeroServizio, 'numeroServizio')
         testoOut += LibHtml.field(Field.testoObbEdit, 'Numero del viaggio', numeroViaggio, 'numeroViaggio')
         testoOut += listaMilitiFunzioni(croce, turno)
+
+        out << testoOut
+    }// fine della closure
+
+    def editGiorno = {
+        String testoOut = ''
+        Date giorno = new Date()
+
+        if (params.giorno) {
+            giorno = params.giorno
+        }// fine del bloc
+
+        testoOut += LibHtml.field('Giorno', formDataGiornoAnnoEdit(giorno, 'giorno'))
 
         out << testoOut
     }// fine della closure
@@ -2176,6 +2193,22 @@ class AmbulanzaTagLib {
         testoOut += formInputStruct(iniziofine)
         testoOut += formSelectGiorno(iniziofine, numGiorno, quantiGiorniNelMese)
         testoOut += formSelectMese(iniziofine, numMese)
+
+        return testoOut
+    }// fine del metodo
+
+    private static String formDataGiornoAnnoEdit(Date data, String iniziofine) {
+        String testoOut = ''
+        int numGiorno = Lib.getNumGiornoMese(data)
+        int quantiGiorniNelMese = Lib.getNumGiorniNelMese(data)
+        int numMese = Lib.getNumMese(data)
+        ArrayList anni = Cost.ANNI
+
+        testoOut += formInput(data, iniziofine)
+        testoOut += formInputStruct(iniziofine)
+        testoOut += formSelectGiorno(iniziofine, numGiorno, quantiGiorniNelMese)
+        testoOut += formSelectMese(iniziofine, numMese)
+        testoOut += formSelect('anno', anni, 3)
 
         return testoOut
     }// fine del metodo
