@@ -112,7 +112,7 @@
 <li class="fieldcontain">
     <span id="inizio-label" class="property-label"><g:message
             code="viaggio.inizio.labelform" default="Inizio"/></span>
-    <span class="property-value" aria-labelledby="inizio-label"><amb:formatDate
+    <span class="property-value" aria-labelledby="inizio-label"><amb:formatTempo
             date="${viaggioInstance?.inizio}"/></span>
 </li>
 
@@ -147,7 +147,7 @@
 <li class="fieldcontain">
     <span id="fine-label" class="property-label"><g:message
             code="viaggio.fine.labelform" default="Fine"/></span>
-    <span class="property-value" aria-labelledby="fine-label"><amb:formatDate
+    <span class="property-value" aria-labelledby="fine-label"><amb:formatTempo
             date="${viaggioInstance?.fine}"/></span>
 </li>
 

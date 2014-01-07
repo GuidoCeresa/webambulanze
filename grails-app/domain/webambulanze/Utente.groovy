@@ -23,9 +23,9 @@ class Utente {
         croce(nullable: false, blank: false, display: false)
         milite(nullable: true, blank: true)
         username blank: false, unique: true, display: false
-        nickname()
+        nickname blank: false
         password blank: false
-        pass()
+        pass blank: false
         enabled()
         accountExpired()
         accountLocked()

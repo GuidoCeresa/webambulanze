@@ -1044,8 +1044,30 @@ class AmbulanzaTagLib {
         String formattata = Lib.presentaDataMese(attrs.date)
         out << formattata
 ///        return dateFormat.format(date)
-    }// fine del metodo
+    }// fine della closure
 
+
+    def formatTempo = { attrs ->
+        String testoOut = ''
+        def giorno
+        def ore
+        def minuti
+
+        if (attrs.containsKey('date')) {
+            giorno = attrs.date
+            if (giorno == null) return
+        } else {
+            giorno = new Date()
+        }
+
+        if (giorno) {
+            ore = Lib.getNumOra(giorno)
+            minuti = Lib.getNumMinuti(giorno)
+            testoOut = ore + ':' + minuti
+        }// fine del blocco if
+
+        out << testoOut
+    }// fine della closure
 
     def resolveLocale(localeAttr) {
         def locale = localeAttr
@@ -1695,7 +1717,8 @@ class AmbulanzaTagLib {
 //        testo = 'Algos© - v4.7 del 21 dicembre 2013'
 //        testo = 'Algos© - v4.8 del 26 dicembre 2013'
 //        testo = 'Algos© - v4.9 del 27 dicembre 2013'
-        testo = 'Algos© - v5.0 del 7 gennaio 2014'
+//        testo = 'Algos© - v5.0 del 7 gennaio 2014'
+        testo = 'Algos© - v5.1 del 8 gennaio 2014'
         testo = Lib.tagCella(testo, Aspetto.copyright)
         testoOut = Lib.tagTable(testo)
         return testoOut
@@ -1841,6 +1864,7 @@ class AmbulanzaTagLib {
         def a
         def b
         Date oggi = new Date()
+        Date giorno
         ArrayList listaInvio = CodiceInvio.getAll()
         ArrayList listaLuogo = LuogoEvento.getAll()
         ArrayList listaPatologia = Patologia.getAll()
@@ -1875,12 +1899,13 @@ class AmbulanzaTagLib {
         }// fine del blocco if
 
         if (turno) {
+            giorno = turno.giorno
             tipoTurno = turno.tipoTurno
             if (tipoTurno) {
                 descrizioneTurno = tipoTurno.descrizione
             }// fine del blocco if
 
-            testoOut += LibHtml.field(Field.testoLink, 'giorno', Lib.presentaDataCompleta(turno.giorno), "turno/fillTurno?turnoId=${turnoId}")
+            testoOut += LibHtml.field(Field.testoLink, 'giorno', Lib.presentaDataCompleta(giorno), "turno/fillTurno?turnoId=${turnoId}")
             testoOut += LibHtml.field(Field.testoLink, 'turno', descrizioneTurno, "turno/fillTurno?turnoId=${turnoId}")
             testoOut += LibHtml.field(Field.testoLink, 'automezzo utilizzato', targaMezzo, "automezzo/show/${mezzoId}")
             testoOut += LibHtml.field(Field.testoLink, 'chilometri alla partenza', chilometriPartenza, "automezzo/show/${mezzoId}")

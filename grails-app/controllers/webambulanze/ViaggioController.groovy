@@ -330,6 +330,7 @@ class ViaggioController {
         int inizioMinuti = 0
         int rientroOre = 0
         int rientroMinuti = 0
+        Date giorno = null
 
         if (params.list) {
             redirect(action: 'list')
@@ -339,6 +340,8 @@ class ViaggioController {
 
         if (params.turnoId) {
             turno = Turno.findById(params.turnoId)
+            giorno = turno.giorno
+            params.giorno = giorno
         }// fine del blocco if
 
         params.tipoViaggio = TipoViaggio.auto118   //@todo ASSOLUTAMENTE PROVVISORIO
@@ -349,11 +352,6 @@ class ViaggioController {
 
         if (params.automezzoId) {
             params.automezzo = Automezzo.findById(params.automezzoId)
-        }// fine del blocco if
-
-        //@todo da controllare
-        if (!params.giorno) {
-            params.giorno = new Date()
         }// fine del blocco if
 
         //@todo da controllare
@@ -442,15 +440,10 @@ class ViaggioController {
             rientroMinuti = Integer.decode(params.rientroMinuti)
         }// fine del blocco if
 
-        params.giorno = Lib.setOra(params.giorno, 0)
-        params.giorno = Lib.setMinuto(params.giorno, 0)
-        params.giorno = Lib.setSecondo(params.giorno, 0)
-        params.inizio = Lib.setOra(params.inizio, inizioOre)
+        params.inizio = Lib.setOra(giorno, inizioOre)
         params.inizio = Lib.setMinuto(params.inizio, inizioMinuti)
-        params.inizio = Lib.setSecondo(params.inizio, 0)
-        params.fine = Lib.setOra(params.fine, rientroOre)
+        params.fine = Lib.setOra(giorno, rientroOre)
         params.fine = Lib.setMinuto(params.fine, rientroMinuti)
-        params.fine = Lib.setSecondo(params.fine, 0)
 
         def viaggioInstance = new Viaggio(params)
         Croce croce = croceService.getCroce(request)
