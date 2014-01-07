@@ -1086,6 +1086,19 @@ class Lib {
         return giornoOut
     }// fine del metodo
 
+
+    public static Date setSecondo(Date giornoIn, int secondo) {
+        Date giornoOut
+        Calendar cal = Calendar.getInstance()
+
+        cal.setTime(giornoIn)
+        cal.set(Calendar.SECOND, secondo)
+
+        giornoOut = new Date(cal.getTime().getTime());
+
+        return giornoOut
+    }// fine del metodo
+
     public static String getAnno(Date giorno) {
         String anno
         Calendar cal = Calendar.getInstance()

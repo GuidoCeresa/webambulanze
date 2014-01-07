@@ -326,6 +326,10 @@ class ViaggioController {
     def save() {
         Milite milite = null
         Turno turno = null
+        int inizioOre = 0
+        int inizioMinuti = 0
+        int rientroOre = 0
+        int rientroMinuti = 0
 
         if (params.list) {
             redirect(action: 'list')
@@ -422,6 +426,32 @@ class ViaggioController {
             }// fine del blocco if
         }// fine del blocco if-else
 
+        if (params.inizioOre) {
+            inizioOre = Integer.decode(params.inizioOre)
+        }// fine del blocco if
+
+        if (params.inizioMinuti) {
+            inizioMinuti = Integer.decode(params.inizioMinuti)
+        }// fine del blocco if
+
+        if (params.rientroOre) {
+            rientroOre = Integer.decode(params.rientroOre)
+        }// fine del blocco if
+
+        if (params.rientroMinuti) {
+            rientroMinuti = Integer.decode(params.rientroMinuti)
+        }// fine del blocco if
+
+        params.giorno = Lib.setOra(params.giorno, 0)
+        params.giorno = Lib.setMinuto(params.giorno, 0)
+        params.giorno = Lib.setSecondo(params.giorno, 0)
+        params.inizio = Lib.setOra(params.inizio, inizioOre)
+        params.inizio = Lib.setMinuto(params.inizio, inizioMinuti)
+        params.inizio = Lib.setSecondo(params.inizio, 0)
+        params.fine = Lib.setOra(params.fine, rientroOre)
+        params.fine = Lib.setMinuto(params.fine, rientroMinuti)
+        params.fine = Lib.setSecondo(params.fine, 0)
+
         def viaggioInstance = new Viaggio(params)
         Croce croce = croceService.getCroce(request)
 
@@ -499,6 +529,11 @@ class ViaggioController {
     } // fine del metodo
 
     def update(Long id, Long version) {
+        int inizioOre = 0
+        int inizioMinuti = 0
+        int rientroOre = 0
+        int rientroMinuti = 0
+
         def viaggioInstance = Viaggio.get(id)
 
         if (!viaggioInstance) {
@@ -532,6 +567,32 @@ class ViaggioController {
         if (params.codiceRicovero) {
             params.codiceRicovero = CodiceRicovero.getDaNome(params.codiceRicovero)
         }// fine del blocco if
+
+        if (params.inizioOre) {
+            inizioOre = Integer.decode(params.inizioOre)
+        }// fine del blocco if
+
+        if (params.inizioMinuti) {
+            inizioMinuti = Integer.decode(params.inizioMinuti)
+        }// fine del blocco if
+
+        if (params.rientroOre) {
+            rientroOre = Integer.decode(params.rientroOre)
+        }// fine del blocco if
+
+        if (params.rientroMinuti) {
+            rientroMinuti = Integer.decode(params.rientroMinuti)
+        }// fine del blocco if
+
+        params.giorno = Lib.setOra(params.giorno, 0)
+        params.giorno = Lib.setMinuto(params.giorno, 0)
+        params.giorno = Lib.setSecondo(params.giorno, 0)
+        params.inizio = Lib.setOra(params.giorno, inizioOre)
+        params.inizio = Lib.setMinuto(params.inizio, inizioMinuti)
+        params.inizio = Lib.setSecondo(params.inizio, 0)
+        params.fine = Lib.setOra(params.giorno, rientroOre)
+        params.fine = Lib.setMinuto(params.fine, rientroMinuti)
+        params.fine = Lib.setSecondo(params.fine, 0)
 
         viaggioInstance.properties = params
 

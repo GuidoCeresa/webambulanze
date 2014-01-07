@@ -1847,10 +1847,12 @@ class AmbulanzaTagLib {
         ArrayList listaRicovero = CodiceRicovero.getAll()
         int numeroServiziEffettuati = 0
         int numeroViaggio = 0
+        boolean usaListaMilitiViaggi = false
 
         if (params.siglaCroce) {
             croce = Croce.findBySigla((String) params.siglaCroce)
             numeroServiziEffettuati = croceService.getNumeroServiziEffettuati(croce) + 1
+            usaListaMilitiViaggi = croceService.usaListaMilitiViaggi(croce.sigla)
         }// fine del blocco if
         if (mappa.tipoViaggio) {
             a = mappa.tipoViaggio
@@ -1899,7 +1901,7 @@ class AmbulanzaTagLib {
             testoOut += LibHtml.field(Field.testoObbEdit, 'numeroBolla')
             testoOut += LibHtml.field(Field.testoObbEdit, 'numero servizio globale', numeroServiziEffettuati, 'numeroServizio')
             testoOut += LibHtml.field(Field.testoObbEdit, 'numero viaggio del mezzo', numeroViaggio, 'numeroViaggio')
-            testoOut += listaMilitiFunzioni(croce, turno)
+            testoOut += listaMilitiFunzioni(turno, usaListaMilitiViaggi)
         }// fine del blocco if
 
         out << testoOut
@@ -1910,6 +1912,8 @@ class AmbulanzaTagLib {
         Croce croce
         Viaggio viaggio = null
         Date giorno
+        Date inizio
+        Date fine
         Turno turno
         Automezzo automezzo
         ArrayList listaAutomezzi
@@ -1933,6 +1937,7 @@ class AmbulanzaTagLib {
         int numeroBolla
         int numeroServizio
         int numeroViaggio
+        ArrayList<Milite> listaMiliti = new ArrayList()
 
         if (params.id) {
             viaggio = Viaggio.findById(params.id)
@@ -1947,6 +1952,8 @@ class AmbulanzaTagLib {
         turno = viaggio.turno
         listaAutomezzi = Automezzo.findAllByCroce(croce)
         giorno = viaggio.giorno
+        inizio = viaggio.inizio
+        fine = viaggio.fine
         automezzo = viaggio.automezzo
         chilometriPartenza = viaggio.chilometriPartenza
         chilometriArrivo = viaggio.chilometriArrivo
@@ -1964,17 +1971,37 @@ class AmbulanzaTagLib {
         numeroBolla = viaggio.numeroBolla
         numeroServizio = viaggio.numeroServizio
         numeroViaggio = viaggio.numeroViaggio
+        if (viaggio.militeFunzione1) {
+            listaMiliti.add(viaggio.militeFunzione1)
+        } else {
+            listaMiliti.add(null)
+        }// fine del blocco if-else
+        if (viaggio.militeFunzione2) {
+            listaMiliti.add(viaggio.militeFunzione2)
+        } else {
+            listaMiliti.add(null)
+        }// fine del blocco if-else
+        if (viaggio.militeFunzione3) {
+            listaMiliti.add(viaggio.militeFunzione3)
+        } else {
+            listaMiliti.add(null)
+        }// fine del blocco if-else
+        if (viaggio.militeFunzione4) {
+            listaMiliti.add(viaggio.militeFunzione4)
+        } else {
+            listaMiliti.add(null)
+        }// fine del blocco if-else
 
         testoOut += LibHtml.field('Giorno', formDataGiornoEdit(giorno, 'giorno'))
         testoOut += LibHtml.fieldLista('Automezzo', 'automezzo', listaAutomezzi, automezzo.toString(), true)
         testoOut += LibHtml.field(Field.testoObbEdit, 'Chilometri alla partenza', chilometriPartenza, 'chilometriPartenza')
         testoOut += LibHtml.field(Field.testoObbEdit, "Chilometri all'arrivo", chilometriArrivo, 'chilometriArrivo')
-        testoOut += LibHtml.field(Field.oraMin, "Orario di chiamata", giorno, 'inizio')
+        testoOut += LibHtml.field(Field.oraMin, "Orario di chiamata", inizio, 'inizio')
         testoOut += LibHtml.fieldLista("Codice invio", 'codiceInvio', listaInvio, codiceInvio.toString(), true)
         testoOut += LibHtml.fieldLista("Luogo evento", 'luogoEvento', listaLuogo, luogoEvento.toString(), true)
         testoOut += LibHtml.fieldLista("Patologia segnalata", 'patologia', listaPatologia, patologia.toString(), true)
         testoOut += LibHtml.fieldLista("Codice ricovero", 'codiceRicovero', listaRicovero, codiceRicovero.toString(), true)
-        testoOut += LibHtml.field(Field.oraMin, "Orario di rientro", giorno, 'rientro')
+        testoOut += LibHtml.field(Field.oraMin, "Orario di rientro", fine, 'rientro')
         testoOut += LibHtml.field(Field.testoObbEdit, "Cartellino 118", numeroCartellino, 'numeroCartellino')
         testoOut += LibHtml.field(Field.testoEdit, 'Nome del paziente', nomePaziente, 'nomePaziente')
         testoOut += LibHtml.field(Field.testoEdit, 'Indirizzo del paziente', indirizzoPaziente, 'indirizzoPaziente')
@@ -1985,7 +2012,7 @@ class AmbulanzaTagLib {
         testoOut += LibHtml.field(Field.testoObbEdit, 'Numero della bolla', numeroBolla, 'numeroBolla')
         testoOut += LibHtml.field(Field.testoObbEdit, 'Numero del servizio', numeroServizio, 'numeroServizio')
         testoOut += LibHtml.field(Field.testoObbEdit, 'Numero del viaggio', numeroViaggio, 'numeroViaggio')
-        testoOut += listaMilitiFunzioni(croce, turno)
+        testoOut += listaMilitiFunzioni(turno, listaMiliti)
 
         out << testoOut
     }// fine della closure
@@ -2003,22 +2030,22 @@ class AmbulanzaTagLib {
         out << testoOut
     }// fine della closure
 
-    private String listaMilitiFunzioni(Croce croce, Turno turno) {
+
+    private String listaMilitiFunzioni(Turno turno, boolean usaListaMilitiViaggi) {
         String testoOut = ''
         int max = 4
 
         for (int k = 1; k <= max; k++) {
-            testoOut += listaMiliteFunzioni(croce, turno, k)
+            testoOut += listaMiliteFunzioni(turno, usaListaMilitiViaggi, k)
         } // fine del ciclo for
 
         return testoOut
     }// fine del metodo
 
-    private String listaMiliteFunzioni(Croce croce, Turno turno, int pos) {
+    private String listaMiliteFunzioni(Turno turno, boolean usaListaMilitiViaggi, int pos) {
         String testoOut = ''
         Funzione funz
         Milite milite = getMiliteForFunzione(turno, pos)
-        boolean usaListaMilitiViaggi = croceService.usaListaMilitiViaggi(croce.sigla)
 
         if (usaListaMilitiViaggi) {
             funz = getFunzione(turno, pos)
@@ -2062,6 +2089,23 @@ class AmbulanzaTagLib {
 
 //        testoOut = LibHtml.field(label, milite.toString())
         testoOut = LibHtml.fieldLista(label, campo, lista, milite, false)
+
+        return testoOut
+    }// fine del metodo
+
+    private String listaMilitiFunzioni(Turno turno, ArrayList<Milite> listaDeiMiliti) {
+        String testoOut = ''
+        Funzione funz
+        int max = 4
+        Milite milite
+
+        for (int k = 1; k <= max; k++) {
+            funz = getFunzione(turno, k)
+            if (funz) {
+                milite = (Milite) listaDeiMiliti.get(k - 1)
+                testoOut += listaMiliti(funz, milite, k)
+            }// fine del blocco if
+        } // fine del ciclo for
 
         return testoOut
     }// fine del metodo
