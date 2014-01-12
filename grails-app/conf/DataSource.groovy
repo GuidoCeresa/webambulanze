@@ -18,6 +18,7 @@ dataSource {
     driverClassName = "com.mysql.jdbc.Driver"
     username = "root"
     password = ""
+//    logSql = true
 } // end of dataSource
 
 hibernate {

@@ -54,8 +54,6 @@ class TurnoController {
 
     def tabCorrente = {
         params.siglaCroce = croceService.getSiglaCroce(request)
-        flash.errors = null
-        flash.listaErrori = null
         render(view: 'tabellone', model: [dataInizio: dataInizio, dataFine: dataFine], params: params)
     }// fine della closure
 
@@ -335,34 +333,12 @@ class TurnoController {
     def update(Long id, Long version) {
         boolean nuovoTurno = false
         String value
-        String ripetizione = Cost.CAMPO_RIPETIZIONE_TURNO
-        boolean isRipetizione = false
-        ArrayList valori = Cost.VALORI_FREQUENZA
-        String frequenza = Cost.CAMPO_FREQUENZA_RIPETIZIONE
-        String valoreFrequenzaTxt
-        int valoreFrequenzaInt
-        def numVolte
-
-        def a = params
 
         if (params.nuovoTurno) {
             value = params.nuovoTurno
             if (value.equals('true')) {
                 nuovoTurno = true
             }// fine del blocco if
-        }// fine del blocco if
-
-        if (params."${ripetizione}") {
-            value = params."${ripetizione}"
-            if (value.equals('on')) {
-                isRipetizione = true
-            }// fine del blocco if
-        }// fine del blocco if
-
-        if (params."${frequenza}") {
-            valoreFrequenzaTxt = params."${frequenza}"
-            valoreFrequenzaInt = Integer.decode(valoreFrequenzaTxt)
-            def stop
         }// fine del blocco if
 
         def turnoInstance = Turno.get(id)
@@ -420,6 +396,7 @@ class TurnoController {
         }// fine del blocco if
 
         this.controllaAnomalie(turnoInstance, nuovoTurno)
+        this.controllaRipetizioni(oldParams, turnoInstance)
 
         redirect(action: 'tabCorrente')
     } // fine del metodo
@@ -643,6 +620,205 @@ class TurnoController {
             testo += ' per il giorno ' + Lib.presentaDataCompleta(turno.giorno)
             flash.message = testo
         }// fine del blocco if-else
+    } // fine del metodo
+
+    //--funziona solo se si segnano nuovi (uno o più) militi
+    //--se cambiano non fa nulla
+    //--quindi tutte le funzioni-old devono essere vuote
+    private boolean controllaRipetizioni(Map oldParams, Turno turno) {
+        String value
+        String ripetizioneBool = Cost.CAMPO_RIPETIZIONE_TURNO
+        boolean isRipetizione = false
+        ArrayList valoriFrequenza = Cost.VALORI_FREQUENZA_NUM
+        String frequenzaCampo = Cost.CAMPO_FREQUENZA_RIPETIZIONE
+        String ripetizioni = Cost.CAMPO_NUMERO_RIPETIZIONI
+        String ripetizioniTxt
+        int ripetizioniNum = 0
+        String valoreFrequenzaTxt
+        int valoreFrequenzaInt = 0
+        int frequenza = 0
+        int militeIdOld1 = 0
+        int militeIdOld2 = 0
+        int militeIdOld3 = 0
+        int militeIdOld4 = 0
+        int militeIdNew1 = 0
+        int militeIdNew2 = 0
+        int militeIdNew3 = 0
+        int militeIdNew4 = 0
+        Milite militeNew1 = null
+        Milite militeNew2 = null
+        Milite militeNew3 = null
+        Milite militeNew4 = null
+        String militeTxt = 'militeFunzione'
+        String militeFunz = ''
+
+        def a = params
+
+        //--controlla che sia abilitato il flag per la ripetizione
+        if (params."${ripetizioneBool}") {
+            value = params."${ripetizioneBool}"
+            if (value.equals('on')) {
+                isRipetizione = true
+            } else {
+                return false
+            }// fine del blocco if-else
+        } else {
+            return false
+        }// fine del blocco if-else
+
+        //--regola i parametri
+        if (params."${ripetizioni}") {
+            ripetizioniTxt = params."${ripetizioni}"
+            try { // prova ad eseguire il codice
+                ripetizioniNum = Integer.decode(ripetizioniTxt)
+            } catch (Exception unErrore) { // intercetta l'errore
+                log.error unErrore
+                flash.errors = 'Questo turno non è stato ripetuto (come richiesto). Occorre un numero valido di ripetizioni.'
+                return false
+            }// fine del blocco try-catch
+            if (!ripetizioniNum) {
+                flash.errors = 'Questo turno non è stato ripetuto (come richiesto). Occorre un numero valido di ripetizioni. Zero non è ammesso.'
+                return false
+            }// fine del blocco if
+        }// fine del blocco if
+
+        //--regola i parametri
+        if (params."${frequenzaCampo}") {
+            valoreFrequenzaTxt = params."${frequenzaCampo}"
+            try { // prova ad eseguire il codice
+                valoreFrequenzaInt = Integer.decode(valoreFrequenzaTxt)
+            } catch (Exception unErrore) { // intercetta l'errore
+                log.error unErrore
+                flash.errors = 'Questo turno non è stato ripetuto.'
+                return false
+            }// fine del blocco try-catch
+            if (valoreFrequenzaInt > 0) {
+                frequenza = (int) valoriFrequenza.get(valoreFrequenzaInt - 1)
+            }// fine del blocco if
+        }// fine del blocco if
+
+        //--controlla che i precedenti link ai militi siano tutti nulli
+        if (oldParams.militeFunzione1Id) {
+            try { // prova ad eseguire il codice
+                militeIdOld1 = Integer.decode((String) oldParams.militeFunzione1Id)
+            } catch (Exception unErrore) { // intercetta l'errore
+                log.error unErrore
+            }// fine del blocco try-catch
+        }// fine del blocco if
+        if (oldParams.militeFunzione2Id) {
+            try { // prova ad eseguire il codice
+                militeIdOld2 = Integer.decode((String) oldParams.militeFunzione2Id)
+            } catch (Exception unErrore) { // intercetta l'errore
+                log.error unErrore
+            }// fine del blocco try-catch
+        }// fine del blocco if
+        if (oldParams.militeFunzione3Id) {
+            try { // prova ad eseguire il codice
+                militeIdOld3 = Integer.decode((String) oldParams.militeFunzione3Id)
+            } catch (Exception unErrore) { // intercetta l'errore
+                log.error unErrore
+            }// fine del blocco try-catch
+        }// fine del blocco if
+        if (oldParams.militeFunzione4Id) {
+            try { // prova ad eseguire il codice
+                militeIdOld4 = Integer.decode((String) oldParams.militeFunzione4Id)
+            } catch (Exception unErrore) { // intercetta l'errore
+                log.error unErrore
+            }// fine del blocco try-catch
+        }// fine del blocco if
+
+        if (params.militeFunzione1_id) {
+            try { // prova ad eseguire il codice
+                militeIdNew1 = Integer.decode((String) params.militeFunzione1_id)
+            } catch (Exception unErrore) { // intercetta l'errore
+                log.error unErrore
+            }// fine del blocco try-catch
+        }// fine del blocco if
+        if (params.militeFunzione2_id) {
+            try { // prova ad eseguire il codice
+                militeIdNew2 = Integer.decode((String) params.militeFunzione2_id)
+            } catch (Exception unErrore) { // intercetta l'errore
+                log.error unErrore
+            }// fine del blocco try-catch
+        }// fine del blocco if
+        if (params.militeFunzione3_id) {
+            try { // prova ad eseguire il codice
+                militeIdNew3 = Integer.decode((String) params.militeFunzione3_id)
+            } catch (Exception unErrore) { // intercetta l'errore
+                log.error unErrore
+            }// fine del blocco try-catch
+        }// fine del blocco if
+        if (params.militeFunzione4_id) {
+            try { // prova ad eseguire il codice
+                militeIdNew4 = Integer.decode((String) params.militeFunzione4_id)
+            } catch (Exception unErrore) { // intercetta l'errore
+                log.error unErrore
+            }// fine del blocco try-catch
+        }// fine del blocco if
+
+        militeNew1 = turno.militeFunzione1
+        militeNew2 = turno.militeFunzione2
+        militeNew3 = turno.militeFunzione3
+        militeNew4 = turno.militeFunzione4
+
+        def ss = oldParams
+        if (militeIdOld1 || militeIdOld2 || militeIdOld3 || militeIdOld4) {
+            flash.errors = 'Non  sono state create ripetizioni di questo turno. Esistevano già dei militi segnati. Le ripetizioni si effettuano solo per nuovi inserimenti.'
+            return false
+        }// fine del blocco if-else
+
+        //--creazione flash
+        flash.listaErrori = []
+        flash.listaMessaggi = []
+
+        for (int k = 1; k <= 4; k++) {
+            militeFunz = militeTxt + k
+            if (turno."${militeFunz}") {
+                creaRipetizione(turno, frequenza, ripetizioniNum, turno."${militeFunz}", k)
+            }// fine del blocco if
+        } // fine del ciclo for
+
+        return true
+    } // fine del metodo
+
+    private void creaRipetizione(Turno turnoAttuale, int frequenza, int volte, Milite militeAttuale, int pos) {
+        Croce croce = turnoAttuale.croce
+        Date giornoAttuale = turnoAttuale.giorno
+        Date giornoRipetuto
+        String militeFunzione = "militeFunzione"
+        Turno turnoRipetuto
+        TipoTurno tipoTurno = turnoAttuale.tipoTurno
+        Milite militeEsistente
+        String tipoTurnoTxt = tipoTurno.descrizione.toLowerCase()
+        String giornoRipetutoTxt = ''
+        String funzioneTxt = 'funzione'
+        String funzione    =''
+
+        if (pos > 0) {
+            militeFunzione += pos
+            funzioneTxt += pos
+            funzione = tipoTurno."${funzioneTxt}".descrizione
+        }// fine del blocco if
+
+        for (int k = 1; k <= volte; k++) {
+            giornoRipetuto = giornoAttuale + frequenza * k
+            turnoRipetuto = Turno.findByCroceAndGiornoAndTipoTurno(croce, giornoRipetuto, tipoTurno)
+            giornoRipetutoTxt = Lib.presentaDataCompleta(giornoRipetuto)
+            if (turnoRipetuto) {
+                militeEsistente = turnoRipetuto."${militeFunzione}"
+                if (militeEsistente) {
+                    flash.listaErrori.add("La funzione di ${funzione} per il turno ${tipoTurnoTxt} di ${giornoRipetutoTxt}, è già impegnata. Non è stata creta la ripetizione.")
+                } else {
+                    turnoRipetuto."${militeFunzione}" = militeAttuale
+                    turnoRipetuto.save(flush: true)
+                    flash.listaMessaggi.add("Turno ripetuto. Segnata la funzione ${funzione} per il turno ${tipoTurnoTxt} di ${giornoRipetutoTxt}")
+                }// fine del blocco if-else
+            } else {
+                flash.listaErrori.add("Non esiste il turno ${tipoTurnoTxt} di ${giornoRipetutoTxt}. Occorre crearlo prima di segnare il milite")
+            }// fine del blocco if-else
+        } // fine del ciclo for
+
+
     } // fine del metodo
 
     //--controlla che i dati siano ''accettabili''

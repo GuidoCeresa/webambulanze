@@ -103,7 +103,8 @@ public interface Cost {
     public static String CAMPO_RIPETIZIONE_TURNO = 'ripetizioneTurno'
     public static String CAMPO_FREQUENZA_RIPETIZIONE = 'frequenzaRipetizione'
     public static String CAMPO_NUMERO_RIPETIZIONI = 'numeroRipetizioni'
-    public static ArrayList VALORI_FREQUENZA = ['ogni 7gg', 'ogni 14gg', 'ogni 21 gg', 'ogni 28gg']
+    public static ArrayList VALORI_FREQUENZA_TXT = ['ogni 7gg', 'ogni 14gg', 'ogni 21 gg', 'ogni 28gg']
+    public static ArrayList VALORI_FREQUENZA_NUM = [7, 14, 21, 28]
 
     //--sigle dei tipi di turno in croce rossa fidenza
     public static String CRF_TIPO_TURNO_AUTOMEDICA_MATTINO = 'msa-mat'

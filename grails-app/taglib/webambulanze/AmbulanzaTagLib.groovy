@@ -1718,7 +1718,8 @@ class AmbulanzaTagLib {
 //        testo = 'Algos© - v4.8 del 26 dicembre 2013'
 //        testo = 'Algos© - v4.9 del 27 dicembre 2013'
 //        testo = 'Algos© - v5.0 del 7 gennaio 2014'
-        testo = 'Algos© - v5.1 del 8 gennaio 2014'
+//        testo = 'Algos© - v5.1 del 8 gennaio 2014'
+        testo = 'Algos© - v5.2 del 13 gennaio 2014'
         testo = Lib.tagCella(testo, Aspetto.copyright)
         testoOut = Lib.tagTable(testo)
         return testoOut
@@ -1816,7 +1817,7 @@ class AmbulanzaTagLib {
         String inputTxt = ''
         String testoUno
         String testoDue
-        ArrayList valori = Cost.VALORI_FREQUENZA
+        ArrayList valori = Cost.VALORI_FREQUENZA_TXT
         String label = Cost.CAMPO_NUMERO_RIPETIZIONI
         int numSuggerito = 2
 
