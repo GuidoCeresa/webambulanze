@@ -60,7 +60,7 @@ class SettingsController {
                 if (!params.sort) {
                     params.sort = 'croce'
                 }// fine del blocco if-else
-                lista = Settings.findAll(params)
+                lista = Settings.findAll()
                 campiLista = ['id', 'croce'] + campiLista
             } else {
                 lista = Settings.findAllByCroce(croce)

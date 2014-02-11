@@ -394,11 +394,15 @@ class BootStrap implements Cost {
             addFlagMilitiNuoviViaggi()
         }// fine del blocco if
 
+        //--modifica al flag per tabellone, login e partenza pubblica val tidone
+        if (installaVersione(67)) {
+            fixFlagSettingLoginCastello()
+        }// fine del blocco if
 
         //--creazione dei record utenti per la pubblica castello
-//        if (installaVersione(99)) {
-//            utentiPubblicacastello()
-//        }// fine del blocco if
+        if (installaVersione(68)) {
+            utentiPubblicaCastello()
+        }// fine del blocco if
 
         // resetTurniPontetaro()
 
@@ -2324,6 +2328,9 @@ class BootStrap implements Cost {
             utente.password = password
             utente.pass = password
             utente.enabled = true
+            utente.accountExpired = false
+            utente.accountLocked = false
+            utente.passwordExpired = false
             if (milite) {
                 utente.milite = milite
             }// fine del blocco if
@@ -2939,31 +2946,6 @@ class BootStrap implements Cost {
         }// fine del blocco if
 
         newVersione(CROCE_PUBBLICA_CASTELLO, 'Inizio', 'Fix controller iniziale mancante.')
-    }// fine del metodo
-
-    //--creazione dei record utenti per la pubblica castello
-    //--uno per ogni milite
-    //--nickname=cognomeNome
-    //--password=cognome(minuscolo) + 3 cifre numeriche
-    //--li crea SOLO se non esistono già
-    private static void utentiPubblicacastello() {
-        Croce croce = Croce.findBySigla(CROCE_PUBBLICA_CASTELLO)
-        ArrayList listaUtenti
-        ArrayList listaMiliti
-        Milite milite
-
-        if (!croce) {
-            return
-        }// fine del blocco if
-
-        listaUtenti = Utente.findAllByCroce(croce)
-        if (listaUtenti && listaUtenti.size() < 1) {
-            listaMiliti = Milite.findAllByCroce(croce)
-            listaMiliti?.each {
-                milite = (Milite) it
-                newUtenteMilite(CROCE_ROSSA_FIDENZA, milite)
-            } // fine del ciclo each
-        }// fine del blocco if
     }// fine del metodo
 
     //--regola il (nuovo) flag per tutte le croci
@@ -4766,6 +4748,49 @@ class BootStrap implements Cost {
         newVersione(CROCE_ALGOS, 'Settings', 'Aggiunto flag per presentare o meno liste di Militi nei nuovi viaggi')
     }// fine del metodo
 
+    //--modifica al flag per tabellone, login e partenza pubblica val tidone
+    private static void fixFlagSettingLoginCastello() {
+        Croce croce = Croce.findBySigla(CROCE_PUBBLICA_CASTELLO)
+        Settings settings
+
+        if (croce) {
+            settings = croce.settings
+            if (settings) {
+                settings.tabelloneSecured = false
+                settings.turniSecured = false
+                settings.mostraTabellonePartenza = true
+                settings.save(flush: true)
+                newVersione(CROCE_PUBBLICA_CASTELLO, 'Settings', 'Modificati flag tabellone, login e partenza')
+            }// fine del blocco if
+        }// fine del blocco if
+    }// fine del metodo
+
+    //--creazione dei record utenti per la pubblica castello
+    //--uno per ogni milite
+    //--nickname=cognomeNome
+    //--password=cognome(minuscolo) + 3 cifre numeriche
+    //--li crea SOLO se non esistono già
+    private static void utentiPubblicaCastello() {
+        Croce croce = Croce.findBySigla(CROCE_PUBBLICA_CASTELLO)
+        ArrayList listaUtenti
+        ArrayList listaMiliti
+        Milite milite
+
+        if (!croce) {
+            return
+        }// fine del blocco if
+
+        listaUtenti = Utente.findAllByCroce(croce)
+        if (!listaUtenti) {
+            listaMiliti = Milite.findAllByCroce(croce)
+            listaMiliti?.each {
+                milite = (Milite) it
+                newUtenteMilite(CROCE_PUBBLICA_CASTELLO, milite)
+            } // fine del ciclo each
+            newVersione(CROCE_PUBBLICA_CASTELLO, 'Utenti', 'Creazione di tutti gli utenti')
+        }// fine del blocco if
+
+    }// fine del metodo
 
     def destroy = {
     }// fine della closure
