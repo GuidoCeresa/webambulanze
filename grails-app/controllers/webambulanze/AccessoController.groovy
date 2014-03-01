@@ -50,13 +50,16 @@ class AccessoController {
         boolean mostraTabellonePartenza = false
         boolean isTabelloneSecured = true
 
+        def abc = params
         if (params.siglaCroce) {
             possibileSiglaCroce = params.siglaCroce
             croce = Croce.findBySigla(possibileSiglaCroce)
             if (croce) {
                 siglaCroce = croce.sigla
             } else {
-                def pippoz
+                flash.errors = "La sigla $possibileSiglaCroce, non rappresenta un'associazione valida"
+                render(view: '/error')
+                return
             }// fine del blocco if-else
         } else {
             render(view: '/error')
@@ -66,11 +69,13 @@ class AccessoController {
         //--regolazioni generali
         primaVolta = selezionaCroceBase(siglaCroce)
 
+        primaVolta = false
+
         if (croceService) {
             mostraTabellonePartenza = croceService.mostraTabellonePartenza(siglaCroce)
             isTabelloneSecured = croceService.isTabelloneSecured(siglaCroce)
         }// fine del blocco if
-          def a=params
+
         if (primaVolta) {
             redirect(url: '/' + siglaCroce)
         } else {
@@ -123,7 +128,7 @@ class AccessoController {
             response.addCookie(cookie)
         }// fine del blocco if
 
-        //--eventuale cookie già esistente per la setssa croce
+        //--eventuale cookie già esistente per la stessa croce
         oldCookie = g.cookie(name: Cost.COOKIE_SIGLA_CROCE)
 
         //--selezione iniziale della croce su cui operare

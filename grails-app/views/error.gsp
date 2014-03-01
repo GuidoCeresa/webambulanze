@@ -19,7 +19,11 @@
 <div class="footer" role="contentinfo"></div>
 
 <div id="page-body" role="main">
-    <h1>Non è stata specificata l'associazione da utilizzare</h1>
+    <h1>Devi specificare l'associazione da utilizzare</h1>
+    <g:if test="${flash.errors}">
+        <h1>${flash.errors}</h1>
+    </g:if>
+
 </div>
 </body>
 </html>
