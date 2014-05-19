@@ -1719,7 +1719,8 @@ class AmbulanzaTagLib {
 //        testo = 'Algos© - v4.9 del 27 dicembre 2013'
 //        testo = 'Algos© - v5.0 del 7 gennaio 2014'
 //        testo = 'Algos© - v5.1 del 8 gennaio 2014'
-        testo = 'Algos© - v5.2 del 13 gennaio 2014'
+//        testo = 'Algos© - v5.2 del 13 gennaio 2014'
+        testo = 'Algos© - v5.3 del 20 maggio 2014'
         testo = Lib.tagCella(testo, Aspetto.copyright)
         testoOut = Lib.tagTable(testo)
         return testoOut

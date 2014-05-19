@@ -102,8 +102,6 @@ class TurnoController {
         int offSet
         String anno
         String giornoTxt = ''
-        def user = springSecurityService.principal
-        Utente currUser = (Utente) springSecurityService.getCurrentUser()
 
         if (params.anno) {
             anno = params.anno
@@ -154,11 +152,12 @@ class TurnoController {
         newFillTurno(nuovoOppureEsistente, nuovoTurno)
     }// fine della closure
 
-    @Secured([Cost.ROLE_MILITE])
+    @Secured([Cost.ROLE_OSPITE, Cost.ROLE_MILITE])
     def fillTurno = {
         String turnoIdTxt
         long turnoId
         Turno turnoInstance = null
+        Utente currUser
 
         if (params.turnoId) {
             turnoIdTxt = params.turnoId
@@ -166,24 +165,28 @@ class TurnoController {
             turnoInstance = Turno.findById(turnoId)
         }// fine del blocco if
 
-        //--log
-        Milite milite = militeService.getMiliteLoggato()
+        //--deve esserci un utente (altrimenti non dovrebbe arrivare qui, ma per sicurezza...)
+        currUser = (Utente) springSecurityService.getCurrentUser()
+        if (currUser) {
+            newFillTurno(turnoInstance, false)
+            return
+        } else {
+            flash.message = 'Non puoi modificare il turno'
+            redirect(action: 'list')
+            return
+        }// fine del blocco if-else
 
-        params.nuovoTurno = false
-        params.turno = turnoInstance
-        //      redirect(action: 'newFillTurno', params: params)
-        newFillTurno(turnoInstance, false)
     }// fine della closure
 
-    @Secured([Cost.ROLE_MILITE])
+    @Secured([Cost.ROLE_OSPITE, Cost.ROLE_MILITE])
     def newFillTurno(Turno turnoInstance, boolean nuovoTurno) {
         params.siglaCroce = croceService.getSiglaCroce(request)
         boolean turniSecured = croceService.isTurniSecured(params.siglaCroce)
 
         render(view: 'fillTurno', model: [
                 turnoInstance: turnoInstance,
-                nuovoTurno: nuovoTurno,
-                turniSecured: turniSecured
+                nuovoTurno   : nuovoTurno,
+                turniSecured : turniSecured
         ], params: params)
     }// fine del metodo
 
@@ -792,7 +795,7 @@ class TurnoController {
         String tipoTurnoTxt = tipoTurno.descrizione.toLowerCase()
         String giornoRipetutoTxt = ''
         String funzioneTxt = 'funzione'
-        String funzione    =''
+        String funzione = ''
 
         if (pos > 0) {
             militeFunzione += pos

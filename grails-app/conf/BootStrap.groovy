@@ -404,6 +404,11 @@ class BootStrap implements Cost {
             utentiPubblicaCastello()
         }// fine del blocco if
 
+        //--accesso ai dipendenti PAP
+        if (installaVersione(69)) {
+            dipendentiPap()
+        }// fine del blocco if
+
         // resetTurniPontetaro()
 
         //--cancella tutto il database
@@ -4789,8 +4794,13 @@ class BootStrap implements Cost {
             } // fine del ciclo each
             newVersione(CROCE_PUBBLICA_CASTELLO, 'Utenti', 'Creazione di tutti gli utenti')
         }// fine del blocco if
-
     }// fine del metodo
+
+    //--accesso ai dipendenti PAP
+    private static void dipendentiPap() {
+        newVersione(CROCE_PUBBLICA_PIANORO, 'Settings', 'Accesso al turno per i dipendenti')
+    }// fine del metodo
+
 
     def destroy = {
     }// fine della closure
